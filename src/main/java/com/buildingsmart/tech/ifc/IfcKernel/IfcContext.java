@@ -5,29 +5,18 @@
 
 package com.buildingsmart.tech.ifc.IfcKernel;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.buildingsmart.tech.annotations.Description;
+import com.buildingsmart.tech.annotations.Guid;
+import com.buildingsmart.tech.annotations.MinLength;
+import com.buildingsmart.tech.ifc.IfcMeasureResource.IfcUnitAssignment;
+import com.buildingsmart.tech.ifc.IfcRepresentationResource.IfcRepresentationContext;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
-import com.buildingsmart.tech.annotations.*;
-import com.buildingsmart.tech.ifc.IfcRepresentationResource.*;
-import com.buildingsmart.tech.ifc.IfcMeasureResource.*;
-import com.buildingsmart.tech.ifc.IfcKernel.*;
-import com.buildingsmart.tech.ifc.IfcKernel.IfcProject;
-import com.buildingsmart.tech.ifc.IfcKernel.IfcProjectLibrary;
-import com.buildingsmart.tech.ifc.IfcKernel.IfcObjectDefinition;
+import java.util.Set;
 
 @Guid("2ef4dae0-8e0d-4c3e-a179-bf7d2f279492")
 @JsonIgnoreProperties(ignoreUnknown=true)
@@ -110,6 +99,10 @@ public abstract class IfcContext extends IfcObjectDefinition
 
 	public Set<IfcRepresentationContext> getRepresentationContexts() {
 		return this.representationContexts;
+	}
+
+	public void setRepresentationContexts(Set<IfcRepresentationContext> representationContexts) {
+		this.representationContexts = representationContexts;
 	}
 
 	public IfcUnitAssignment getUnitsInContext() {
