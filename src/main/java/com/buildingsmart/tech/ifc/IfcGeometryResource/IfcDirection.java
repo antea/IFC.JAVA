@@ -5,24 +5,14 @@
 
 package com.buildingsmart.tech.ifc.IfcGeometryResource;
 
+import com.buildingsmart.tech.annotations.*;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
-
-import com.buildingsmart.tech.annotations.*;
-import com.buildingsmart.tech.ifc.IfcGeometryResource.IfcGeometricRepresentationItem;
 
 @Guid("c9a6fe1f-b072-45ab-ba40-8c1f8c01e132")
 @JsonIgnoreProperties(ignoreUnknown=true)
@@ -44,6 +34,8 @@ public class IfcDirection extends IfcGeometricRepresentationItem implements com.
 
 	public IfcDirection(Double[] directionRatios)
 	{
+		if (directionRatios.length < 2 || directionRatios.length > 3)
+			throw new IllegalArgumentException("number of directionRatios must be 2 or 3");
 		this.directionRatios = new ArrayList<>(Arrays.asList(directionRatios));
 	}
 

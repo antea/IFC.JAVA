@@ -5,24 +5,14 @@
 
 package com.buildingsmart.tech.ifc.IfcGeometryResource;
 
+import com.buildingsmart.tech.annotations.*;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
-
-import com.buildingsmart.tech.annotations.*;
-import com.buildingsmart.tech.ifc.IfcGeometryResource.IfcPoint;
 
 @Guid("2ddee6ae-615d-41ff-baa2-ba51d50e78c2")
 @JsonIgnoreProperties(ignoreUnknown=true)
@@ -44,6 +34,8 @@ public class IfcCartesianPoint extends IfcPoint implements IfcTrimmingSelect
 
 	public IfcCartesianPoint(Double[] coordinates)
 	{
+		if (coordinates.length < 1 || coordinates.length > 3)
+			throw new IllegalArgumentException("number of coordinates must be between 1 and 3");
 		this.coordinates = new ArrayList<>(Arrays.asList(coordinates));
 	}
 
