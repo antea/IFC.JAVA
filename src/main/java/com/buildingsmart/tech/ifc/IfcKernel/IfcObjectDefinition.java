@@ -107,6 +107,15 @@ public abstract class IfcObjectDefinition extends IfcRoot implements IfcDefiniti
 		return this.isDecomposedBy;
 	}
 
+	public void setIsDecomposedBy(Set<IfcRelAggregates> isDecomposedBy) {
+		for (IfcRelAggregates relation : isDecomposedBy) {
+			if (relation.getRelatingObject() != this) {
+				throw new IllegalArgumentException("Relation " + relation.getName() + " does not have this object as its relatingObject");
+			}
+		}
+		this.isDecomposedBy = isDecomposedBy;
+	}
+
 	public Set<IfcRelAggregates> getDecomposes() {
 		return this.decomposes;
 	}

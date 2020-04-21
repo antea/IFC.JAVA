@@ -5,28 +5,15 @@
 
 package com.buildingsmart.tech.ifc.IfcProductExtension;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.buildingsmart.tech.annotations.Description;
+import com.buildingsmart.tech.annotations.Guid;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
-import com.buildingsmart.tech.annotations.*;
-import com.buildingsmart.tech.ifc.IfcProductExtension.*;
-import com.buildingsmart.tech.ifc.IfcProductExtension.IfcExternalSpatialStructureElement;
-import com.buildingsmart.tech.ifc.IfcProductExtension.IfcSpatialStructureElement;
-import com.buildingsmart.tech.ifc.IfcProductExtension.IfcSpatialZone;
-import com.buildingsmart.tech.ifc.IfcKernel.IfcProduct;
+import java.util.Set;
 
 @Guid("a77e2e44-45fd-486d-8869-116757040301")
 @JsonIgnoreProperties(ignoreUnknown=true)
@@ -77,6 +64,15 @@ public abstract class IfcSpatialElement extends com.buildingsmart.tech.ifc.IfcKe
 
 	public Set<IfcRelContainedInSpatialStructure> getContainsElements() {
 		return this.containsElements;
+	}
+
+	public void setContainsElements(Set<IfcRelContainedInSpatialStructure> containsElements) {
+		for (IfcRelContainedInSpatialStructure relation : containsElements) {
+			if (relation.getRelatingStructure() != this) {
+				throw new IllegalArgumentException("Relation " + relation.getName() + " does not have this object as its relatingStructure");
+			}
+		}
+		this.containsElements = containsElements;
 	}
 
 	public Set<IfcRelServicesBuildings> getServicedBySystems() {
