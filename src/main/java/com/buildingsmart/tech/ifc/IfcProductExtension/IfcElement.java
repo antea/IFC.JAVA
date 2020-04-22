@@ -44,13 +44,13 @@ public abstract class IfcElement extends com.buildingsmart.tech.ifc.IfcKernel.If
 
 	@Description("Reference to the interference relationship to indicate the element that is interfered. The relationship, if provided, indicates that this element has an interference with one or many other elements.  <blockquote class=\"note\">NOTE&nbsp; There is no indication of precedence between <em>IsInterferedByElements</em> and <em>InterferesElements</em>. </blockquote>  <blockquote class=\"change-ifc2x4\">IFC4 CHANGE  New inverse relationship.</blockquote>")
 	@Guid("3c54bf0c-7ae9-4dc5-ab08-97a56e21f509")
-	@JacksonXmlProperty(isAttribute = false, localName = "IfcRelInterferesElements")
+	@JacksonXmlProperty(isAttribute = false, localName = "IfcRelInterferesElements_IsInterferedByElements")
 	@JacksonXmlElementWrapper(useWrapping = true, localName = "IsInterferedByElements")
 	private Set<IfcRelInterferesElements> isInterferedByElements;
 
 	@Description("Reference to the interference relationship to indicate the element that interferes. The relationship, if provided, indicates that this element has an interference with one or many other elements.  <blockquote class=\"note\">NOTE&nbsp; There is no indication of precedence between <em>IsInterferedByElements</em> and <em>InterferesElements</em>.</blockquote>  <blockquote class=\"change-ifc2x4\">IFC4 CHANGE  New inverse relationship.</blockquote>")
 	@Guid("458d5013-ddf1-45f7-b9e5-f043c827ad9c")
-	@JacksonXmlProperty(isAttribute = false, localName = "IfcRelInterferesElements")
+	@JacksonXmlProperty(isAttribute = false, localName = "IfcRelInterferesElements_InterferesElements")
 	@JacksonXmlElementWrapper(useWrapping = true, localName = "InterferesElements")
 	private Set<IfcRelInterferesElements> interferesElements;
 
