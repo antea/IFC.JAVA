@@ -5,36 +5,18 @@
 
 package com.buildingsmart.tech.ifc.IfcProductExtension;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
-
-import com.buildingsmart.tech.annotations.*;
-import com.buildingsmart.tech.ifc.IfcProductExtension.*;
-import com.buildingsmart.tech.ifc.IfcSharedBldgElements.*;
-import com.buildingsmart.tech.ifc.IfcProductExtension.IfcBuildingElement;
-import com.buildingsmart.tech.ifc.IfcProductExtension.IfcCivilElement;
-import com.buildingsmart.tech.ifc.IfcProductExtension.IfcDistributionElement;
-import com.buildingsmart.tech.ifc.IfcProductExtension.IfcElementAssembly;
+import com.buildingsmart.tech.annotations.Description;
+import com.buildingsmart.tech.annotations.Guid;
+import com.buildingsmart.tech.annotations.MaxLength;
+import com.buildingsmart.tech.ifc.IfcSharedBldgElements.IfcRelCoversBldgElements;
 import com.buildingsmart.tech.ifc.IfcSharedComponentElements.IfcElementComponent;
-import com.buildingsmart.tech.ifc.IfcProductExtension.IfcFeatureElement;
-import com.buildingsmart.tech.ifc.IfcProductExtension.IfcFurnishingElement;
-import com.buildingsmart.tech.ifc.IfcProductExtension.IfcGeographicElement;
-import com.buildingsmart.tech.ifc.IfcProductExtension.IfcTransportElement;
-import com.buildingsmart.tech.ifc.IfcProductExtension.IfcVirtualElement;
-import com.buildingsmart.tech.ifc.IfcKernel.IfcProduct;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+
+import java.util.Set;
 
 @Guid("9ab3f33b-7e80-4290-afe5-1e7a055cd3ac")
 @JsonIgnoreProperties(ignoreUnknown=true)
@@ -56,7 +38,7 @@ public abstract class IfcElement extends com.buildingsmart.tech.ifc.IfcKernel.If
 
 	@Description("Reference to the element connection relationship. The relationship then refers to the other element to which this element is connected to.")
 	@Guid("5cf4ed22-8e56-4d03-b682-58bb0794ddac")
-	@JacksonXmlProperty(isAttribute = false, localName = "IfcRelConnectsElements")
+	@JacksonXmlProperty(isAttribute = false, localName = "IfcRelConnectsElements_ConnectedTo")
 	@JacksonXmlElementWrapper(useWrapping = true, localName = "ConnectedTo")
 	private Set<IfcRelConnectsElements> connectedTo;
 
@@ -104,7 +86,7 @@ public abstract class IfcElement extends com.buildingsmart.tech.ifc.IfcKernel.If
 
 	@Description("Reference to the element connection relationship. The relationship then refers to the other element that is connected to this element.")
 	@Guid("2bd302cf-6ded-4b81-ae7b-34c479d3014c")
-	@JacksonXmlProperty(isAttribute = false, localName = "IfcRelConnectsElements")
+	@JacksonXmlProperty(isAttribute = false, localName = "IfcRelConnectsElements_ConnectedFrom")
 	@JacksonXmlElementWrapper(useWrapping = true, localName = "ConnectedFrom")
 	private Set<IfcRelConnectsElements> connectedFrom;
 
