@@ -11,7 +11,6 @@ import java.util.List;
 import static java.lang.Math.sqrt;
 
 public class Functions {
-    // TODO: test all functions
 
     /**
      * @param arg1 The first input direction.

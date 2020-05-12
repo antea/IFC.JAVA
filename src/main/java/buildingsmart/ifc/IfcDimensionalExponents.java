@@ -1,11 +1,104 @@
 package buildingsmart.ifc;
 
-public class IfcDimensionalExponents {
-    private int LengthExponent;
-    private int MassExponent;
-    private int TimeExponent;
-    private int ElectricCurrentExponent;
-    private int ThermodynamicTemperatureExponent;
-    private int AmountOfSubstanceExponent;
-    private int LuminousIntensityExponent;
+import com.sun.istack.internal.NotNull;
+
+import java.util.Objects;
+
+/**
+ * The dimensionality of any quantity can be expressed as a product of powers of
+ * the dimensions of base quantities. The dimensional exponents entity defines
+ * the powers of the dimensions of the base quantities. All the physical
+ * quantities are founded on seven base quantities (ISO 10303-31 (clause 2)).
+ * <p>
+ * <small>NOTE: Length, mass, time, electric current, thermodynamic
+ * temperature, amount of substance, and luminous intensity are the seven base
+ * quantities.
+ * <br>
+ * EXAMPLE: A length of 2 millimetres has a length exponent of 1. The remaining
+ * exponents are equal to 0.
+ * <br>
+ * EXAMPLE: A velocity of 2 millimetres per second has a length exponent of 1
+ * and a time exponent of -1. The remaining exponents are equal to 0.</small>
+ */
+public class IfcDimensionalExponents extends IfcEntity {
+    private final IfcInteger lengthExponent;
+    private final IfcInteger massExponent;
+    private final IfcInteger timeExponent;
+    private final IfcInteger electricCurrentExponent;
+    private final IfcInteger thermodynamicTemperatureExponent;
+    private final IfcInteger amountOfSubstanceExponent;
+    private final IfcInteger luminousIntensityExponent;
+
+    /**
+     * @param lengthExponent                   The power of the length base
+     *                                         quantity.
+     * @param massExponent                     The power of the mass base
+     *                                         quantity.
+     * @param timeExponent                     The power of the time base
+     *                                         quantity.
+     * @param electricCurrentExponent          The power of the electric current
+     *                                         base quantity.
+     * @param thermodynamicTemperatureExponent The power of the thermodynamic
+     *                                         temperature base quantity.
+     * @param amountOfSubstanceExponent        The power of the amount of
+     *                                         substance base quantity.
+     * @param luminousIntensityExponent        The power of the luminous
+     *                                         intensity base quantity.
+     * @throws IllegalArgumentException If any of the parameters are null.
+     */
+    public IfcDimensionalExponents(@NotNull IfcInteger lengthExponent,
+                                   @NotNull IfcInteger massExponent,
+                                   @NotNull IfcInteger timeExponent,
+                                   @NotNull IfcInteger electricCurrentExponent,
+                                   @NotNull
+                                           IfcInteger thermodynamicTemperatureExponent,
+                                   @NotNull
+                                           IfcInteger amountOfSubstanceExponent,
+                                   @NotNull
+                                           IfcInteger luminousIntensityExponent) {
+        if (lengthExponent == null || massExponent == null ||
+                timeExponent == null || electricCurrentExponent == null ||
+                thermodynamicTemperatureExponent == null ||
+                amountOfSubstanceExponent == null ||
+                luminousIntensityExponent == null) {
+            throw new IllegalArgumentException(
+                    "none of the parameters can be null");
+        }
+        this.lengthExponent = lengthExponent;
+        this.massExponent = massExponent;
+        this.timeExponent = timeExponent;
+        this.electricCurrentExponent = electricCurrentExponent;
+        this.thermodynamicTemperatureExponent =
+                thermodynamicTemperatureExponent;
+        this.amountOfSubstanceExponent = amountOfSubstanceExponent;
+        this.luminousIntensityExponent = luminousIntensityExponent;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        IfcDimensionalExponents that = (IfcDimensionalExponents) o;
+        return lengthExponent.equals(that.lengthExponent) &&
+                massExponent.equals(that.massExponent) &&
+                timeExponent.equals(that.timeExponent) &&
+                electricCurrentExponent.equals(that.electricCurrentExponent) &&
+                thermodynamicTemperatureExponent
+                        .equals(that.thermodynamicTemperatureExponent) &&
+                amountOfSubstanceExponent
+                        .equals(that.amountOfSubstanceExponent) &&
+                luminousIntensityExponent
+                        .equals(that.luminousIntensityExponent);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(lengthExponent, massExponent, timeExponent,
+                electricCurrentExponent, thermodynamicTemperatureExponent,
+                amountOfSubstanceExponent, luminousIntensityExponent);
+    }
 }

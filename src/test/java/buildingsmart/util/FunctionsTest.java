@@ -12,7 +12,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 public class FunctionsTest {
-    // delta for double comparisons
+    // max allowed difference for doubles to be considered equal in comparisons
     private static final double DELTA = 0.000000000000001;
 
     @Test(expected = IllegalArgumentException.class)
