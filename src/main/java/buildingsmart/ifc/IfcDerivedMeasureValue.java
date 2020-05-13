@@ -1,4 +1,4 @@
 package buildingsmart.ifc;
 
-public interface IfcDerivedMeasureValue {
+public interface IfcDerivedMeasureValue extends IfcValue {
 }

@@ -1,6 +1,6 @@
 package buildingsmart.ifc;
 
-public class IfcDerivedUnit {
+public class IfcDerivedUnit implements IfcUnit {
     private IfcDerivedUnitElement[] Elements;
     private IfcDerivedUnitEnum UnitType;
     private String UserDefinedType;

@@ -9,7 +9,7 @@ import java.util.Objects;
  * A named unit is a unit quantity associated with the word, or group of words,
  * by which the unit is identified.
  */
-public abstract class IfcNamedUnit extends IfcEntity {
+public abstract class IfcNamedUnit extends IfcEntity implements IfcUnit {
     private final IfcDimensionalExponents dimensions;
     private final IfcUnitEnum unitType;
 

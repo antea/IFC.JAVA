@@ -6,10 +6,10 @@ import java.util.Objects;
 
 /**
  * A label is the term by which something may be referred to. It is a string
- * which represents the human-interpretable name of something and shall have
- * a natural-language meaning.
+ * which represents the human-interpretable name of something and shall have a
+ * natural-language meaning.
  */
-public class IfcLabel implements IfcDefinedType {
+public class IfcLabel implements IfcDefinedType, IfcSimpleValue {
     private final String ifcLabel;
 
     /**

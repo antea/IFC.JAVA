@@ -5,10 +5,10 @@ import com.sun.istack.internal.NotNull;
 import java.util.Objects;
 
 /**
- * A text is an alphanumeric string of characters which is intended to be
- * read and understood by a human being. It is for information purposes only.
+ * A text is an alphanumeric string of characters which is intended to be read
+ * and understood by a human being. It is for information purposes only.
  */
-public class IfcText implements IfcDefinedType {
+public class IfcText implements IfcDefinedType, IfcSimpleValue {
     private final String ifcText;
 
     /**

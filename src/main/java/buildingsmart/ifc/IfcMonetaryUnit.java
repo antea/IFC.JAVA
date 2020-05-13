@@ -1,5 +1,5 @@
 package buildingsmart.ifc;
 
-public class IfcMonetaryUnit {
+public class IfcMonetaryUnit implements IfcUnit {
     private IfcCurrencyEnum Currency;
 }

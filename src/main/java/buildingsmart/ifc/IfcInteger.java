@@ -5,7 +5,7 @@ import java.util.Objects;
 /**
  * A defined type of simple data type Integer.
  */
-public class IfcInteger implements IfcDefinedType {
+public class IfcInteger implements IfcDefinedType, IfcSimpleValue {
     private final long value;
 
     public IfcInteger(long value) {

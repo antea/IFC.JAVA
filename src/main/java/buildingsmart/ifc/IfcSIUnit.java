@@ -12,6 +12,10 @@ import java.util.Objects;
 public class IfcSIUnit extends IfcNamedUnit {
     private final IfcSIPrefix prefix;
     private final IfcSIUnitName name;
+    //FIXME: in this class attribute dimensions is derived (unlike in its
+    // superclass), so it shouldn't be
+    // serialized (it should be replaced by an asterisk)
+
     //TODO: test constructor
 
     /**

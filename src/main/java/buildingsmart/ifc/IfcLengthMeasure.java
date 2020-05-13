@@ -7,7 +7,7 @@ import java.util.Objects;
  * <p>
  * Usually measured in millimeters (mm).
  */
-public class IfcLengthMeasure implements IfcDefinedType {
+public class IfcLengthMeasure implements IfcDefinedType, IfcMeasureValue {
     private final double value;
 
     /**

@@ -1,5 +1,5 @@
 package buildingsmart.ifc;
 
-public class IfcPlaneAngleMeasure {
+public class IfcPlaneAngleMeasure implements IfcMeasureValue {
 
 }

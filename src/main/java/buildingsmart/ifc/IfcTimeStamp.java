@@ -3,10 +3,10 @@ package buildingsmart.ifc;
 import java.util.Objects;
 
 /**
- * An indication of date and time by measuring the number of seconds which
- * have elapsed since the beginning of the year 1970.
+ * An indication of date and time by measuring the number of seconds which have
+ * elapsed since the beginning of the year 1970.
  */
-public class IfcTimeStamp implements IfcDefinedType {
+public class IfcTimeStamp implements IfcDefinedType, IfcDerivedMeasureValue {
     private final long ifcTimeStamp;
 
     /**

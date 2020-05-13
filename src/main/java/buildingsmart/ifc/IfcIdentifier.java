@@ -5,16 +5,16 @@ import com.sun.istack.internal.NotNull;
 import java.util.Objects;
 
 /**
- * An identifier is an alphanumeric string which allows an individual
- * thing to be identified. It may not provide natural-language meaning.
+ * An identifier is an alphanumeric string which allows an individual thing to
+ * be identified. It may not provide natural-language meaning.
  */
-public class IfcIdentifier implements IfcDefinedType {
+public class IfcIdentifier implements IfcDefinedType, IfcSimpleValue {
     private final String ifcIdentifier;
 
     /**
      * @param ifcIdentifier Restricted to max. 255 characters, cannot be null.
-     * @throws IllegalArgumentException If ifcIdentifier is null or longer
-     *                                  than 255 characters.
+     * @throws IllegalArgumentException If ifcIdentifier is null or longer than
+     *                                  255 characters.
      */
     public IfcIdentifier(@NotNull String ifcIdentifier) {
         if (ifcIdentifier == null) {

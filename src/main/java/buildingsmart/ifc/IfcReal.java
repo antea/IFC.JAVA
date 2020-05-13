@@ -6,7 +6,7 @@ import java.util.Objects;
  * A defined type of simple data type REAL. In principle, the domain of IfcReal
  * (being a Real) is all rational, irrational and scientific real numbers.
  */
-public class IfcReal implements IfcDefinedType {
+public class IfcReal implements IfcDefinedType, IfcSimpleValue {
     private final double value;
 
     public IfcReal(double value) {

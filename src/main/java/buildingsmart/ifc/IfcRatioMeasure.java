@@ -1,5 +1,5 @@
 package buildingsmart.ifc;
 
-public class IfcRatioMeasure {
+public class IfcRatioMeasure implements IfcMeasureValue {
 
 }

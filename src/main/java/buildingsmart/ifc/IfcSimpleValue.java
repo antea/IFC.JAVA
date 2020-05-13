@@ -1,4 +1,7 @@
 package buildingsmart.ifc;
 
-public interface IfcSimpleValue {
+/**
+ * A select type for selecting between simple value types.
+ */
+public interface IfcSimpleValue extends IfcValue {
 }
