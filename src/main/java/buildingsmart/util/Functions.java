@@ -3,7 +3,9 @@ package buildingsmart.util;
 import buildingsmart.ifc.*;
 import com.sun.istack.internal.NotNull;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static java.lang.Math.sqrt;
 
@@ -318,5 +320,53 @@ public class Functions {
                 return new IfcDimensionalExponents(2, 0, -2, 0, 0, 0, 0);
         }
         return new IfcDimensionalExponents(0, 0, 0, 0, 0, 0, 0);
+    }
+
+    /**
+     * @param units The Set of IfcUnit for which to check if it's an appropriate
+     *              parameter for
+     *              {@link IfcUnitAssignment#IfcUnitAssignment(Set)}.
+     * @return {@code true}, if the Set of IfcUnit only includes units with
+     * different unitType (for IfcNamedUnit and IfcDerivedUnit), and a maximum
+     * of one IfcMonetaryUnit.
+     * @throws IllegalArgumentException If units is null or has size zero.
+     */
+    public static boolean ifcCorrectUnitAssignment(Set<IfcUnit> units) {
+        if (units == null) {
+            throw new IllegalArgumentException("units cannot be null");
+        }
+        if (units.size() < 1) {
+            throw new IllegalArgumentException(
+                    "size of units must be at least 1");
+        }
+
+        int namedUnitNumber = 0;
+        int derivedUnitNumber = 0;
+        int monetaryUnitNumber = 0;
+        Set<IfcUnitEnum> namedUnitTypes = new HashSet<>();
+        Set<IfcDerivedUnitEnum> derivedUnitTypes = new HashSet<>();
+
+        for (IfcUnit unit : units) {
+            if (unit instanceof IfcNamedUnit &&
+                    ((IfcNamedUnit) unit).getUnitType() !=
+                            IfcUnitEnum.USERDEFINED) {
+                namedUnitNumber++;
+                namedUnitTypes.add(((IfcNamedUnit) unit).getUnitType());
+            } else {
+                if (unit instanceof IfcDerivedUnit &&
+                        ((IfcDerivedUnit) unit).getUnitType() !=
+                                IfcDerivedUnitEnum.USERDEFINED) {
+                    derivedUnitNumber++;
+                    derivedUnitTypes.add(((IfcDerivedUnit) unit).getUnitType());
+                } else {
+                    if (unit instanceof IfcMonetaryUnit) {
+                        monetaryUnitNumber++;
+                    }
+                }
+            }
+        }
+        return namedUnitNumber == namedUnitTypes.size() &&
+                derivedUnitNumber == derivedUnitTypes.size() &&
+                monetaryUnitNumber <= 1;
     }
 }

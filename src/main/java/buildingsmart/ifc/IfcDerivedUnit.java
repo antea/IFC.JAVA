@@ -1,8 +1,12 @@
 package buildingsmart.ifc;
 
 public class IfcDerivedUnit implements IfcUnit {
-    private IfcDerivedUnitElement[] Elements;
-    private IfcDerivedUnitEnum UnitType;
-    private String UserDefinedType;
-    private IfcDimensionalExponents Dimensions;
+    private IfcDerivedUnitElement[] elements;
+    private IfcDerivedUnitEnum unitType;
+    private String userDefinedType;
+    private IfcDimensionalExponents dimensions;
+
+    public IfcDerivedUnitEnum getUnitType() {
+        return unitType;
+    }
 }

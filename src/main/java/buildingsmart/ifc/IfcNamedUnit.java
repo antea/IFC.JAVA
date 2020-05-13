@@ -45,6 +45,10 @@ public abstract class IfcNamedUnit extends IfcEntity implements IfcUnit {
         this.unitType = unitType;
     }
 
+    public IfcUnitEnum getUnitType() {
+        return unitType;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
