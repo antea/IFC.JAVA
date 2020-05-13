@@ -26,7 +26,7 @@ public class IfcAxis2Placement3D extends IfcPlacement
 
     /**
      * @param location     The location of the three mutually perpendicular
-     *                     axes.
+     *                     axes. Cannot be null.
      * @param axis         The exact direction of the local Z Axis.
      * @param refDirection The direction used to determine the direction of the
      *                     local X Axis. If necessary an adjustment is made to

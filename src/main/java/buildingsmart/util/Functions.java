@@ -1,9 +1,6 @@
 package buildingsmart.util;
 
-import buildingsmart.ifc.IfcDirection;
-import buildingsmart.ifc.IfcLengthMeasure;
-import buildingsmart.ifc.IfcReal;
-import buildingsmart.ifc.IfcVector;
+import buildingsmart.ifc.*;
 import com.sun.istack.internal.NotNull;
 
 import java.util.List;
@@ -128,5 +125,198 @@ public class Functions {
                     new IfcLengthMeasure(1));
         }
         return null;
+    }
+    //TODO: test functions after this comment
+
+    /**
+     * Tests whether the dimensional exponents are correct for the given unit
+     * type.
+     *
+     * @param unit The name of the unit type for which the dimensional exponents
+     *             are tested.
+     * @param dim  The dimensional exponents to be tested against corresponding
+     *             unit type name.
+     * @return {@code true} if the dimensional exponents for the given unit type
+     * are correct, {@code false} otherwise. If the given unit type is
+     * USERDEFINED, this method returns {@code null}.
+     */
+    public static Boolean ifcCorrectDimensions(IfcUnitEnum unit,
+                                               IfcDimensionalExponents dim) {
+        switch (unit) {
+            case LENGTHUNIT:
+                return dim.equals(new IfcDimensionalExponents(1, 0, 0, 0, 0, 0,
+                        0));
+            case MASSUNIT:
+                return dim.equals(new IfcDimensionalExponents(0, 1, 0, 0, 0, 0,
+                        0));
+            case TIMEUNIT:
+                return dim.equals(new IfcDimensionalExponents(0, 0, 1, 0, 0, 0,
+                        0));
+            case ELECTRICCURRENTUNIT:
+                return dim.equals(new IfcDimensionalExponents(0, 0, 0, 1, 0, 0,
+                        0));
+            case THERMODYNAMICTEMPERATUREUNIT:
+                return dim.equals(new IfcDimensionalExponents(0, 0, 0, 0, 1, 0,
+                        0));
+            case AMOUNTOFSUBSTANCEUNIT:
+                return dim.equals(new IfcDimensionalExponents(0, 0, 0, 0, 0, 1,
+                        0));
+            case LUMINOUSINTENSITYUNIT:
+                return dim.equals(new IfcDimensionalExponents(0, 0, 0, 0, 0, 0,
+                        1));
+            case PLANEANGLEUNIT:
+                return dim.equals(new IfcDimensionalExponents(0, 0, 0, 0, 0, 0,
+                        0));
+            case SOLIDANGLEUNIT:
+                return dim.equals(new IfcDimensionalExponents(0, 0, 0, 0, 0, 0,
+                        0));
+            case AREAUNIT:
+                return dim.equals(new IfcDimensionalExponents(2, 0, 0, 0, 0, 0,
+                        0));
+            case VOLUMEUNIT:
+                return dim.equals(new IfcDimensionalExponents(3, 0, 0, 0, 0, 0,
+                        0));
+            case ABSORBEDDOSEUNIT:
+                return dim.equals(new IfcDimensionalExponents(2, 0, -2, 0, 0, 0,
+                        0));
+            case RADIOACTIVITYUNIT:
+                return dim.equals(new IfcDimensionalExponents(0, 0, -1, 0, 0, 0,
+                        0));
+            case ELECTRICCAPACITANCEUNIT:
+                return dim.equals(new IfcDimensionalExponents(-2, 1, 4, 1, 0, 0,
+                        0));
+            case DOSEEQUIVALENTUNIT:
+                return dim.equals(new IfcDimensionalExponents(2, 0, -2, 0, 0, 0,
+                        0));
+            case ELECTRICCHARGEUNIT:
+                return dim.equals(new IfcDimensionalExponents(0, 0, 1, 1, 0, 0,
+                        0));
+            case ELECTRICCONDUCTANCEUNIT:
+                return dim
+                        .equals(new IfcDimensionalExponents(-2, -1, 3, 2, 0, 0,
+                                0));
+            case ELECTRICVOLTAGEUNIT:
+                return dim
+                        .equals(new IfcDimensionalExponents(2, 1, -3, -1, 0, 0,
+                                0));
+            case ELECTRICRESISTANCEUNIT:
+                return dim
+                        .equals(new IfcDimensionalExponents(2, 1, -3, -2, 0, 0,
+                                0));
+            case ENERGYUNIT:
+                return dim.equals(new IfcDimensionalExponents(2, 1, -2, 0, 0, 0,
+                        0));
+            case FORCEUNIT:
+                return dim.equals(new IfcDimensionalExponents(1, 1, -2, 0, 0, 0,
+                        0));
+            case FREQUENCYUNIT:
+                return dim.equals(new IfcDimensionalExponents(0, 0, -1, 0, 0, 0,
+                        0));
+            case INDUCTANCEUNIT:
+                return dim
+                        .equals(new IfcDimensionalExponents(2, 1, -2, -2, 0, 0,
+                                0));
+            case ILLUMINANCEUNIT:
+                return dim.equals(new IfcDimensionalExponents(-2, 0, 0, 0, 0, 0,
+                        1));
+            case LUMINOUSFLUXUNIT:
+                return dim.equals(new IfcDimensionalExponents(0, 0, 0, 0, 0, 0,
+                        1));
+            case MAGNETICFLUXUNIT:
+                return dim
+                        .equals(new IfcDimensionalExponents(2, 1, -2, -1, 0, 0,
+                                0));
+            case MAGNETICFLUXDENSITYUNIT:
+                return dim
+                        .equals(new IfcDimensionalExponents(0, 1, -2, -1, 0, 0,
+                                0));
+            case POWERUNIT:
+                return dim.equals(new IfcDimensionalExponents(2, 1, -3, 0, 0, 0,
+                        0));
+            case PRESSUREUNIT:
+                return dim
+                        .equals(new IfcDimensionalExponents(-1, 1, -2, 0, 0, 0,
+                                0));
+        }
+        return null;
+    }
+
+    /**
+     * @param name The name of the unit for which the dimensional exponents will
+     *             be returned. Cannot be null.
+     * @return The dimensional exponents of the given SI-unit. If the unit is
+     * unknown (which should not be possible, since this method deals with all
+     * possible values of IfcSIUnitName), dimensional exponents all equal to
+     * zero will be returned.
+     * @throws IllegalArgumentException If name is null.
+     */
+    public static IfcDimensionalExponents ifcDimensionsForSiUnit(
+            IfcSIUnitName name) {
+        if (name == null) {
+            throw new IllegalArgumentException("name cannot be null");
+        }
+        switch (name) {
+            case METRE:
+                return new IfcDimensionalExponents(1, 0, 0, 0, 0, 0, 0);
+            case SQUARE_METRE:
+                return new IfcDimensionalExponents(2, 0, 0, 0, 0, 0, 0);
+            case CUBIC_METRE:
+                return new IfcDimensionalExponents(3, 0, 0, 0, 0, 0, 0);
+            case GRAM:
+                return new IfcDimensionalExponents(0, 1, 0, 0, 0, 0, 0);
+            case SECOND:
+                return new IfcDimensionalExponents(0, 0, 1, 0, 0, 0, 0);
+            case AMPERE:
+                return new IfcDimensionalExponents(0, 0, 0, 1, 0, 0, 0);
+            case KELVIN:
+                return new IfcDimensionalExponents(0, 0, 0, 0, 1, 0, 0);
+            case MOLE:
+                return new IfcDimensionalExponents(0, 0, 0, 0, 0, 1, 0);
+            case CANDELA:
+                return new IfcDimensionalExponents(0, 0, 0, 0, 0, 0, 1);
+            case RADIAN:
+                return new IfcDimensionalExponents(0, 0, 0, 0, 0, 0, 0);
+            case STERADIAN:
+                return new IfcDimensionalExponents(0, 0, 0, 0, 0, 0, 0);
+            case HERTZ:
+                return new IfcDimensionalExponents(0, 0, -1, 0, 0, 0, 0);
+            case NEWTON:
+                return new IfcDimensionalExponents(1, 1, -2, 0, 0, 0, 0);
+            case PASCAL:
+                return new IfcDimensionalExponents(-1, 1, -2, 0, 0, 0, 0);
+            case JOULE:
+                return new IfcDimensionalExponents(2, 1, -2, 0, 0, 0, 0);
+            case WATT:
+                return new IfcDimensionalExponents(2, 1, -3, 0, 0, 0, 0);
+            case COULOMB:
+                return new IfcDimensionalExponents(0, 0, 1, 1, 0, 0, 0);
+            case VOLT:
+                return new IfcDimensionalExponents(2, 1, -3, -1, 0, 0, 0);
+            case FARAD:
+                return new IfcDimensionalExponents(-2, -1, 4, 1, 0, 0, 0);
+            case OHM:
+                return new IfcDimensionalExponents(2, 1, -3, -2, 0, 0, 0);
+            case SIEMENS:
+                return new IfcDimensionalExponents(-2, -1, 3, 2, 0, 0, 0);
+            case WEBER:
+                return new IfcDimensionalExponents(2, 1, -2, -1, 0, 0, 0);
+            case TESLA:
+                return new IfcDimensionalExponents(0, 1, -2, -1, 0, 0, 0);
+            case HENRY:
+                return new IfcDimensionalExponents(2, 1, -2, -2, 0, 0, 0);
+            case DEGREE_CELSIUS:
+                return new IfcDimensionalExponents(0, 0, 0, 0, 1, 0, 0);
+            case LUMEN:
+                return new IfcDimensionalExponents(0, 0, 0, 0, 0, 0, 1);
+            case LUX:
+                return new IfcDimensionalExponents(-2, 0, 0, 0, 0, 0, 1);
+            case BECQUEREL:
+                return new IfcDimensionalExponents(0, 0, -1, 0, 0, 0, 0);
+            case GRAY:
+                return new IfcDimensionalExponents(2, 0, -2, 0, 0, 0, 0);
+            case SIEVERT:
+                return new IfcDimensionalExponents(2, 0, -2, 0, 0, 0, 0);
+        }
+        return new IfcDimensionalExponents(0, 0, 0, 0, 0, 0, 0);
     }
 }

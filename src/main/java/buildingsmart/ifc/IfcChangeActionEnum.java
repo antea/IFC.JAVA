@@ -8,6 +8,6 @@ public enum IfcChangeActionEnum implements IfcDefinedType {
      */
     @Override
     public String serialize() {
-        return "'" + name() + "'";
+        return "." + name() + ".";
     }
 }

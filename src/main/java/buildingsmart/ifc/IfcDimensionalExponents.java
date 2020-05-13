@@ -74,6 +74,39 @@ public class IfcDimensionalExponents extends IfcEntity {
         this.luminousIntensityExponent = luminousIntensityExponent;
     }
 
+    /**
+     * @param lengthExponent                   The power of the length base
+     *                                         quantity.
+     * @param massExponent                     The power of the mass base
+     *                                         quantity.
+     * @param timeExponent                     The power of the time base
+     *                                         quantity.
+     * @param electricCurrentExponent          The power of the electric current
+     *                                         base quantity.
+     * @param thermodynamicTemperatureExponent The power of the thermodynamic
+     *                                         temperature base quantity.
+     * @param amountOfSubstanceExponent        The power of the amount of
+     *                                         substance base quantity.
+     * @param luminousIntensityExponent        The power of the luminous
+     *                                         intensity base quantity.
+     * @throws IllegalArgumentException If any of the parameters are null.
+     */
+    public IfcDimensionalExponents(@NotNull long lengthExponent,
+                                   @NotNull long massExponent,
+                                   @NotNull long timeExponent,
+                                   @NotNull long electricCurrentExponent,
+                                   @NotNull
+                                           long thermodynamicTemperatureExponent,
+                                   @NotNull long amountOfSubstanceExponent,
+                                   @NotNull long luminousIntensityExponent) {
+        this(new IfcInteger(lengthExponent), new IfcInteger(massExponent),
+                new IfcInteger(timeExponent),
+                new IfcInteger(electricCurrentExponent),
+                new IfcInteger(thermodynamicTemperatureExponent),
+                new IfcInteger(amountOfSubstanceExponent),
+                new IfcInteger(luminousIntensityExponent));
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
