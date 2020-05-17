@@ -14,7 +14,6 @@ import java.util.Set;
  * application developer.
  */
 public class IfcApplication extends IfcEntity {
-    //TODO: find a better way to implement the UNIQUE constraint
     private static final Set<Pair<IfcLabel, IfcLabel>>
             uniqueAppFullNameAndVersions = new HashSet<>();
     private static final Set<IfcIdentifier> uniqueAppIdentifiers =
@@ -27,21 +26,20 @@ public class IfcApplication extends IfcEntity {
 
     /**
      * @param applicationDeveloper  Name of the application developer, being
-     *                              requested to be member of the IAI. Cannot
-     *                              be null.
+     *                              requested to be member of the IAI. Cannot be
+     *                              null.
      * @param version               The version number of this software as
      *                              specified by the developer of the
      *                              application. Cannot be null.
      * @param applicationFullName   The full name of the application as
      *                              specified by the application developer.
      *                              Cannot be null.
-     * @param applicationIdentifier Short identifying name for the
-     *                              application. Cannot be null.
-     * @throws IllegalArgumentException If any of the parameters is null, or
-     *                                  if any instances of this class
-     *                                  already exist where
-     *                                  applicationIdentifier is the same as
-     *                                  the one passed as parameter, or
+     * @param applicationIdentifier Short identifying name for the application.
+     *                              Cannot be null.
+     * @throws IllegalArgumentException If any of the parameters is null, or if
+     *                                  any instances of this class already
+     *                                  exist where applicationIdentifier is the
+     *                                  same as the one passed as parameter, or
      *                                  where the combination of fields
      *                                  applicationFullName and version is the
      *                                  same as the one passed as parameter.
@@ -69,11 +67,23 @@ public class IfcApplication extends IfcEntity {
                             "another instance of this class");
         }
         this.applicationDeveloper = applicationDeveloper;
+        uniqueAppFullNameAndVersions.add(appFullNameAndVersion);
         this.version = version;
         this.applicationFullName = applicationFullName;
-        uniqueAppFullNameAndVersions.add(appFullNameAndVersion);
+        uniqueAppIdentifiers.add(applicationIdentifier);
         this.applicationIdentifier = applicationIdentifier;
-        uniqueAppIdentifiers.add(this.applicationIdentifier);
+    }
+
+    /**
+     * Clears the Sets used to keep track of attributes that must be unique in
+     * different instances of this class, thus allowing the creation of new
+     * instances of this class having attributes marked as UNIQUE with the same
+     * values as ones belonging to instances of this class created before
+     * calling this method. Use at your own risk.
+     */
+    public void clearUniqueConstraint() {
+        uniqueAppFullNameAndVersions.clear();
+        uniqueAppIdentifiers.clear();
     }
 
     @Override

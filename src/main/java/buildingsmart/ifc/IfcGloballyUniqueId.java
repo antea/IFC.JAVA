@@ -67,8 +67,8 @@ import java.util.UUID;
  * exchanged within the IFC exchange file structure.
  */
 public class IfcGloballyUniqueId implements IfcDefinedType {
+    protected static final int LENGTH = 22;
     private static final String ALLOWED_CHARS_REGEX = "^[0-9A-Za-z_$]*$";
-
     private static final char[] CONVERSION_TABLE =
             new char[]{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A',
                     'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
@@ -76,7 +76,6 @@ public class IfcGloballyUniqueId implements IfcDefinedType {
                     'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k',
                     'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w',
                     'x', 'y', 'z', '_', '$'};
-
     private final String value;
 
     /**
@@ -91,7 +90,7 @@ public class IfcGloballyUniqueId implements IfcDefinedType {
         if (value == null) {
             throw new IllegalArgumentException("value cannot be null");
         }
-        if (value.length() != 22) {
+        if (value.length() != LENGTH) {
             throw new IllegalArgumentException(
                     "value must be 22 characters long");
         }
@@ -142,11 +141,11 @@ public class IfcGloballyUniqueId implements IfcDefinedType {
     }
 
     /**
-     * Converts a Guid object into a compressed String representation of a GUID
+     * Converts a Guid object into its compressed String representation
      * according to the IFC specification.
      *
      * @param guid The Guid object to compress.
-     * @return The 22 characters long String representation of the GUID.
+     * @return The 22 characters long String representation of the Guid.
      */
     private static String getCompressedStringFromGuid(Guid guid) {
         long[] num = new long[6];

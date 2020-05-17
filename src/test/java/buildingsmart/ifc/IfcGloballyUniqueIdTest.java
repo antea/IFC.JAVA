@@ -5,6 +5,7 @@ import org.junit.Test;
 import java.util.HashSet;
 import java.util.Set;
 
+import static buildingsmart.ifc.IfcGloballyUniqueId.LENGTH;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -27,6 +28,7 @@ public class IfcGloballyUniqueIdTest {
             IfcGloballyUniqueId guid = new IfcGloballyUniqueId();
             String guidString = guid.serialize();
             assertTrue(guidString.matches("^'[0-9A-Za-z_$]*'$"));
+            assertEquals(LENGTH + 2, guidString.length());
             guidStrings.add(guidString);
         }
         assertEquals(numTests, guidStrings.size());
