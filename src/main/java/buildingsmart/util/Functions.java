@@ -369,4 +369,34 @@ public class Functions {
                 derivedUnitNumber == derivedUnitTypes.size() &&
                 monetaryUnitNumber <= 1;
     }
+
+    /**
+     * @param arg1 A direction in either two- or three-dimensional space.
+     * @param arg2 A direction in either two- or three-dimensional space.
+     * @return The scalar (or dot) product of the two directions.
+     * @throws IllegalArgumentException If the two directions have different
+     *                                  dimensionality, or at least one of them
+     *                                  is null.
+     */
+    public static IfcReal ifcDotProduct(@NotNull IfcDirection arg1,
+                                        @NotNull IfcDirection arg2) {
+        if (arg1 == null || arg2 == null) {
+            throw new IllegalArgumentException("arguments cannot be null");
+        }
+        if (arg1.getDim() != arg2.getDim()) {
+            throw new IllegalArgumentException(
+                    "the two arguments must have the same dimensionality");
+        }
+
+        double scalar = 0;
+        IfcDirection vec1 = ifcNormalise(arg1);
+        IfcDirection vec2 = ifcNormalise(arg2);
+        byte dim = arg1.getDim().getValue();
+
+        for (byte i = 0; i < dim; i++) {
+            scalar += vec1.getDirectionRatios().get(i).getValue() *
+                    vec2.getDirectionRatios().get(i).getValue();
+        }
+        return new IfcReal(scalar);
+    }
 }

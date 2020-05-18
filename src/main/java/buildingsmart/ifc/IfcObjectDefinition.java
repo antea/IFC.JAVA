@@ -39,10 +39,10 @@ import java.util.Set;
  * </ul>
  */
 public class IfcObjectDefinition extends IfcRoot {
-    private Set<IfcRelAssigns> hasAssignments;
+    //private Set<IfcRelAssigns> hasAssignments;
     private Set<IfcRelDecomposes> isDecomposedBy;
     private IfcRelDecomposes decomposes;
-    private Set<IfcRelAssociates> hasAssociations;
+    //private Set<IfcRelAssociates> hasAssociations;
 
     /**
      * Creates a new IfcObjectDefinition, using the provided globalId.
