@@ -1,7 +1,7 @@
 package buildingsmart.ifc;
 
 public class IfcTShapeProfileDef extends IfcParameterizedProfileDef {
-    private IfcLengthMeasure Depth;
+    private final IfcLengthMeasure Depth;
     private IfcLengthMeasure FlangeWidth;
     private IfcLengthMeasure WebThickness;
     private IfcLengthMeasure FlangeThickness;
@@ -11,4 +11,12 @@ public class IfcTShapeProfileDef extends IfcParameterizedProfileDef {
     private double WebSlope;
     private double FlangeSlope;
     private IfcLengthMeasure CentreOfGravityInY;
+
+    public IfcTShapeProfileDef(IfcProfileTypeEnum profileType,
+                               IfcLabel profileName,
+                               IfcAxis2Placement2D position,
+                               IfcLengthMeasure depth) {
+        super(profileType, profileName, position);
+        Depth = depth;
+    }
 }

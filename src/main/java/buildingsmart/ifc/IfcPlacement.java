@@ -58,12 +58,15 @@ public abstract class IfcPlacement extends IfcGeometricRepresentationItem {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
+        if (!super.equals(o)) {
+            return false;
+        }
         IfcPlacement that = (IfcPlacement) o;
         return location.equals(that.location);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(location);
+        return Objects.hash(super.hashCode(), location);
     }
 }

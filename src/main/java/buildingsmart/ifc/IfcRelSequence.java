@@ -1,8 +1,35 @@
 package buildingsmart.ifc;
 
 public class IfcRelSequence extends IfcRelConnects {
-    private IfcProcess RelatingProcess;
+    private final IfcProcess RelatingProcess;
     private IfcProcess RelatedProcess;
     private double TimeLag;
     private IfcSequenceEnum SequenceType;
+
+    /**
+     * Creates a new IfcRelationship, using the provided globalId.
+     *
+     * @param globalId     Assignment of a globally unique identifier within the
+     *                     entire software world.
+     * @param ownerHistory Assignment of the information about the current
+     *                     ownership of that object, including owning actor,
+     *                     application, local identification and information
+     *                     captured about the recent changes of the object,
+     *                     NOTE: only the last modification in stored.
+     * @param name         Optional name for use by the participating software
+     *                     systems or users. For some subtypes of IfcRoot the
+     *                     insertion of the Name attribute may be required. This
+     *                     would be enforced by a where rule.
+     * @param description  Optional description, provided for exchanging
+     *                     informative comments.
+     * @throws IllegalArgumentException If globalId or ownerHistory are null, or
+     *                                  if globalId was used in another instance
+     *                                  of this class or its superclass.
+     */
+    public IfcRelSequence(IfcGloballyUniqueId globalId,
+                          IfcOwnerHistory ownerHistory, IfcLabel name,
+                          IfcText description, IfcProcess relatingProcess) {
+        super(globalId, ownerHistory, name, description);
+        RelatingProcess = relatingProcess;
+    }
 }

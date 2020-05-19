@@ -18,11 +18,13 @@ import java.util.Set;
  * to as material definition in rendering applications .</FONT></BLOCKQUOTE>
  * <BLOCKQUOTE>
  */
-public class IfcSurfaceStyle extends IfcPresentationStyle {
+public class IfcSurfaceStyle extends IfcPresentationStyle
+        implements IfcPresentationStyleSelect {
     private final IfcSurfaceSide side;
     private final Set<IfcSurfaceStyleElementSelect> styles;
 
     //TODO: test constructor
+
     /**
      * @param name   Name of the presentation style.
      * @param side   An indication of which side of the surface to apply the

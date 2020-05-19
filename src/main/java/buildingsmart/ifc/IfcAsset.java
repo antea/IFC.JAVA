@@ -1,7 +1,7 @@
 package buildingsmart.ifc;
 
 public class IfcAsset extends IfcGroup {
-    private String AssetID;
+    private final String AssetID;
     private IfcCostValue OriginalValue;
     private IfcCostValue CurrentValue;
     private IfcCostValue TotalReplacementCost;
@@ -10,4 +10,13 @@ public class IfcAsset extends IfcGroup {
     private IfcPerson ResponsiblePerson;
     private IfcCalendarDate IncorporationDate;
     private IfcCostValue DepreciatedValue;
+
+    public IfcAsset(IfcGloballyUniqueId globalId, IfcOwnerHistory ownerHistory,
+                    IfcLabel name, IfcText description, IfcLabel objectType,
+                    IfcRelAssignsToGroup isGroupedBy, String assetID) {
+
+        super(globalId, ownerHistory, name, description, objectType,
+                isGroupedBy);
+        AssetID = assetID;
+    }
 }

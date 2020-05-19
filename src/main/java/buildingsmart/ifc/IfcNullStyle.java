@@ -1,5 +1,5 @@
 package buildingsmart.ifc;
 
-public enum IfcNullStyle {
-    NULL,
+public enum IfcNullStyle implements IfcPresentationStyleSelect {
+    NULL
 }

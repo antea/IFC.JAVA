@@ -20,12 +20,15 @@ public abstract class IfcSolidModel extends IfcGeometricRepresentationItem {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
+        if (!super.equals(o)) {
+            return false;
+        }
         IfcSolidModel that = (IfcSolidModel) o;
         return dim.equals(that.dim);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(dim);
+        return Objects.hash(super.hashCode(), dim);
     }
 }

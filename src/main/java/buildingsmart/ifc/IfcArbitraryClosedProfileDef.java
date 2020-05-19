@@ -1,5 +1,12 @@
 package buildingsmart.ifc;
 
 public class IfcArbitraryClosedProfileDef extends IfcProfileDef {
-    private IfcCurve OuterCurve;
+    private final IfcCurve OuterCurve;
+
+    public IfcArbitraryClosedProfileDef(IfcProfileTypeEnum profileType,
+                                        IfcLabel profileName,
+                                        IfcCurve outerCurve) {
+        super(profileType, profileName);
+        OuterCurve = outerCurve;
+    }
 }
