@@ -1,6 +1,6 @@
 package buildingsmart.ifc;
 
-public class IfcGridPlacement extends IfcObjectPlacement {
+public abstract class IfcGridPlacement extends IfcObjectPlacement {
     private IfcVirtualGridIntersection PlacementLocation;
     private IfcVirtualGridIntersection PlacementRefDirection;
 }
