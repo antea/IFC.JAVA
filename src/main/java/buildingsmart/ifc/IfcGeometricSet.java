@@ -1,6 +1,12 @@
 package buildingsmart.ifc;
 
+import java.util.Set;
+
 public abstract class IfcGeometricSet extends IfcGeometricRepresentationItem {
-    private IfcGeometricSetSelect[] Elements;
-    private int Dim;
+    private Set<IfcGeometricSetSelect> elements;
+    private int dim;
+
+    public Set<IfcGeometricSetSelect> getElements() {
+        return elements;
+    }
 }

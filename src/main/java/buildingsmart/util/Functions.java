@@ -399,4 +399,187 @@ public class Functions {
         }
         return new IfcReal(scalar);
     }
+
+    /**
+     * The function checks that a relative placement (i.e. relative to another
+     * local placement, and not grid placement) of a 3D local placement has to
+     * be relative to a 3D parent placement (and not to a 2D parent placement).
+     *
+     * @param relativePlacement The local placement.
+     * @param placementRelTo    The parent placement.
+     * @return {@code true} if relativePlacement is bi-dimensional, if it is
+     * three-dimensional and placementRelTo is also three-dimensional, if
+     * placementRelTo is null. {@code null} if placementRelTo is a grid
+     * placement. {@code false} otherwise.
+     */
+    public static Boolean ifcCorrectLocalPlacement(
+            IfcAxis2Placement relativePlacement,
+            IfcObjectPlacement placementRelTo) {
+        if (placementRelTo != null) {
+            if (placementRelTo instanceof IfcGridPlacement) {
+                return null;
+            }
+            if (placementRelTo instanceof IfcLocalPlacement) {
+                if (relativePlacement instanceof IfcAxis2Placement2D) {
+                    return true;
+                } else { // relativePlacement is an instance of
+                    // IfcAxis2Placement3D
+                    return ((IfcLocalPlacement) placementRelTo)
+                            .getRelativePlacement().getDim().getValue() == 3;
+                }
+            }
+        }
+        return true;
+    }
+
+    /**
+     * The function gets the representation type and the assigned set of
+     * representation items as input and verifies whether the correct items are
+     * assigned according to the representation type given.
+     *
+     * @param repType The representation type.
+     * @param items   Items associated to repType.
+     * @return {@code true} if the type of the objects contained in items is
+     * correct according to the specification of class {@link
+     * buildingsmart.ifc.IfcShapeRepresentation}; {@code null} if repType is
+     * unknown; {@code false} otherwise.
+     */
+    public static Boolean ifcShapeRepresentationTypes(IfcLabel repType,
+                                                      Set<IfcRepresentationItem> items) {
+        long count = 0;
+        switch (repType.getValue()) {
+            case "Curve2D":
+                for (IfcRepresentationItem item : items) {
+                    if (item instanceof IfcCurve &&
+                            ((IfcCurve) item).getDim().getValue() == 2) {
+                        count++;
+                    }
+                }
+                break;
+            case "Annotation2D":
+                for (IfcRepresentationItem item : items) {
+                    if (item instanceof IfcPoint || item instanceof IfcCurve ||
+                            item instanceof IfcGeometricCurveSet ||
+                            item instanceof IfcAnnotationFillArea ||
+                            item instanceof IfcDefinedSymbol ||
+                            item instanceof IfcTextLiteral ||
+                            item instanceof IfcDraughtingCallout) {
+                        count++;
+                    }
+                }
+                break;
+            case "GeometricSet":
+                for (IfcRepresentationItem item : items) {
+                    if (item instanceof IfcGeometricSet ||
+                            item instanceof IfcPoint ||
+                            item instanceof IfcCurve ||
+                            item instanceof IfcSurface) {
+                        count++;
+                    }
+                }
+                break;
+            case "GeometricCurveSet":
+                for (IfcRepresentationItem item : items) {
+                    if (item instanceof IfcGeometricSet ||
+                            item instanceof IfcPoint ||
+                            item instanceof IfcCurve) {
+                        count++;
+                    }
+                }
+                for (IfcRepresentationItem item : items) {
+                    if (item instanceof IfcGeometricSet) {
+                        for (IfcGeometricSetSelect element :
+                                ((IfcGeometricSet) item)
+                                .getElements()) {
+                            if (element instanceof IfcSurface) {
+                                count--;
+                                break;
+                            }
+                        }
+                    }
+                }
+                break;
+            case "SurfaceModel":
+                for (IfcRepresentationItem item : items) {
+                    if (item instanceof IfcShellBasedSurfaceModel ||
+                            item instanceof IfcFaceBasedSurfaceModel ||
+                            item instanceof IfcFacetedBrep ||
+                            item instanceof IfcFacetedBrepWithVoids) {
+                        count++;
+                    }
+                }
+                break;
+            case "SolidModel":
+                for (IfcRepresentationItem item : items) {
+                    if (item instanceof IfcSolidModel) {
+                        count++;
+                    }
+                }
+                break;
+            case "SweptSolid":
+                for (IfcRepresentationItem item : items) {
+                    if (item instanceof IfcSweptAreaSolid) {
+                        count++;
+                    }
+                }
+                break;
+            case "CSG":
+                for (IfcRepresentationItem item : items) {
+                    if (item instanceof IfcBooleanResult) {
+                        count++;
+                    }
+                }
+                break;
+            case "Clipping":
+                for (IfcRepresentationItem item : items) {
+                    if (item instanceof IfcBooleanClippingResult) {
+                        count++;
+                    }
+                }
+                break;
+            case "AdvancedSweptSolid":
+                for (IfcRepresentationItem item : items) {
+                    if (item instanceof IfcSurfaceCurveSweptAreaSolid ||
+                            item instanceof IfcSweptDiskSolid) {
+                        count++;
+                    }
+                }
+                break;
+            case "Brep":
+                for (IfcRepresentationItem item : items) {
+                    if (item instanceof IfcFacetedBrep ||
+                            item instanceof IfcFacetedBrepWithVoids) {
+                        count++;
+                    }
+                }
+                break;
+            case "BoundingBox":
+                for (IfcRepresentationItem item : items) {
+                    if (item instanceof IfcBoundingBox) {
+                        count++;
+                    }
+                    if (items.size() > 1) {
+                        count = 0;
+                    }
+                }
+                break;
+            case "SectionedSpine":
+                for (IfcRepresentationItem item : items) {
+                    if (item instanceof IfcSectionedSpine) {
+                        count++;
+                    }
+                }
+                break;
+            case "MappedRepresentation":
+                for (IfcRepresentationItem item : items) {
+                    if (item instanceof IfcMappedItem) {
+                        count++;
+                    }
+                }
+                break;
+            default:
+                return null;
+        }
+        return count == items.size();
+    }
 }

@@ -7,4 +7,10 @@ package buildingsmart.ifc;
  * space dimensionality.
  */
 public interface IfcAxis2Placement {
+
+    /**
+     * @return The space dimensionality of this class, derived from the
+     * dimensionality of the location.
+     */
+    IfcDimensionCount getDim();
 }

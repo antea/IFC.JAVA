@@ -10,22 +10,26 @@ import java.util.Objects;
  * natural-language meaning.
  */
 public class IfcLabel implements IfcDefinedType, IfcSimpleValue {
-    private final String ifcLabel;
+    private final String value;
 
     /**
-     * @param ifcLabel Restricted to max. 255 characters, cannot be null.
-     * @throws IllegalArgumentException If ifcLabel is null or longer than 255
+     * @param value Restricted to max. 255 characters, cannot be null.
+     * @throws IllegalArgumentException If value is null or longer than 255
      *                                  characters.
      */
-    public IfcLabel(@NotNull String ifcLabel) {
-        if (ifcLabel == null) {
+    public IfcLabel(@NotNull String value) {
+        if (value == null) {
             throw new IllegalArgumentException("ifcLabel cannot be null");
         }
-        if (ifcLabel.length() > 255) {
+        if (value.length() > 255) {
             throw new IllegalArgumentException(
                     "ifcLabel cannot be longer " + "than 255 characters");
         }
-        this.ifcLabel = ifcLabel;
+        this.value = value;
+    }
+
+    public String getValue() {
+        return value;
     }
 
     @Override
@@ -37,16 +41,16 @@ public class IfcLabel implements IfcDefinedType, IfcSimpleValue {
             return false;
         }
         IfcLabel that = (IfcLabel) o;
-        return ifcLabel.equals(that.ifcLabel);
+        return value.equals(that.value);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(ifcLabel);
+        return Objects.hash(value);
     }
 
     @Override
     public String serialize() {
-        return "'" + ifcLabel + "'";
+        return "'" + value + "'";
     }
 }
