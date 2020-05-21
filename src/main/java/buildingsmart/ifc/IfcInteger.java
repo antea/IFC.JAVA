@@ -12,6 +12,10 @@ public class IfcInteger implements IfcDefinedType, IfcSimpleValue {
         this.value = value;
     }
 
+    public long getValue() {
+        return value;
+    }
+
     /**
      * @return The representation of the type in an IFC STEP file.
      */

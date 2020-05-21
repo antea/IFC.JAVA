@@ -5,7 +5,7 @@ import java.util.Objects;
 /**
  * An abstract entity type for various kinds of postal and telecom addresses.
  */
-public class IfcAddress {
+public class IfcAddress extends IfcEntity {
     private final IfcAddressTypeEnum purpose;
     private final IfcText description;
     private final IfcLabel userDefinedPurpose;
@@ -13,17 +13,17 @@ public class IfcAddress {
     //private IfcOrganization[] OfOrganization;
 
     /**
-     * @param purpose            Identifies the logical location of the address.
+     * @param purpose            Identifies the logical location of the
+     *                           address.
      * @param description        Text that relates the nature of the address.
      * @param userDefinedPurpose Allows for specification of user specific
-     *                           purpose of the address beyond the
-     *                           enumeration values provided by Purpose
-     *                           attribute of type IfcAddressTypeEnum. When a
-     *                           value is provided for attribute
-     *                           UserDefinedPurpose, in parallel the
-     *                           attribute Purpose shall have enumeration
+     *                           purpose of the address beyond the enumeration
+     *                           values provided by Purpose attribute of type
+     *                           IfcAddressTypeEnum. When a value is provided
+     *                           for attribute UserDefinedPurpose, in parallel
+     *                           the attribute Purpose shall have enumeration
      *                           value USERDEFINED.
-     * @throws IllegalArgumentException if there's an invalid combination of
+     * @throws IllegalArgumentException If there's an invalid combination of
      *                                  purpose and userDefinedPurpose.
      */
     public IfcAddress(IfcAddressTypeEnum purpose, IfcText description,
