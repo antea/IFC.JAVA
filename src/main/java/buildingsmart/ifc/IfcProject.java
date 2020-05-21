@@ -176,7 +176,7 @@ public class IfcProject extends IfcObject {
      *                               IfcObjectDefinition.
      */
     @Override
-    public void setDecomposes(IfcRelDecomposes decomposes) {
+    protected void setDecomposes(IfcRelDecomposes decomposes) {
         throw new IllegalStateException(
                 "IfcProject cannot decompose any other " +
                         "IfcObjectDefinition");

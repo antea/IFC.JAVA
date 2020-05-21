@@ -35,8 +35,13 @@ public class IfcRelDecomposes extends IfcRelationship {
     private final IfcObjectDefinition relatingObject;
     private final Set<IfcObjectDefinition> relatedObjects;
 
+    //TODO: test constructor
+
     /**
-     * Creates a new IfcRelDecomposes, using the provided globalId.
+     * Creates a new IfcRelDecomposes, using the provided globalId, and
+     * automatically modifies relatingObject and relatedObjects to make them all
+     * contain a reference to this relationship, either in isDecomposedBy or
+     * decomposes.
      *
      * @param globalId       Assignment of a globally unique identifier within
      *                       the entire software world.
@@ -85,10 +90,18 @@ public class IfcRelDecomposes extends IfcRelationship {
         }
         this.relatingObject = relatingObject;
         this.relatedObjects = relatedObjects;
+
+        relatingObject.addToIsDecomposedBy(this);
+        for (IfcObjectDefinition obj : relatedObjects) {
+            obj.setDecomposes(this);
+        }
     }
 
     /**
-     * Creates a new IfcRelDecomposes and generates a pseudo random globalId.
+     * Creates a new IfcRelDecomposes and generates a pseudo random globalId,
+     * and automatically modifies relatingObject and relatedObjects to make them
+     * all contain a reference to this relationship, either in isDecomposedBy or
+     * decomposes.
      *
      * @param ownerHistory   Assignment of the information about the current
      *                       ownership of that object, including owning actor,
@@ -119,7 +132,10 @@ public class IfcRelDecomposes extends IfcRelationship {
     }
 
     /**
-     * Creates a new IfcRelDecomposes, using the provided globalId.
+     * Creates a new IfcRelDecomposes, using the provided globalId, and
+     * automatically modifies relatingObject and relatedObjects to make them all
+     * contain a reference to this relationship, either in isDecomposedBy or
+     * decomposes.
      *
      * @param globalId       Assignment of a globally unique identifier within
      *                       the entire software world.
@@ -156,7 +172,10 @@ public class IfcRelDecomposes extends IfcRelationship {
     }
 
     /**
-     * Creates a new IfcRelDecomposes and generates a pseudo random globalId.
+     * Creates a new IfcRelDecomposes and generates a pseudo random globalId,
+     * and automatically modifies relatingObject and relatedObjects to make them
+     * all contain a reference to this relationship, either in isDecomposedBy or
+     * decomposes.
      *
      * @param ownerHistory   Assignment of the information about the current
      *                       ownership of that object, including owning actor,

@@ -38,11 +38,26 @@ import java.util.Set;
  * relation. There is an implied dependency established.</li>
  * </ul>
  */
-public class IfcObjectDefinition extends IfcRoot {
+public abstract class IfcObjectDefinition extends IfcRoot {
+    /**
+     * Reference to the relationship objects, that associates external
+     * references or other resource definitions to the object.. Examples are the
+     * association to library, documentation or classification.
+     */
+    protected Set<IfcRelAssociates> hasAssociations;
     //private Set<IfcRelAssigns> hasAssignments;
+    /**
+     * Reference to the decomposition relationship, that allows this object to
+     * be the composition of other objects. An object can be decomposed by
+     * several other objects.
+     */
     private Set<IfcRelDecomposes> isDecomposedBy;
+    /**
+     * References to the decomposition relationship, that allows this object to
+     * be a part of the decomposition. An object can only be part of a single
+     * decomposition (to allow hierarchical strutures only).
+     */
     private IfcRelDecomposes decomposes;
-    //private Set<IfcRelAssociates> hasAssociations;
 
     /**
      * Creates a new IfcObjectDefinition, using the provided globalId.
@@ -92,37 +107,40 @@ public class IfcObjectDefinition extends IfcRoot {
         super(ownerHistory, name, description);
     }
 
+    //TODO: test setters and getters
+
     /**
      * @return A copy of isDecomposedBy. Operations performed on this Set don't
      * have any effect on isDecomposedBy. This is done to prevent adding illegal
      * IfcRelDecomposes to the Set.
-     * @see #setIsDecomposedBy(Set)
+     * @see #addToIsDecomposedBy(IfcRelDecomposes)
      */
-    public Set<IfcRelDecomposes> getIsDecomposedBy() {
+    protected Set<IfcRelDecomposes> getIsDecomposedBy() {
         return new HashSet<>(isDecomposedBy);
     }
 
     /**
-     * @param isDecomposedBy Reference to the decomposition relationship, that
-     *                       allows this object to be the composition of other
-     *                       objects. An object can be decomposed by several
-     *                       other objects.
+     * @param relationship The relationship to add to the Set isDecomposedBy.
      * @throws IllegalArgumentException If this object is not the relatingObject
-     *                                  in all relationships contained in the
-     *                                  Set.
+     *                                  in the relationship.
      */
-    public void setIsDecomposedBy(Set<IfcRelDecomposes> isDecomposedBy) {
-        for (IfcRelDecomposes rel : isDecomposedBy) {
-            if (!rel.getRelatingObject().equals(this)) {
-                throw new IllegalArgumentException(
-                        "any IfcRelDecomposes part of isDecomposedBy must " +
-                                "have this object as its relatingObject");
-            }
+    protected void addToIsDecomposedBy(IfcRelDecomposes relationship) {
+        if (!relationship.getRelatingObject().equals(this)) {
+            throw new IllegalArgumentException(
+                    "any IfcRelDecomposes part of isDecomposedBy must " +
+                            "have this instance of IfcObjectDefinition as its" +
+                            " relatingObject");
         }
-        this.isDecomposedBy = isDecomposedBy;
+        if (this.isDecomposedBy != null) {
+            this.isDecomposedBy.add(relationship);
+        } else {
+            Set<IfcRelDecomposes> isDecomposedBy = new HashSet<>();
+            isDecomposedBy.add(relationship);
+            this.isDecomposedBy = isDecomposedBy;
+        }
     }
 
-    public IfcRelDecomposes getDecomposes() {
+    protected IfcRelDecomposes getDecomposes() {
         return decomposes;
     }
 
@@ -134,11 +152,41 @@ public class IfcObjectDefinition extends IfcRoot {
      * @throws IllegalArgumentException If decomposes.relatedObjects does not
      *                                  contain this object.
      */
-    public void setDecomposes(IfcRelDecomposes decomposes) {
+    protected void setDecomposes(IfcRelDecomposes decomposes) {
         if (!decomposes.getRelatedObjects().contains(this)) {
             throw new IllegalArgumentException(
                     "decomposes.relatedObjects must contain this object");
         }
         this.decomposes = decomposes;
+    }
+
+    /**
+     * @return A copy of hasAssociations. Operations performed on this Set don't
+     * have any effect on hasAssociations. This is done to prevent adding
+     * illegal IfcRelDecomposes to the Set.
+     * @see #addToHasAssociations(IfcRelAssociates)
+     */
+    protected Set<IfcRelAssociates> getHasAssociations() {
+        return new HashSet<>(hasAssociations);
+    }
+
+    /**
+     * @param relationship The relationship to add to the Set hasAssociations.
+     * @throws IllegalArgumentException If this object is not contained in the
+     *                                  relationship's relatedObjects.
+     */
+    protected void addToHasAssociations(IfcRelAssociates relationship) {
+        if (!relationship.getRelatedObjects().contains(this)) {
+            throw new IllegalArgumentException(
+                    "this object must be contained in relationship" +
+                            ".relatedObject");
+        }
+        if (this.hasAssociations != null) {
+            this.hasAssociations.add(relationship);
+        } else {
+            Set<IfcRelAssociates> hasAssociations = new HashSet<>();
+            hasAssociations.add(relationship);
+            this.hasAssociations = hasAssociations;
+        }
     }
 }

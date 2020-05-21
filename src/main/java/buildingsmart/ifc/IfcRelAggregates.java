@@ -27,7 +27,10 @@ import java.util.Set;
  */
 public class IfcRelAggregates extends IfcRelDecomposes {
     /**
-     * Creates a new IfcRelAggregates, using the provided globalId.
+     * Creates a new IfcRelAggregates, using the provided globalId, and
+     * automatically modifies relatingObject and relatedObjects to make them all
+     * contain a reference to this relationship, either in isDecomposedBy or
+     * decomposes.
      *
      * @param globalId       Assignment of a globally unique identifier within
      *                       the entire software world.
@@ -64,7 +67,10 @@ public class IfcRelAggregates extends IfcRelDecomposes {
     }
 
     /**
-     * Creates a new IfcRelAggregates and generates a pseudo random globalId.
+     * Creates a new IfcRelAggregates and generates a pseudo random globalId,
+     * and automatically modifies relatingObject and relatedObjects to make them
+     * all contain a reference to this relationship, either in isDecomposedBy or
+     * decomposes.
      *
      * @param ownerHistory   Assignment of the information about the current
      *                       ownership of that object, including owning actor,
@@ -94,7 +100,10 @@ public class IfcRelAggregates extends IfcRelDecomposes {
     }
 
     /**
-     * Creates a new IfcRelAggregates, using the provided globalId.
+     * Creates a new IfcRelAggregates, using the provided globalId, and
+     * automatically modifies relatingObject and relatedObjects to make them all
+     * contain a reference to this relationship, either in isDecomposedBy or
+     * decomposes.
      *
      * @param globalId       Assignment of a globally unique identifier within
      *                       the entire software world.
@@ -131,7 +140,10 @@ public class IfcRelAggregates extends IfcRelDecomposes {
     }
 
     /**
-     * Creates a new IfcRelAggregates and generates a pseudo random globalId.
+     * Creates a new IfcRelAggregates and generates a pseudo random globalId,
+     * and automatically modifies relatingObject and relatedObjects to make them
+     * all contain a reference to this relationship, either in isDecomposedBy or
+     * decomposes.
      *
      * @param ownerHistory   Assignment of the information about the current
      *                       ownership of that object, including owning actor,

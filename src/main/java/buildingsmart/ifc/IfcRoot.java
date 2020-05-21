@@ -19,7 +19,7 @@ import java.util.Set;
  * information to the entity. In addition it may provide for a name and a
  * description about the concepts.
  */
-public class IfcRoot extends IfcEntity {
+public abstract class IfcRoot extends IfcEntity {
     private static final Set<IfcGloballyUniqueId> uniqueGlobalIds =
             new HashSet<>();
     private final IfcGloballyUniqueId globalId;

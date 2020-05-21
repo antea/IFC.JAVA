@@ -4,7 +4,10 @@ import java.util.Set;
 
 public class IfcRelNests extends IfcRelDecomposes {
     /**
-     * Creates a new IfcRelDecomposes, using the provided globalId.
+     * Creates a new IfcRelDecomposes, using the provided globalId, and
+     * automatically modifies relatingObject and relatedObjects to make them all
+     * contain a reference to this relationship, either in isDecomposedBy or
+     * decomposes.
      *
      * @param globalId       Assignment of a globally unique identifier within
      *                       the entire software world.

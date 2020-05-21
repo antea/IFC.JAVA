@@ -50,12 +50,12 @@ import com.sun.istack.internal.NotNull;
  * depend on the specific properties).</li>
  * </ul>
  */
-public class IfcObject extends IfcObjectDefinition {
+public abstract class IfcObject extends IfcObjectDefinition {
     private final IfcLabel objectType;
     //private IfcRelDefines[] IsDefinedBy;
 
     /**
-     * Creates a new IfcObjectDefinition, using the provided globalId.
+     * Creates a new IfcObject, using the provided globalId.
      *
      * @param globalId     Assignment of a globally unique identifier within the
      *                     entire software world.
@@ -87,8 +87,7 @@ public class IfcObject extends IfcObjectDefinition {
     }
 
     /**
-     * Creates a new IfcObjectDefinition and generates a pseudo random
-     * globalId.
+     * Creates a new IfcObject and generates a pseudo random globalId.
      *
      * @param ownerHistory Assignment of the information about the current
      *                     ownership of that object, including owning actor,
