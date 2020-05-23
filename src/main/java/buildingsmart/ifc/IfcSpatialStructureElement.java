@@ -65,7 +65,7 @@ public class IfcSpatialStructureElement extends IfcProduct {
     //TODO: test getters and setters
 
     /**
-     * Creates a new IfcProduct, using the provided globalId.
+     * Creates a new IfcSpatialStructureElement, using the provided globalId.
      *
      * @param globalId        Assignment of a globally unique identifier within
      *                        the entire software world.
@@ -118,7 +118,8 @@ public class IfcSpatialStructureElement extends IfcProduct {
      *                                  this class; if representation is not
      *                                  null and objectPlacement is, while
      *                                  representation is an instance of
-     *                                  IfcProductDefinitionShape.
+     *                                  IfcProductDefinitionShape; if
+     *                                  compositionType is null.
      */
     public IfcSpatialStructureElement(@NotNull IfcGloballyUniqueId globalId,
                                       @NotNull IfcOwnerHistory ownerHistory,
@@ -130,12 +131,17 @@ public class IfcSpatialStructureElement extends IfcProduct {
                                               IfcElementCompositionEnum compositionType) {
         super(globalId, ownerHistory, name, description, objectType,
                 objectPlacement, representation);
+        if (compositionType == null) {
+            throw new IllegalArgumentException(
+                    "compositionType cannot be null");
+        }
         this.longName = longName;
         this.compositionType = compositionType;
     }
 
     /**
-     * Creates a new IfcProduct and generates a pseudo random globalId.
+     * Creates a new IfcSpatialStructureElement and generates a pseudo random
+     * globalId.
      *
      * @param ownerHistory    Assignment of the information about the current
      *                        ownership of that object, including owning actor,
@@ -185,7 +191,8 @@ public class IfcSpatialStructureElement extends IfcProduct {
      *                                  representation is not null and
      *                                  objectPlacement is, while representation
      *                                  is an instance of
-     *                                  IfcProductDefinitionShape.
+     *                                  IfcProductDefinitionShape;
+     *                                  if compositionType is null.
      */
     public IfcSpatialStructureElement(@NotNull IfcOwnerHistory ownerHistory,
                                       IfcLabel name, IfcText description,

@@ -167,6 +167,41 @@ public class IfcProject extends IfcObject {
     }
 
     /**
+     * @param relationship The relationship to add to the Set isDecomposedBy.
+     * @throws IllegalArgumentException If this object is not the relatingObject
+     *                                  in the relationship; if relationship is
+     *                                  not of type IfcRelAggregates; if the
+     *                                  relatedObjects in relationship are not
+     *                                  of type IfcSite or IfcBuilding.
+     */
+    @Override
+    protected void addToIsDecomposedBy(IfcRelDecomposes relationship) {
+        if (!(relationship instanceof IfcRelAggregates)) {
+            throw new IllegalArgumentException(
+                    "relationship must be of type IfcRelAggregates");
+        }
+        addToIsDecomposedBy((IfcRelAggregates) relationship);
+    }
+
+    /**
+     * @param relationship The relationship to add to the Set isDecomposedBy.
+     * @throws IllegalArgumentException If this object is not the relatingObject
+     *                                  in the relationship; if the
+     *                                  relatedObjects in relationship are not
+     *                                  of type IfcSite or IfcBuilding.
+     */
+    protected void addToIsDecomposedBy(IfcRelAggregates relationship) {
+        for (IfcObjectDefinition obj : relationship.getRelatedObjects()) {
+            if (!(obj instanceof IfcSite) && !(obj instanceof IfcBuilding)) {
+                throw new IllegalArgumentException(
+                        "relationship.relatedObjects can contain only objects" +
+                                " of type IfcSite and IfcBuilding");
+            }
+        }
+        super.addToIsDecomposedBy(relationship);
+    }
+
+    /**
      * @param decomposes References to the decomposition relationship, that
      *                   allows this object to be a part of the decomposition.
      *                   An object can only be part of a single decomposition

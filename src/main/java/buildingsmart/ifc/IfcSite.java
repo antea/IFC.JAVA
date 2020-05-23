@@ -353,7 +353,8 @@ public class IfcSite extends IfcSpatialStructureElement {
      *                                  this class; if representation is not
      *                                  null and objectPlacement is, while
      *                                  representation is an instance of
-     *                                  IfcProductDefinitionShape.
+     *                                  IfcProductDefinitionShape; if
+     *                                  compositionType is null.
      */
     public IfcSite(@NotNull IfcGloballyUniqueId globalId,
                    @NotNull IfcOwnerHistory ownerHistory, IfcLabel name,
@@ -451,7 +452,8 @@ public class IfcSite extends IfcSpatialStructureElement {
      *                                  representation is not null and
      *                                  objectPlacement is, while representation
      *                                  is an instance of
-     *                                  IfcProductDefinitionShape.
+     *                                  IfcProductDefinitionShape;
+     *                                  if compositionType is null.
      */
     public IfcSite(@NotNull IfcOwnerHistory ownerHistory, IfcLabel name,
                    IfcText description, IfcLabel objectType,

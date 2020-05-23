@@ -1,8 +1,16 @@
 package buildingsmart.ifc;
 
+import com.sun.istack.internal.NotNull;
+
+/**
+ * A connectivity relationship (IfcRelConnects) that connects objects under some
+ * criteria. As a general connectivity it does not imply constraints, however
+ * subtypes of the relationship define the applicable object types for the
+ * connectivity relationship and the semantics of the particular connectivity.
+ */
 public class IfcRelConnects extends IfcRelationship {
     /**
-     * Creates a new IfcRelationship, using the provided globalId.
+     * Creates a new IfcRelConnects, using the provided globalId.
      *
      * @param globalId     Assignment of a globally unique identifier within the
      *                     entire software world.
@@ -21,14 +29,14 @@ public class IfcRelConnects extends IfcRelationship {
      *                                  if globalId was used in another instance
      *                                  of this class or its superclass.
      */
-    public IfcRelConnects(IfcGloballyUniqueId globalId,
-                          IfcOwnerHistory ownerHistory, IfcLabel name,
+    public IfcRelConnects(@NotNull IfcGloballyUniqueId globalId,
+                          @NotNull IfcOwnerHistory ownerHistory, IfcLabel name,
                           IfcText description) {
         super(globalId, ownerHistory, name, description);
     }
 
     /**
-     * Creates a new IfcRelationship and generates a pseudo random globalId.
+     * Creates a new IfcRelConnects and generates a pseudo random globalId.
      *
      * @param ownerHistory Assignment of the information about the current
      *                     ownership of that object, including owning actor,
@@ -43,8 +51,8 @@ public class IfcRelConnects extends IfcRelationship {
      *                     informative comments.
      * @throws IllegalArgumentException If ownerHistory is null.
      */
-    public IfcRelConnects(IfcOwnerHistory ownerHistory, IfcLabel name,
+    public IfcRelConnects(@NotNull IfcOwnerHistory ownerHistory, IfcLabel name,
                           IfcText description) {
-        super(ownerHistory, name, description);
+        this(new IfcGloballyUniqueId(), ownerHistory, name, description);
     }
 }
