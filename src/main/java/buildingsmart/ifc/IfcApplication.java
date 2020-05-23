@@ -1,3 +1,22 @@
+/*
+ * Copyright (C) 2019 Pieter Pauwels, Ghent University
+ * Modifications Copyright (C) 2020 Giovanni Velludo
+ *
+ * This file is part of IFC.JAVA.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package buildingsmart.ifc;
 
 import buildingsmart.util.Pair;
@@ -16,8 +35,7 @@ import java.util.Set;
 public class IfcApplication extends IfcEntity {
     private static final Set<Pair<IfcLabel, IfcLabel>>
             uniqueAppFullNameAndVersions = new HashSet<>();
-    private static final Set<IfcIdentifier> uniqueAppIdentifiers =
-            new HashSet<>();
+    private static final Set<IfcIdentifier> uniqueAppIdentifiers = new HashSet<>();
 
     private final IfcOrganization applicationDeveloper;
     private final IfcLabel version;
@@ -45,8 +63,7 @@ public class IfcApplication extends IfcEntity {
      *                                  same as the one passed as parameter.
      */
     public IfcApplication(@NotNull IfcOrganization applicationDeveloper,
-                          @NotNull IfcLabel version,
-                          @NotNull IfcLabel applicationFullName,
+                          @NotNull IfcLabel version, @NotNull IfcLabel applicationFullName,
                           @NotNull IfcIdentifier applicationIdentifier) {
         if (applicationDeveloper == null || version == null ||
                 applicationFullName == null || applicationIdentifier == null) {
@@ -58,8 +75,7 @@ public class IfcApplication extends IfcEntity {
                     "applicationIdentifier must be unique, and this one was " +
                             "already used in another instance of this class");
         }
-        Pair<IfcLabel, IfcLabel> appFullNameAndVersion =
-                new Pair<>(applicationFullName, version);
+        Pair<IfcLabel, IfcLabel> appFullNameAndVersion = new Pair<>(applicationFullName, version);
         if (uniqueAppFullNameAndVersions.contains(appFullNameAndVersion)) {
             throw new IllegalArgumentException(
                     "the combination of applicationFullName and version must " +
@@ -95,8 +111,7 @@ public class IfcApplication extends IfcEntity {
             return false;
         }
         IfcApplication that = (IfcApplication) o;
-        return applicationDeveloper.equals(that.applicationDeveloper) &&
-                version.equals(that.version) &&
+        return applicationDeveloper.equals(that.applicationDeveloper) && version.equals(that.version) &&
                 applicationFullName.equals(that.applicationFullName) &&
                 applicationIdentifier.equals(that.applicationIdentifier);
     }

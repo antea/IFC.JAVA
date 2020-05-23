@@ -1,3 +1,22 @@
+/*
+ * Copyright (C) 2019 Pieter Pauwels, Ghent University
+ * Modifications Copyright (C) 2020 Giovanni Velludo
+ *
+ * This file is part of IFC.JAVA.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package buildingsmart.ifc;
 
 import com.sun.istack.internal.NotNull;
@@ -353,10 +372,8 @@ public class IfcBuildingStorey extends IfcSpatialStructureElement {
      *                                  compositionType is null.
      */
     public IfcBuildingStorey(@NotNull IfcGloballyUniqueId globalId,
-                             @NotNull IfcOwnerHistory ownerHistory,
-                             IfcLabel name, IfcText description,
-                             IfcLabel objectType,
-                             IfcObjectPlacement objectPlacement,
+                             @NotNull IfcOwnerHistory ownerHistory, IfcLabel name, IfcText description,
+                             IfcLabel objectType, IfcObjectPlacement objectPlacement,
                              IfcProductRepresentation representation,
                              IfcLabel longName,
                              @NotNull IfcElementCompositionEnum compositionType,
@@ -425,12 +442,9 @@ public class IfcBuildingStorey extends IfcSpatialStructureElement {
      *                                  IfcProductDefinitionShape;
      *                                  if compositionType is null.
      */
-    public IfcBuildingStorey(@NotNull IfcOwnerHistory ownerHistory,
-                             IfcLabel name, IfcText description,
-                             IfcLabel objectType,
-                             IfcObjectPlacement objectPlacement,
-                             IfcProductRepresentation representation,
-                             IfcLabel longName,
+    public IfcBuildingStorey(@NotNull IfcOwnerHistory ownerHistory, IfcLabel name, IfcText description,
+                             IfcLabel objectType, IfcObjectPlacement objectPlacement,
+                             IfcProductRepresentation representation, IfcLabel longName,
                              @NotNull IfcElementCompositionEnum compositionType,
                              IfcLengthMeasure elevation) {
         this(new IfcGloballyUniqueId(), ownerHistory, name, description,

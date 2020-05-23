@@ -1,3 +1,22 @@
+/*
+ * Copyright (C) 2019 Pieter Pauwels, Ghent University
+ * Modifications Copyright (C) 2020 Giovanni Velludo
+ *
+ * This file is part of IFC.JAVA.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package buildingsmart.ifc;
 
 import com.sun.istack.internal.NotNull;
@@ -28,8 +47,7 @@ public class IfcOrganization extends IfcEntity {
      * @throws IllegalArgumentException If name is null, or roles or
      *                                  addresses' size is zero.
      */
-    public IfcOrganization(IfcIdentifier id, @NotNull IfcLabel name,
-                           IfcText description, List<IfcActorRole> roles,
+    public IfcOrganization(IfcIdentifier id, @NotNull IfcLabel name, IfcText description, List<IfcActorRole> roles,
                            List<IfcAddress> addresses) {
         if (name == null) {
             throw new IllegalArgumentException("name cannot be null");
@@ -58,10 +76,8 @@ public class IfcOrganization extends IfcEntity {
             return false;
         }
         IfcOrganization that = (IfcOrganization) o;
-        return Objects.equals(id, that.id) && name.equals(that.name) &&
-                Objects.equals(description, that.description) &&
-                Objects.equals(roles, that.roles) &&
-                Objects.equals(addresses, that.addresses);
+        return Objects.equals(id, that.id) && name.equals(that.name) && Objects.equals(description, that.description) &&
+                Objects.equals(roles, that.roles) && Objects.equals(addresses, that.addresses);
     }
 
     @Override

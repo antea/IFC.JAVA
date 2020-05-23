@@ -1,3 +1,22 @@
+/*
+ * Copyright (C) 2019 Pieter Pauwels, Ghent University
+ * Modifications Copyright (C) 2020 Giovanni Velludo
+ *
+ * This file is part of IFC.JAVA.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package buildingsmart.ifc;
 
 import com.sun.istack.internal.NotNull;
@@ -15,8 +34,7 @@ import java.util.Objects;
  * direction defines the placement X axis direction, the placement Y axis is
  * derived from this.
  */
-public class IfcAxis2Placement2D extends IfcPlacement
-        implements IfcAxis2Placement {
+public class IfcAxis2Placement2D extends IfcPlacement implements IfcAxis2Placement {
     private final IfcDirection refDirection;
     //private IfcDirection[] P;
 
@@ -30,16 +48,14 @@ public class IfcAxis2Placement2D extends IfcPlacement
      *                                  bidimensional, if refDirection is not
      *                                  null and not bidimensional.
      */
-    public IfcAxis2Placement2D(@NotNull IfcCartesianPoint location,
-                               IfcDirection refDirection) {
+    public IfcAxis2Placement2D(@NotNull IfcCartesianPoint location, IfcDirection refDirection) {
         super(location);
         if (refDirection != null && refDirection.getDim().getValue() != 2) {
             throw new IllegalArgumentException(
                     "if refDirection is not null, it must be bidimensional");
         }
         if (location.getDim().getValue() != 2) {
-            throw new IllegalArgumentException(
-                    "location must be bidimensional");
+            throw new IllegalArgumentException("location must be bidimensional");
         }
         this.refDirection = refDirection;
     }

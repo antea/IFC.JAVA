@@ -1,3 +1,22 @@
+/*
+ * Copyright (C) 2019 Pieter Pauwels, Ghent University
+ * Modifications Copyright (C) 2020 Giovanni Velludo
+ *
+ * This file is part of IFC.JAVA.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package buildingsmart.ifc;
 
 import com.sun.istack.internal.NotNull;
@@ -72,8 +91,7 @@ public class IfcRelAssociates extends IfcRelationship {
      *                                  IfcPropertyDefinition.
      */
     public IfcRelAssociates(@NotNull IfcGloballyUniqueId globalId,
-                            @NotNull IfcOwnerHistory ownerHistory,
-                            IfcLabel name, IfcText description,
+                            @NotNull IfcOwnerHistory ownerHistory, IfcLabel name, IfcText description,
                             @NotNull Set<IfcRoot> relatedObjects) {
         super(globalId, ownerHistory, name, description);
         if (relatedObjects == null) {
@@ -84,8 +102,7 @@ public class IfcRelAssociates extends IfcRelationship {
                     "size of relatedObjects must be at least 1");
         }
         for (IfcRoot obj : relatedObjects) {
-            if (!(obj instanceof IfcObjectDefinition ||
-                    obj instanceof IfcPropertyDefinition)) {
+            if (!(obj instanceof IfcObjectDefinition || obj instanceof IfcPropertyDefinition)) {
                 throw new IllegalArgumentException(
                         "relatedObjects must only contain objects of type " +
                                 "IfcObjectDefinition and " +
@@ -125,8 +142,7 @@ public class IfcRelAssociates extends IfcRelationship {
      *                                  are not of type IfcObjectDefinition nor
      *                                  IfcPropertyDefinition.
      */
-    public IfcRelAssociates(@NotNull IfcOwnerHistory ownerHistory,
-                            IfcLabel name, IfcText description,
+    public IfcRelAssociates(@NotNull IfcOwnerHistory ownerHistory, IfcLabel name, IfcText description,
                             @NotNull Set<IfcRoot> relatedObjects) {
         this(new IfcGloballyUniqueId(), ownerHistory, name, description,
                 relatedObjects);
@@ -163,11 +179,9 @@ public class IfcRelAssociates extends IfcRelationship {
      *                                  IfcPropertyDefinition.
      */
     public IfcRelAssociates(@NotNull IfcGloballyUniqueId globalId,
-                            @NotNull IfcOwnerHistory ownerHistory,
-                            IfcLabel name, IfcText description,
+                            @NotNull IfcOwnerHistory ownerHistory, IfcLabel name, IfcText description,
                             @NotNull IfcRoot... relatedObjects) {
-        this(globalId, ownerHistory, name, description,
-                new HashSet<>(Arrays.asList(relatedObjects)));
+        this(globalId, ownerHistory, name, description, new HashSet<>(Arrays.asList(relatedObjects)));
     }
 
     /**
@@ -195,8 +209,7 @@ public class IfcRelAssociates extends IfcRelationship {
      *                                  are not of type IfcObjectDefinition nor
      *                                  IfcPropertyDefinition.
      */
-    public IfcRelAssociates(@NotNull IfcOwnerHistory ownerHistory,
-                            IfcLabel name, IfcText description,
+    public IfcRelAssociates(@NotNull IfcOwnerHistory ownerHistory, IfcLabel name, IfcText description,
                             @NotNull IfcRoot... relatedObjects) {
         this(new IfcGloballyUniqueId(), ownerHistory, name, description,
                 relatedObjects);

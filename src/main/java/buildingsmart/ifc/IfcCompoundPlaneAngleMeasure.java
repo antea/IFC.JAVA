@@ -1,3 +1,22 @@
+/*
+ * Copyright (C) 2019 Pieter Pauwels, Ghent University
+ * Modifications Copyright (C) 2020 Giovanni Velludo
+ *
+ * This file is part of IFC.JAVA.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package buildingsmart.ifc;
 
 import com.sun.istack.internal.NotNull;
@@ -23,8 +42,7 @@ import java.util.Objects;
  * fourth integer measure is the number of millionth-seconds in the range {1 000
  * 000; -1 000 000}</li></p>
  */
-public class IfcCompoundPlaneAngleMeasure
-        implements IfcDefinedType, IfcDerivedMeasureValue {
+public class IfcCompoundPlaneAngleMeasure implements IfcDefinedType, IfcDerivedMeasureValue {
     private final List<IfcInteger> value;
 
     /**
@@ -85,8 +103,7 @@ public class IfcCompoundPlaneAngleMeasure
             throw new IllegalArgumentException("value cannot be null");
         }
         if (value.length != 3 && value.length != 4) {
-            throw new IllegalArgumentException(
-                    "length of value must be 3 or 4");
+            throw new IllegalArgumentException("length of value must be 3 or 4");
         }
         ArrayList<IfcInteger> integers = new ArrayList<>(value.length);
         for (int val : value) {
@@ -96,20 +113,17 @@ public class IfcCompoundPlaneAngleMeasure
                 integers.get(0).getValue() >= 360) {
             throw new IllegalArgumentException("value[0] is out of bounds");
         }
-        if (integers.get(1).getValue() < -60 ||
-                integers.get(1).getValue() >= 60) {
+        if (integers.get(1).getValue() < -60 || integers.get(1).getValue() >= 60) {
             throw new IllegalArgumentException("value[1] is out of bounds");
         }
-        if (integers.get(2).getValue() < -60 ||
-                integers.get(2).getValue() >= 60) {
+        if (integers.get(2).getValue() < -60 || integers.get(2).getValue() >= 60) {
             throw new IllegalArgumentException("value[2] is out of bounds");
         }
         if (!((integers.get(0).getValue() >= 0 &&
                 integers.get(1).getValue() >= 0 &&
-                integers.get(2).getValue() >= 0) ||
-                (integers.get(0).getValue() <= 0 &&
-                        integers.get(1).getValue() <= 0 &&
-                        integers.get(2).getValue() <= 0))) {
+                integers.get(2).getValue() >= 0) || (integers.get(0).getValue() <= 0 &&
+                integers.get(1).getValue() <= 0 &&
+                integers.get(2).getValue() <= 0))) {
             throw new IllegalArgumentException(
                     "The measure components must have the same sign (positive" +
                             " or negative)");

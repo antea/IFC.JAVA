@@ -1,3 +1,22 @@
+/*
+ * Copyright (C) 2019 Pieter Pauwels, Ghent University
+ * Modifications Copyright (C) 2020 Giovanni Velludo
+ *
+ * This file is part of IFC.JAVA.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package buildingsmart.ifc;
 
 import com.sun.istack.internal.NotNull;
@@ -11,8 +30,7 @@ import java.util.Objects;
  * space. The actual magnitudes of the components have no effect upon the
  * direction being defined, only the ratios X:Y:Z or X:Y are significant.
  */
-public class IfcDirection extends IfcGeometricRepresentationItem
-        implements IfcVectorOrDirection {
+public class IfcDirection extends IfcGeometricRepresentationItem implements IfcVectorOrDirection {
     private final List<IfcReal> directionRatios;
     private final IfcDimensionCount dim; // derived attribute
 
@@ -28,8 +46,7 @@ public class IfcDirection extends IfcGeometricRepresentationItem
      */
     public IfcDirection(@NotNull List<IfcReal> directionRatios) {
         if (directionRatios == null) {
-            throw new IllegalArgumentException(
-                    "directionRatios cannot be null");
+            throw new IllegalArgumentException("directionRatios cannot be null");
         }
         if (directionRatios.size() < 2 || directionRatios.size() > 3) {
             throw new IllegalArgumentException(
@@ -57,8 +74,7 @@ public class IfcDirection extends IfcGeometricRepresentationItem
             throw new IllegalArgumentException(
                     "size of directionRatios must be 2 or 3");
         }
-        List<IfcReal> directionRatiosList =
-                new ArrayList<>(directionRatios.length);
+        List<IfcReal> directionRatiosList = new ArrayList<>(directionRatios.length);
         for (double dirRatio : directionRatios) {
             directionRatiosList.add(new IfcReal(dirRatio));
         }

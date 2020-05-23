@@ -1,3 +1,22 @@
+/*
+ * Copyright (C) 2019 Pieter Pauwels, Ghent University
+ * Modifications Copyright (C) 2020 Giovanni Velludo
+ *
+ * This file is part of IFC.JAVA.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package buildingsmart.ifc;
 
 import buildingsmart.util.Functions;
@@ -16,8 +35,7 @@ import java.util.Objects;
  * The axis is the placement Z axis direction and the ref_direction is an
  * approximation to the placement X axis direction.
  */
-public class IfcAxis2Placement3D extends IfcPlacement
-        implements IfcAxis2Placement {
+public class IfcAxis2Placement3D extends IfcPlacement implements IfcAxis2Placement {
     private final IfcDirection axis;
     private final IfcDirection refDirection;
     //private IfcDirection[] p; TODO: calculate this by normalizing axis and
@@ -52,8 +70,7 @@ public class IfcAxis2Placement3D extends IfcPlacement
      *                                  or both shall be given.</li>
      *                                  </bl>
      */
-    public IfcAxis2Placement3D(@NotNull IfcCartesianPoint location,
-                               IfcDirection axis, IfcDirection refDirection) {
+    public IfcAxis2Placement3D(@NotNull IfcCartesianPoint location, IfcDirection axis, IfcDirection refDirection) {
         super(location);
         if (super.getDim().getValue() != 3) {
             throw new IllegalArgumentException(
@@ -70,14 +87,12 @@ public class IfcAxis2Placement3D extends IfcPlacement
                             " equal to 3");
         }
         if (axis != null && refDirection != null &&
-                Functions.ifcCrossProduct(axis, refDirection).getMagnitude()
-                        .getValue() <= 0) {
+                Functions.ifcCrossProduct(axis, refDirection).getMagnitude().getValue() <= 0) {
             throw new IllegalArgumentException(
                     "axis and refDirection cannot be parallel or " +
                             "anti-parallel");
         }
-        if ((axis == null && refDirection != null) ||
-                (axis != null && refDirection == null)) {
+        if ((axis == null && refDirection != null) || (axis != null && refDirection == null)) {
             throw new IllegalArgumentException(
                     "either both axis and refDirection are set, or none " +
                             "should be set");
@@ -98,8 +113,7 @@ public class IfcAxis2Placement3D extends IfcPlacement
             return false;
         }
         IfcAxis2Placement3D that = (IfcAxis2Placement3D) o;
-        return Objects.equals(axis, that.axis) &&
-                Objects.equals(refDirection, that.refDirection);
+        return Objects.equals(axis, that.axis) && Objects.equals(refDirection, that.refDirection);
     }
 
     @Override

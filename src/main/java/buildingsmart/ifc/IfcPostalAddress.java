@@ -1,3 +1,22 @@
+/*
+ * Copyright (C) 2019 Pieter Pauwels, Ghent University
+ * Modifications Copyright (C) 2020 Giovanni Velludo
+ *
+ * This file is part of IFC.JAVA.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package buildingsmart.ifc;
 
 import java.util.List;
@@ -58,8 +77,7 @@ public class IfcPostalAddress extends IfcAddress {
      *                                  addressLines has size lower than 1.
      */
     public IfcPostalAddress(IfcAddressTypeEnum purpose, IfcText description,
-                            IfcLabel userDefinedPurpose,
-                            IfcLabel internalLocation,
+                            IfcLabel userDefinedPurpose, IfcLabel internalLocation,
                             List<IfcLabel> addressLines, IfcLabel postalBox,
                             IfcLabel town, IfcLabel region, IfcLabel postalCode,
                             IfcLabel country) {
@@ -97,12 +115,9 @@ public class IfcPostalAddress extends IfcAddress {
         }
         IfcPostalAddress that = (IfcPostalAddress) o;
         return Objects.equals(internalLocation, that.internalLocation) &&
-                Objects.equals(addressLines, that.addressLines) &&
-                Objects.equals(postalBox, that.postalBox) &&
-                Objects.equals(town, that.town) &&
-                Objects.equals(region, that.region) &&
-                Objects.equals(postalCode, that.postalCode) &&
-                Objects.equals(country, that.country);
+                Objects.equals(addressLines, that.addressLines) && Objects.equals(postalBox, that.postalBox) &&
+                Objects.equals(town, that.town) && Objects.equals(region, that.region) &&
+                Objects.equals(postalCode, that.postalCode) && Objects.equals(country, that.country);
     }
 
     @Override

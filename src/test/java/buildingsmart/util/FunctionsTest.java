@@ -1,3 +1,21 @@
+/*
+ * Copyright (C) 2020 Giovanni Velludo
+ *
+ * This file is part of IFC.JAVA.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package buildingsmart.util;
 
 import buildingsmart.ifc.IfcDirection;
@@ -22,8 +40,7 @@ public class FunctionsTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void ifcCrossProduct_bidimensionalDirection() {
-        Functions.ifcCrossProduct(new IfcDirection(2, 6, 3),
-                new IfcDirection(1, 9));
+        Functions.ifcCrossProduct(new IfcDirection(2, 6, 3), new IfcDirection(1, 9));
     }
 
     @Test
@@ -43,8 +60,7 @@ public class FunctionsTest {
     @Test
     public void ifcCrossProduct_antiParallelDirections_returnsZeroMagnitudeVector() {
         IfcVector vector = Functions
-                .ifcCrossProduct(new IfcDirection(-1, -2, -4),
-                        new IfcDirection(1, 2, 4));
+                .ifcCrossProduct(new IfcDirection(-1, -2, -4), new IfcDirection(1, 2, 4));
         assertEquals(0, vector.getMagnitude().getValue(), DELTA);
     }
 
@@ -65,10 +81,8 @@ public class FunctionsTest {
         // the result to be on the axis perpendicular to that plane
         assertEquals(0, vector.getDirectionRatios().get(0).getValue(), DELTA);
         assertEquals(0, vector.getDirectionRatios().get(1).getValue(), DELTA);
-        assertEquals(expectedComp,
-                vector.getDirectionRatios().get(2).getValue(), DELTA);
-        assertEquals(vector.getMagnitude().getValue(),
-                abs(vector.getDirectionRatios().get(2).getValue()), DELTA);
+        assertEquals(expectedComp, vector.getDirectionRatios().get(2).getValue(), DELTA);
+        assertEquals(vector.getMagnitude().getValue(), abs(vector.getDirectionRatios().get(2).getValue()), DELTA);
     }
 
     @Test
@@ -102,22 +116,19 @@ public class FunctionsTest {
 
     @Test
     public void ifcNormaliseIfcVector_directionComponentsAreZero_returnsNull() {
-        IfcVector zeroDirection = new IfcVector(new IfcDirection(0, 0, 0),
-                new IfcLengthMeasure(3));
+        IfcVector zeroDirection = new IfcVector(new IfcDirection(0, 0, 0), new IfcLengthMeasure(3));
         assertNull(Functions.ifcNormalise(zeroDirection));
     }
 
     @Test
     public void ifcNormaliseIfcVector_zeroMagnitude_returnsNull() {
-        IfcVector zeroMagnitude = new IfcVector(new IfcDirection(4, 3, 1),
-                new IfcLengthMeasure(0));
+        IfcVector zeroMagnitude = new IfcVector(new IfcDirection(4, 3, 1), new IfcLengthMeasure(0));
         assertNull(Functions.ifcNormalise(zeroMagnitude));
     }
 
     @Test
     public void ifcNormaliseIfcVector_regularVector_isNormalized() {
-        IfcVector vector = new IfcVector(new IfcDirection(4, 4, 4),
-                new IfcLengthMeasure(10));
+        IfcVector vector = new IfcVector(new IfcDirection(4, 4, 4), new IfcLengthMeasure(10));
         // components of a normalized vector have a sum of squares of 1
         double expectedComponents = sqrt(1.0 / vector.getDim().getValue());
         double expectedMagnitude = 1;

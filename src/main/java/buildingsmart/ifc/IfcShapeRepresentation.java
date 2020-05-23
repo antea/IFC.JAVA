@@ -1,3 +1,22 @@
+/*
+ * Copyright (C) 2019 Pieter Pauwels, Ghent University
+ * Modifications Copyright (C) 2020 Giovanni Velludo
+ *
+ * This file is part of IFC.JAVA.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package buildingsmart.ifc;
 
 import buildingsmart.util.Functions;
@@ -122,22 +141,19 @@ public class IfcShapeRepresentation extends IfcShapeModel {
      *                                  representationType (see the
      *                                  specification of this class).
      */
-    public IfcShapeRepresentation(
-            @NotNull IfcRepresentationContext contextOfItems,
-            IfcLabel representationIdentifier,
-            @NotNull IfcLabel representationType,
-            @NotNull Set<IfcRepresentationItem> items) {
+    public IfcShapeRepresentation(@NotNull IfcRepresentationContext contextOfItems,
+                                  IfcLabel representationIdentifier,
+                                  @NotNull IfcLabel representationType,
+                                  @NotNull Set<IfcRepresentationItem> items) {
         super(contextOfItems, representationIdentifier, representationType,
                 items);
         if (!(contextOfItems instanceof IfcGeometricRepresentationContext)) {
-            throw new IllegalArgumentException(
-                    "contextOfItems must be of type " +
-                            "IfcGeometricRepresentationContext");
+            throw new IllegalArgumentException("contextOfItems must be of type " +
+                    "IfcGeometricRepresentationContext");
         }
         for (IfcRepresentationItem item : items) {
             if (item instanceof IfcTopologicalRepresentationItem &&
-                    !(item instanceof IfcVertexPoint ||
-                            item instanceof IfcEdgeCurve ||
+                    !(item instanceof IfcVertexPoint || item instanceof IfcEdgeCurve ||
                             item instanceof IfcFaceSurface)) {
                 throw new IllegalArgumentException(
                         "items cannot contain objects of type " +
@@ -150,8 +166,7 @@ public class IfcShapeRepresentation extends IfcShapeModel {
             throw new IllegalArgumentException(
                     "representationType cannot be " + "null");
         }
-        if (!Objects.equals(Functions
-                        .ifcShapeRepresentationTypes(representationType, items),
+        if (!Objects.equals(Functions.ifcShapeRepresentationTypes(representationType, items),
                 true)) {
             throw new IllegalArgumentException(
                     "either items contains objects of the" +
@@ -196,12 +211,10 @@ public class IfcShapeRepresentation extends IfcShapeModel {
      *                                  representationType (see the
      *                                  specification of this class).
      */
-    public IfcShapeRepresentation(
-            @NotNull IfcRepresentationContext contextOfItems,
-            IfcLabel representationIdentifier,
-            @NotNull IfcLabel representationType,
-            @NotNull IfcRepresentationItem... items) {
-        this(contextOfItems, representationIdentifier, representationType,
-                new HashSet<>(Arrays.asList(items)));
+    public IfcShapeRepresentation(@NotNull IfcRepresentationContext contextOfItems,
+                                  IfcLabel representationIdentifier,
+                                  @NotNull IfcLabel representationType,
+                                  @NotNull IfcRepresentationItem... items) {
+        this(contextOfItems, representationIdentifier, representationType, new HashSet<>(Arrays.asList(items)));
     }
 }
