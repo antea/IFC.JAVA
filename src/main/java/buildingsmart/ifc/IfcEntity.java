@@ -23,7 +23,20 @@ package buildingsmart.ifc;
  * part of the IFC specification, its only purpose is to distinguish IFC
  * entities from IFC defined types and enumerations.
  */
-abstract class IfcEntity {
+public abstract class IfcEntity {
+
+    /**
+     * @return The attributes that should be serialized in the representation of
+     * this class in an IFC file.
+     */
+    public abstract Object[] getAttributes();
+
+    /**
+     * @return The attributes representing an inverse relationship which must be
+     * serialized after this class.
+     */
+    public abstract Object[] getInverseAttributes();
+
     @Override
     public abstract boolean equals(Object o);
 
