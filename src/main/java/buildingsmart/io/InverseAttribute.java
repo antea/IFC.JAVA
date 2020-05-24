@@ -16,18 +16,17 @@
  * limitations under the License.
  */
 
-package buildingsmart.ifc;
+package buildingsmart.io;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * One of the entities defined in the IFC specification. This interface is not
- * part of the IFC specification, its only purpose is to distinguish IFC
- * entities from IFC defined types and enumerations.
+ * Indicates a field that represent an inverse relationship (that should be
+ * serialized after the entity) of an IFC entity.
  */
-public abstract class IfcEntity {
-
-    @Override
-    public abstract boolean equals(Object o);
-
-    @Override
-    public abstract int hashCode();
+@Target(ElementType.FIELD) @Retention(RetentionPolicy.RUNTIME)
+public @interface InverseAttribute {
 }

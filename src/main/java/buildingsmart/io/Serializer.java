@@ -25,101 +25,117 @@ import buildingsmart.ifc.IfcProject;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.lang.reflect.Field;
+import java.util.*;
 
 public class Serializer {
 
-    private static final Map<IfcEntity, Long> serializedEntitiesIds =
-            new HashMap<>();
-    private static final StringBuilder dataSection = new StringBuilder();
-    private static long idCounter = 0;
+    private final Map<IfcEntity, Long> serializedEntitiesIds;
+    private final StringBuilder dataSection;
+    private long idCounter = 0;
 
-    /**
-     * @param project the {@link IfcProject} to serialize.
-     * @return A String containing the DATA section of an IFC file with the
-     * representation of the given project. The tags indicating the beginning
-     * and the end of the DATA section are not included.
-     */
-    public static String serialize(IfcProject project) {
-        serialize((Object) project);
-        String result = dataSection.toString();
-        serializedEntitiesIds.clear();
-        dataSection.setLength(0);
+    public Serializer() {
+        serializedEntitiesIds = new HashMap<>();
+        dataSection = new StringBuilder();
         idCounter = 0;
-        return result;
     }
 
     /**
-     * @param obj The object to serialize in an IFC file.
-     * @return The serialization of the object:
-     * <ul>
-     *     <li>if it is an instance of IfcDefinedType, returns the
-     *     serialization of
-     *     the Type according to the STEP file specification will be returned
-     *     ;</li>
-     *     <li>if it is a List or a Set, each contained object will be
-     *     serialized, its serialization put between parenthesis, and a
-     *     String containing the parentheses and everything between them will
-     *     be returned;</li>
-     *     <li>if it is an instance of IfcEntity:</li>
-     *          <li>if the entity was already serialized, a String containing
-     *          a hash mark and the Id of the entity in the IFC file will be
-     *          returnedi;</li>
-     *          <li>if the entity wasn't already serialized, its attributes
-     *          will be serialized, then the attributes which represent an
-     *          inverse relationship will also be serialized (for example,
-     *          these will be isDecomposedBy in the case of an IfcProject). A
-     *          String containing the representation of the entity in the IFC
-     *          file will be returned;</li>
-     * </ul>
+     * @param entity The entity for which to return the array of attributes.
+     * @return The attributes that should be serialized in the representation of
+     * {@code entity} in an IFC file, in the order defined by their {@link
+     * Order} annotation.
+     * @throws IllegalArgumentException If it's not possible to access the
+     *                                  values of entity's fields annotated with
+     *                                  {@link Attribute} by using reflection.
      */
-    private static String serialize(Object obj) {
-        if (obj instanceof IfcDefinedType) {
-            return ((IfcDefinedType) obj).serialize();
-        } else if (obj instanceof Collection) {
-            Collection coll = (Collection) obj;
-            StringBuilder serializedColl = new StringBuilder("(");
-            for (Object element : coll) {
-                serializedColl.append(serialize(element)).append(",");
+    private static Object[] getAttributes(IfcEntity entity) {
+        List<Field> fields = getAllFields(entity.getClass());
+        fields.removeIf(field -> field.getAnnotation(Attribute.class) == null);
+        List<Field> sortedFields = sortFields(fields);
+        Object[] attributes = new Object[sortedFields.size()];
+        for (int i = 0; i < attributes.length; i++) {
+            Field field = sortedFields.get(i);
+            field.setAccessible(true);
+            try {
+                attributes[i] = field.get(entity);
+            } catch (IllegalAccessException e) {
+                throw new IllegalArgumentException(
+                        "entity contains inaccessible fields");
             }
-            serializedColl.deleteCharAt(serializedColl.length());
-            // removing the last comma
-            serializedColl.append(")");
-            return serializedColl.toString();
-        } else if (serializedEntitiesIds.containsKey(obj)) {
-            // if obj is neither an IfcDefinedType nor a Collection (List or
-            // Set), then it must be an IfcEntity
-            return "#" + serializedEntitiesIds.get(obj);
         }
-        // obj hasn't been serialized yet, so we'll do it now
-        IfcEntity entity = (IfcEntity) obj;
-        StringBuilder serializedEntity = new StringBuilder(
-                entity.getClass().getName().toUpperCase() + "(");
-        Object[] attributes = entity.getAttributes();
-        for (Object attr : attributes) {
-            serializedEntity.append(serialize(attr)).append(",");
-        }
-        serializedEntity.deleteCharAt(serializedEntity.length());
-        // removing the last comma
-        serializedEntity.append(");\n");
-        String serializedEntityString =
-                "#" + ++idCounter + "=" + serializedEntity.toString();
-        dataSection.append(serializedEntityString);
-        serializedEntitiesIds.put(entity, idCounter);
+        return attributes;
+    }
 
-        Object[] invAttributes = entity.getInverseAttributes();
-        for (Object attr : invAttributes) {
-            serialize(attr);
-            // the result of the serialization is ignored, because the only
-            // thing that matters is that the entities in invAttributes are
-            // serialized in dataSection. For example, if entity is IfcProject
-            // we want the entities referenced in isDecomposedBy to be
-            // serialized in dataSection.
+    /**
+     * @param entity The entity for which to return the array of attributes.
+     * @return The attributes representing an inverse relationship, which must
+     * be serialized after {@code entity} is serialized, in the order defined by
+     * their {@link Order} annotation. This is because inverse relationships are
+     * references to other objects which contain a reference to this object in
+     * their regular attributes, so they can be serialized only after this
+     * entity has been; and also because they're not referenced directly in the
+     * tree of attributes starting from IfcProject.
+     * @throws IllegalArgumentException If it's not possible to access the
+     *                                  values of entity's fields annotated with
+     *                                  {@link InverseAttribute} by using
+     *                                  reflection.
+     */
+    private static Object[] getInverseAttributes(IfcEntity entity) {
+        List<Field> fields = getAllFields(entity.getClass());
+        fields.removeIf(
+                field -> field.getAnnotation(InverseAttribute.class) == null);
+        List<Field> sortedFields = sortFields(fields);
+        Object[] invAttributes = new Object[sortedFields.size()];
+        for (int i = 0; i < invAttributes.length; i++) {
+            Field field = sortedFields.get(i);
+            field.setAccessible(true);
+            try {
+                invAttributes[i] = field.get(entity);
+            } catch (IllegalAccessException e) {
+                throw new IllegalArgumentException(
+                        "entity contains inaccessible fields");
+            }
         }
+        return invAttributes;
+    }
 
-        return "#" + serializedEntitiesIds.get(obj);
+    /**
+     * @param type The type for which to get all fields.
+     * @return The fields of the given type and all its superclasses. If there
+     * are none, the List will be empty.
+     */
+    private static List<Field> getAllFields(Class<?> type) {
+        List<Field> fields = new ArrayList<>();
+        while (type.getSuperclass() != null) {
+            fields.addAll(Arrays.asList(type.getDeclaredFields()));
+            type = type.getSuperclass();
+        }
+        return fields;
+    }
+
+    /**
+     * @param unsortedFields The List of Field to sort. All Fields should be
+     *                       annotated with {@link Order}.
+     * @return The sorted list, based on the value of the field's Order
+     * annotation (ascending).
+     * @throws IllegalArgumentException If any of the Fields in unsortedFields
+     *                                  are not annotated with {@link Order}.
+     */
+    private static List<Field> sortFields(List<Field> unsortedFields) {
+        unsortedFields.sort((o1, o2) -> {
+            Order or1 = o1.getAnnotation(Order.class);
+            Order or2 = o2.getAnnotation(Order.class);
+            // nulls last
+            if (or1 != null && or2 != null) {
+                return or1.value() - or2.value();
+            }
+            throw new IllegalArgumentException(
+                    "unsortedFields must contain only Fields annotated " +
+                            "with Order");
+        });
+
+        return unsortedFields;
     }
 
     /**
@@ -176,5 +192,97 @@ public class Serializer {
         FileWriter fileWriter = new FileWriter(outputFile);
         fileWriter.write(fileContent);
         fileWriter.close();
+    }
+
+    /**
+     * @param project the {@link IfcProject} to serialize.
+     * @return A String containing the DATA section of an IFC file with the
+     * representation of the given project. The tags indicating the beginning
+     * and the end of the DATA section are not included.
+     */
+    public String serialize(IfcProject project) {
+        serialize((Object) project);
+        String result = dataSection.toString();
+        serializedEntitiesIds.clear();
+        dataSection.setLength(0);
+        idCounter = 0;
+        return result;
+    }
+
+    /**
+     * @param obj The object to serialize in an IFC file.
+     * @return The serialization of the object:
+     * <ul>
+     *     <li>if it is an instance of IfcDefinedType, returns the
+     *     serialization of
+     *     the Type according to the STEP file specification will be returned
+     *     ;</li>
+     *     <li>if it is a List or a Set, each contained object will be
+     *     serialized, its serialization put between parenthesis, and a
+     *     String containing the parentheses and everything between them will
+     *     be returned;</li>
+     *     <li>if it is an instance of IfcEntity:</li>
+     *          <li>if the entity was already serialized, a String containing
+     *          a hash mark and the Id of the entity in the IFC file will be
+     *          returnedi;</li>
+     *          <li>if the entity wasn't already serialized, its attributes
+     *          will be serialized, then the attributes which represent an
+     *          inverse relationship will also be serialized (for example,
+     *          these will be isDecomposedBy in the case of an IfcProject). A
+     *          String containing the representation of the entity in the IFC
+     *          file will be returned;</li>
+     * </ul>
+     */
+    private String serialize(Object obj) {
+        if (obj == null) {
+            return "$";
+        }
+        if (obj instanceof IfcDefinedType) {
+            return ((IfcDefinedType) obj).serialize();
+        }
+        if (obj instanceof Collection) {
+            Collection coll = (Collection) obj;
+            StringBuilder serializedColl = new StringBuilder("(");
+            for (Object element : coll) {
+                serializedColl.append(serialize(element)).append(",");
+            }
+            serializedColl.deleteCharAt(serializedColl.length());
+            // removing the last comma
+            serializedColl.append(")");
+            return serializedColl.toString();
+        }
+        Long entityId = serializedEntitiesIds.get(obj);
+        // if obj is neither an IfcDefinedType nor a Collection (List or
+        // Set), then it must be an IfcEntity
+        if (entityId != null) {
+            return "#" + entityId;
+        }
+        // obj hasn't been serialized yet, so we'll do it now
+        IfcEntity entity = (IfcEntity) obj;
+        StringBuilder serializedEntity = new StringBuilder(
+                entity.getClass().getName().toUpperCase() + "(");
+        Object[] attributes = getAttributes(entity);
+        for (Object attr : attributes) {
+            serializedEntity.append(serialize(attr)).append(",");
+        }
+        serializedEntity.deleteCharAt(serializedEntity.length());
+        // removing the last comma
+        serializedEntity.append(");\n");
+        String serializedEntityString =
+                "#" + ++idCounter + "=" + serializedEntity.toString();
+        dataSection.append(serializedEntityString);
+        serializedEntitiesIds.put(entity, idCounter);
+
+        Object[] invAttributes = getInverseAttributes(entity);
+        for (Object attr : invAttributes) {
+            serialize(attr);
+            // the return value of serialize() is ignored, because the only
+            // thing that matters is that the entities in invAttributes are
+            // serialized in dataSection. For example, if entity is IfcProject
+            // we want the entities referenced in isDecomposedBy to be
+            // serialized in dataSection.
+        }
+
+        return "#" + serializedEntitiesIds.get(obj);
     }
 }

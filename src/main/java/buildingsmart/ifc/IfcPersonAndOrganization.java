@@ -35,8 +35,11 @@ public class IfcPersonAndOrganization extends IfcEntity {
     /**
      * @param thePerson       The person who is related to the organization.
      * @param theOrganization The organization to which the person is related.
-     * @param roles           Roles played by the person within the context
-     *                        of an organization.
+     * @param roles           Roles played by the person within the context of
+     *                        an organization.
+     * @throws IllegalArgumentException if thePerson or theOrganization is null,
+     *                                  if roles is not null and has size lower
+     *                                  than 1.
      */
     public IfcPersonAndOrganization(@NotNull IfcPerson thePerson,
                                     @NotNull IfcOrganization theOrganization,
@@ -45,7 +48,8 @@ public class IfcPersonAndOrganization extends IfcEntity {
             throw new IllegalArgumentException("thePerson cannot be null");
         }
         if (theOrganization == null) {
-            throw new IllegalArgumentException("theOrganization cannot be null");
+            throw new IllegalArgumentException(
+                    "theOrganization cannot be null");
         }
         if (roles != null && roles.size() < 1) {
             throw new IllegalArgumentException(
@@ -65,7 +69,8 @@ public class IfcPersonAndOrganization extends IfcEntity {
             return false;
         }
         IfcPersonAndOrganization that = (IfcPersonAndOrganization) o;
-        return thePerson.equals(that.thePerson) && theOrganization.equals(that.theOrganization) &&
+        return thePerson.equals(that.thePerson) &&
+                theOrganization.equals(that.theOrganization) &&
                 Objects.equals(roles, that.roles);
     }
 

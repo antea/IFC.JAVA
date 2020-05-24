@@ -38,7 +38,7 @@ public abstract class IfcRepresentationItem extends IfcEntity {
      *                     a curve style, including colour and thickness to a
      *                     geometric curve.
      */
-    public void setStyledByItem(IfcStyledItem styledByItem) {
+    protected void setStyledByItem(IfcStyledItem styledByItem) {
         this.styledByItem = styledByItem;
     }
 

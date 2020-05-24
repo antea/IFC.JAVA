@@ -40,6 +40,8 @@ public class IfcStyledItem extends IfcRepresentationItem {
     private final IfcLabel name;
 
     /**
+     * Creates a new IfcStyledItem and assigns it to item.styledByItem.
+     *
      * @param item   A geometric representation item to which the style is
      *               assigned.
      * @param styles Representation style assignments which are assigned to an
@@ -64,11 +66,14 @@ public class IfcStyledItem extends IfcRepresentationItem {
                     "item cannot be of type IfcStyledItem");
         }
         this.item = item;
+        item.setStyledByItem(this);
         this.styles = styles;
         this.name = name;
     }
 
     /**
+     * Creates a new IfcStyledItem and assigns it to item.styledByItem.
+     *
      * @param item   A geometric representation item to which the style is
      *               assigned.
      * @param styles Representation style assignments which are assigned to an
@@ -82,21 +87,8 @@ public class IfcStyledItem extends IfcRepresentationItem {
     public IfcStyledItem(IfcRepresentationItem item,
                          @NotNull IfcPresentationStyleAssignment styles,
                          IfcLabel name) {
-        if (styles == null) {
-            throw new IllegalArgumentException("styles cannot be null");
-        }
-        if (item instanceof IfcStyledItem) {
-            throw new IllegalArgumentException(
-                    "item cannot be of type IfcStyledItem");
-        }
-        this.item = item;
-        /*
-        there's an ArrayList under the hood, in this case it's a better
-        choice than HashSet because there's no point in calculating an
-        hash if there's only one element in the Set
-         */
-        this.styles = new CopyOnWriteArraySet<>(Collections.singletonList(styles));
-        this.name = name;
+        this(item, new CopyOnWriteArraySet<>(Collections.singletonList(styles)),
+                name);
     }
 
     @Override
