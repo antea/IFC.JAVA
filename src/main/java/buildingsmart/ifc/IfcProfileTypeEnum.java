@@ -19,6 +19,8 @@
 
 package buildingsmart.ifc;
 
+import buildingsmart.io.IfcDefinedType;
+
 /**
  * The enumeration defines whether the definition of a profile shape shall be
  * geometrically resolved into a curve or into a surface.

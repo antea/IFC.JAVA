@@ -19,6 +19,8 @@
 
 package buildingsmart.ifc;
 
+import buildingsmart.io.IfcDefinedType;
+
 /**
  * An SI prefix is the name of a prefix that may be associated with an SI unit.
  * The definitions of SI prefixes are specified in ISO 1000 (clause 3).

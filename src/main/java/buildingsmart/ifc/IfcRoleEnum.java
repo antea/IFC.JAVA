@@ -19,6 +19,8 @@
 
 package buildingsmart.ifc;
 
+import buildingsmart.io.IfcDefinedType;
+
 /**
  * Roles which may be played by an actor.
  */

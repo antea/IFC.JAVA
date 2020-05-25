@@ -19,6 +19,7 @@
 
 package buildingsmart.ifc;
 
+import buildingsmart.io.IfcEntity;
 import buildingsmart.util.Pair;
 import com.sun.istack.internal.NotNull;
 

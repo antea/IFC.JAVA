@@ -19,6 +19,8 @@
 
 package buildingsmart.ifc;
 
+import buildingsmart.io.IfcDefinedType;
+
 /**
  * An SI unit name is the name of an SI unit. The definitions of the names of SI
  * units are specified in ISO 1000 (clause 2).

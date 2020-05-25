@@ -25,7 +25,9 @@ import java.lang.annotation.Target;
 
 /**
  * Indicates a field that is an attribute of an IFC entity, meaning that it must
- * be included in the serialization of the entity.
+ * be included in the serialization of the entity. All fields having this
+ * annotation must also be annotated with {@link Order}, and they cannot be
+ * annotated with {@link InverseAttribute}.
  */
 @Target(ElementType.FIELD) @Retention(RetentionPolicy.RUNTIME)
 public @interface Attribute {

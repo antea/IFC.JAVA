@@ -25,7 +25,16 @@ import java.lang.annotation.Target;
 
 /**
  * Indicates a field that represent an inverse relationship (that should be
- * serialized after the entity) of an IFC entity.
+ * serialized after the entity) of an IFC entity. All fields having this
+ * annotation must also be annotated with {@link Order}, and they cannot be
+ * annotated with {@link Attribute}.
+ * </p>
+ * Fields annotated with this Annotation are serialized after the entity they're
+ * in, because inverse relationships are references to entities which contain a
+ * reference to this entity in their regular attributes, so they can be
+ * serialized only after this entity has been; and also because they're not
+ * referenced directly in the tree of {@link Attribute}s starting from
+ * IfcProject.
  */
 @Target(ElementType.FIELD) @Retention(RetentionPolicy.RUNTIME)
 public @interface InverseAttribute {

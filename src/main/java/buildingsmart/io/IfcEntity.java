@@ -16,12 +16,18 @@
  * limitations under the License.
  */
 
-package buildingsmart.ifc;
+package buildingsmart.io;
 
 /**
  * One of the entities defined in the IFC specification. This interface is not
  * part of the IFC specification, its only purpose is to distinguish IFC
  * entities from IFC defined types and enumerations.
+ * </p>
+ * Subclasses of this class must have fields of type {@link IfcEntity} (or
+ * Collections thereof) annotated with either {@link Attribute} or {@link
+ * InverseAttribute}, in both cases they must also be annotated with {@link
+ * Order}. Fields of type {@link IfcDefinedType} must be annotated with {@link
+ * Attribute} and {@link Order}.
  */
 public abstract class IfcEntity {
 

@@ -19,6 +19,8 @@
 
 package buildingsmart.ifc;
 
+import buildingsmart.io.IfcDefinedType;
+
 /**
  * Enumeration that provides an indication, whether the spatial structure
  * element or proxy esents a:

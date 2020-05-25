@@ -19,6 +19,8 @@
 
 package buildingsmart.ifc;
 
+import buildingsmart.io.IfcEntity;
+
 /**
  * Abstract supertype for the special types defining the object coordinate
  * system. The

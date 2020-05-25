@@ -19,6 +19,8 @@
 
 package buildingsmart.ifc;
 
+import buildingsmart.io.IfcDefinedType;
+
 /**
  * Denotion of whether negative, positive or both sides of a surface are being
  * referenced.

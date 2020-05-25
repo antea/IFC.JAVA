@@ -19,6 +19,8 @@
 
 package buildingsmart.ifc;
 
+import buildingsmart.io.IfcDefinedType;
+
 /**
  * An enumeration type for allowed unit types of IfcNamedUnit.
  */

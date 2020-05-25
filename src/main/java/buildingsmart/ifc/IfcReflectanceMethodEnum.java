@@ -19,6 +19,8 @@
 
 package buildingsmart.ifc;
 
+import buildingsmart.io.IfcDefinedType;
+
 /**
  * The IfcReflectanceMethodEnum defines the range of different reflectance
  * methods available.

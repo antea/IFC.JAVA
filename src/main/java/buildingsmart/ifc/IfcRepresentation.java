@@ -19,6 +19,7 @@
 
 package buildingsmart.ifc;
 
+import buildingsmart.io.IfcEntity;
 import com.sun.istack.internal.NotNull;
 
 import java.util.Arrays;

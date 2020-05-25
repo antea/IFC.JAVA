@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package buildingsmart.ifc;
+package buildingsmart.io;
 
 /**
  * One of the types defined in the IFC specification, which can be serialized

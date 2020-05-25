@@ -19,6 +19,8 @@
 
 package buildingsmart.ifc;
 
+import buildingsmart.io.IfcEntity;
+
 import java.util.Objects;
 
 /**

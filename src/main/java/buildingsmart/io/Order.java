@@ -24,14 +24,18 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Indicates the order in which a field with annotation Attribute or
- * InverseAttribute should be serialized in an IFC file. When applying this
- * annotation on fields in a class, you should continue counting from the
- * highest value in the class' superclass. Attributes and InverseAttributes use
- * two different orders, so both the first Attribute and the first
- * InverseAttribute in a class will have value == 0.
+ * Indicates the order in which fields with annotation {@link Attribute} or
+ * {@link InverseAttribute} should be serialized in an IFC file. All fields
+ * annotated with the same {@link Attribute} or {@link InverseAttribute}
+ * Annotation must have a different value between each other (including fields
+ * of superclasses). When applying this annotation on fields in a class, you
+ * should continue counting from the highest value in the class' superclass.
+ * Attributes and InverseAttributes have two different orderings, so both the
+ * first {@link Attribute} and the first {@link InverseAttribute} in a class
+ * will have value == 0.
  */
-@Target(ElementType.FIELD) @Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.FIELD)
+@Retention(RetentionPolicy.RUNTIME)
 public @interface Order {
     int value();
 }
