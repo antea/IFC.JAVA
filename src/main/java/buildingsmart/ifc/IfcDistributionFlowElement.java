@@ -26,9 +26,12 @@ public class IfcDistributionFlowElement extends IfcDistributionElement {
                                       IfcOwnerHistory ownerHistory,
                                       IfcLabel name, IfcText description,
                                       IfcLabel objectType,
+                                      IfcObjectPlacement objectPlacement,
+                                      IfcProductRepresentation representation,
+                                      IfcIdentifier tag,
                                       IfcRelFlowControlElements[] hasControlElements) {
-
-        super(globalId, ownerHistory, name, description, objectType);
+        super(globalId, ownerHistory, name, description, objectType,
+                objectPlacement, representation, tag);
         HasControlElements = hasControlElements;
     }
 }

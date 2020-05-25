@@ -19,7 +19,32 @@
 
 package buildingsmart.ifc;
 
+import java.util.List;
+
 public class IfcMaterialDefinitionRepresentation
         extends IfcProductRepresentation {
     private IfcMaterial RepresentedMaterial;
+
+    /**
+     * @param name            The word or group of words by which the product
+     *                        representation is known.
+     * @param description     The word or group of words that characterize the
+     *                        product representation. It can be used to add
+     *                        additional meaning to the name of the product
+     *                        representation.
+     * @param representations Contained list of representations (including shape
+     *                        representations). Each member defines a valid
+     *                        representation of a particular type within a
+     *                        particular representation context.
+     * @throws IllegalArgumentException If representations is null, or if its
+     * size
+     *                                  is lower than 1.
+     */
+    public IfcMaterialDefinitionRepresentation(IfcLabel name,
+                                               IfcText description,
+                                               List<IfcRepresentation> representations,
+                                               IfcMaterial representedMaterial) {
+        super(name, description, representations);
+        RepresentedMaterial = representedMaterial;
+    }
 }

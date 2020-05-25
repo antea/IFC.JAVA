@@ -24,9 +24,12 @@ public class IfcStructuralCurveMemberVarying extends IfcStructuralCurveMember {
                                            IfcOwnerHistory ownerHistory,
                                            IfcLabel name, IfcText description,
                                            IfcLabel objectType,
-                                           IfcRelConnectsStructuralElement[] referencesElement,
-                                           IfcStructuralCurveTypeEnum predefinedType) {
+                                           IfcObjectPlacement objectPlacement,
+                                           IfcProductRepresentation representation,
+                                           IfcRelConnectsStructuralActivity[] assignedStructuralActivity,
+                                           IfcRelConnectsStructuralElement[] referencesElement) {
         super(globalId, ownerHistory, name, description, objectType,
-                referencesElement, predefinedType);
+                objectPlacement, representation, assignedStructuralActivity,
+                referencesElement);
     }
 }

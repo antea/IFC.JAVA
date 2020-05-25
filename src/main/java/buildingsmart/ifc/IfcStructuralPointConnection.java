@@ -24,8 +24,12 @@ public class IfcStructuralPointConnection extends IfcStructuralConnection {
                                         IfcOwnerHistory ownerHistory,
                                         IfcLabel name, IfcText description,
                                         IfcLabel objectType,
+                                        IfcObjectPlacement objectPlacement,
+                                        IfcProductRepresentation representation,
+                                        IfcRelConnectsStructuralActivity[] assignedStructuralActivity,
                                         IfcBoundaryCondition appliedCondition) {
         super(globalId, ownerHistory, name, description, objectType,
+                objectPlacement, representation, assignedStructuralActivity,
                 appliedCondition);
     }
 }

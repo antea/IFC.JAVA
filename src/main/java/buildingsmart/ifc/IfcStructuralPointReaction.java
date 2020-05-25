@@ -24,7 +24,11 @@ public class IfcStructuralPointReaction extends IfcStructuralReaction {
                                       IfcOwnerHistory ownerHistory,
                                       IfcLabel name, IfcText description,
                                       IfcLabel objectType,
+                                      IfcObjectPlacement objectPlacement,
+                                      IfcProductRepresentation representation,
+                                      IfcStructuralLoad appliedLoad,
                                       IfcStructuralAction[] causes) {
-        super(globalId, ownerHistory, name, description, objectType, causes);
+        super(globalId, ownerHistory, name, description, objectType,
+                objectPlacement, representation, appliedLoad, causes);
     }
 }

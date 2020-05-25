@@ -28,12 +28,15 @@ public class IfcStructuralPlanarActionVarying
     public IfcStructuralPlanarActionVarying(IfcGloballyUniqueId globalId,
                                             IfcOwnerHistory ownerHistory,
                                             IfcLabel name, IfcText description,
-                                            IfcLabel objectType, boolean destabilizingLoad,
-                                            IfcProjectedOrTrueLengthEnum projectedOrTrue,
+                                            IfcLabel objectType,
+                                            IfcObjectPlacement objectPlacement,
+                                            IfcProductRepresentation representation,
+                                            IfcStructuralLoad appliedLoad,
+                                            boolean destabilizingLoad,
                                             IfcShapeAspect varyingAppliedLoadLocation) {
-
         super(globalId, ownerHistory, name, description, objectType,
-                destabilizingLoad, projectedOrTrue);
+                objectPlacement, representation, appliedLoad,
+                destabilizingLoad);
         VaryingAppliedLoadLocation = varyingAppliedLoadLocation;
     }
 }

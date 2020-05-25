@@ -20,16 +20,15 @@
 package buildingsmart.ifc;
 
 public class IfcStructuralCurveMember extends IfcStructuralMember {
-    private final IfcStructuralCurveTypeEnum PredefinedType;
-
     public IfcStructuralCurveMember(IfcGloballyUniqueId globalId,
                                     IfcOwnerHistory ownerHistory, IfcLabel name,
                                     IfcText description, IfcLabel objectType,
-                                    IfcRelConnectsStructuralElement[] referencesElement,
-                                    IfcStructuralCurveTypeEnum predefinedType) {
-
+                                    IfcObjectPlacement objectPlacement,
+                                    IfcProductRepresentation representation,
+                                    IfcRelConnectsStructuralActivity[] assignedStructuralActivity,
+                                    IfcRelConnectsStructuralElement[] referencesElement) {
         super(globalId, ownerHistory, name, description, objectType,
+                objectPlacement, representation, assignedStructuralActivity,
                 referencesElement);
-        PredefinedType = predefinedType;
     }
 }

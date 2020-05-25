@@ -24,8 +24,11 @@ public class IfcDistributionChamberElement extends IfcDistributionFlowElement {
                                          IfcOwnerHistory ownerHistory,
                                          IfcLabel name, IfcText description,
                                          IfcLabel objectType,
+                                         IfcObjectPlacement objectPlacement,
+                                         IfcProductRepresentation representation,
+                                         IfcIdentifier tag,
                                          IfcRelFlowControlElements[] hasControlElements) {
         super(globalId, ownerHistory, name, description, objectType,
-                hasControlElements);
+                objectPlacement, representation, tag, hasControlElements);
     }
 }

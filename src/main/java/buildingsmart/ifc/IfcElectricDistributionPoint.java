@@ -25,13 +25,16 @@ public class IfcElectricDistributionPoint extends IfcFlowController {
     private String UserDefinedFunction;
 
     public IfcElectricDistributionPoint(IfcGloballyUniqueId globalId,
-                                        IfcOwnerHistory ownerHistory, IfcLabel name, IfcText description,
+                                        IfcOwnerHistory ownerHistory,
+                                        IfcLabel name, IfcText description,
                                         IfcLabel objectType,
+                                        IfcObjectPlacement objectPlacement,
+                                        IfcProductRepresentation representation,
+                                        IfcIdentifier tag,
                                         IfcRelFlowControlElements[] hasControlElements,
                                         IfcElectricDistributionPointFunctionEnum distributionPointFunction) {
-
         super(globalId, ownerHistory, name, description, objectType,
-                hasControlElements);
+                objectPlacement, representation, tag, hasControlElements);
         DistributionPointFunction = distributionPointFunction;
     }
 }

@@ -26,9 +26,12 @@ public class IfcMechanicalFastener extends IfcFastener {
     public IfcMechanicalFastener(IfcGloballyUniqueId globalId,
                                  IfcOwnerHistory ownerHistory, IfcLabel name,
                                  IfcText description, IfcLabel objectType,
+                                 IfcObjectPlacement objectPlacement,
+                                 IfcProductRepresentation representation,
+                                 IfcIdentifier tag,
                                  IfcLengthMeasure nominalDiameter) {
-
-        super(globalId, ownerHistory, name, description, objectType);
+        super(globalId, ownerHistory, name, description, objectType,
+                objectPlacement, representation, tag);
         NominalDiameter = nominalDiameter;
     }
 }

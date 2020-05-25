@@ -31,9 +31,11 @@ public class IfcTendon extends IfcReinforcingElement {
 
     public IfcTendon(IfcGloballyUniqueId globalId, IfcOwnerHistory ownerHistory,
                      IfcLabel name, IfcText description, IfcLabel objectType,
+                     IfcObjectPlacement objectPlacement,
+                     IfcProductRepresentation representation, IfcIdentifier tag,
                      String steelGrade, IfcTendonTypeEnum predefinedType) {
-
-        super(globalId, ownerHistory, name, description, objectType, steelGrade);
+        super(globalId, ownerHistory, name, description, objectType,
+                objectPlacement, representation, tag, steelGrade);
         PredefinedType = predefinedType;
     }
 }

@@ -29,11 +29,14 @@ public class IfcStructuralSurfaceMemberVarying
                                              IfcOwnerHistory ownerHistory,
                                              IfcLabel name, IfcText description,
                                              IfcLabel objectType,
+                                             IfcObjectPlacement objectPlacement,
+                                             IfcProductRepresentation representation,
+                                             IfcRelConnectsStructuralActivity[] assignedStructuralActivity,
                                              IfcRelConnectsStructuralElement[] referencesElement,
                                              IfcStructuralSurfaceTypeEnum predefinedType,
                                              IfcLengthMeasure[] subsequentThickness) {
-
         super(globalId, ownerHistory, name, description, objectType,
+                objectPlacement, representation, assignedStructuralActivity,
                 referencesElement, predefinedType);
         SubsequentThickness = subsequentThickness;
     }

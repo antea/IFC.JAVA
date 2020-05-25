@@ -26,11 +26,15 @@ public class IfcChamferEdgeFeature extends IfcEdgeFeature {
     public IfcChamferEdgeFeature(IfcGloballyUniqueId globalId,
                                  IfcOwnerHistory ownerHistory, IfcLabel name,
                                  IfcText description, IfcLabel objectType,
+                                 IfcObjectPlacement objectPlacement,
+                                 IfcProductRepresentation representation,
+                                 IfcIdentifier tag,
                                  IfcRelVoidsElement voidsElements,
                                  IfcLengthMeasure featureLength,
                                  IfcLengthMeasure width) {
         super(globalId, ownerHistory, name, description, objectType,
-                voidsElements, featureLength);
+                objectPlacement, representation, tag, voidsElements,
+                featureLength);
         Width = width;
     }
 }

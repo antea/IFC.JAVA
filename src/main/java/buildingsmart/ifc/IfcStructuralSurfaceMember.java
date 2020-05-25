@@ -27,9 +27,13 @@ public class IfcStructuralSurfaceMember extends IfcStructuralMember {
                                       IfcOwnerHistory ownerHistory,
                                       IfcLabel name, IfcText description,
                                       IfcLabel objectType,
+                                      IfcObjectPlacement objectPlacement,
+                                      IfcProductRepresentation representation,
+                                      IfcRelConnectsStructuralActivity[] assignedStructuralActivity,
                                       IfcRelConnectsStructuralElement[] referencesElement,
                                       IfcStructuralSurfaceTypeEnum predefinedType) {
         super(globalId, ownerHistory, name, description, objectType,
+                objectPlacement, representation, assignedStructuralActivity,
                 referencesElement);
         PredefinedType = predefinedType;
     }

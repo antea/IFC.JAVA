@@ -26,9 +26,13 @@ public class IfcDistributionControlElement extends IfcDistributionElement {
     public IfcDistributionControlElement(IfcGloballyUniqueId globalId,
                                          IfcOwnerHistory ownerHistory,
                                          IfcLabel name, IfcText description,
-                                         IfcLabel objectType, String controlElementId) {
-
-        super(globalId, ownerHistory, name, description, objectType);
+                                         IfcLabel objectType,
+                                         IfcObjectPlacement objectPlacement,
+                                         IfcProductRepresentation representation,
+                                         IfcIdentifier tag,
+                                         String controlElementId) {
+        super(globalId, ownerHistory, name, description, objectType,
+                objectPlacement, representation, tag);
         ControlElementId = controlElementId;
     }
 }

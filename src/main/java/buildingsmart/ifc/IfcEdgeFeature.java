@@ -25,10 +25,12 @@ public class IfcEdgeFeature extends IfcFeatureElementSubtraction {
     public IfcEdgeFeature(IfcGloballyUniqueId globalId,
                           IfcOwnerHistory ownerHistory, IfcLabel name,
                           IfcText description, IfcLabel objectType,
-                          IfcRelVoidsElement voidsElements, IfcLengthMeasure featureLength) {
-
+                          IfcObjectPlacement objectPlacement,
+                          IfcProductRepresentation representation,
+                          IfcIdentifier tag, IfcRelVoidsElement voidsElements,
+                          IfcLengthMeasure featureLength) {
         super(globalId, ownerHistory, name, description, objectType,
-                voidsElements);
+                objectPlacement, representation, tag, voidsElements);
         FeatureLength = featureLength;
     }
 }

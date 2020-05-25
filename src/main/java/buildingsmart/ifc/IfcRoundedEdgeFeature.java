@@ -25,12 +25,15 @@ public class IfcRoundedEdgeFeature extends IfcEdgeFeature {
     public IfcRoundedEdgeFeature(IfcGloballyUniqueId globalId,
                                  IfcOwnerHistory ownerHistory, IfcLabel name,
                                  IfcText description, IfcLabel objectType,
+                                 IfcObjectPlacement objectPlacement,
+                                 IfcProductRepresentation representation,
+                                 IfcIdentifier tag,
                                  IfcRelVoidsElement voidsElements,
                                  IfcLengthMeasure featureLength,
                                  IfcLengthMeasure radius) {
-
         super(globalId, ownerHistory, name, description, objectType,
-                voidsElements, featureLength);
+                objectPlacement, representation, tag, voidsElements,
+                featureLength);
         Radius = radius;
     }
 }

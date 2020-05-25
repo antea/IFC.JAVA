@@ -25,11 +25,13 @@ public class IfcOpeningElement extends IfcFeatureElementSubtraction {
     public IfcOpeningElement(IfcGloballyUniqueId globalId,
                              IfcOwnerHistory ownerHistory, IfcLabel name,
                              IfcText description, IfcLabel objectType,
+                             IfcObjectPlacement objectPlacement,
+                             IfcProductRepresentation representation,
+                             IfcIdentifier tag,
                              IfcRelVoidsElement voidsElements,
                              IfcRelFillsElement[] hasFillings) {
-
         super(globalId, ownerHistory, name, description, objectType,
-                voidsElements);
+                objectPlacement, representation, tag, voidsElements);
         HasFillings = hasFillings;
     }
 }

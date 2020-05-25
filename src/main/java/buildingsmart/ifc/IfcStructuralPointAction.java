@@ -23,8 +23,12 @@ public class IfcStructuralPointAction extends IfcStructuralAction {
     public IfcStructuralPointAction(IfcGloballyUniqueId globalId,
                                     IfcOwnerHistory ownerHistory, IfcLabel name,
                                     IfcText description, IfcLabel objectType,
+                                    IfcObjectPlacement objectPlacement,
+                                    IfcProductRepresentation representation,
+                                    IfcStructuralLoad appliedLoad,
                                     boolean destabilizingLoad) {
         super(globalId, ownerHistory, name, description, objectType,
+                objectPlacement, representation, appliedLoad,
                 destabilizingLoad);
     }
 }

@@ -25,8 +25,11 @@ public class IfcReinforcingElement extends IfcBuildingElementComponent {
     public IfcReinforcingElement(IfcGloballyUniqueId globalId,
                                  IfcOwnerHistory ownerHistory, IfcLabel name,
                                  IfcText description, IfcLabel objectType,
-                                 String steelGrade) {
-        super(globalId, ownerHistory, name, description, objectType);
+                                 IfcObjectPlacement objectPlacement,
+                                 IfcProductRepresentation representation,
+                                 IfcIdentifier tag, String steelGrade) {
+        super(globalId, ownerHistory, name, description, objectType,
+                objectPlacement, representation, tag);
         SteelGrade = steelGrade;
     }
 }

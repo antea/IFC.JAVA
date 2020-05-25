@@ -25,9 +25,13 @@ public class IfcFeatureElementAddition extends IfcFeatureElement {
     public IfcFeatureElementAddition(IfcGloballyUniqueId globalId,
                                      IfcOwnerHistory ownerHistory,
                                      IfcLabel name, IfcText description,
-                                     IfcLabel objectType, IfcRelProjectsElement projectsElements) {
-
-        super(globalId, ownerHistory, name, description, objectType);
+                                     IfcLabel objectType,
+                                     IfcObjectPlacement objectPlacement,
+                                     IfcProductRepresentation representation,
+                                     IfcIdentifier tag,
+                                     IfcRelProjectsElement projectsElements) {
+        super(globalId, ownerHistory, name, description, objectType,
+                objectPlacement, representation, tag);
         ProjectsElements = projectsElements;
     }
 }

@@ -20,16 +20,16 @@
 package buildingsmart.ifc;
 
 public class IfcStructuralLinearAction extends IfcStructuralAction {
-    private final IfcProjectedOrTrueLengthEnum ProjectedOrTrue;
-
     public IfcStructuralLinearAction(IfcGloballyUniqueId globalId,
                                      IfcOwnerHistory ownerHistory,
                                      IfcLabel name, IfcText description,
-                                     IfcLabel objectType, boolean destabilizingLoad,
-                                     IfcProjectedOrTrueLengthEnum projectedOrTrue) {
-
+                                     IfcLabel objectType,
+                                     IfcObjectPlacement objectPlacement,
+                                     IfcProductRepresentation representation,
+                                     IfcStructuralLoad appliedLoad,
+                                     boolean destabilizingLoad) {
         super(globalId, ownerHistory, name, description, objectType,
+                objectPlacement, representation, appliedLoad,
                 destabilizingLoad);
-        ProjectedOrTrue = projectedOrTrue;
     }
 }

@@ -23,8 +23,11 @@ public class IfcProjectionElement extends IfcFeatureElementAddition {
     public IfcProjectionElement(IfcGloballyUniqueId globalId,
                                 IfcOwnerHistory ownerHistory, IfcLabel name,
                                 IfcText description, IfcLabel objectType,
+                                IfcObjectPlacement objectPlacement,
+                                IfcProductRepresentation representation,
+                                IfcIdentifier tag,
                                 IfcRelProjectsElement projectsElements) {
         super(globalId, ownerHistory, name, description, objectType,
-                projectsElements);
+                objectPlacement, representation, tag, projectsElements);
     }
 }

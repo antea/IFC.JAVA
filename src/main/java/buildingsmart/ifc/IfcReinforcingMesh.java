@@ -29,10 +29,15 @@ public class IfcReinforcingMesh extends IfcReinforcingElement {
     private IfcLengthMeasure LongitudinalBarSpacing;
     private IfcLengthMeasure TransverseBarSpacing;
 
-    public IfcReinforcingMesh(IfcGloballyUniqueId globalId, IfcOwnerHistory ownerHistory, IfcLabel name,
-                              IfcText description, IfcLabel objectType, String steelGrade, IfcLengthMeasure meshLength) {
-
-        super(globalId, ownerHistory, name, description, objectType, steelGrade);
+    public IfcReinforcingMesh(IfcGloballyUniqueId globalId,
+                              IfcOwnerHistory ownerHistory, IfcLabel name,
+                              IfcText description, IfcLabel objectType,
+                              IfcObjectPlacement objectPlacement,
+                              IfcProductRepresentation representation,
+                              IfcIdentifier tag, String steelGrade,
+                              IfcLengthMeasure meshLength) {
+        super(globalId, ownerHistory, name, description, objectType,
+                objectPlacement, representation, tag, steelGrade);
         MeshLength = meshLength;
     }
 }

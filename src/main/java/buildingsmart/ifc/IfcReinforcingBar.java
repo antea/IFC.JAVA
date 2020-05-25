@@ -26,10 +26,15 @@ public class IfcReinforcingBar extends IfcReinforcingElement {
     private IfcReinforcingBarRoleEnum BarRole;
     private IfcReinforcingBarSurfaceEnum BarSurface;
 
-    public IfcReinforcingBar(IfcGloballyUniqueId globalId, IfcOwnerHistory ownerHistory, IfcLabel name,
-                             IfcText description, IfcLabel objectType, String steelGrade,
+    public IfcReinforcingBar(IfcGloballyUniqueId globalId,
+                             IfcOwnerHistory ownerHistory, IfcLabel name,
+                             IfcText description, IfcLabel objectType,
+                             IfcObjectPlacement objectPlacement,
+                             IfcProductRepresentation representation,
+                             IfcIdentifier tag, String steelGrade,
                              IfcLengthMeasure nominalDiameter) {
-        super(globalId, ownerHistory, name, description, objectType, steelGrade);
+        super(globalId, ownerHistory, name, description, objectType,
+                objectPlacement, representation, tag, steelGrade);
         NominalDiameter = nominalDiameter;
     }
 }

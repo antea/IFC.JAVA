@@ -25,9 +25,13 @@ public class IfcFeatureElementSubtraction extends IfcFeatureElement {
     public IfcFeatureElementSubtraction(IfcGloballyUniqueId globalId,
                                         IfcOwnerHistory ownerHistory,
                                         IfcLabel name, IfcText description,
-                                        IfcLabel objectType, IfcRelVoidsElement voidsElements) {
-
-        super(globalId, ownerHistory, name, description, objectType);
+                                        IfcLabel objectType,
+                                        IfcObjectPlacement objectPlacement,
+                                        IfcProductRepresentation representation,
+                                        IfcIdentifier tag,
+                                        IfcRelVoidsElement voidsElements) {
+        super(globalId, ownerHistory, name, description, objectType,
+                objectPlacement, representation, tag);
         VoidsElements = voidsElements;
     }
 }
