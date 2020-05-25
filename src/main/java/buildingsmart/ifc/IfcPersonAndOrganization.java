@@ -19,7 +19,9 @@
 
 package buildingsmart.ifc;
 
+import buildingsmart.io.Attribute;
 import buildingsmart.io.IfcEntity;
+import buildingsmart.io.Order;
 import com.sun.istack.internal.NotNull;
 
 import java.util.List;
@@ -29,8 +31,14 @@ import java.util.Objects;
  * Identification of a person within an organization.
  */
 public class IfcPersonAndOrganization extends IfcEntity {
+    @Attribute
+    @Order(value = 0)
     private final IfcPerson thePerson;
+    @Attribute
+    @Order(value = 1)
     private final IfcOrganization theOrganization;
+    @Attribute
+    @Order(value = 2)
     private final List<IfcActorRole> roles;
 
     /**

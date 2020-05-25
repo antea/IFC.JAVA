@@ -19,7 +19,9 @@
 
 package buildingsmart.ifc;
 
+import buildingsmart.io.Attribute;
 import buildingsmart.io.IfcEntity;
+import buildingsmart.io.Order;
 
 import java.util.Objects;
 
@@ -28,6 +30,8 @@ import java.util.Objects;
  * component values refer directly to a specific colour space.
  */
 public abstract class IfcColourSpecification extends IfcEntity {
+    @Attribute
+    @Order(value = 0)
     private final IfcLabel name;
 
     /**

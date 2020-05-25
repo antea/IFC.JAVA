@@ -19,6 +19,8 @@
 
 package buildingsmart.ifc;
 
+import buildingsmart.io.Attribute;
+import buildingsmart.io.Order;
 import com.sun.istack.internal.NotNull;
 
 /**
@@ -286,10 +288,20 @@ import com.sun.istack.internal.NotNull;
  * </ul>
  */
 public class IfcSite extends IfcSpatialStructureElement {
+    @Attribute
+    @Order(value = 9)
     private final IfcCompoundPlaneAngleMeasure refLatitude;
+    @Attribute
+    @Order(value = 10)
     private final IfcCompoundPlaneAngleMeasure refLongitude;
+    @Attribute
+    @Order(value = 11)
     private final IfcLengthMeasure refElevation;
+    @Attribute
+    @Order(value = 12)
     private final IfcLabel landTitleNumber;
+    @Attribute
+    @Order(value = 13)
     private final IfcPostalAddress siteAddress;
 
     /**
@@ -376,11 +388,14 @@ public class IfcSite extends IfcSpatialStructureElement {
      *                                  compositionType is null.
      */
     public IfcSite(@NotNull IfcGloballyUniqueId globalId,
-                   @NotNull IfcOwnerHistory ownerHistory, IfcLabel name, IfcText description, IfcLabel objectType,
-                   IfcObjectPlacement objectPlacement, IfcProductRepresentation representation, IfcLabel longName,
+                   @NotNull IfcOwnerHistory ownerHistory, IfcLabel name,
+                   IfcText description, IfcLabel objectType,
+                   IfcObjectPlacement objectPlacement,
+                   IfcProductRepresentation representation, IfcLabel longName,
                    @NotNull IfcElementCompositionEnum compositionType,
                    IfcCompoundPlaneAngleMeasure refLatitude,
-                   IfcCompoundPlaneAngleMeasure refLongitude, IfcLengthMeasure refElevation, IfcLabel landTitleNumber,
+                   IfcCompoundPlaneAngleMeasure refLongitude,
+                   IfcLengthMeasure refElevation, IfcLabel landTitleNumber,
                    IfcPostalAddress siteAddress) {
         super(globalId, ownerHistory, name, description, objectType,
                 objectPlacement, representation, longName, compositionType);
@@ -471,11 +486,14 @@ public class IfcSite extends IfcSpatialStructureElement {
      *                                  IfcProductDefinitionShape;
      *                                  if compositionType is null.
      */
-    public IfcSite(@NotNull IfcOwnerHistory ownerHistory, IfcLabel name, IfcText description, IfcLabel objectType,
-                   IfcObjectPlacement objectPlacement, IfcProductRepresentation representation, IfcLabel longName,
+    public IfcSite(@NotNull IfcOwnerHistory ownerHistory, IfcLabel name,
+                   IfcText description, IfcLabel objectType,
+                   IfcObjectPlacement objectPlacement,
+                   IfcProductRepresentation representation, IfcLabel longName,
                    @NotNull IfcElementCompositionEnum compositionType,
                    IfcCompoundPlaneAngleMeasure refLatitude,
-                   IfcCompoundPlaneAngleMeasure refLongitude, IfcLengthMeasure refElevation, IfcLabel landTitleNumber,
+                   IfcCompoundPlaneAngleMeasure refLongitude,
+                   IfcLengthMeasure refElevation, IfcLabel landTitleNumber,
                    IfcPostalAddress siteAddress) {
         this(new IfcGloballyUniqueId(), ownerHistory, name, description,
                 objectType, objectPlacement, representation, longName,

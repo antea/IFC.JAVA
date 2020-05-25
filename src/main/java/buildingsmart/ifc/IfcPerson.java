@@ -19,7 +19,9 @@
 
 package buildingsmart.ifc;
 
+import buildingsmart.io.Attribute;
 import buildingsmart.io.IfcEntity;
+import buildingsmart.io.Order;
 
 import java.util.List;
 import java.util.Objects;
@@ -28,26 +30,41 @@ import java.util.Objects;
  * An individual human being.
  */
 public class IfcPerson extends IfcEntity {
+    @Attribute
+    @Order(value = 0)
     private final IfcIdentifier id;
+    @Attribute
+    @Order(value = 1)
     private final IfcLabel familyName;
+    @Attribute
+    @Order(value = 2)
     private final IfcLabel givenName;
+    @Attribute
+    @Order(value = 3)
     private final List<IfcLabel> middleNames;
+    @Attribute
+    @Order(value = 4)
     private final List<IfcLabel> prefixTitles;
+    @Attribute
+    @Order(value = 5)
     private final List<IfcLabel> suffixTitles;
+    @Attribute
+    @Order(value = 6)
     private final List<IfcActorRole> roles;
+    @Attribute
+    @Order(value = 7)
     private final List<IfcAddress> addresses;
     //private IfcPersonAndOrganization[] engagedIn;
 
     /**
      * @param id           Identification of the person.
-     * @param familyName   The name by which the family identity of the
-     *                     person may be recognized.
-     * @param givenName    The name by which a person is known within a
-     *                     family and by which he or she may be familiarly
-     *                     recognized.
-     * @param middleNames  Additional names given to a person that enable
-     *                     their identification apart from others who may
-     *                     have the same or similar family and given names.
+     * @param familyName   The name by which the family identity of the person
+     *                     may be recognized.
+     * @param givenName    The name by which a person is known within a family
+     *                     and by which he or she may be familiarly recognized.
+     * @param middleNames  Additional names given to a person that enable their
+     *                     identification apart from others who may have the
+     *                     same or similar family and given names.
      * @param prefixTitles The word, or group of words, which specify the
      *                     person's social and/or professional standing and
      *                     appear before his/her names.
@@ -62,7 +79,8 @@ public class IfcPerson extends IfcEntity {
      */
     public IfcPerson(IfcIdentifier id, IfcLabel familyName, IfcLabel givenName,
                      List<IfcLabel> middleNames, List<IfcLabel> prefixTitles,
-                     List<IfcLabel> suffixTitles, List<IfcActorRole> roles, List<IfcAddress> addresses) {
+                     List<IfcLabel> suffixTitles, List<IfcActorRole> roles,
+                     List<IfcAddress> addresses) {
         if (familyName == null && givenName == null) {
             throw new IllegalArgumentException(
                     "familyName and givenName can't be both null, at least " +
@@ -110,16 +128,20 @@ public class IfcPerson extends IfcEntity {
             return false;
         }
         IfcPerson ifcPerson = (IfcPerson) o;
-        return Objects.equals(id, ifcPerson.id) && Objects.equals(familyName,
-                ifcPerson.familyName) &&
-                Objects.equals(givenName, ifcPerson.givenName) && Objects.equals(middleNames, ifcPerson.middleNames) &&
-                Objects.equals(prefixTitles, ifcPerson.prefixTitles) && Objects.equals(suffixTitles, ifcPerson.suffixTitles) &&
-                Objects.equals(roles, ifcPerson.roles) && Objects.equals(addresses, ifcPerson.addresses);
+        return Objects.equals(id, ifcPerson.id) &&
+                Objects.equals(familyName, ifcPerson.familyName) &&
+                Objects.equals(givenName, ifcPerson.givenName) &&
+                Objects.equals(middleNames, ifcPerson.middleNames) &&
+                Objects.equals(prefixTitles, ifcPerson.prefixTitles) &&
+                Objects.equals(suffixTitles, ifcPerson.suffixTitles) &&
+                Objects.equals(roles, ifcPerson.roles) &&
+                Objects.equals(addresses, ifcPerson.addresses);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, familyName, givenName, middleNames, prefixTitles,
-                suffixTitles, roles, addresses);
+        return Objects
+                .hash(id, familyName, givenName, middleNames, prefixTitles,
+                        suffixTitles, roles, addresses);
     }
 }

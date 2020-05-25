@@ -19,7 +19,9 @@
 
 package buildingsmart.ifc;
 
+import buildingsmart.io.Attribute;
 import buildingsmart.io.IfcEntity;
+import buildingsmart.io.Order;
 import com.sun.istack.internal.NotNull;
 
 import java.util.Objects;
@@ -41,12 +43,26 @@ import java.util.Objects;
  * and a time exponent of -1. The remaining exponents are equal to 0.</small>
  */
 public class IfcDimensionalExponents extends IfcEntity {
+    @Attribute
+    @Order(value = 0)
     private final IfcInteger lengthExponent;
+    @Attribute
+    @Order(value = 1)
     private final IfcInteger massExponent;
+    @Attribute
+    @Order(value = 2)
     private final IfcInteger timeExponent;
+    @Attribute
+    @Order(value = 3)
     private final IfcInteger electricCurrentExponent;
+    @Attribute
+    @Order(value = 4)
     private final IfcInteger thermodynamicTemperatureExponent;
+    @Attribute
+    @Order(value = 5)
     private final IfcInteger amountOfSubstanceExponent;
+    @Attribute
+    @Order(value = 6)
     private final IfcInteger luminousIntensityExponent;
 
     /**
@@ -70,9 +86,12 @@ public class IfcDimensionalExponents extends IfcEntity {
                                    @NotNull IfcInteger massExponent,
                                    @NotNull IfcInteger timeExponent,
                                    @NotNull IfcInteger electricCurrentExponent,
-                                   @NotNull IfcInteger thermodynamicTemperatureExponent,
-                                   @NotNull IfcInteger amountOfSubstanceExponent,
-                                   @NotNull IfcInteger luminousIntensityExponent) {
+                                   @NotNull
+                                           IfcInteger thermodynamicTemperatureExponent,
+                                   @NotNull
+                                           IfcInteger amountOfSubstanceExponent,
+                                   @NotNull
+                                           IfcInteger luminousIntensityExponent) {
         if (lengthExponent == null || massExponent == null ||
                 timeExponent == null || electricCurrentExponent == null ||
                 thermodynamicTemperatureExponent == null ||
@@ -85,7 +104,8 @@ public class IfcDimensionalExponents extends IfcEntity {
         this.massExponent = massExponent;
         this.timeExponent = timeExponent;
         this.electricCurrentExponent = electricCurrentExponent;
-        this.thermodynamicTemperatureExponent = thermodynamicTemperatureExponent;
+        this.thermodynamicTemperatureExponent =
+                thermodynamicTemperatureExponent;
         this.amountOfSubstanceExponent = amountOfSubstanceExponent;
         this.luminousIntensityExponent = luminousIntensityExponent;
     }
@@ -107,14 +127,20 @@ public class IfcDimensionalExponents extends IfcEntity {
      *                                         intensity base quantity.
      * @throws IllegalArgumentException If any of the parameters are null.
      */
-    public IfcDimensionalExponents(@NotNull long lengthExponent, @NotNull long massExponent,
-                                   @NotNull long timeExponent, @NotNull long electricCurrentExponent,
-                                   @NotNull long thermodynamicTemperatureExponent,
+    public IfcDimensionalExponents(@NotNull long lengthExponent,
+                                   @NotNull long massExponent,
+                                   @NotNull long timeExponent,
+                                   @NotNull long electricCurrentExponent,
+                                   @NotNull
+                                           long thermodynamicTemperatureExponent,
                                    @NotNull long amountOfSubstanceExponent,
                                    @NotNull long luminousIntensityExponent) {
-        this(new IfcInteger(lengthExponent), new IfcInteger(massExponent), new IfcInteger(timeExponent),
-                new IfcInteger(electricCurrentExponent), new IfcInteger(thermodynamicTemperatureExponent),
-                new IfcInteger(amountOfSubstanceExponent), new IfcInteger(luminousIntensityExponent));
+        this(new IfcInteger(lengthExponent), new IfcInteger(massExponent),
+                new IfcInteger(timeExponent),
+                new IfcInteger(electricCurrentExponent),
+                new IfcInteger(thermodynamicTemperatureExponent),
+                new IfcInteger(amountOfSubstanceExponent),
+                new IfcInteger(luminousIntensityExponent));
     }
 
     @Override
@@ -126,12 +152,16 @@ public class IfcDimensionalExponents extends IfcEntity {
             return false;
         }
         IfcDimensionalExponents that = (IfcDimensionalExponents) o;
-        return lengthExponent.equals(that.lengthExponent) && massExponent.equals(that.massExponent) &&
+        return lengthExponent.equals(that.lengthExponent) &&
+                massExponent.equals(that.massExponent) &&
                 timeExponent.equals(that.timeExponent) &&
                 electricCurrentExponent.equals(that.electricCurrentExponent) &&
-                thermodynamicTemperatureExponent.equals(that.thermodynamicTemperatureExponent) &&
-                amountOfSubstanceExponent.equals(that.amountOfSubstanceExponent) &&
-                luminousIntensityExponent.equals(that.luminousIntensityExponent);
+                thermodynamicTemperatureExponent
+                        .equals(that.thermodynamicTemperatureExponent) &&
+                amountOfSubstanceExponent
+                        .equals(that.amountOfSubstanceExponent) &&
+                luminousIntensityExponent
+                        .equals(that.luminousIntensityExponent);
     }
 
     @Override

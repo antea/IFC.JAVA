@@ -141,19 +141,22 @@ public class IfcShapeRepresentation extends IfcShapeModel {
      *                                  representationType (see the
      *                                  specification of this class).
      */
-    public IfcShapeRepresentation(@NotNull IfcRepresentationContext contextOfItems,
-                                  IfcLabel representationIdentifier,
-                                  @NotNull IfcLabel representationType,
-                                  @NotNull Set<IfcRepresentationItem> items) {
+    public IfcShapeRepresentation(
+            @NotNull IfcRepresentationContext contextOfItems,
+            IfcLabel representationIdentifier,
+            @NotNull IfcLabel representationType,
+            @NotNull Set<IfcRepresentationItem> items) {
         super(contextOfItems, representationIdentifier, representationType,
                 items);
         if (!(contextOfItems instanceof IfcGeometricRepresentationContext)) {
-            throw new IllegalArgumentException("contextOfItems must be of type " +
-                    "IfcGeometricRepresentationContext");
+            throw new IllegalArgumentException(
+                    "contextOfItems must be of type " +
+                            "IfcGeometricRepresentationContext");
         }
         for (IfcRepresentationItem item : items) {
             if (item instanceof IfcTopologicalRepresentationItem &&
-                    !(item instanceof IfcVertexPoint || item instanceof IfcEdgeCurve ||
+                    !(item instanceof IfcVertexPoint ||
+                            item instanceof IfcEdgeCurve ||
                             item instanceof IfcFaceSurface)) {
                 throw new IllegalArgumentException(
                         "items cannot contain objects of type " +
@@ -166,7 +169,8 @@ public class IfcShapeRepresentation extends IfcShapeModel {
             throw new IllegalArgumentException(
                     "representationType cannot be " + "null");
         }
-        if (!Objects.equals(Functions.ifcShapeRepresentationTypes(representationType, items),
+        if (!Objects.equals(Functions
+                        .ifcShapeRepresentationTypes(representationType, items),
                 true)) {
             throw new IllegalArgumentException(
                     "either items contains objects of the" +
@@ -211,10 +215,12 @@ public class IfcShapeRepresentation extends IfcShapeModel {
      *                                  representationType (see the
      *                                  specification of this class).
      */
-    public IfcShapeRepresentation(@NotNull IfcRepresentationContext contextOfItems,
-                                  IfcLabel representationIdentifier,
-                                  @NotNull IfcLabel representationType,
-                                  @NotNull IfcRepresentationItem... items) {
-        this(contextOfItems, representationIdentifier, representationType, new HashSet<>(Arrays.asList(items)));
+    public IfcShapeRepresentation(
+            @NotNull IfcRepresentationContext contextOfItems,
+            IfcLabel representationIdentifier,
+            @NotNull IfcLabel representationType,
+            @NotNull IfcRepresentationItem... items) {
+        this(contextOfItems, representationIdentifier, representationType,
+                new HashSet<>(Arrays.asList(items)));
     }
 }

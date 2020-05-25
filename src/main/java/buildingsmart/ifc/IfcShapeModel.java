@@ -19,6 +19,8 @@
 
 package buildingsmart.ifc;
 
+import buildingsmart.io.InverseAttribute;
+import buildingsmart.io.Order;
 import com.sun.istack.internal.NotNull;
 
 import java.util.Objects;
@@ -41,6 +43,8 @@ import java.util.Set;
  * component of a product shape (via <i>IfcShapeAspect</i>).<br>
  */
 public class IfcShapeModel extends IfcRepresentation {
+    @InverseAttribute
+    @Order(value = 3)
     private IfcShapeAspect ofShapeAspect; //inverse attribute
 
     /**
@@ -66,7 +70,8 @@ public class IfcShapeModel extends IfcRepresentation {
      *                                  the size of items is lower than 1.
      */
     public IfcShapeModel(@NotNull IfcRepresentationContext contextOfItems,
-                         IfcLabel representationIdentifier, IfcLabel representationType,
+                         IfcLabel representationIdentifier,
+                         IfcLabel representationType,
                          @NotNull Set<IfcRepresentationItem> items) {
         super(contextOfItems, representationIdentifier, representationType,
                 items);
@@ -95,7 +100,8 @@ public class IfcShapeModel extends IfcRepresentation {
      *                                  the size of items is lower than 1.
      */
     public IfcShapeModel(@NotNull IfcRepresentationContext contextOfItems,
-                         IfcLabel representationIdentifier, IfcLabel representationType,
+                         IfcLabel representationIdentifier,
+                         IfcLabel representationType,
                          @NotNull IfcRepresentationItem... items) {
         super(contextOfItems, representationIdentifier, representationType,
                 items);
@@ -141,7 +147,8 @@ public class IfcShapeModel extends IfcRepresentation {
      */
     @Override
     public void setRepresentationMap(IfcRepresentationMap representationMap) {
-        if ((this.ofProductRepresentation != null || this.ofShapeAspect != null) && representationMap != null) {
+        if ((this.ofProductRepresentation != null ||
+                this.ofShapeAspect != null) && representationMap != null) {
             throw new IllegalStateException(
                     "ofProductRepresentation or ofShapeAspect is already" +
                             " set!");
@@ -159,7 +166,8 @@ public class IfcShapeModel extends IfcRepresentation {
      *                               IfcShapeAspect).
      */
     @Override
-    public void setOfProductRepresentation(IfcProductRepresentation ofProductRepresentation) {
+    public void setOfProductRepresentation(
+            IfcProductRepresentation ofProductRepresentation) {
         if ((this.ofShapeAspect != null || this.representationMap != null) &&
                 ofProductRepresentation != null) {
             throw new IllegalStateException(

@@ -19,6 +19,8 @@
 
 package buildingsmart.ifc;
 
+import buildingsmart.io.Attribute;
+import buildingsmart.io.Order;
 import com.sun.istack.internal.NotNull;
 
 import java.util.Objects;
@@ -32,7 +34,11 @@ import java.util.Objects;
  * degrees).
  */
 public abstract class IfcSweptAreaSolid extends IfcSolidModel {
+    @Attribute
+    @Order(value = 0)
     private final IfcProfileDef sweptArea;
+    @Attribute
+    @Order(value = 1)
     private final IfcAxis2Placement3D position;
 
     /**

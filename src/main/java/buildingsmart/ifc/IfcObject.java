@@ -19,6 +19,8 @@
 
 package buildingsmart.ifc;
 
+import buildingsmart.io.Attribute;
+import buildingsmart.io.Order;
 import com.sun.istack.internal.NotNull;
 
 /**
@@ -70,6 +72,8 @@ import com.sun.istack.internal.NotNull;
  * </ul>
  */
 public abstract class IfcObject extends IfcObjectDefinition {
+    @Attribute
+    @Order(value = 4)
     private final IfcLabel objectType;
     //private IfcRelDefines[] IsDefinedBy;
 

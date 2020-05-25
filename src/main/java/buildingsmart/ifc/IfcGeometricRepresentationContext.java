@@ -19,6 +19,8 @@
 
 package buildingsmart.ifc;
 
+import buildingsmart.io.Attribute;
+import buildingsmart.io.Order;
 import com.sun.istack.internal.NotNull;
 
 import java.util.Objects;
@@ -33,10 +35,19 @@ import java.util.Objects;
  * attribute. The TrueNorth attribute can be given, if the y axis of the
  * WorldCoordinateSystem does not point to the global northing.
  */
-public class IfcGeometricRepresentationContext extends IfcRepresentationContext {
+public class IfcGeometricRepresentationContext
+        extends IfcRepresentationContext {
+    @Attribute
+    @Order(value = 2)
     private final IfcDimensionCount coordinateSpaceDimension;
+    @Attribute
+    @Order(value = 3)
     private final IfcReal precision;
+    @Attribute
+    @Order(value = 4)
     private final IfcAxis2Placement worldCoordinateSystem;
+    @Attribute
+    @Order(value = 5)
     private final IfcDirection trueNorth;
     //private IfcGeometricRepresentationSubContext[] HasSubContexts;
 
@@ -117,7 +128,8 @@ public class IfcGeometricRepresentationContext extends IfcRepresentationContext 
         if (!super.equals(o)) {
             return false;
         }
-        IfcGeometricRepresentationContext that = (IfcGeometricRepresentationContext) o;
+        IfcGeometricRepresentationContext that =
+                (IfcGeometricRepresentationContext) o;
         return coordinateSpaceDimension.equals(that.coordinateSpaceDimension) &&
                 Objects.equals(precision, that.precision) &&
                 worldCoordinateSystem.equals(that.worldCoordinateSystem) &&

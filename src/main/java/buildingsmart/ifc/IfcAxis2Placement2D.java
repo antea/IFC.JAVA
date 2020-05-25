@@ -19,6 +19,8 @@
 
 package buildingsmart.ifc;
 
+import buildingsmart.io.Attribute;
+import buildingsmart.io.Order;
 import com.sun.istack.internal.NotNull;
 
 import java.util.Objects;
@@ -34,7 +36,10 @@ import java.util.Objects;
  * direction defines the placement X axis direction, the placement Y axis is
  * derived from this.
  */
-public class IfcAxis2Placement2D extends IfcPlacement implements IfcAxis2Placement {
+public class IfcAxis2Placement2D extends IfcPlacement
+        implements IfcAxis2Placement {
+    @Attribute
+    @Order(value = 1)
     private final IfcDirection refDirection;
     //private IfcDirection[] P;
 
@@ -48,14 +53,16 @@ public class IfcAxis2Placement2D extends IfcPlacement implements IfcAxis2Placeme
      *                                  bidimensional, if refDirection is not
      *                                  null and not bidimensional.
      */
-    public IfcAxis2Placement2D(@NotNull IfcCartesianPoint location, IfcDirection refDirection) {
+    public IfcAxis2Placement2D(@NotNull IfcCartesianPoint location,
+                               IfcDirection refDirection) {
         super(location);
         if (refDirection != null && refDirection.getDim().getValue() != 2) {
             throw new IllegalArgumentException(
                     "if refDirection is not null, it must be bidimensional");
         }
         if (location.getDim().getValue() != 2) {
-            throw new IllegalArgumentException("location must be bidimensional");
+            throw new IllegalArgumentException(
+                    "location must be bidimensional");
         }
         this.refDirection = refDirection;
     }

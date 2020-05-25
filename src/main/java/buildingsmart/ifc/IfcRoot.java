@@ -19,7 +19,9 @@
 
 package buildingsmart.ifc;
 
+import buildingsmart.io.Attribute;
 import buildingsmart.io.IfcEntity;
+import buildingsmart.io.Order;
 import com.sun.istack.internal.NotNull;
 
 import java.util.HashSet;
@@ -40,10 +42,19 @@ import java.util.Set;
  * description about the concepts.
  */
 public abstract class IfcRoot extends IfcEntity {
-    private static final Set<IfcGloballyUniqueId> uniqueGlobalIds = new HashSet<>();
+    private static final Set<IfcGloballyUniqueId> uniqueGlobalIds =
+            new HashSet<>();
+    @Attribute
+    @Order(value = 0)
     private final IfcGloballyUniqueId globalId;
+    @Attribute
+    @Order(value = 1)
     private final IfcOwnerHistory ownerHistory;
+    @Attribute
+    @Order(value = 2)
     private final IfcLabel name;
+    @Attribute
+    @Order(value = 3)
     private final IfcText description;
 
     /**
@@ -67,7 +78,8 @@ public abstract class IfcRoot extends IfcEntity {
      *                                  of this class.
      */
     public IfcRoot(@NotNull IfcGloballyUniqueId globalId,
-                   @NotNull IfcOwnerHistory ownerHistory, IfcLabel name, IfcText description) {
+                   @NotNull IfcOwnerHistory ownerHistory, IfcLabel name,
+                   IfcText description) {
         if (globalId == null) {
             throw new IllegalArgumentException("globalId cannot be null");
         }
@@ -102,7 +114,8 @@ public abstract class IfcRoot extends IfcEntity {
      *                     informative comments.
      * @throws IllegalArgumentException If ownerHistory is null.
      */
-    public IfcRoot(@NotNull IfcOwnerHistory ownerHistory, IfcLabel name, IfcText description) {
+    public IfcRoot(@NotNull IfcOwnerHistory ownerHistory, IfcLabel name,
+                   IfcText description) {
         this(new IfcGloballyUniqueId(), ownerHistory, name, description);
     }
 

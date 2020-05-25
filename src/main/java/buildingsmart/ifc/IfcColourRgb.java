@@ -19,6 +19,8 @@
 
 package buildingsmart.ifc;
 
+import buildingsmart.io.Attribute;
+import buildingsmart.io.Order;
 import com.sun.istack.internal.NotNull;
 
 import java.util.Objects;
@@ -34,9 +36,16 @@ import java.util.Objects;
  * values.</small></p>
  * </blockquote>
  */
-public class IfcColourRgb extends IfcColourSpecification implements IfcColourOrFactor {
+public class IfcColourRgb extends IfcColourSpecification
+        implements IfcColourOrFactor {
+    @Attribute
+    @Order(value = 1)
     private final IfcNormalisedRatioMeasure red;
+    @Attribute
+    @Order(value = 2)
     private final IfcNormalisedRatioMeasure green;
+    @Attribute
+    @Order(value = 3)
     private final IfcNormalisedRatioMeasure blue;
 
     /**
@@ -120,7 +129,8 @@ public class IfcColourRgb extends IfcColourSpecification implements IfcColourOrF
             return false;
         }
         IfcColourRgb that = (IfcColourRgb) o;
-        return red.equals(that.red) && green.equals(that.green) && blue.equals(that.blue);
+        return red.equals(that.red) && green.equals(that.green) &&
+                blue.equals(that.blue);
     }
 
     @Override

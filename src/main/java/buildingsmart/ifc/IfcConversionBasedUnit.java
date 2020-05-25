@@ -19,6 +19,8 @@
 
 package buildingsmart.ifc;
 
+import buildingsmart.io.Attribute;
+import buildingsmart.io.Order;
 import com.sun.istack.internal.NotNull;
 
 import java.util.Objects;
@@ -35,117 +37,67 @@ import java.util.Objects;
  * <p>To identify some commonly used conversion based units the standard
  * designations (case insensitive) for the Name attribute include the
  * following:
- *
  * <TABLE BORDER="1">
- *
  * <TR>
- *
  * <TD><I><B>Name</B></I></TD>
- *
  * <TD><I><B>Description</B></I></TD>
- *
  * </TR>
- *
  * <TR>
- *
  * <TD>'inch'</TD>
- *
  * <TD>Length measure equal to 25.4 mm</TD>
- *
  * </TR>
- *
  * <TR>
- *
  * <TD>'foot'</TD>
- *
  * <TD>Length measure equal to 30.48 mm</TD>
- *
  * </TR>
- *
  * <TR>
- *
  * <TD>'yard'</TD>
- *
  * <TD>Length measure equal to 914 mm</TD>
- *
  * </TR>
- *
  * <TR>
- *
  * <TD>'mile'</TD>
- *
  * <TD>Length measure equal to 1609 m</TD>
- *
  * </TR>
- *
  * <TR>
- *
  * <TD>'acre'</TD>
- *
  * <TD>Area measure equal to 4046,86 square meters</TD>
- *
  * </TR>
- *
  * <TR>
- *
  * <TD>'litre'</TD>
- *
  * <TD>Volume measure equal to 0.001 cubic meters</TD>
- *
  * </TR>
- *
  * <TR>
- *
  * <TD>'pint UK'</TD>
- *
  * <TD>Volume measure equal to 0.000568 cubic meters</TD>
- *
  * </TR>
- *
  * <TR>
- *
  * <TD>'pint US'</TD>
- *
  * <TD>Volume measure equal to 0.000473 cubic meters</TD>
- *
  * </TR>
- *
  * <TR>
- *
  * <TD>'gallon UK'</TD>
- *
  * <TD>Volume measure equal to 0.004546 cubic meters</TD>
- *
  * </TR>
- *
  * <TR>
- *
  * <TD>'gallon US'</TD>
- *
  * <TD>Volume measure equal to 0.003785 cubic meters</TD>
- *
  * </TR>
- *
  * <TR>
- *
  * <TD>'ounce'</TD>
- *
  * <TD>Weight measure equal to 28.35 g</TD>
- *
  * </TR>
- *
  * <TR>
- *
  * <TD>'pound'</TD>
- *
  * <TD>Weight measure equal to 0.454 kg</TD>
- *
  * </TR>
- *
  * </TABLE>
  */
 public class IfcConversionBasedUnit extends IfcNamedUnit {
+    @Attribute
+    @Order(value = 2)
     private final IfcLabel name;
+    @Attribute
+    @Order(value = 3)
     private final IfcMeasureWithUnit conversionFactor;
 
     /**
@@ -171,7 +123,8 @@ public class IfcConversionBasedUnit extends IfcNamedUnit {
             throw new IllegalArgumentException("name cannot be null");
         }
         if (conversionFactor == null) {
-            throw new IllegalArgumentException("conversionFactor cannot be null");
+            throw new IllegalArgumentException(
+                    "conversionFactor cannot be null");
         }
         this.name = name;
         this.conversionFactor = conversionFactor;
@@ -189,7 +142,8 @@ public class IfcConversionBasedUnit extends IfcNamedUnit {
             return false;
         }
         IfcConversionBasedUnit that = (IfcConversionBasedUnit) o;
-        return name.equals(that.name) && conversionFactor.equals(that.conversionFactor);
+        return name.equals(that.name) &&
+                conversionFactor.equals(that.conversionFactor);
     }
 
     @Override

@@ -19,7 +19,9 @@
 
 package buildingsmart.ifc;
 
+import buildingsmart.io.Attribute;
 import buildingsmart.io.IfcEntity;
+import buildingsmart.io.Order;
 import com.sun.istack.internal.NotNull;
 
 import java.util.Arrays;
@@ -34,8 +36,14 @@ import java.util.Objects;
  * representations.<br>
  */
 public class IfcProductRepresentation extends IfcEntity {
+    @Attribute
+    @Order(value = 0)
     private final IfcLabel name;
+    @Attribute
+    @Order(value = 1)
     private final IfcText description;
+    @Attribute
+    @Order(value = 2)
     private final List<IfcRepresentation> representations;
 
     /**
@@ -55,7 +63,8 @@ public class IfcProductRepresentation extends IfcEntity {
     public IfcProductRepresentation(IfcLabel name, IfcText description, @NotNull
             List<IfcRepresentation> representations) {
         if (representations == null) {
-            throw new IllegalArgumentException("representations cannot be null");
+            throw new IllegalArgumentException(
+                    "representations cannot be null");
         }
         if (representations.size() < 1) {
             throw new IllegalArgumentException(
@@ -83,8 +92,8 @@ public class IfcProductRepresentation extends IfcEntity {
     public IfcProductRepresentation(IfcLabel name, IfcText description, @NotNull
             IfcRepresentation... representations) {
         if (representations == null) {
-            throw new IllegalArgumentException("representations cannot be " +
-                    "null");
+            throw new IllegalArgumentException(
+                    "representations cannot be " + "null");
         }
         if (representations.length < 1) {
             throw new IllegalArgumentException(
@@ -104,8 +113,8 @@ public class IfcProductRepresentation extends IfcEntity {
             return false;
         }
         IfcProductRepresentation that = (IfcProductRepresentation) o;
-        return Objects.equals(name, that.name) && Objects.equals(description,
-                that.description) &&
+        return Objects.equals(name, that.name) &&
+                Objects.equals(description, that.description) &&
                 representations.equals(that.representations);
     }
 

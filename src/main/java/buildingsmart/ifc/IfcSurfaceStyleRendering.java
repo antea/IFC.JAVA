@@ -19,6 +19,8 @@
 
 package buildingsmart.ifc;
 
+import buildingsmart.io.Attribute;
+import buildingsmart.io.Order;
 import com.sun.istack.internal.NotNull;
 
 import java.util.Objects;
@@ -92,13 +94,29 @@ import java.util.Objects;
  * </UL></BLOCKQUOTE>
  */
 public class IfcSurfaceStyleRendering extends IfcSurfaceStyleShading {
+    @Attribute
+    @Order(value = 1)
     private final IfcNormalisedRatioMeasure transparency;
+    @Attribute
+    @Order(value = 2)
     private final IfcColourOrFactor diffuseColour;
+    @Attribute
+    @Order(value = 3)
     private final IfcColourOrFactor transmissionColour;
+    @Attribute
+    @Order(value = 4)
     private final IfcColourOrFactor diffuseTransmissionColour;
+    @Attribute
+    @Order(value = 5)
     private final IfcColourOrFactor reflectionColour;
+    @Attribute
+    @Order(value = 6)
     private final IfcColourOrFactor specularColour;
+    @Attribute
+    @Order(value = 7)
     private final IfcSpecularHighlightSelect specularHighlight;
+    @Attribute
+    @Order(value = 8)
     private final IfcReflectanceMethodEnum reflectanceMethod;
 
     /**
@@ -205,7 +223,8 @@ public class IfcSurfaceStyleRendering extends IfcSurfaceStyleShading {
                                     IfcColourOrFactor reflectionColour,
                                     IfcColourOrFactor specularColour,
                                     IfcSpecularHighlightSelect specularHighlight,
-                                    @NotNull IfcReflectanceMethodEnum reflectanceMethod) {
+                                    @NotNull
+                                            IfcReflectanceMethodEnum reflectanceMethod) {
         super(surfaceColour);
         if (reflectanceMethod == null) {
             throw new IllegalArgumentException(
@@ -233,11 +252,14 @@ public class IfcSurfaceStyleRendering extends IfcSurfaceStyleShading {
             return false;
         }
         IfcSurfaceStyleRendering that = (IfcSurfaceStyleRendering) o;
-        return Objects.equals(transparency, that.transparency) && Objects.equals(diffuseColour, that.diffuseColour) &&
+        return Objects.equals(transparency, that.transparency) &&
+                Objects.equals(diffuseColour, that.diffuseColour) &&
                 Objects.equals(transmissionColour, that.transmissionColour) &&
-                Objects.equals(diffuseTransmissionColour, that.diffuseTransmissionColour) &&
+                Objects.equals(diffuseTransmissionColour,
+                        that.diffuseTransmissionColour) &&
                 Objects.equals(reflectionColour, that.reflectionColour) &&
-                Objects.equals(specularColour, that.specularColour) && Objects.equals(specularHighlight, that.specularHighlight) &&
+                Objects.equals(specularColour, that.specularColour) &&
+                Objects.equals(specularHighlight, that.specularHighlight) &&
                 reflectanceMethod == that.reflectanceMethod;
     }
 

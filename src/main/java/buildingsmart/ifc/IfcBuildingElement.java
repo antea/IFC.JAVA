@@ -478,8 +478,10 @@ public abstract class IfcBuildingElement extends IfcElement {
      *                                  IfcProductDefinitionShape.
      */
     public IfcBuildingElement(@NotNull IfcGloballyUniqueId globalId,
-                              @NotNull IfcOwnerHistory ownerHistory, IfcLabel name, IfcText description,
-                              IfcLabel objectType, IfcObjectPlacement objectPlacement,
+                              @NotNull IfcOwnerHistory ownerHistory,
+                              IfcLabel name, IfcText description,
+                              IfcLabel objectType,
+                              IfcObjectPlacement objectPlacement,
                               IfcProductRepresentation representation,
                               IfcIdentifier tag) {
         super(globalId, ownerHistory, name, description, objectType,
@@ -487,8 +489,7 @@ public abstract class IfcBuildingElement extends IfcElement {
     }
 
     /**
-     * Creates a new IfcBuildingElement and generates a pseudo random
-     * globalId.
+     * Creates a new IfcBuildingElement and generates a pseudo random globalId.
      *
      * @param ownerHistory    Assignment of the information about the current
      *                        ownership of that object, including owning actor,
@@ -536,8 +537,10 @@ public abstract class IfcBuildingElement extends IfcElement {
      *                                  is an instance of
      *                                  IfcProductDefinitionShape.
      */
-    public IfcBuildingElement(@NotNull IfcOwnerHistory ownerHistory, IfcLabel name, IfcText description,
-                              IfcLabel objectType, IfcObjectPlacement objectPlacement,
+    public IfcBuildingElement(@NotNull IfcOwnerHistory ownerHistory,
+                              IfcLabel name, IfcText description,
+                              IfcLabel objectType,
+                              IfcObjectPlacement objectPlacement,
                               IfcProductRepresentation representation,
                               IfcIdentifier tag) {
         super(ownerHistory, name, description, objectType, objectPlacement,

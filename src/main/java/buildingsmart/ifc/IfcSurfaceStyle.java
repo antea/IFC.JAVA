@@ -19,6 +19,8 @@
 
 package buildingsmart.ifc;
 
+import buildingsmart.io.Attribute;
+import buildingsmart.io.Order;
 import com.sun.istack.internal.NotNull;
 
 import java.util.Objects;
@@ -37,8 +39,13 @@ import java.util.Set;
  * to as material definition in rendering applications .</FONT></BLOCKQUOTE>
  * <BLOCKQUOTE>
  */
-public class IfcSurfaceStyle extends IfcPresentationStyle implements IfcPresentationStyleSelect {
+public class IfcSurfaceStyle extends IfcPresentationStyle
+        implements IfcPresentationStyleSelect {
+    @Attribute
+    @Order(value = 1)
     private final IfcSurfaceSide side;
+    @Attribute
+    @Order(value = 2)
     private final Set<IfcSurfaceStyleElementSelect> styles;
 
     //TODO: test constructor

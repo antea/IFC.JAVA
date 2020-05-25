@@ -19,6 +19,8 @@
 
 package buildingsmart.ifc;
 
+import buildingsmart.io.Attribute;
+import buildingsmart.io.Order;
 import com.sun.istack.internal.NotNull;
 
 /**
@@ -323,8 +325,14 @@ import com.sun.istack.internal.NotNull;
  * </p>
  */
 public class IfcBuilding extends IfcSpatialStructureElement {
+    @Attribute
+    @Order(value = 9)
     private final IfcLengthMeasure elevationOfRefHeight;
+    @Attribute
+    @Order(value = 10)
     private final IfcLengthMeasure elevationOfTerrain;
+    @Attribute
+    @Order(value = 11)
     private final IfcPostalAddress buildingAddress;
 
     /**
@@ -402,9 +410,11 @@ public class IfcBuilding extends IfcSpatialStructureElement {
                        @NotNull IfcOwnerHistory ownerHistory, IfcLabel name,
                        IfcText description, IfcLabel objectType,
                        IfcObjectPlacement objectPlacement,
-                       IfcProductRepresentation representation, IfcLabel longName,
+                       IfcProductRepresentation representation,
+                       IfcLabel longName,
                        @NotNull IfcElementCompositionEnum compositionType,
-                       IfcLengthMeasure elevationOfRefHeight, IfcLengthMeasure elevationOfTerrain,
+                       IfcLengthMeasure elevationOfRefHeight,
+                       IfcLengthMeasure elevationOfTerrain,
                        IfcPostalAddress buildingAddress) {
         super(globalId, ownerHistory, name, description, objectType,
                 objectPlacement, representation, longName, compositionType);
@@ -484,9 +494,11 @@ public class IfcBuilding extends IfcSpatialStructureElement {
     public IfcBuilding(@NotNull IfcOwnerHistory ownerHistory, IfcLabel name,
                        IfcText description, IfcLabel objectType,
                        IfcObjectPlacement objectPlacement,
-                       IfcProductRepresentation representation, IfcLabel longName,
+                       IfcProductRepresentation representation,
+                       IfcLabel longName,
                        @NotNull IfcElementCompositionEnum compositionType,
-                       IfcLengthMeasure elevationOfRefHeight, IfcLengthMeasure elevationOfTerrain,
+                       IfcLengthMeasure elevationOfRefHeight,
+                       IfcLengthMeasure elevationOfTerrain,
                        IfcPostalAddress buildingAddress) {
         this(new IfcGloballyUniqueId(), ownerHistory, name, description,
                 objectType, objectPlacement, representation, longName,

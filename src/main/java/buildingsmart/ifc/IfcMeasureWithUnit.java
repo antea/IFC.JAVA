@@ -19,7 +19,9 @@
 
 package buildingsmart.ifc;
 
+import buildingsmart.io.Attribute;
 import buildingsmart.io.IfcEntity;
+import buildingsmart.io.Order;
 import com.sun.istack.internal.NotNull;
 
 import java.util.Objects;
@@ -38,7 +40,11 @@ import java.util.Objects;
  * </ol>
  */
 public class IfcMeasureWithUnit extends IfcEntity {
+    @Attribute
+    @Order(value = 0)
     private final IfcValue valueComponent;
+    @Attribute
+    @Order(value = 1)
     private final IfcUnit unitComponent;
 
     /**
@@ -47,7 +53,8 @@ public class IfcMeasureWithUnit extends IfcEntity {
      * @param unitComponent  The unit in which the physical quantity is
      *                       expressed.
      */
-    public IfcMeasureWithUnit(@NotNull IfcValue valueComponent, @NotNull IfcUnit unitComponent) {
+    public IfcMeasureWithUnit(@NotNull IfcValue valueComponent,
+                              @NotNull IfcUnit unitComponent) {
         if (valueComponent == null) {
             throw new IllegalArgumentException("valueComponent cannot be null");
         }
@@ -67,7 +74,8 @@ public class IfcMeasureWithUnit extends IfcEntity {
             return false;
         }
         IfcMeasureWithUnit that = (IfcMeasureWithUnit) o;
-        return valueComponent.equals(that.valueComponent) && unitComponent.equals(that.unitComponent);
+        return valueComponent.equals(that.valueComponent) &&
+                unitComponent.equals(that.unitComponent);
     }
 
     @Override

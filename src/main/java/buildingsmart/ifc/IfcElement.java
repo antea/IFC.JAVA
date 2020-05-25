@@ -19,6 +19,8 @@
 
 package buildingsmart.ifc;
 
+import buildingsmart.io.Attribute;
+import buildingsmart.io.Order;
 import com.sun.istack.internal.NotNull;
 
 /**
@@ -89,6 +91,8 @@ import com.sun.istack.internal.NotNull;
  * </p>
  */
 public abstract class IfcElement extends IfcProduct {
+    @Attribute
+    @Order(value = 7)
     private final IfcIdentifier tag;
     /*
     private IfcRelConnectsStructuralElement[] HasStructuralMember;
@@ -161,15 +165,15 @@ public abstract class IfcElement extends IfcProduct {
                       @NotNull IfcOwnerHistory ownerHistory, IfcLabel name,
                       IfcText description, IfcLabel objectType,
                       IfcObjectPlacement objectPlacement,
-                      IfcProductRepresentation representation, IfcIdentifier tag) {
+                      IfcProductRepresentation representation,
+                      IfcIdentifier tag) {
         super(globalId, ownerHistory, name, description, objectType,
                 objectPlacement, representation);
         this.tag = tag;
     }
 
     /**
-     * Creates a new IfcElement and generates a pseudo random
-     * globalId.
+     * Creates a new IfcElement and generates a pseudo random globalId.
      *
      * @param ownerHistory    Assignment of the information about the current
      *                        ownership of that object, including owning actor,
@@ -220,7 +224,8 @@ public abstract class IfcElement extends IfcProduct {
     public IfcElement(@NotNull IfcOwnerHistory ownerHistory, IfcLabel name,
                       IfcText description, IfcLabel objectType,
                       IfcObjectPlacement objectPlacement,
-                      IfcProductRepresentation representation, IfcIdentifier tag) {
+                      IfcProductRepresentation representation,
+                      IfcIdentifier tag) {
         this(new IfcGloballyUniqueId(), ownerHistory, name, description,
                 objectType, objectPlacement, representation, tag);
     }

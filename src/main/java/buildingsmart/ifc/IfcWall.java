@@ -333,8 +333,10 @@ public class IfcWall extends IfcBuildingElement {
      *                                  IfcProductDefinitionShape.
      */
     public IfcWall(@NotNull IfcGloballyUniqueId globalId,
-                   @NotNull IfcOwnerHistory ownerHistory, IfcLabel name, IfcText description, IfcLabel objectType,
-                   IfcObjectPlacement objectPlacement, IfcProductRepresentation representation, IfcIdentifier tag) {
+                   @NotNull IfcOwnerHistory ownerHistory, IfcLabel name,
+                   IfcText description, IfcLabel objectType,
+                   IfcObjectPlacement objectPlacement,
+                   IfcProductRepresentation representation, IfcIdentifier tag) {
         super(globalId, ownerHistory, name, description, objectType,
                 objectPlacement, representation, tag);
     }
@@ -388,8 +390,10 @@ public class IfcWall extends IfcBuildingElement {
      *                                  is an instance of
      *                                  IfcProductDefinitionShape.
      */
-    public IfcWall(@NotNull IfcOwnerHistory ownerHistory, IfcLabel name, IfcText description, IfcLabel objectType,
-                   IfcObjectPlacement objectPlacement, IfcProductRepresentation representation, IfcIdentifier tag) {
+    public IfcWall(@NotNull IfcOwnerHistory ownerHistory, IfcLabel name,
+                   IfcText description, IfcLabel objectType,
+                   IfcObjectPlacement objectPlacement,
+                   IfcProductRepresentation representation, IfcIdentifier tag) {
         this(new IfcGloballyUniqueId(), ownerHistory, name, description,
                 objectType, objectPlacement, representation, tag);
     }

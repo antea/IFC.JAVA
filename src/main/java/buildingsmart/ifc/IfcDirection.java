@@ -19,6 +19,8 @@
 
 package buildingsmart.ifc;
 
+import buildingsmart.io.Attribute;
+import buildingsmart.io.Order;
 import com.sun.istack.internal.NotNull;
 
 import java.util.ArrayList;
@@ -30,7 +32,10 @@ import java.util.Objects;
  * space. The actual magnitudes of the components have no effect upon the
  * direction being defined, only the ratios X:Y:Z or X:Y are significant.
  */
-public class IfcDirection extends IfcGeometricRepresentationItem implements IfcVectorOrDirection {
+public class IfcDirection extends IfcGeometricRepresentationItem
+        implements IfcVectorOrDirection {
+    @Attribute
+    @Order(value = 0)
     private final List<IfcReal> directionRatios;
     private final IfcDimensionCount dim; // derived attribute
 
@@ -46,7 +51,8 @@ public class IfcDirection extends IfcGeometricRepresentationItem implements IfcV
      */
     public IfcDirection(@NotNull List<IfcReal> directionRatios) {
         if (directionRatios == null) {
-            throw new IllegalArgumentException("directionRatios cannot be null");
+            throw new IllegalArgumentException(
+                    "directionRatios cannot be null");
         }
         if (directionRatios.size() < 2 || directionRatios.size() > 3) {
             throw new IllegalArgumentException(
@@ -68,13 +74,15 @@ public class IfcDirection extends IfcGeometricRepresentationItem implements IfcV
      */
     public IfcDirection(@NotNull double... directionRatios) {
         if (directionRatios == null) {
-            throw new IllegalArgumentException("directionRatios cannot be null");
+            throw new IllegalArgumentException(
+                    "directionRatios cannot be null");
         }
         if (directionRatios.length < 2 || directionRatios.length > 3) {
             throw new IllegalArgumentException(
                     "size of directionRatios must be 2 or 3");
         }
-        List<IfcReal> directionRatiosList = new ArrayList<>(directionRatios.length);
+        List<IfcReal> directionRatiosList =
+                new ArrayList<>(directionRatios.length);
         for (double dirRatio : directionRatios) {
             directionRatiosList.add(new IfcReal(dirRatio));
         }

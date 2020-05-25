@@ -19,6 +19,8 @@
 
 package buildingsmart.ifc;
 
+import buildingsmart.io.Attribute;
+import buildingsmart.io.Order;
 import com.sun.istack.internal.NotNull;
 
 import java.util.Objects;
@@ -29,6 +31,8 @@ import java.util.Objects;
  * placement subtypes, gives its orientation.
  */
 public abstract class IfcPlacement extends IfcGeometricRepresentationItem {
+    @Attribute
+    @Order(value = 0)
     private final IfcCartesianPoint location;
     //private int Dim;
 

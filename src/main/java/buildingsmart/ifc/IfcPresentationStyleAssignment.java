@@ -19,7 +19,9 @@
 
 package buildingsmart.ifc;
 
+import buildingsmart.io.Attribute;
 import buildingsmart.io.IfcEntity;
+import buildingsmart.io.Order;
 import com.sun.istack.internal.NotNull;
 
 import java.util.Arrays;
@@ -32,6 +34,8 @@ import java.util.Set;
  * styled items for the purpose of presenting these styled items.
  */
 public class IfcPresentationStyleAssignment extends IfcEntity {
+    @Attribute
+    @Order(value = 0)
     private final Set<IfcPresentationStyleSelect> styles;
 
     /**
@@ -59,11 +63,13 @@ public class IfcPresentationStyleAssignment extends IfcEntity {
      *                                  Set containing the unique elements of
      *                                  styles has size lower than 1.
      */
-    public IfcPresentationStyleAssignment(@NotNull IfcPresentationStyleSelect... styles) {
+    public IfcPresentationStyleAssignment(
+            @NotNull IfcPresentationStyleSelect... styles) {
         if (styles == null) {
             throw new IllegalArgumentException("styles cannot be null");
         }
-        Set<IfcPresentationStyleSelect> stylesSet = new HashSet<>(Arrays.asList(styles));
+        Set<IfcPresentationStyleSelect> stylesSet =
+                new HashSet<>(Arrays.asList(styles));
         if (stylesSet.size() < 1) {
             throw new IllegalArgumentException(
                     "size of syles must be at least 1");
@@ -79,7 +85,8 @@ public class IfcPresentationStyleAssignment extends IfcEntity {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        IfcPresentationStyleAssignment that = (IfcPresentationStyleAssignment) o;
+        IfcPresentationStyleAssignment that =
+                (IfcPresentationStyleAssignment) o;
         return styles.equals(that.styles);
     }
 

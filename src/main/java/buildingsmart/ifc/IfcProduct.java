@@ -19,6 +19,8 @@
 
 package buildingsmart.ifc;
 
+import buildingsmart.io.Attribute;
+import buildingsmart.io.Order;
 import com.sun.istack.internal.NotNull;
 
 /**
@@ -61,7 +63,11 @@ import com.sun.istack.internal.NotNull;
  * is set to <font size="-1">USERDEFINED</font>.</p>
  */
 public abstract class IfcProduct extends IfcObject {
+    @Attribute
+    @Order(value = 5)
     private final IfcObjectPlacement objectPlacement;
+    @Attribute
+    @Order(value = 6)
     private final IfcProductRepresentation representation;
     //private IfcRelAssignsToProduct[] referencedBy;
 

@@ -19,7 +19,9 @@
 
 package buildingsmart.ifc;
 
+import buildingsmart.io.Attribute;
 import buildingsmart.io.IfcEntity;
+import buildingsmart.io.Order;
 import buildingsmart.util.Functions;
 import com.sun.istack.internal.NotNull;
 
@@ -39,6 +41,8 @@ import java.util.Set;
  * project unit assignment.</small>
  */
 public class IfcUnitAssignment extends IfcEntity {
+    @Attribute
+    @Order(value = 0)
     private final Set<IfcUnit> units;
 
     /**

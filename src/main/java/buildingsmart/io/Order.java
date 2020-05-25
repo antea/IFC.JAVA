@@ -32,10 +32,11 @@ import java.lang.annotation.Target;
  * should continue counting from the highest value in the class' superclass.
  * Attributes and InverseAttributes have two different orderings, so both the
  * first {@link Attribute} and the first {@link InverseAttribute} in a class
- * will have value == 0.
+ * will have value == 0. The ordering should follow the one outlined in the IFC
+ * specification of each class (look at the section "Inheritance graph" in each
+ * entity).
  */
-@Target(ElementType.FIELD)
-@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.FIELD) @Retention(RetentionPolicy.RUNTIME)
 public @interface Order {
     int value();
 }

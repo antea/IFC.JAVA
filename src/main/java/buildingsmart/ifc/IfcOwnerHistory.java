@@ -19,43 +19,59 @@
 
 package buildingsmart.ifc;
 
+import buildingsmart.io.Attribute;
 import buildingsmart.io.IfcEntity;
+import buildingsmart.io.Order;
 import com.sun.istack.internal.NotNull;
 
 import java.util.Objects;
 
 /**
- * IfcOwnerHistory defines all history and identification related information
- * . In order to provide fast access it is directly attached to all
- * independent objects, relationships and properties.
+ * IfcOwnerHistory defines all history and identification related information .
+ * In order to provide fast access it is directly attached to all independent
+ * objects, relationships and properties.
  */
 public class IfcOwnerHistory extends IfcEntity {
+    @Attribute
+    @Order(value = 0)
     private final IfcPersonAndOrganization owningUser;
+    @Attribute
+    @Order(value = 1)
     private final IfcApplication owningApplication;
+    @Attribute
+    @Order(value = 2)
     private final IfcStateEnum state;
+    @Attribute
+    @Order(value = 3)
     private final IfcChangeActionEnum changeAction;
+    @Attribute
+    @Order(value = 4)
     private final IfcTimeStamp lastModifiedDate;
+    @Attribute
+    @Order(value = 5)
     private final IfcPersonAndOrganization lastModifyingUser;
+    @Attribute
+    @Order(value = 6)
     private final IfcApplication lastModifyingApplication;
+    @Attribute
+    @Order(value = 7)
     private final IfcTimeStamp creationDate;
 
     /**
      * @param owningUser               Direct reference to the end user who
-     *                                 currently "owns" this object. Note
-     *                                 that IFC includes the concept of
-     *                                 ownership transfer from one user to
-     *                                 another and therefore distinguishes
-     *                                 between the Owning User and Creating
-     *                                 User.
-     * @param owningApplication        Direct reference to the application
-     *                                 which currently "Owns" this object on
-     *                                 behalf of the owning user, who uses
-     *                                 this application. Note that IFC
-     *                                 includes the concept of ownership
-     *                                 transfer from one app to another and
+     *                                 currently "owns" this object. Note that
+     *                                 IFC includes the concept of ownership
+     *                                 transfer from one user to another and
      *                                 therefore distinguishes between the
-     *                                 Owning Application and Creating
-     *                                 Application.
+     *                                 Owning User and Creating User.
+     * @param owningApplication        Direct reference to the application which
+     *                                 currently "Owns" this object on behalf of
+     *                                 the owning user, who uses this
+     *                                 application. Note that IFC includes the
+     *                                 concept of ownership transfer from one
+     *                                 app to another and therefore
+     *                                 distinguishes between the Owning
+     *                                 Application and Creating Application.
      * @param state                    Enumeration that defines the current
      *                                 access state of the object.
      * @param changeAction             Enumeration that defines the actions
@@ -73,7 +89,8 @@ public class IfcOwnerHistory extends IfcEntity {
      */
     public IfcOwnerHistory(@NotNull IfcPersonAndOrganization owningUser,
                            @NotNull IfcApplication owningApplication,
-                           IfcStateEnum state, @NotNull IfcChangeActionEnum changeAction,
+                           IfcStateEnum state,
+                           @NotNull IfcChangeActionEnum changeAction,
                            IfcTimeStamp lastModifiedDate,
                            IfcPersonAndOrganization lastModifyingUser,
                            IfcApplication lastModifyingApplication,
@@ -110,11 +127,13 @@ public class IfcOwnerHistory extends IfcEntity {
             return false;
         }
         IfcOwnerHistory that = (IfcOwnerHistory) o;
-        return owningUser.equals(that.owningUser) && owningApplication.equals(that.owningApplication) &&
+        return owningUser.equals(that.owningUser) &&
+                owningApplication.equals(that.owningApplication) &&
                 state == that.state && changeAction == that.changeAction &&
                 Objects.equals(lastModifiedDate, that.lastModifiedDate) &&
                 Objects.equals(lastModifyingUser, that.lastModifyingUser) &&
-                Objects.equals(lastModifyingApplication, that.lastModifyingApplication) &&
+                Objects.equals(lastModifyingApplication,
+                        that.lastModifyingApplication) &&
                 creationDate.equals(that.creationDate);
     }
 

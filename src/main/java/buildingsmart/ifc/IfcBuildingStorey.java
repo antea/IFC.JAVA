@@ -19,6 +19,8 @@
 
 package buildingsmart.ifc;
 
+import buildingsmart.io.Attribute;
+import buildingsmart.io.Order;
 import com.sun.istack.internal.NotNull;
 
 /**
@@ -307,6 +309,8 @@ import com.sun.istack.internal.NotNull;
  * </p>
  */
 public class IfcBuildingStorey extends IfcSpatialStructureElement {
+    @Attribute
+    @Order(value = 9)
     private final IfcLengthMeasure elevation;
 
     /**
@@ -372,8 +376,10 @@ public class IfcBuildingStorey extends IfcSpatialStructureElement {
      *                                  compositionType is null.
      */
     public IfcBuildingStorey(@NotNull IfcGloballyUniqueId globalId,
-                             @NotNull IfcOwnerHistory ownerHistory, IfcLabel name, IfcText description,
-                             IfcLabel objectType, IfcObjectPlacement objectPlacement,
+                             @NotNull IfcOwnerHistory ownerHistory,
+                             IfcLabel name, IfcText description,
+                             IfcLabel objectType,
+                             IfcObjectPlacement objectPlacement,
                              IfcProductRepresentation representation,
                              IfcLabel longName,
                              @NotNull IfcElementCompositionEnum compositionType,
@@ -442,9 +448,12 @@ public class IfcBuildingStorey extends IfcSpatialStructureElement {
      *                                  IfcProductDefinitionShape;
      *                                  if compositionType is null.
      */
-    public IfcBuildingStorey(@NotNull IfcOwnerHistory ownerHistory, IfcLabel name, IfcText description,
-                             IfcLabel objectType, IfcObjectPlacement objectPlacement,
-                             IfcProductRepresentation representation, IfcLabel longName,
+    public IfcBuildingStorey(@NotNull IfcOwnerHistory ownerHistory,
+                             IfcLabel name, IfcText description,
+                             IfcLabel objectType,
+                             IfcObjectPlacement objectPlacement,
+                             IfcProductRepresentation representation,
+                             IfcLabel longName,
                              @NotNull IfcElementCompositionEnum compositionType,
                              IfcLengthMeasure elevation) {
         this(new IfcGloballyUniqueId(), ownerHistory, name, description,

@@ -19,7 +19,9 @@
 
 package buildingsmart.ifc;
 
+import buildingsmart.io.Attribute;
 import buildingsmart.io.IfcEntity;
+import buildingsmart.io.Order;
 
 import java.util.Objects;
 
@@ -28,7 +30,11 @@ import java.util.Objects;
  * are related.
  */
 public class IfcRepresentationContext extends IfcEntity {
+    @Attribute
+    @Order(value = 0)
     private final IfcLabel contextIdentifier;
+    @Attribute
+    @Order(value = 1)
     private final IfcLabel contextType;
     //private IfcRepresentation[] RepresentationsInContext;
 
@@ -39,7 +45,8 @@ public class IfcRepresentationContext extends IfcEntity {
      *                          context. The supported values for context type
      *                          are to be specified by implementers agreements.
      */
-    public IfcRepresentationContext(IfcLabel contextIdentifier, IfcLabel contextType) {
+    public IfcRepresentationContext(IfcLabel contextIdentifier,
+                                    IfcLabel contextType) {
         this.contextIdentifier = contextIdentifier;
         this.contextType = contextType;
     }

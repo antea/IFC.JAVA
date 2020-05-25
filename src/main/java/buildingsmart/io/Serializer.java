@@ -92,10 +92,11 @@ public class Serializer {
      */
     private static List<Field> getAllFields(Class<?> type) {
         List<Field> fields = new ArrayList<>();
-        while (type.getSuperclass() != null) {
+        do {
             fields.addAll(Arrays.asList(type.getDeclaredFields()));
             type = type.getSuperclass();
-        }
+        } while (type != null);
+
         return fields;
     }
 

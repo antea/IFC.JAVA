@@ -19,6 +19,8 @@
 
 package buildingsmart.ifc;
 
+import buildingsmart.io.Attribute;
+import buildingsmart.io.Order;
 import com.sun.istack.internal.NotNull;
 
 /**
@@ -75,7 +77,11 @@ import com.sun.istack.internal.NotNull;
  * </ol>
  */
 public class IfcSpatialStructureElement extends IfcProduct {
+    @Attribute
+    @Order(value = 7)
     private final IfcLabel longName;
+    @Attribute
+    @Order(value = 8)
     private final IfcElementCompositionEnum compositionType;
     //private IfcRelReferencedInSpatialStructure[] ReferencesElements;
     //private IfcRelServicesBuildings[] ServicedBySystems;
@@ -143,14 +149,16 @@ public class IfcSpatialStructureElement extends IfcProduct {
     public IfcSpatialStructureElement(@NotNull IfcGloballyUniqueId globalId,
                                       @NotNull IfcOwnerHistory ownerHistory,
                                       IfcLabel name, IfcText description,
-                                      IfcLabel objectType, IfcObjectPlacement objectPlacement,
+                                      IfcLabel objectType,
+                                      IfcObjectPlacement objectPlacement,
                                       IfcProductRepresentation representation,
                                       IfcLabel longName, @NotNull
                                               IfcElementCompositionEnum compositionType) {
         super(globalId, ownerHistory, name, description, objectType,
                 objectPlacement, representation);
         if (compositionType == null) {
-            throw new IllegalArgumentException("compositionType cannot be null");
+            throw new IllegalArgumentException(
+                    "compositionType cannot be null");
         }
         this.longName = longName;
         this.compositionType = compositionType;
@@ -213,7 +221,8 @@ public class IfcSpatialStructureElement extends IfcProduct {
      */
     public IfcSpatialStructureElement(@NotNull IfcOwnerHistory ownerHistory,
                                       IfcLabel name, IfcText description,
-                                      IfcLabel objectType, IfcObjectPlacement objectPlacement,
+                                      IfcLabel objectType,
+                                      IfcObjectPlacement objectPlacement,
                                       IfcProductRepresentation representation,
                                       IfcLabel longName, @NotNull
                                               IfcElementCompositionEnum compositionType) {
@@ -261,7 +270,8 @@ public class IfcSpatialStructureElement extends IfcProduct {
      */
     protected void setDecomposes(IfcRelAggregates decomposes) {
         if (!(decomposes.getRelatingObject() instanceof IfcProject) &&
-                !(decomposes.getRelatingObject() instanceof IfcSpatialStructureElement)) {
+                !(decomposes
+                        .getRelatingObject() instanceof IfcSpatialStructureElement)) {
             throw new IllegalArgumentException(
                     "decomposes.relatingObject must be of type IfcProject or " +
                             "IfcSpatialStructureElement");

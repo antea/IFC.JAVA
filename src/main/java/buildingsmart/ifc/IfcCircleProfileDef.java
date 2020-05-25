@@ -19,6 +19,8 @@
 
 package buildingsmart.ifc;
 
+import buildingsmart.io.Attribute;
+import buildingsmart.io.Order;
 import com.sun.istack.internal.NotNull;
 
 import java.util.Objects;
@@ -30,6 +32,8 @@ import java.util.Objects;
  * established by the Position attribute.
  */
 public class IfcCircleProfileDef extends IfcParameterizedProfileDef {
+    @Attribute
+    @Order(value = 3)
     private final IfcPositiveLengthMeasure radius;
 
     /**
@@ -46,7 +50,8 @@ public class IfcCircleProfileDef extends IfcParameterizedProfileDef {
      * @throws IllegalArgumentException If profileType,position or radius are
      *                                  null.
      */
-    public IfcCircleProfileDef(@NotNull IfcProfileTypeEnum profileType, IfcLabel profileName,
+    public IfcCircleProfileDef(@NotNull IfcProfileTypeEnum profileType,
+                               IfcLabel profileName,
                                @NotNull IfcAxis2Placement2D position,
                                @NotNull IfcPositiveLengthMeasure radius) {
         super(profileType, profileName, position);

@@ -19,6 +19,8 @@
 
 package buildingsmart.ifc;
 
+import buildingsmart.io.Attribute;
+import buildingsmart.io.Order;
 import buildingsmart.util.Functions;
 import com.sun.istack.internal.NotNull;
 
@@ -29,7 +31,11 @@ import java.util.Objects;
  * are measured as defined by ISO 1000 (clause 2).
  */
 public class IfcSIUnit extends IfcNamedUnit {
+    @Attribute
+    @Order(value = 2)
     private final IfcSIPrefix prefix;
+    @Attribute
+    @Order(value = 3)
     private final IfcSIUnitName name;
     //FIXME: in this class attribute dimensions is derived (unlike in its
     // superclass), so it shouldn't be

@@ -19,7 +19,9 @@
 
 package buildingsmart.ifc;
 
+import buildingsmart.io.Attribute;
 import buildingsmart.io.IfcEntity;
+import buildingsmart.io.Order;
 import com.sun.istack.internal.NotNull;
 
 import java.util.List;
@@ -29,10 +31,20 @@ import java.util.Objects;
  * A named and structured grouping with a corporate identity.
  */
 public class IfcOrganization extends IfcEntity {
+    @Attribute
+    @Order(value = 0)
     private final IfcIdentifier id;
+    @Attribute
+    @Order(value = 1)
     private final IfcLabel name;
+    @Attribute
+    @Order(value = 2)
     private final IfcText description;
+    @Attribute
+    @Order(value = 3)
     private final List<IfcActorRole> roles;
+    @Attribute
+    @Order(value = 4)
     private final List<IfcAddress> addresses;
     //private IfcOrganizationRelationship[] IsRelatedBy;
     //private IfcOrganizationRelationship[] Relates;
@@ -40,15 +52,16 @@ public class IfcOrganization extends IfcEntity {
 
     /**
      * @param id          Identification of the organization.
-     * @param name        The word, or group of words, by which the
-     *                    organization is referred to. Cannot be null.
+     * @param name        The word, or group of words, by which the organization
+     *                    is referred to. Cannot be null.
      * @param description Text that relates the nature of the organization.
      * @param roles       Roles played by the organization.
      * @param addresses   Postal and telecom addresses of an organization.
-     * @throws IllegalArgumentException If name is null, or roles or
-     *                                  addresses' size is zero.
+     * @throws IllegalArgumentException If name is null, or roles or addresses'
+     *                                  size is zero.
      */
-    public IfcOrganization(IfcIdentifier id, @NotNull IfcLabel name, IfcText description, List<IfcActorRole> roles,
+    public IfcOrganization(IfcIdentifier id, @NotNull IfcLabel name,
+                           IfcText description, List<IfcActorRole> roles,
                            List<IfcAddress> addresses) {
         if (name == null) {
             throw new IllegalArgumentException("name cannot be null");
@@ -77,8 +90,10 @@ public class IfcOrganization extends IfcEntity {
             return false;
         }
         IfcOrganization that = (IfcOrganization) o;
-        return Objects.equals(id, that.id) && name.equals(that.name) && Objects.equals(description, that.description) &&
-                Objects.equals(roles, that.roles) && Objects.equals(addresses, that.addresses);
+        return Objects.equals(id, that.id) && name.equals(that.name) &&
+                Objects.equals(description, that.description) &&
+                Objects.equals(roles, that.roles) &&
+                Objects.equals(addresses, that.addresses);
     }
 
     @Override

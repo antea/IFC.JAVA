@@ -19,6 +19,8 @@
 
 package buildingsmart.ifc;
 
+import buildingsmart.io.Attribute;
+import buildingsmart.io.Order;
 import com.sun.istack.internal.NotNull;
 
 import java.util.Arrays;
@@ -83,7 +85,11 @@ import java.util.Set;
  * </blockquote>
  */
 public class IfcRelContainedInSpatialStructure extends IfcRelConnects {
+    @Attribute
+    @Order(value = 4)
     private final Set<IfcProduct> relatedElements;
+    @Attribute
+    @Order(value = 5)
     private final IfcSpatialStructureElement relatingStructure;
 
     /**
@@ -120,13 +126,15 @@ public class IfcRelContainedInSpatialStructure extends IfcRelConnects {
      *                                  if relatedElements contains objects of
      *                                  type IfcSpatialStructureElement.
      */
-    public IfcRelContainedInSpatialStructure(@NotNull IfcGloballyUniqueId globalId,
-                                             @NotNull IfcOwnerHistory ownerHistory, IfcLabel name,
-                                             IfcText description, @NotNull Set<IfcProduct> relatedElements,
-                                             @NotNull IfcSpatialStructureElement relatingStructure) {
+    public IfcRelContainedInSpatialStructure(
+            @NotNull IfcGloballyUniqueId globalId,
+            @NotNull IfcOwnerHistory ownerHistory, IfcLabel name,
+            IfcText description, @NotNull Set<IfcProduct> relatedElements,
+            @NotNull IfcSpatialStructureElement relatingStructure) {
         super(globalId, ownerHistory, name, description);
         if (relatedElements == null) {
-            throw new IllegalArgumentException("relatedElements cannot be null");
+            throw new IllegalArgumentException(
+                    "relatedElements cannot be null");
         }
         if (relatingStructure == null) {
             throw new IllegalArgumentException(
@@ -176,9 +184,10 @@ public class IfcRelContainedInSpatialStructure extends IfcRelConnects {
      *                                  relatedElements contains objects of type
      *                                  IfcSpatialStructureElement.
      */
-    public IfcRelContainedInSpatialStructure(@NotNull IfcOwnerHistory ownerHistory, IfcLabel name,
-                                             IfcText description, @NotNull Set<IfcProduct> relatedElements,
-                                             @NotNull IfcSpatialStructureElement relatingStructure) {
+    public IfcRelContainedInSpatialStructure(
+            @NotNull IfcOwnerHistory ownerHistory, IfcLabel name,
+            IfcText description, @NotNull Set<IfcProduct> relatedElements,
+            @NotNull IfcSpatialStructureElement relatingStructure) {
         this(new IfcGloballyUniqueId(), ownerHistory, name, description,
                 relatedElements, relatingStructure);
     }
@@ -217,12 +226,14 @@ public class IfcRelContainedInSpatialStructure extends IfcRelConnects {
      *                                  if relatedElements contains objects of
      *                                  type IfcSpatialStructureElement.
      */
-    public IfcRelContainedInSpatialStructure(@NotNull IfcGloballyUniqueId globalId,
-                                             @NotNull IfcOwnerHistory ownerHistory, IfcLabel name,
-                                             IfcText description,
-                                             @NotNull IfcSpatialStructureElement relatingStructure,
-                                             @NotNull IfcProduct... relatedElements) {
-        this(globalId, ownerHistory, name, description, new HashSet<>(Arrays.asList(relatedElements)),
+    public IfcRelContainedInSpatialStructure(
+            @NotNull IfcGloballyUniqueId globalId,
+            @NotNull IfcOwnerHistory ownerHistory, IfcLabel name,
+            IfcText description,
+            @NotNull IfcSpatialStructureElement relatingStructure,
+            @NotNull IfcProduct... relatedElements) {
+        this(globalId, ownerHistory, name, description,
+                new HashSet<>(Arrays.asList(relatedElements)),
                 relatingStructure);
     }
 
@@ -255,11 +266,13 @@ public class IfcRelContainedInSpatialStructure extends IfcRelConnects {
      *                                  relatedElements contains objects of type
      *                                  IfcSpatialStructureElement.
      */
-    public IfcRelContainedInSpatialStructure(@NotNull IfcOwnerHistory ownerHistory, IfcLabel name,
-                                             IfcText description,
-                                             @NotNull IfcSpatialStructureElement relatingStructure,
-                                             @NotNull IfcProduct... relatedElements) {
-        this(ownerHistory, name, description, new HashSet<>(Arrays.asList(relatedElements)),
+    public IfcRelContainedInSpatialStructure(
+            @NotNull IfcOwnerHistory ownerHistory, IfcLabel name,
+            IfcText description,
+            @NotNull IfcSpatialStructureElement relatingStructure,
+            @NotNull IfcProduct... relatedElements) {
+        this(ownerHistory, name, description,
+                new HashSet<>(Arrays.asList(relatedElements)),
                 relatingStructure);
     }
 }

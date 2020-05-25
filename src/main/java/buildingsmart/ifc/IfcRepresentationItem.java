@@ -20,6 +20,8 @@
 package buildingsmart.ifc;
 
 import buildingsmart.io.IfcEntity;
+import buildingsmart.io.InverseAttribute;
+import buildingsmart.io.Order;
 
 import java.util.Objects;
 
@@ -32,7 +34,9 @@ import java.util.Objects;
  */
 public abstract class IfcRepresentationItem extends IfcEntity {
     //private IfcPresentationLayerAssignment[] LayerAssignments;
-    private IfcStyledItem styledByItem; //inverse attribute
+    @InverseAttribute
+    @Order(value = 1)
+    private IfcStyledItem styledByItem;
 
     /**
      * @param styledByItem Reference to the IfcStyledItem that provides

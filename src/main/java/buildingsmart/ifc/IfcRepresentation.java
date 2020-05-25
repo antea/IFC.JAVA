@@ -19,7 +19,10 @@
 
 package buildingsmart.ifc;
 
+import buildingsmart.io.Attribute;
 import buildingsmart.io.IfcEntity;
+import buildingsmart.io.InverseAttribute;
+import buildingsmart.io.Order;
 import com.sun.istack.internal.NotNull;
 
 import java.util.Arrays;
@@ -32,14 +35,25 @@ import java.util.Set;
  * specified representation context as the representation of some concept.
  */
 public class IfcRepresentation extends IfcEntity {
+    @Attribute
+    @Order(value = 0)
     private final IfcRepresentationContext contextOfItems;
+    @Attribute
+    @Order(value = 1)
     private final IfcLabel representationIdentifier;
+    @Attribute
+    @Order(value = 2)
     private final IfcLabel representationType;
+    @Attribute
+    @Order(value = 3)
     private final Set<IfcRepresentationItem> items;
 
-    // inverse attributes
+    @InverseAttribute
+    @Order(value = 0)
     protected IfcRepresentationMap representationMap;
     //private IfcPresentationLayerAssignment[] layerAssignments;
+    @InverseAttribute
+    @Order(value = 2)
     protected IfcProductRepresentation ofProductRepresentation;
 
     /**
@@ -65,7 +79,8 @@ public class IfcRepresentation extends IfcEntity {
      *                                  the size of items is lower than 1.
      */
     public IfcRepresentation(@NotNull IfcRepresentationContext contextOfItems,
-                             IfcLabel representationIdentifier, IfcLabel representationType,
+                             IfcLabel representationIdentifier,
+                             IfcLabel representationType,
                              @NotNull Set<IfcRepresentationItem> items) {
         if (contextOfItems == null) {
             throw new IllegalArgumentException("contextOfItems cannot be null");
@@ -106,10 +121,15 @@ public class IfcRepresentation extends IfcEntity {
      *                                  the size of items is lower than 1.
      */
     public IfcRepresentation(@NotNull IfcRepresentationContext contextOfItems,
-                             IfcLabel representationIdentifier, IfcLabel representationType,
+                             IfcLabel representationIdentifier,
+                             IfcLabel representationType,
                              @NotNull IfcRepresentationItem... items) {
-        this(contextOfItems, representationIdentifier, representationType, new HashSet<>(Arrays.asList(items)));
+        this(contextOfItems, representationIdentifier, representationType,
+                new HashSet<>(Arrays.asList(items)));
     }
+
+    //TODO: look for usages of setters and see if they can be called in
+    // constructors of other entities
 
     /**
      * @param representationMap Use of the representation within an
@@ -128,7 +148,8 @@ public class IfcRepresentation extends IfcEntity {
      * @param ofProductRepresentation Reference to the product shape, for which
      *                                it is the shape representation.
      */
-    public void setOfProductRepresentation(IfcProductRepresentation ofProductRepresentation) {
+    public void setOfProductRepresentation(
+            IfcProductRepresentation ofProductRepresentation) {
         this.ofProductRepresentation = ofProductRepresentation;
     }
 
@@ -142,10 +163,13 @@ public class IfcRepresentation extends IfcEntity {
         }
         IfcRepresentation that = (IfcRepresentation) o;
         return contextOfItems.equals(that.contextOfItems) &&
-                Objects.equals(representationIdentifier, that.representationIdentifier) &&
+                Objects.equals(representationIdentifier,
+                        that.representationIdentifier) &&
                 Objects.equals(representationType, that.representationType) &&
-                items.equals(that.items) && Objects.equals(representationMap, that.representationMap) &&
-                Objects.equals(ofProductRepresentation, that.ofProductRepresentation);
+                items.equals(that.items) &&
+                Objects.equals(representationMap, that.representationMap) &&
+                Objects.equals(ofProductRepresentation,
+                        that.ofProductRepresentation);
     }
 
     @Override

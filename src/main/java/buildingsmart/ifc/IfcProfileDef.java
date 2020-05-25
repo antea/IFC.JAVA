@@ -19,7 +19,9 @@
 
 package buildingsmart.ifc;
 
+import buildingsmart.io.Attribute;
 import buildingsmart.io.IfcEntity;
+import buildingsmart.io.Order;
 import com.sun.istack.internal.NotNull;
 
 import java.util.Objects;
@@ -91,7 +93,11 @@ import java.util.Objects;
  * profile tables for steel profiles.</p>
  */
 public abstract class IfcProfileDef extends IfcEntity {
+    @Attribute
+    @Order(value = 0)
     private final IfcProfileTypeEnum profileType;
+    @Attribute
+    @Order(value = 1)
     private final IfcLabel profileName;
 
     /**
@@ -104,7 +110,8 @@ public abstract class IfcProfileDef extends IfcEntity {
      *                    profile table.
      * @throws IllegalArgumentException If profileType is null.
      */
-    public IfcProfileDef(@NotNull IfcProfileTypeEnum profileType, IfcLabel profileName) {
+    public IfcProfileDef(@NotNull IfcProfileTypeEnum profileType,
+                         IfcLabel profileName) {
         if (profileType == null) {
             throw new IllegalArgumentException("profileType cannot be null");
         }
@@ -125,8 +132,8 @@ public abstract class IfcProfileDef extends IfcEntity {
             return false;
         }
         IfcProfileDef that = (IfcProfileDef) o;
-        return profileType == that.profileType && Objects.equals(profileName,
-                that.profileName);
+        return profileType == that.profileType &&
+                Objects.equals(profileName, that.profileName);
     }
 
     @Override

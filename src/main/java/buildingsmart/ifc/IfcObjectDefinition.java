@@ -19,6 +19,8 @@
 
 package buildingsmart.ifc;
 
+import buildingsmart.io.InverseAttribute;
+import buildingsmart.io.Order;
 import com.sun.istack.internal.NotNull;
 
 import java.util.HashSet;
@@ -58,24 +60,30 @@ import java.util.Set;
  * </ul>
  */
 public abstract class IfcObjectDefinition extends IfcRoot {
+    //private Set<IfcRelAssigns> hasAssignments;
     /**
      * Reference to the relationship objects, that associates external
      * references or other resource definitions to the object.. Examples are the
      * association to library, documentation or classification.
      */
+    @InverseAttribute
+    @Order(value = 3)
     protected Set<IfcRelAssociates> hasAssociations;
-    //private Set<IfcRelAssigns> hasAssignments;
     /**
      * Reference to the decomposition relationship, that allows this object to
      * be the composition of other objects. An object can be decomposed by
      * several other objects.
      */
+    @InverseAttribute
+    @Order(value = 1)
     private Set<IfcRelDecomposes> isDecomposedBy;
     /**
      * References to the decomposition relationship, that allows this object to
      * be a part of the decomposition. An object can only be part of a single
      * decomposition (to allow hierarchical strutures only).
      */
+    @InverseAttribute
+    @Order(value = 2)
     private IfcRelDecomposes decomposes;
 
     /**
@@ -99,7 +107,8 @@ public abstract class IfcObjectDefinition extends IfcRoot {
      *                                  of this class.
      */
     public IfcObjectDefinition(@NotNull IfcGloballyUniqueId globalId,
-                               @NotNull IfcOwnerHistory ownerHistory, IfcLabel name, IfcText description) {
+                               @NotNull IfcOwnerHistory ownerHistory,
+                               IfcLabel name, IfcText description) {
         super(globalId, ownerHistory, name, description);
     }
 
@@ -120,7 +129,8 @@ public abstract class IfcObjectDefinition extends IfcRoot {
      *                     informative comments.
      * @throws IllegalArgumentException If ownerHistory is null.
      */
-    public IfcObjectDefinition(@NotNull IfcOwnerHistory ownerHistory, IfcLabel name, IfcText description) {
+    public IfcObjectDefinition(@NotNull IfcOwnerHistory ownerHistory,
+                               IfcLabel name, IfcText description) {
         super(ownerHistory, name, description);
     }
 

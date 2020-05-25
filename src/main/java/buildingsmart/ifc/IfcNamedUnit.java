@@ -19,7 +19,9 @@
 
 package buildingsmart.ifc;
 
+import buildingsmart.io.Attribute;
 import buildingsmart.io.IfcEntity;
+import buildingsmart.io.Order;
 import buildingsmart.util.Functions;
 import com.sun.istack.internal.NotNull;
 
@@ -30,7 +32,11 @@ import java.util.Objects;
  * by which the unit is identified.
  */
 public abstract class IfcNamedUnit extends IfcEntity implements IfcUnit {
+    @Attribute
+    @Order(value = 0)
     private final IfcDimensionalExponents dimensions;
+    @Attribute
+    @Order(value = 1)
     private final IfcUnitEnum unitType;
 
     //TODO: test constructor

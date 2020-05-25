@@ -19,6 +19,8 @@
 
 package buildingsmart.ifc;
 
+import buildingsmart.io.Attribute;
+import buildingsmart.io.Order;
 import com.sun.istack.internal.NotNull;
 
 import java.util.Collections;
@@ -35,8 +37,14 @@ import java.util.concurrent.CopyOnWriteArraySet;
  * other representation for a product.</p>
  */
 public class IfcStyledItem extends IfcRepresentationItem {
+    @Attribute
+    @Order(value = 0)
     private final IfcRepresentationItem item;
+    @Attribute
+    @Order(value = 1)
     private final Set<IfcPresentationStyleAssignment> styles;
+    @Attribute
+    @Order(value = 2)
     private final IfcLabel name;
 
     /**

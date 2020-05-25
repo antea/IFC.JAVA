@@ -19,7 +19,9 @@
 
 package buildingsmart.ifc;
 
+import buildingsmart.io.Attribute;
 import buildingsmart.io.IfcEntity;
+import buildingsmart.io.Order;
 import buildingsmart.util.Pair;
 import com.sun.istack.internal.NotNull;
 
@@ -36,11 +38,20 @@ import java.util.Set;
 public class IfcApplication extends IfcEntity {
     private static final Set<Pair<IfcLabel, IfcLabel>>
             uniqueAppFullNameAndVersions = new HashSet<>();
-    private static final Set<IfcIdentifier> uniqueAppIdentifiers = new HashSet<>();
+    private static final Set<IfcIdentifier> uniqueAppIdentifiers =
+            new HashSet<>();
 
+    @Attribute
+    @Order(value = 0)
     private final IfcOrganization applicationDeveloper;
+    @Attribute
+    @Order(value = 1)
     private final IfcLabel version;
+    @Attribute
+    @Order(value = 2)
     private final IfcLabel applicationFullName;
+    @Attribute
+    @Order(value = 3)
     private final IfcIdentifier applicationIdentifier;
 
     /**
@@ -64,7 +75,8 @@ public class IfcApplication extends IfcEntity {
      *                                  same as the one passed as parameter.
      */
     public IfcApplication(@NotNull IfcOrganization applicationDeveloper,
-                          @NotNull IfcLabel version, @NotNull IfcLabel applicationFullName,
+                          @NotNull IfcLabel version,
+                          @NotNull IfcLabel applicationFullName,
                           @NotNull IfcIdentifier applicationIdentifier) {
         if (applicationDeveloper == null || version == null ||
                 applicationFullName == null || applicationIdentifier == null) {
@@ -76,7 +88,8 @@ public class IfcApplication extends IfcEntity {
                     "applicationIdentifier must be unique, and this one was " +
                             "already used in another instance of this class");
         }
-        Pair<IfcLabel, IfcLabel> appFullNameAndVersion = new Pair<>(applicationFullName, version);
+        Pair<IfcLabel, IfcLabel> appFullNameAndVersion =
+                new Pair<>(applicationFullName, version);
         if (uniqueAppFullNameAndVersions.contains(appFullNameAndVersion)) {
             throw new IllegalArgumentException(
                     "the combination of applicationFullName and version must " +
@@ -112,7 +125,8 @@ public class IfcApplication extends IfcEntity {
             return false;
         }
         IfcApplication that = (IfcApplication) o;
-        return applicationDeveloper.equals(that.applicationDeveloper) && version.equals(that.version) &&
+        return applicationDeveloper.equals(that.applicationDeveloper) &&
+                version.equals(that.version) &&
                 applicationFullName.equals(that.applicationFullName) &&
                 applicationIdentifier.equals(that.applicationIdentifier);
     }

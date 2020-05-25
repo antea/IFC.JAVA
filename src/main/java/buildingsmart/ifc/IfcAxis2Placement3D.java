@@ -19,6 +19,8 @@
 
 package buildingsmart.ifc;
 
+import buildingsmart.io.Attribute;
+import buildingsmart.io.Order;
 import buildingsmart.util.Functions;
 import com.sun.istack.internal.NotNull;
 
@@ -35,8 +37,13 @@ import java.util.Objects;
  * The axis is the placement Z axis direction and the ref_direction is an
  * approximation to the placement X axis direction.
  */
-public class IfcAxis2Placement3D extends IfcPlacement implements IfcAxis2Placement {
+public class IfcAxis2Placement3D extends IfcPlacement
+        implements IfcAxis2Placement {
+    @Attribute
+    @Order(value = 1)
     private final IfcDirection axis;
+    @Attribute
+    @Order(value = 2)
     private final IfcDirection refDirection;
     //private IfcDirection[] p; TODO: calculate this by normalizing axis and
     // refDirection, and then use this in equals()?
@@ -70,7 +77,8 @@ public class IfcAxis2Placement3D extends IfcPlacement implements IfcAxis2Placeme
      *                                  or both shall be given.</li>
      *                                  </bl>
      */
-    public IfcAxis2Placement3D(@NotNull IfcCartesianPoint location, IfcDirection axis, IfcDirection refDirection) {
+    public IfcAxis2Placement3D(@NotNull IfcCartesianPoint location,
+                               IfcDirection axis, IfcDirection refDirection) {
         super(location);
         if (super.getDim().getValue() != 3) {
             throw new IllegalArgumentException(
@@ -87,12 +95,14 @@ public class IfcAxis2Placement3D extends IfcPlacement implements IfcAxis2Placeme
                             " equal to 3");
         }
         if (axis != null && refDirection != null &&
-                Functions.ifcCrossProduct(axis, refDirection).getMagnitude().getValue() <= 0) {
+                Functions.ifcCrossProduct(axis, refDirection).getMagnitude()
+                        .getValue() <= 0) {
             throw new IllegalArgumentException(
                     "axis and refDirection cannot be parallel or " +
                             "anti-parallel");
         }
-        if ((axis == null && refDirection != null) || (axis != null && refDirection == null)) {
+        if ((axis == null && refDirection != null) ||
+                (axis != null && refDirection == null)) {
             throw new IllegalArgumentException(
                     "either both axis and refDirection are set, or none " +
                             "should be set");
@@ -113,7 +123,8 @@ public class IfcAxis2Placement3D extends IfcPlacement implements IfcAxis2Placeme
             return false;
         }
         IfcAxis2Placement3D that = (IfcAxis2Placement3D) o;
-        return Objects.equals(axis, that.axis) && Objects.equals(refDirection, that.refDirection);
+        return Objects.equals(axis, that.axis) &&
+                Objects.equals(refDirection, that.refDirection);
     }
 
     @Override

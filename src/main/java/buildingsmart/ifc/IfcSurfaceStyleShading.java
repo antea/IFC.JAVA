@@ -19,7 +19,9 @@
 
 package buildingsmart.ifc;
 
+import buildingsmart.io.Attribute;
 import buildingsmart.io.IfcEntity;
+import buildingsmart.io.Order;
 import com.sun.istack.internal.NotNull;
 
 import java.util.Objects;
@@ -30,7 +32,10 @@ import java.util.Objects;
  * techniques. The surface colour is used for colouring or simple shading of the
  * assigned surfaces.
  */
-public class IfcSurfaceStyleShading extends IfcEntity implements IfcSurfaceStyleElementSelect {
+public class IfcSurfaceStyleShading extends IfcEntity
+        implements IfcSurfaceStyleElementSelect {
+    @Attribute
+    @Order(value = 0)
     private final IfcColourRgb surfaceColour;
 
     /**

@@ -29,7 +29,7 @@ import java.util.Objects;
  */
 public abstract class IfcSolidModel extends IfcGeometricRepresentationItem {
     private final IfcDimensionCount dim = new IfcDimensionCount((byte) 3);
-    // inverse attribute
+    // derived attribute
 
     @Override
     public boolean equals(Object o) {

@@ -19,6 +19,8 @@
 
 package buildingsmart.ifc;
 
+import buildingsmart.io.Attribute;
+import buildingsmart.io.Order;
 import buildingsmart.util.Functions;
 import com.sun.istack.internal.NotNull;
 
@@ -39,7 +41,11 @@ import java.util.Objects;
  * system.</p>
  */
 public class IfcLocalPlacement extends IfcObjectPlacement {
+    @Attribute
+    @Order(value = 0)
     private final IfcObjectPlacement placementRelTo;
+    @Attribute
+    @Order(value = 1)
     private final IfcAxis2Placement relativePlacement;
 
     //TODO: test constructor
@@ -67,7 +73,8 @@ public class IfcLocalPlacement extends IfcObjectPlacement {
                     "relativePlacement cannot be null");
         }
         if (!Objects.equals(Functions
-                        .ifcCorrectLocalPlacement(relativePlacement, placementRelTo),
+                        .ifcCorrectLocalPlacement(relativePlacement,
+                                placementRelTo),
                 true)) {
             throw new IllegalArgumentException(
                     "if relativePlacement is 3D, so must be placementRelTo; " +

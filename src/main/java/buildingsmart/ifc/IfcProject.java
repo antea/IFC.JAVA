@@ -19,6 +19,8 @@
 
 package buildingsmart.ifc;
 
+import buildingsmart.io.Attribute;
+import buildingsmart.io.Order;
 import com.sun.istack.internal.NotNull;
 
 import java.util.Set;
@@ -41,9 +43,17 @@ import java.util.Set;
  * </ul>
  */
 public class IfcProject extends IfcObject {
+    @Attribute
+    @Order(value = 5)
     private final IfcLabel longName;
+    @Attribute
+    @Order(value = 6)
     private final IfcLabel phase;
+    @Attribute
+    @Order(value = 7)
     private final Set<IfcRepresentationContext> representationContexts;
+    @Attribute
+    @Order(value = 8)
     private final IfcUnitAssignment unitsInContext;
 
     /**
@@ -96,9 +106,11 @@ public class IfcProject extends IfcObject {
      *                                  IfcGeometricRepresentationSubContexts.
      */
     public IfcProject(@NotNull IfcGloballyUniqueId globalId,
-                      @NotNull IfcOwnerHistory ownerHistory, @NotNull IfcLabel name, IfcText description,
+                      @NotNull IfcOwnerHistory ownerHistory,
+                      @NotNull IfcLabel name, IfcText description,
                       IfcLabel objectType, IfcLabel longName, IfcLabel phase,
-                      @NotNull Set<IfcRepresentationContext> representationContexts,
+                      @NotNull
+                              Set<IfcRepresentationContext> representationContexts,
                       @NotNull IfcUnitAssignment unitsInContext) {
         super(globalId, ownerHistory, name, description, objectType);
         if (representationContexts == null) {
@@ -172,9 +184,11 @@ public class IfcProject extends IfcObject {
      *                                  or more objects of type
      *                                  IfcGeometricRepresentationSubContexts.
      */
-    public IfcProject(@NotNull IfcOwnerHistory ownerHistory, @NotNull IfcLabel name, IfcText description,
+    public IfcProject(@NotNull IfcOwnerHistory ownerHistory,
+                      @NotNull IfcLabel name, IfcText description,
                       IfcLabel objectType, IfcLabel longName, IfcLabel phase,
-                      @NotNull Set<IfcRepresentationContext> representationContexts,
+                      @NotNull
+                              Set<IfcRepresentationContext> representationContexts,
                       @NotNull IfcUnitAssignment unitsInContext) {
         this(new IfcGloballyUniqueId(), ownerHistory, name, description,
                 objectType, longName, phase, representationContexts,
@@ -228,6 +242,7 @@ public class IfcProject extends IfcObject {
     @Override
     protected void setDecomposes(IfcRelDecomposes decomposes) {
         throw new IllegalStateException(
-                "IfcProject cannot decompose any other " + "IfcObjectDefinition");
+                "IfcProject cannot decompose any other " +
+                        "IfcObjectDefinition");
     }
 }

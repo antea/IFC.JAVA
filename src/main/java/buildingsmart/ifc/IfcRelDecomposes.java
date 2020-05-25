@@ -19,6 +19,8 @@
 
 package buildingsmart.ifc;
 
+import buildingsmart.io.Attribute;
+import buildingsmart.io.Order;
 import com.sun.istack.internal.NotNull;
 
 import java.util.Arrays;
@@ -51,7 +53,11 @@ import java.util.Set;
  * Cyclic references have to be prevented at application level.</P>
  */
 public class IfcRelDecomposes extends IfcRelationship {
+    @Attribute
+    @Order(value = 4)
     private final IfcObjectDefinition relatingObject;
+    @Attribute
+    @Order(value = 5)
     private final Set<IfcObjectDefinition> relatedObjects;
 
     //TODO: test constructor
@@ -88,7 +94,8 @@ public class IfcRelDecomposes extends IfcRelationship {
      *                                  contains relatingObject.
      */
     public IfcRelDecomposes(@NotNull IfcGloballyUniqueId globalId,
-                            @NotNull IfcOwnerHistory ownerHistory, IfcLabel name, IfcText description,
+                            @NotNull IfcOwnerHistory ownerHistory,
+                            IfcLabel name, IfcText description,
                             @NotNull IfcObjectDefinition relatingObject,
                             @NotNull Set<IfcObjectDefinition> relatedObjects) {
         super(globalId, ownerHistory, name, description);
@@ -141,7 +148,8 @@ public class IfcRelDecomposes extends IfcRelationship {
      *                                  relatedObjects
      *                                  contains relatingObject.
      */
-    public IfcRelDecomposes(@NotNull IfcOwnerHistory ownerHistory, IfcLabel name, IfcText description,
+    public IfcRelDecomposes(@NotNull IfcOwnerHistory ownerHistory,
+                            IfcLabel name, IfcText description,
                             @NotNull IfcObjectDefinition relatingObject,
                             @NotNull Set<IfcObjectDefinition> relatedObjects) {
         this(new IfcGloballyUniqueId(), ownerHistory, name, description,
@@ -184,7 +192,8 @@ public class IfcRelDecomposes extends IfcRelationship {
                             IfcLabel name, IfcText description,
                             @NotNull IfcObjectDefinition relatingObject,
                             @NotNull IfcObjectDefinition... relatedObjects) {
-        this(globalId, ownerHistory, name, description, relatingObject, new HashSet<>(Arrays.asList(relatedObjects)));
+        this(globalId, ownerHistory, name, description, relatingObject,
+                new HashSet<>(Arrays.asList(relatedObjects)));
     }
 
     /**
@@ -213,7 +222,8 @@ public class IfcRelDecomposes extends IfcRelationship {
      *                                  relatedObjects
      *                                  contains relatingObject.
      */
-    public IfcRelDecomposes(@NotNull IfcOwnerHistory ownerHistory, IfcLabel name, IfcText description,
+    public IfcRelDecomposes(@NotNull IfcOwnerHistory ownerHistory,
+                            IfcLabel name, IfcText description,
                             @NotNull IfcObjectDefinition relatingObject,
                             @NotNull IfcObjectDefinition... relatedObjects) {
         this(new IfcGloballyUniqueId(), ownerHistory, name, description,

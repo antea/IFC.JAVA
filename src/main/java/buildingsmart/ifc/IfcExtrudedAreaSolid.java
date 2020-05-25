@@ -19,6 +19,8 @@
 
 package buildingsmart.ifc;
 
+import buildingsmart.io.Attribute;
+import buildingsmart.io.Order;
 import buildingsmart.util.Functions;
 import com.sun.istack.internal.NotNull;
 
@@ -46,7 +48,11 @@ import java.util.Objects;
  * profile.</P>
  */
 public class IfcExtrudedAreaSolid extends IfcSweptAreaSolid {
+    @Attribute
+    @Order(value = 2)
     private final IfcDirection extrudedDirection;
+    @Attribute
+    @Order(value = 3)
     private final IfcLengthMeasure depth;
 
     /**
@@ -78,7 +84,8 @@ public class IfcExtrudedAreaSolid extends IfcSweptAreaSolid {
         if (depth == null) {
             throw new IllegalArgumentException("depth cannot be null");
         }
-        if (Functions.ifcDotProduct(new IfcDirection(0, 0, 1), extrudedDirection)
+        if (Functions
+                .ifcDotProduct(new IfcDirection(0, 0, 1), extrudedDirection)
                 .getValue() == 0) {
             throw new IllegalArgumentException(
                     "extrudedDirection cannot be perpendicular to the local " +
@@ -100,7 +107,8 @@ public class IfcExtrudedAreaSolid extends IfcSweptAreaSolid {
             return false;
         }
         IfcExtrudedAreaSolid that = (IfcExtrudedAreaSolid) o;
-        return extrudedDirection.equals(that.extrudedDirection) && depth.equals(that.depth);
+        return extrudedDirection.equals(that.extrudedDirection) &&
+                depth.equals(that.depth);
     }
 
     @Override
