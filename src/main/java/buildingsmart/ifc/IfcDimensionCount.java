@@ -43,6 +43,18 @@ public class IfcDimensionCount implements IfcDefinedType {
         this.value = value;
     }
 
+    /**
+     * @param value The positive integer used to define the coordinate space
+     *              dimensionality. Must be either 1, 2 or 3.
+     */
+    public IfcDimensionCount(int value) {
+        if (value <= 0 || value > 3) {
+            throw new IllegalArgumentException(
+                    "value must be equal to 1, 2 or 3");
+        }
+        this.value = (byte) value;
+    }
+
     public byte getValue() {
         return value;
     }

@@ -245,4 +245,79 @@ public class IfcProject extends IfcObject {
                 "IfcProject cannot decompose any other " +
                         "IfcObjectDefinition");
     }
+
+    public static final class Builder {
+        private IfcLabel longName;
+        private IfcLabel phase;
+        private Set<IfcRepresentationContext> representationContexts;
+        private IfcUnitAssignment unitsInContext;
+        private IfcLabel objectType;
+        private IfcGloballyUniqueId globalId;
+        private IfcOwnerHistory ownerHistory;
+        private IfcLabel name;
+        private IfcText description;
+
+        private Builder() {
+        }
+
+        public static Builder anIfcProject() {
+            return new Builder();
+        }
+
+        public Builder longName(IfcLabel longName) {
+            this.longName = longName;
+            return this;
+        }
+
+        public Builder phase(IfcLabel phase) {
+            this.phase = phase;
+            return this;
+        }
+
+        public Builder representationContexts(
+                Set<IfcRepresentationContext> representationContexts) {
+            this.representationContexts = representationContexts;
+            return this;
+        }
+
+        public Builder unitsInContext(IfcUnitAssignment unitsInContext) {
+            this.unitsInContext = unitsInContext;
+            return this;
+        }
+
+        public Builder objectType(IfcLabel objectType) {
+            this.objectType = objectType;
+            return this;
+        }
+
+        public Builder globalId(IfcGloballyUniqueId globalId) {
+            this.globalId = globalId;
+            return this;
+        }
+
+        public Builder ownerHistory(IfcOwnerHistory ownerHistory) {
+            this.ownerHistory = ownerHistory;
+            return this;
+        }
+
+        public Builder name(IfcLabel name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder description(IfcText description) {
+            this.description = description;
+            return this;
+        }
+
+        public IfcProject build() {
+            return globalId == null ?
+                    new IfcProject(ownerHistory, name, description, objectType,
+                            longName, phase, representationContexts,
+                            unitsInContext) :
+                    new IfcProject(globalId, ownerHistory, name, description,
+                            objectType, longName, phase, representationContexts,
+                            unitsInContext);
+        }
+    }
 }

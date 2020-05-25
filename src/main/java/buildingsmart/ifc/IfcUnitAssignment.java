@@ -25,8 +25,10 @@ import buildingsmart.io.Order;
 import buildingsmart.util.Functions;
 import com.sun.istack.internal.NotNull;
 
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 /**
  * A set of units which may be assigned. Within an IfcUnitAssigment each unit
@@ -65,6 +67,18 @@ public class IfcUnitAssignment extends IfcEntity {
             throw new IllegalArgumentException("");
         }
         this.units = units;
+    }
+
+    /**
+     * @param units Units to be included within a unit assignment.
+     * @throws IllegalArgumentException If units is null, has size equal to
+     *                                  zero, doesn't only include units with a
+     *                                  different unitType (for IfcNamedUnit and
+     *                                  IfcDerivedUnit), or includes more than
+     *                                  one IfcMonetaryUnit.
+     */
+    public IfcUnitAssignment(@NotNull IfcUnit... units) {
+        this(new CopyOnWriteArraySet<>(Arrays.asList(units)));
     }
 
     @Override

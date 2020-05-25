@@ -21,7 +21,9 @@ package buildingsmart.ifc;
 
 import buildingsmart.io.IfcDefinedType;
 
+import java.util.Calendar;
 import java.util.Objects;
+import java.util.TimeZone;
 
 /**
  * An indication of date and time by measuring the number of seconds which have
@@ -37,6 +39,15 @@ public class IfcTimeStamp implements IfcDefinedType, IfcDerivedMeasureValue {
      */
     public IfcTimeStamp(long ifcTimeStamp) {
         this.ifcTimeStamp = ifcTimeStamp;
+    }
+
+    /**
+     * Created a new IfcTimeStamp using the time elapsed since the beginning of
+     * the year 1970.
+     */
+    public IfcTimeStamp() {
+        Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
+        this.ifcTimeStamp = calendar.getTimeInMillis() / 1000; // seconds
     }
 
     /**

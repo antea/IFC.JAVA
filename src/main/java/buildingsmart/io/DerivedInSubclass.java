@@ -24,12 +24,15 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Indicates a field that is an attribute of an IFC entity, meaning that it must
- * be included in the serialization of the entity. All fields having this
- * annotation must also be annotated with {@link Order}, and they cannot be
- * annotated with {@link InverseAttribute}.
+ * Indicates a field annotated with {@link Attribute} that will have to be
+ * serialized as an asterisk in the specified subclass, because it's a derived
+ * attribute in that subclass.
+ * </p>
+ * One example of an attribute becoming a derived attribute in a subclass can be
+ * found in {@link buildingsmart.ifc.IfcNamedUnit}: in its subclass {@link
+ * buildingsmart.ifc.IfcSIUnit}, dimensions is a derived attribute.
  */
-@Target(ElementType.FIELD)
-@Retention(RetentionPolicy.RUNTIME)
-public @interface Attribute {
+@Target(ElementType.FIELD) @Retention(RetentionPolicy.RUNTIME)
+public @interface DerivedInSubclass {
+    Class<?> value();
 }

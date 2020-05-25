@@ -143,4 +143,70 @@ public class IfcOwnerHistory extends IfcEntity {
                 lastModifiedDate, lastModifyingUser, lastModifyingApplication,
                 creationDate);
     }
+
+    public static final class Builder {
+        private IfcPersonAndOrganization owningUser;
+        private IfcApplication owningApplication;
+        private IfcStateEnum state;
+        private IfcChangeActionEnum changeAction;
+        private IfcTimeStamp lastModifiedDate;
+        private IfcPersonAndOrganization lastModifyingUser;
+        private IfcApplication lastModifyingApplication;
+        private IfcTimeStamp creationDate;
+
+        private Builder() {
+        }
+
+        public static Builder anIfcOwnerHistory() {
+            return new Builder();
+        }
+
+        public Builder owningUser(IfcPersonAndOrganization owningUser) {
+            this.owningUser = owningUser;
+            return this;
+        }
+
+        public Builder owningApplication(IfcApplication owningApplication) {
+            this.owningApplication = owningApplication;
+            return this;
+        }
+
+        public Builder state(IfcStateEnum state) {
+            this.state = state;
+            return this;
+        }
+
+        public Builder changeAction(IfcChangeActionEnum changeAction) {
+            this.changeAction = changeAction;
+            return this;
+        }
+
+        public Builder lastModifiedDate(IfcTimeStamp lastModifiedDate) {
+            this.lastModifiedDate = lastModifiedDate;
+            return this;
+        }
+
+        public Builder lastModifyingUser(
+                IfcPersonAndOrganization lastModifyingUser) {
+            this.lastModifyingUser = lastModifyingUser;
+            return this;
+        }
+
+        public Builder lastModifyingApplication(
+                IfcApplication lastModifyingApplication) {
+            this.lastModifyingApplication = lastModifyingApplication;
+            return this;
+        }
+
+        public Builder creationDate(IfcTimeStamp creationDate) {
+            this.creationDate = creationDate;
+            return this;
+        }
+
+        public IfcOwnerHistory build() {
+            return new IfcOwnerHistory(owningUser, owningApplication, state,
+                    changeAction, lastModifiedDate, lastModifyingUser,
+                    lastModifyingApplication, creationDate);
+        }
+    }
 }

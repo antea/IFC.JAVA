@@ -26,7 +26,6 @@ import com.sun.istack.internal.NotNull;
 import java.util.Collections;
 import java.util.Objects;
 import java.util.Set;
-import java.util.concurrent.CopyOnWriteArraySet;
 
 /**
  * The <i>IfcStyledItem</i> holds presentation style information for products,
@@ -95,8 +94,7 @@ public class IfcStyledItem extends IfcRepresentationItem {
     public IfcStyledItem(IfcRepresentationItem item,
                          @NotNull IfcPresentationStyleAssignment styles,
                          IfcLabel name) {
-        this(item, new CopyOnWriteArraySet<>(Collections.singletonList(styles)),
-                name);
+        this(item, Collections.singleton(styles), name);
     }
 
     @Override

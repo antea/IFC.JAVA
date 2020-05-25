@@ -144,4 +144,67 @@ public class IfcPerson extends IfcEntity {
                 .hash(id, familyName, givenName, middleNames, prefixTitles,
                         suffixTitles, roles, addresses);
     }
+
+    public static final class Builder {
+        private IfcIdentifier id;
+        private IfcLabel familyName;
+        private IfcLabel givenName;
+        private List<IfcLabel> middleNames;
+        private List<IfcLabel> prefixTitles;
+        private List<IfcLabel> suffixTitles;
+        private List<IfcActorRole> roles;
+        private List<IfcAddress> addresses;
+
+        private Builder() {
+        }
+
+        public static Builder anIfcPerson() {
+            return new Builder();
+        }
+
+        public Builder id(IfcIdentifier id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder familyName(IfcLabel familyName) {
+            this.familyName = familyName;
+            return this;
+        }
+
+        public Builder givenName(IfcLabel givenName) {
+            this.givenName = givenName;
+            return this;
+        }
+
+        public Builder middleNames(List<IfcLabel> middleNames) {
+            this.middleNames = middleNames;
+            return this;
+        }
+
+        public Builder prefixTitles(List<IfcLabel> prefixTitles) {
+            this.prefixTitles = prefixTitles;
+            return this;
+        }
+
+        public Builder suffixTitles(List<IfcLabel> suffixTitles) {
+            this.suffixTitles = suffixTitles;
+            return this;
+        }
+
+        public Builder roles(List<IfcActorRole> roles) {
+            this.roles = roles;
+            return this;
+        }
+
+        public Builder addresses(List<IfcAddress> addresses) {
+            this.addresses = addresses;
+            return this;
+        }
+
+        public IfcPerson build() {
+            return new IfcPerson(id, familyName, givenName, middleNames,
+                    prefixTitles, suffixTitles, roles, addresses);
+        }
+    }
 }

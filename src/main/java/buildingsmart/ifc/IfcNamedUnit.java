@@ -20,6 +20,7 @@
 package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
+import buildingsmart.io.DerivedInSubclass;
 import buildingsmart.io.IfcEntity;
 import buildingsmart.io.Order;
 import buildingsmart.util.Functions;
@@ -33,6 +34,7 @@ import java.util.Objects;
  */
 public abstract class IfcNamedUnit extends IfcEntity implements IfcUnit {
     @Attribute
+    @DerivedInSubclass(IfcSIUnit.class)
     @Order(value = 0)
     private final IfcDimensionalExponents dimensions;
     @Attribute

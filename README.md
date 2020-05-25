@@ -9,6 +9,8 @@ To serialize an `IfcProject`, you should pass it to
 of the IFC STEP file.
  
 Some notes on the implementation:
++ classes having constructors with lots of parameters that can be null contain
+Builders, you'll probably want to use those;
 + interface `IfcDefinedType` is not part of the IFC specification, its only
 purpose is to be implemented by types which can be serialized directly (called
 Defined Types in the IFC specification);

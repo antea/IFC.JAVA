@@ -74,6 +74,15 @@ public class Serializer {
         Object[] attributes = new Object[fields.size()];
         for (int i = 0; i < attributes.length; i++) {
             Field field = fields.get(i);
+            DerivedInSubclass derivedAnnotation =
+                    field.getAnnotation(DerivedInSubclass.class);
+            if (derivedAnnotation != null &&
+                    entity.getClass().equals(derivedAnnotation.value())) {
+                // field is a derived attribute in entity, so it will be
+                // serialized as an asterisk
+                attributes[i] = (IfcDefinedType) () -> "*";
+                continue;
+            }
             field.setAccessible(true);
             try {
                 attributes[i] = field.get(entity);
@@ -244,7 +253,7 @@ public class Serializer {
             for (Object element : coll) {
                 serializedColl.append(serialize(element)).append(",");
             }
-            serializedColl.deleteCharAt(serializedColl.length());
+            serializedColl.deleteCharAt(serializedColl.length() - 1);
             // removing the last comma
             serializedColl.append(")");
             return serializedColl.toString();
@@ -258,12 +267,12 @@ public class Serializer {
         // obj hasn't been serialized yet, so we'll do it now
         IfcEntity entity = (IfcEntity) obj;
         StringBuilder serializedEntity = new StringBuilder(
-                entity.getClass().getName().toUpperCase() + "(");
+                entity.getClass().getSimpleName().toUpperCase() + "(");
         Object[] attributes = getAttributes(entity, Attribute.class);
         for (Object attr : attributes) {
             serializedEntity.append(serialize(attr)).append(",");
         }
-        serializedEntity.deleteCharAt(serializedEntity.length());
+        serializedEntity.deleteCharAt(serializedEntity.length() - 1);
         // removing the last comma
         serializedEntity.append(");\n");
         String serializedEntityString =

@@ -100,4 +100,48 @@ public class IfcOrganization extends IfcEntity {
     public int hashCode() {
         return Objects.hash(id, name, description, roles, addresses);
     }
+
+    public static final class Builder {
+        private IfcIdentifier id;
+        private IfcLabel name;
+        private IfcText description;
+        private List<IfcActorRole> roles;
+        private List<IfcAddress> addresses;
+
+        private Builder() {
+        }
+
+        public static Builder anIfcOrganization() {
+            return new Builder();
+        }
+
+        public Builder id(IfcIdentifier id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder name(IfcLabel name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder description(IfcText description) {
+            this.description = description;
+            return this;
+        }
+
+        public Builder roles(List<IfcActorRole> roles) {
+            this.roles = roles;
+            return this;
+        }
+
+        public Builder addresses(List<IfcAddress> addresses) {
+            this.addresses = addresses;
+            return this;
+        }
+
+        public IfcOrganization build() {
+            return new IfcOrganization(id, name, description, roles, addresses);
+        }
+    }
 }
