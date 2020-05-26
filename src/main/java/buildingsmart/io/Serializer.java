@@ -26,15 +26,21 @@ import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.*;
+import java.util.concurrent.*;
 
 public class Serializer {
 
+    private final ExecutorService exec;
+    private final Set<Future<?>> tasksToComplete;
     private final Map<IfcEntity, Long> serializedEntitiesToIds;
     private final StringBuilder dataSection;
     private long idCounter = 0;
 
     public Serializer() {
-        serializedEntitiesToIds = new HashMap<>();
+        exec = Executors
+                .newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+        tasksToComplete = ConcurrentHashMap.newKeySet();
+        serializedEntitiesToIds = new ConcurrentHashMap<>();
         dataSection = new StringBuilder();
         idCounter = 0;
     }
@@ -48,10 +54,10 @@ public class Serializer {
      * attributes that should be serialized in the representation of {@code
      * entity} in an IFC file; if {@code type} is {@code
      * InverseAttribute.class}, returns the attributes of {@code entity}
-     * representing an inverse relationship.</p> In both cases the returned
-     * array is ordered according to the order defined by {@code entity}'s
-     * fields' {@link Order} annotation. If there are no attributes, the
-     * returned array will have length == 0.
+     * representing an inverse relationship.</p> If {@code type} is {@code
+     * Attribute.class}, the returned array is ordered according to the order
+     * defined by {@code entity}'s fields' {@link Order} annotation. If there
+     * are no attributes, the returned array will have length == 0.
      * @throws IllegalArgumentException If {@code type} is not {@code
      *                                  Attribute.class} nor {@code
      *                                  InverseAttribute.class}.
@@ -70,7 +76,9 @@ public class Serializer {
         }
         List<Field> fields = getAllFields(entity.getClass());
         fields.removeIf(field -> field.getAnnotation(type) == null);
-        sortFields(fields);
+        if (type.equals(Attribute.class)) {
+            sortFields(fields);
+        }
         Object[] attributes = new Object[fields.size()];
         for (int i = 0; i < attributes.length; i++) {
             Field field = fields.get(i);
@@ -202,14 +210,51 @@ public class Serializer {
      */
     public String serialize(IfcProject project) {
         serialize((Object) project);
+        boolean done = false;
+        while (!done) {
+            int initialSize = tasksToComplete.size();
+            for (Future<?> future : tasksToComplete) {
+                try {
+                    future.get(); // will block the current thread until all
+                    // tasks are completed
+                } catch (InterruptedException | ExecutionException e) {
+                    // TODO: should probably add these exceptions to the
+                    //  method signature
+                    e.printStackTrace();
+                }
+            }
+            int finalSize = tasksToComplete.size();
+            if (initialSize == finalSize) {
+                done = true;
+                // if the size of tasksToComplete before iterating on the
+                // Set is the same as after having iterated on the Set,
+                // that means no elements were added to the Set while
+                // we were iterating on the older Iterator; because we're out
+                // of the above for cycle, then all tasksToComplete must have
+                // completed.
+            }
+        }
         String result = dataSection.toString();
+
         serializedEntitiesToIds.clear();
         dataSection.setLength(0);
         idCounter = 0;
+        tasksToComplete.clear();
+        exec.shutdown();
+        try {
+            if (!exec.awaitTermination(1000, TimeUnit.MILLISECONDS)) {
+                exec.shutdownNow();
+            }
+        } catch (InterruptedException e) {
+            exec.shutdownNow();
+        }
         return result;
     }
 
     /**
+     * Serializes obj and all its Attributes and InverseAttributes, writing the
+     * serialization of obj to dataSection if it is an IfcEntity.
+     *
      * @param obj The object to serialize in an IFC file.
      * @return The serialization of the object:
      * <ul>
@@ -260,12 +305,12 @@ public class Serializer {
         }
         // if obj is neither an IfcDefinedType nor a Collection (List or
         // Set), then it must be an IfcEntity
-        Long entityId = serializedEntitiesToIds.get(obj);
+        IfcEntity entity = (IfcEntity) obj;
+        Long entityId = serializedEntitiesToIds.get(entity);
         if (entityId != null) {
             return "#" + entityId;
         }
         // obj hasn't been serialized yet, so we'll do it now
-        IfcEntity entity = (IfcEntity) obj;
         StringBuilder serializedEntity = new StringBuilder(
                 entity.getClass().getSimpleName().toUpperCase() + "(");
         Object[] attributes = getAttributes(entity, Attribute.class);
@@ -275,21 +320,51 @@ public class Serializer {
         serializedEntity.deleteCharAt(serializedEntity.length() - 1);
         // removing the last comma
         serializedEntity.append(");\n");
-        String serializedEntityString =
-                "#" + ++idCounter + "=" + serializedEntity.toString();
-        dataSection.append(serializedEntityString);
-        serializedEntitiesToIds.put(entity, idCounter);
+        boolean wrote = writeToDataSection(entity, serializedEntity.toString());
 
-        Object[] invAttributes = getAttributes(entity, InverseAttribute.class);
-        for (Object attr : invAttributes) {
-            serialize(attr);
-            // the return value of serialize() is ignored, because the only
-            // thing that matters is that the entities in invAttributes are
-            // serialized in dataSection. For example, if entity is IfcProject
-            // we want the entities referenced in isDecomposedBy to be
-            // serialized in dataSection.
+        if (wrote) {
+            Object[] invAttributes =
+                    getAttributes(entity, InverseAttribute.class);
+            for (Object attr : invAttributes) {
+                Runnable worker = () -> serialize(attr);
+                tasksToComplete.add(exec.submit(worker));
+                // the return value of serialize() is ignored, because the only
+                // thing that matters is that the entities in invAttributes are
+                // serialized in dataSection. For example, if entity is
+                // IfcProject we want the entities referenced in
+                // isDecomposedBy to be serialized in dataSection.
+            }
         }
 
-        return "#" + serializedEntitiesToIds.get(obj);
+        return "#" + serializedEntitiesToIds.get(entity);
+        // because we call exec.submit(a new Runnable) before completing the
+        // current Runnable, we know for sure that if each future in
+        // tasksToComplete has completed, then no other Runnables are running
+        // or waiting to be run
+    }
+
+    /**
+     * @param entity           The entity to serialize in dataSection.
+     * @param serializedEntity The serialization of the given {@code entity} in
+     *                         the form "IFCENTITY(#1,#2,'text',#4);\n", that is
+     *                         without the id of the entity in the beginning of
+     *                         the String.
+     * @return {@code true} If the serialization of the given entity was
+     * successfully written to dataSection, {@code false} if the serialization
+     * was not written, because another Thread managed to serialize the same
+     * entity before the Thread who just called this method.
+     */
+    //TODO: remove field dataSection and write directly to disk
+    private synchronized boolean writeToDataSection(IfcEntity entity,
+                                                    String serializedEntity) {
+        Long entityId = serializedEntitiesToIds.get(entity);
+        if (entityId != null) {
+            return false;
+        }
+        String serializedEntityWithId =
+                "#" + ++idCounter + "=" + serializedEntity;
+        dataSection.append(serializedEntityWithId);
+        serializedEntitiesToIds.put(entity, idCounter);
+        return true;
     }
 }
