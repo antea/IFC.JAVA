@@ -105,15 +105,12 @@ public class IfcCartesianPoint extends IfcPoint {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        if (!super.equals(o)) {
-            return false;
-        }
         IfcCartesianPoint that = (IfcCartesianPoint) o;
         return coordinates.equals(that.coordinates);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), coordinates);
+        return Objects.hash(coordinates);
     }
 }

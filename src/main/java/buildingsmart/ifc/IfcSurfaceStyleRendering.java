@@ -269,4 +269,79 @@ public class IfcSurfaceStyleRendering extends IfcSurfaceStyleShading {
                 transmissionColour, diffuseTransmissionColour, reflectionColour,
                 specularColour, specularHighlight, reflectanceMethod);
     }
+
+    public static final class Builder {
+        private IfcNormalisedRatioMeasure transparency;
+        private IfcColourOrFactor diffuseColour;
+        private IfcColourOrFactor transmissionColour;
+        private IfcColourOrFactor diffuseTransmissionColour;
+        private IfcColourOrFactor reflectionColour;
+        private IfcColourOrFactor specularColour;
+        private IfcSpecularHighlightSelect specularHighlight;
+        private IfcReflectanceMethodEnum reflectanceMethod;
+        private IfcColourRgb surfaceColour;
+
+        private Builder() {
+        }
+
+        public static Builder anIfcSurfaceStyleRendering() {
+            return new Builder();
+        }
+
+        public Builder transparency(IfcNormalisedRatioMeasure transparency) {
+            this.transparency = transparency;
+            return this;
+        }
+
+        public Builder diffuseColour(IfcColourOrFactor diffuseColour) {
+            this.diffuseColour = diffuseColour;
+            return this;
+        }
+
+        public Builder transmissionColour(
+                IfcColourOrFactor transmissionColour) {
+            this.transmissionColour = transmissionColour;
+            return this;
+        }
+
+        public Builder diffuseTransmissionColour(
+                IfcColourOrFactor diffuseTransmissionColour) {
+            this.diffuseTransmissionColour = diffuseTransmissionColour;
+            return this;
+        }
+
+        public Builder reflectionColour(IfcColourOrFactor reflectionColour) {
+            this.reflectionColour = reflectionColour;
+            return this;
+        }
+
+        public Builder specularColour(IfcColourOrFactor specularColour) {
+            this.specularColour = specularColour;
+            return this;
+        }
+
+        public Builder specularHighlight(
+                IfcSpecularHighlightSelect specularHighlight) {
+            this.specularHighlight = specularHighlight;
+            return this;
+        }
+
+        public Builder reflectanceMethod(
+                IfcReflectanceMethodEnum reflectanceMethod) {
+            this.reflectanceMethod = reflectanceMethod;
+            return this;
+        }
+
+        public Builder surfaceColour(IfcColourRgb surfaceColour) {
+            this.surfaceColour = surfaceColour;
+            return this;
+        }
+
+        public IfcSurfaceStyleRendering build() {
+            return new IfcSurfaceStyleRendering(surfaceColour, transparency,
+                    diffuseColour, transmissionColour,
+                    diffuseTransmissionColour, reflectionColour, specularColour,
+                    specularHighlight, reflectanceMethod);
+        }
+    }
 }

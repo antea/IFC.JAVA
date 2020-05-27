@@ -23,6 +23,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+//TODO: remove @Order from @InverseAttribute fields
+
 /**
  * Indicates a field that represent an inverse relationship (that should be
  * serialized after the entity) of an IFC entity. All fields having this

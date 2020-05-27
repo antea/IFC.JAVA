@@ -136,6 +136,99 @@ public class SerializerTest {
                         Collections.singleton(geometricRepresentationContext))
                 .unitsInContext(unitAssignment).build();
 
+        IfcAxis2Placement2D axis2Placement2D =
+                new IfcAxis2Placement2D(new IfcCartesianPoint(0, 0),
+                        new IfcDirection(1, 0));
+        IfcCircleProfileDef circle =
+                new IfcCircleProfileDef(IfcProfileTypeEnum.AREA, null,
+                        axis2Placement2D, new IfcPositiveLengthMeasure(0.1));
+        IfcAxis2Placement3D cylinderPlacement = new IfcAxis2Placement3D(
+                new IfcCartesianPoint(-1.4210854715202E-17,
+                        -2.73641172593403E-18, 0), new IfcDirection(0, 0, 1),
+                new IfcDirection(1, 0, 0));
+        IfcExtrudedAreaSolid cylinder =
+                new IfcExtrudedAreaSolid(circle, cylinderPlacement,
+                        new IfcDirection(0, 0, 1), new IfcLengthMeasure(0.1));
+
+        IfcColourRgb colour = new IfcColourRgb(null, 1, 1, 1);
+        IfcSurfaceStyleRendering surfaceStyleRendering =
+                IfcSurfaceStyleRendering.Builder.anIfcSurfaceStyleRendering()
+                        .surfaceColour(colour)
+                        .reflectanceMethod(IfcReflectanceMethodEnum.FLAT)
+                        .build();
+        IfcSurfaceStyle surfaceStyle =
+                new IfcSurfaceStyle(null, IfcSurfaceSide.BOTH,
+                        surfaceStyleRendering);
+        IfcPresentationStyleAssignment presentationStyleAssignment =
+                new IfcPresentationStyleAssignment(surfaceStyle);
+        IfcStyledItem styledItem =
+                new IfcStyledItem(cylinder, presentationStyleAssignment, null);
+
+        IfcLocalPlacement wallPlacement =
+                new IfcLocalPlacement(null, axis2Placement3D);
+        IfcShapeRepresentation shapeRepresentation =
+                new IfcShapeRepresentation(geometricRepresentationContext,
+                        new IfcLabel("Body"), new IfcLabel("SweptSolid"),
+                        cylinder);
+        IfcProductDefinitionShape productDefinitionShape =
+                new IfcProductDefinitionShape(null, null, shapeRepresentation);
+        IfcWall wall = IfcWall.Builder.anIfcWall()
+                .globalId(new IfcGloballyUniqueId("2KcxKeVfqHwhb6N5zdz5Bw"))
+                .ownerHistory(ownerHistory).name(new IfcLabel("Wall"))
+                .description(new IfcText("")).objectPlacement(wallPlacement)
+                .representation(productDefinitionShape).build();
+
+        IfcSite site = IfcSite.Builder.anIfcSite()
+                .globalId(new IfcGloballyUniqueId("2KdG88VfqHwfDCN5zdz5Bw"))
+                .ownerHistory(ownerHistory).name(new IfcLabel("Default Site"))
+                .description(new IfcText(""))
+                .compositionType(IfcElementCompositionEnum.ELEMENT).build();
+        IfcRelAggregates projectLink =
+                IfcRelAggregates.Builder.anIfcRelAggregates().globalId(
+                        new IfcGloballyUniqueId("2KdG89VfqHweGDN5zdz5Bw"))
+                        .ownerHistory(ownerHistory)
+                        .name(new IfcLabel("ProjectLink"))
+                        .description(new IfcText("")).relatingObject(ifcProject)
+                        .relatedObjects(site).build();
+        IfcBuilding building = IfcBuilding.Builder.anIfcBuilding()
+                .globalId(new IfcGloballyUniqueId("2KdHMSVfqHwfiJN5zdz5Bw"))
+                .ownerHistory(ownerHistory)
+                .name(new IfcLabel("Default Building"))
+                .description(new IfcText(""))
+                .compositionType(IfcElementCompositionEnum.ELEMENT).build();
+        IfcRelAggregates siteLink =
+                IfcRelAggregates.Builder.anIfcRelAggregates().globalId(
+                        new IfcGloballyUniqueId("2KdHMTVfqHwePlN5zdz5Bw"))
+                        .ownerHistory(ownerHistory)
+                        .name(new IfcLabel("SiteLink"))
+                        .description(new IfcText("")).relatingObject(site)
+                        .relatedObjects(building).build();
+        IfcBuildingStorey buildingStorey =
+                IfcBuildingStorey.Builder.anIfcBuildingStorey().globalId(
+                        new IfcGloballyUniqueId("2KdHMUVfqHwg4XN5zdz5Bw"))
+                        .ownerHistory(ownerHistory)
+                        .name(new IfcLabel("Default Storey"))
+                        .description(new IfcText(""))
+                        .compositionType(IfcElementCompositionEnum.ELEMENT)
+                        .build();
+        IfcRelAggregates defaultStoreyLink =
+                IfcRelAggregates.Builder.anIfcRelAggregates().globalId(
+                        new IfcGloballyUniqueId("2KdHMVVfqHwhFMN5zdz5Bw"))
+                        .ownerHistory(ownerHistory)
+                        .name(new IfcLabel("DefaultStoreyLink"))
+                        .description(new IfcText("")).relatingObject(building)
+                        .relatedObjects(buildingStorey).build();
+        IfcRelContainedInSpatialStructure unassignedObjectsLink =
+                IfcRelContainedInSpatialStructure.Builder
+                        .anIfcRelContainedInSpatialStructure().globalId(
+                        new IfcGloballyUniqueId("2KdIamVfqHwf$aN5zdz5Bw"))
+                        .ownerHistory(ownerHistory)
+                        .name(new IfcLabel("UnassignedObjectsLink"))
+                        .description(new IfcText(""))
+                        .relatingStructure(buildingStorey).relatedElements(wall)
+                        .build();
+
+
         Serializer serializer = new Serializer();
         String result = serializer.serialize(ifcProject);
         Assert.assertEquals(expectedDataSection, result);

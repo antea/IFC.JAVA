@@ -78,7 +78,8 @@ public class Functions {
             magnitude += component * component;
         }
         if (magnitude > 0) {
-            result = new IfcVector(new IfcDirection(res), new IfcLengthMeasure(sqrt(magnitude)));
+            result = new IfcVector(new IfcDirection(res),
+                    new IfcLengthMeasure(sqrt(magnitude)));
         }
         return result;
     }
@@ -136,10 +137,12 @@ public class Functions {
             magnitude = sqrt(magnitude);
             double[] directionRatios = new double[dim];
             for (byte i = 0; i < dim; i++) {
-                double component = vector.getDirectionRatios().get(i).getValue();
+                double component =
+                        vector.getDirectionRatios().get(i).getValue();
                 directionRatios[i] = component / magnitude;
             }
-            return new IfcVector(new IfcDirection(directionRatios), new IfcLengthMeasure(1));
+            return new IfcVector(new IfcDirection(directionRatios),
+                    new IfcLengthMeasure(1));
         }
         return null;
     }
@@ -209,15 +212,17 @@ public class Functions {
                 return dim.equals(new IfcDimensionalExponents(0, 0, 1, 1, 0, 0,
                         0));
             case ELECTRICCONDUCTANCEUNIT:
-                return dim.equals(new IfcDimensionalExponents(-2, -1, 3, 2, 0, 0,
-                        0));
+                return dim
+                        .equals(new IfcDimensionalExponents(-2, -1, 3, 2, 0, 0,
+                                0));
             case ELECTRICVOLTAGEUNIT:
-                return dim.equals(new IfcDimensionalExponents(2, 1, -3, -1, 0, 0,
-                        0));
+                return dim
+                        .equals(new IfcDimensionalExponents(2, 1, -3, -1, 0, 0,
+                                0));
             case ELECTRICRESISTANCEUNIT:
-                return dim.equals(new IfcDimensionalExponents(2, 1, -3, -2, 0
-                        , 0,
-                        0));
+                return dim
+                        .equals(new IfcDimensionalExponents(2, 1, -3, -2, 0, 0,
+                                0));
             case ENERGYUNIT:
                 return dim.equals(new IfcDimensionalExponents(2, 1, -2, 0, 0, 0,
                         0));
@@ -228,9 +233,9 @@ public class Functions {
                 return dim.equals(new IfcDimensionalExponents(0, 0, -1, 0, 0, 0,
                         0));
             case INDUCTANCEUNIT:
-                return dim.equals(new IfcDimensionalExponents(2, 1, -2, -2, 0
-                        , 0,
-                        0));
+                return dim
+                        .equals(new IfcDimensionalExponents(2, 1, -2, -2, 0, 0,
+                                0));
             case ILLUMINANCEUNIT:
                 return dim.equals(new IfcDimensionalExponents(-2, 0, 0, 0, 0, 0,
                         1));
@@ -238,18 +243,20 @@ public class Functions {
                 return dim.equals(new IfcDimensionalExponents(0, 0, 0, 0, 0, 0,
                         1));
             case MAGNETICFLUXUNIT:
-                return dim.equals(new IfcDimensionalExponents(2, 1, -2, -1, 0, 0,
-                        0));
+                return dim
+                        .equals(new IfcDimensionalExponents(2, 1, -2, -1, 0, 0,
+                                0));
             case MAGNETICFLUXDENSITYUNIT:
-                return dim.equals(new IfcDimensionalExponents(0, 1, -2, -1, 0, 0,
-                        0));
+                return dim
+                        .equals(new IfcDimensionalExponents(0, 1, -2, -1, 0, 0,
+                                0));
             case POWERUNIT:
                 return dim.equals(new IfcDimensionalExponents(2, 1, -3, 0, 0, 0,
                         0));
             case PRESSUREUNIT:
-                return dim.equals(new IfcDimensionalExponents(-1, 1, -2, 0, 0
-                        , 0,
-                        0));
+                return dim
+                        .equals(new IfcDimensionalExponents(-1, 1, -2, 0, 0, 0,
+                                0));
         }
         return null;
     }
@@ -263,7 +270,8 @@ public class Functions {
      * zero will be returned.
      * @throws IllegalArgumentException If name is null.
      */
-    public static IfcDimensionalExponents ifcDimensionsForSiUnit(IfcSIUnitName name) {
+    public static IfcDimensionalExponents ifcDimensionsForSiUnit(
+            IfcSIUnitName name) {
         if (name == null) {
             throw new IllegalArgumentException("name cannot be null");
         }
@@ -358,12 +366,14 @@ public class Functions {
 
         for (IfcUnit unit : units) {
             if (unit instanceof IfcNamedUnit &&
-                    ((IfcNamedUnit) unit).getUnitType() != IfcUnitEnum.USERDEFINED) {
+                    ((IfcNamedUnit) unit).getUnitType() !=
+                            IfcUnitEnum.USERDEFINED) {
                 namedUnitNumber++;
                 namedUnitTypes.add(((IfcNamedUnit) unit).getUnitType());
             } else {
-                if (unit instanceof IfcDerivedUnit && ((IfcDerivedUnit) unit).getUnitType() !=
-                        IfcDerivedUnitEnum.USERDEFINED) {
+                if (unit instanceof IfcDerivedUnit &&
+                        ((IfcDerivedUnit) unit).getUnitType() !=
+                                IfcDerivedUnitEnum.USERDEFINED) {
                     derivedUnitNumber++;
                     derivedUnitTypes.add(((IfcDerivedUnit) unit).getUnitType());
                 } else {
@@ -391,7 +401,7 @@ public class Functions {
         if (arg1 == null || arg2 == null) {
             throw new IllegalArgumentException("arguments cannot be null");
         }
-        if (arg1.getDim() != arg2.getDim()) {
+        if (!arg1.getDim().equals(arg2.getDim())) {
             throw new IllegalArgumentException(
                     "the two arguments must have the same dimensionality");
         }
@@ -420,8 +430,9 @@ public class Functions {
      * placementRelTo is null. {@code null} if placementRelTo is a grid
      * placement. {@code false} otherwise.
      */
-    public static Boolean ifcCorrectLocalPlacement(IfcAxis2Placement relativePlacement,
-                                                   IfcObjectPlacement placementRelTo) {
+    public static Boolean ifcCorrectLocalPlacement(
+            IfcAxis2Placement relativePlacement,
+            IfcObjectPlacement placementRelTo) {
         if (placementRelTo != null) {
             if (placementRelTo instanceof IfcGridPlacement) {
                 return null;
@@ -431,7 +442,8 @@ public class Functions {
                     return true;
                 } else { // relativePlacement is an instance of
                     // IfcAxis2Placement3D
-                    return ((IfcLocalPlacement) placementRelTo).getRelativePlacement().getDim().getValue() == 3;
+                    return ((IfcLocalPlacement) placementRelTo)
+                            .getRelativePlacement().getDim().getValue() == 3;
                 }
             }
         }
@@ -450,7 +462,8 @@ public class Functions {
      * buildingsmart.ifc.IfcShapeRepresentation}; {@code null} if repType is
      * unknown; {@code false} otherwise.
      */
-    public static Boolean ifcShapeRepresentationTypes(IfcLabel repType, Set<IfcRepresentationItem> items) {
+    public static Boolean ifcShapeRepresentationTypes(IfcLabel repType,
+                                                      Set<IfcRepresentationItem> items) {
         long count = 0;
         switch (repType.getValue()) {
             case "Curve2D":
@@ -464,8 +477,10 @@ public class Functions {
             case "Annotation2D":
                 for (IfcRepresentationItem item : items) {
                     if (item instanceof IfcPoint || item instanceof IfcCurve ||
-                            item instanceof IfcGeometricCurveSet || item instanceof IfcAnnotationFillArea ||
-                            item instanceof IfcDefinedSymbol || item instanceof IfcTextLiteral ||
+                            item instanceof IfcGeometricCurveSet ||
+                            item instanceof IfcAnnotationFillArea ||
+                            item instanceof IfcDefinedSymbol ||
+                            item instanceof IfcTextLiteral ||
                             item instanceof IfcDraughtingCallout) {
                         count++;
                     }
@@ -473,22 +488,26 @@ public class Functions {
                 break;
             case "GeometricSet":
                 for (IfcRepresentationItem item : items) {
-                    if (item instanceof IfcGeometricSet || item instanceof IfcPoint ||
-                            item instanceof IfcCurve || item instanceof IfcSurface) {
+                    if (item instanceof IfcGeometricSet ||
+                            item instanceof IfcPoint ||
+                            item instanceof IfcCurve ||
+                            item instanceof IfcSurface) {
                         count++;
                     }
                 }
                 break;
             case "GeometricCurveSet":
                 for (IfcRepresentationItem item : items) {
-                    if (item instanceof IfcGeometricSet || item instanceof IfcPoint ||
+                    if (item instanceof IfcGeometricSet ||
+                            item instanceof IfcPoint ||
                             item instanceof IfcCurve) {
                         count++;
                     }
                 }
                 for (IfcRepresentationItem item : items) {
                     if (item instanceof IfcGeometricSet) {
-                        for (IfcGeometricSetSelect element : ((IfcGeometricSet) item)
+                        for (IfcGeometricSetSelect element :
+                                ((IfcGeometricSet) item)
                                 .getElements()) {
                             if (element instanceof IfcSurface) {
                                 count--;
@@ -500,8 +519,10 @@ public class Functions {
                 break;
             case "SurfaceModel":
                 for (IfcRepresentationItem item : items) {
-                    if (item instanceof IfcShellBasedSurfaceModel || item instanceof IfcFaceBasedSurfaceModel ||
-                            item instanceof IfcFacetedBrep || item instanceof IfcFacetedBrepWithVoids) {
+                    if (item instanceof IfcShellBasedSurfaceModel ||
+                            item instanceof IfcFaceBasedSurfaceModel ||
+                            item instanceof IfcFacetedBrep ||
+                            item instanceof IfcFacetedBrepWithVoids) {
                         count++;
                     }
                 }
@@ -536,14 +557,16 @@ public class Functions {
                 break;
             case "AdvancedSweptSolid":
                 for (IfcRepresentationItem item : items) {
-                    if (item instanceof IfcSurfaceCurveSweptAreaSolid || item instanceof IfcSweptDiskSolid) {
+                    if (item instanceof IfcSurfaceCurveSweptAreaSolid ||
+                            item instanceof IfcSweptDiskSolid) {
                         count++;
                     }
                 }
                 break;
             case "Brep":
                 for (IfcRepresentationItem item : items) {
-                    if (item instanceof IfcFacetedBrep || item instanceof IfcFacetedBrepWithVoids) {
+                    if (item instanceof IfcFacetedBrep ||
+                            item instanceof IfcFacetedBrepWithVoids) {
                         count++;
                     }
                 }

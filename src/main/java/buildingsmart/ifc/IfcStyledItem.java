@@ -105,9 +105,6 @@ public class IfcStyledItem extends IfcRepresentationItem {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        if (!super.equals(o)) {
-            return false;
-        }
         IfcStyledItem that = (IfcStyledItem) o;
         return Objects.equals(item, that.item) && styles.equals(that.styles) &&
                 Objects.equals(name, that.name);
@@ -115,6 +112,6 @@ public class IfcStyledItem extends IfcRepresentationItem {
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), item, styles, name);
+        return Objects.hash(item, styles, name);
     }
 }

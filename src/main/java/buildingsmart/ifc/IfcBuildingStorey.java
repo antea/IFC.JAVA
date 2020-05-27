@@ -460,4 +460,81 @@ public class IfcBuildingStorey extends IfcSpatialStructureElement {
                 objectType, objectPlacement, representation, longName,
                 compositionType, elevation);
     }
+
+    public static final class Builder {
+        private IfcLengthMeasure elevation;
+        private IfcLabel longName;
+        private IfcElementCompositionEnum compositionType;
+        private IfcObjectPlacement objectPlacement;
+        private IfcProductRepresentation representation;
+        private IfcLabel objectType;
+        private IfcGloballyUniqueId globalId;
+        private IfcOwnerHistory ownerHistory;
+        private IfcLabel name;
+        private IfcText description;
+
+        private Builder() {
+        }
+
+        public static Builder anIfcBuildingStorey() {
+            return new Builder();
+        }
+
+        public Builder elevation(IfcLengthMeasure elevation) {
+            this.elevation = elevation;
+            return this;
+        }
+
+        public Builder longName(IfcLabel longName) {
+            this.longName = longName;
+            return this;
+        }
+
+        public Builder compositionType(
+                IfcElementCompositionEnum compositionType) {
+            this.compositionType = compositionType;
+            return this;
+        }
+
+        public Builder objectPlacement(IfcObjectPlacement objectPlacement) {
+            this.objectPlacement = objectPlacement;
+            return this;
+        }
+
+        public Builder representation(IfcProductRepresentation representation) {
+            this.representation = representation;
+            return this;
+        }
+
+        public Builder objectType(IfcLabel objectType) {
+            this.objectType = objectType;
+            return this;
+        }
+
+        public Builder globalId(IfcGloballyUniqueId globalId) {
+            this.globalId = globalId;
+            return this;
+        }
+
+        public Builder ownerHistory(IfcOwnerHistory ownerHistory) {
+            this.ownerHistory = ownerHistory;
+            return this;
+        }
+
+        public Builder name(IfcLabel name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder description(IfcText description) {
+            this.description = description;
+            return this;
+        }
+
+        public IfcBuildingStorey build() {
+            return new IfcBuildingStorey(globalId, ownerHistory, name,
+                    description, objectType, objectPlacement, representation,
+                    longName, compositionType, elevation);
+        }
+    }
 }

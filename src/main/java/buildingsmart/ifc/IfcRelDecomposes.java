@@ -105,7 +105,7 @@ public class IfcRelDecomposes extends IfcRelationship {
         if (relatedObjects == null) {
             throw new IllegalArgumentException("relatedObjects cannot be null");
         }
-        if (relatedObjects.size() == 1) {
+        if (relatedObjects.size() < 1) {
             throw new IllegalArgumentException(
                     "size of relatedObjects must be at least one");
         }

@@ -88,9 +88,6 @@ public class IfcVector extends IfcGeometricRepresentationItem implements IfcVect
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        if (!super.equals(o)) {
-            return false;
-        }
         IfcVector ifcVector = (IfcVector) o;
         return (orientation.equals(ifcVector.orientation) && magnitude.equals(ifcVector.magnitude)) ||
                 (magnitude.getValue() == 0 &&
@@ -99,6 +96,6 @@ public class IfcVector extends IfcGeometricRepresentationItem implements IfcVect
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), orientation, magnitude);
+        return Objects.hash(orientation, magnitude);
     }
 }

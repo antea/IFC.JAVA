@@ -275,6 +275,14 @@ public class Serializer {
         serializedEntity.deleteCharAt(serializedEntity.length() - 1);
         // removing the last comma
         serializedEntity.append(");\n");
+
+        entityId = serializedEntitiesToIds.get(obj);
+        if (entityId != null) {
+            return "#" + entityId;
+            // the current obj has already been serialized while we were
+            // serializing our attributes, because one of our attributes
+            // contained a reference to obj in its inverse relationships
+        }
         String serializedEntityString =
                 "#" + ++idCounter + "=" + serializedEntity.toString();
         dataSection.append(serializedEntityString);

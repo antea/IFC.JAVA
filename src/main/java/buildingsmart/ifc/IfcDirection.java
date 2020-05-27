@@ -117,15 +117,12 @@ public class IfcDirection extends IfcGeometricRepresentationItem
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        if (!super.equals(o)) {
-            return false;
-        }
         IfcDirection that = (IfcDirection) o;
         return directionRatios.equals(that.directionRatios);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), directionRatios);
+        return Objects.hash(directionRatios);
     }
 }

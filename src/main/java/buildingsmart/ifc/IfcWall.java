@@ -421,4 +421,67 @@ public class IfcWall extends IfcBuildingElement {
         }
         super.addToHasAssociations(relationship);
     }
+
+    public static final class Builder {
+        private IfcIdentifier tag;
+        private IfcObjectPlacement objectPlacement;
+        private IfcProductRepresentation representation;
+        private IfcLabel objectType;
+        private IfcGloballyUniqueId globalId;
+        private IfcOwnerHistory ownerHistory;
+        private IfcLabel name;
+        private IfcText description;
+
+        private Builder() {
+        }
+
+        public static Builder anIfcWall() {
+            return new Builder();
+        }
+
+        public Builder tag(IfcIdentifier tag) {
+            this.tag = tag;
+            return this;
+        }
+
+        public Builder objectPlacement(IfcObjectPlacement objectPlacement) {
+            this.objectPlacement = objectPlacement;
+            return this;
+        }
+
+        public Builder representation(IfcProductRepresentation representation) {
+            this.representation = representation;
+            return this;
+        }
+
+        public Builder objectType(IfcLabel objectType) {
+            this.objectType = objectType;
+            return this;
+        }
+
+        public Builder globalId(IfcGloballyUniqueId globalId) {
+            this.globalId = globalId;
+            return this;
+        }
+
+        public Builder ownerHistory(IfcOwnerHistory ownerHistory) {
+            this.ownerHistory = ownerHistory;
+            return this;
+        }
+
+        public Builder name(IfcLabel name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder description(IfcText description) {
+            this.description = description;
+            return this;
+        }
+
+        public IfcWall build() {
+            return new IfcWall(globalId, ownerHistory, name, description,
+                    objectType, objectPlacement, representation, tag);
+        }
+    }
 }

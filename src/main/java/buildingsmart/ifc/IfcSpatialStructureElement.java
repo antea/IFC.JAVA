@@ -20,8 +20,12 @@
 package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
+import buildingsmart.io.InverseAttribute;
 import buildingsmart.io.Order;
 import com.sun.istack.internal.NotNull;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * A spatial structure element (<i>IfcSpatialStructureElement</i>) is the
@@ -84,8 +88,11 @@ public class IfcSpatialStructureElement extends IfcProduct {
     @Order(value = 8)
     private final IfcElementCompositionEnum compositionType;
     //private IfcRelReferencedInSpatialStructure[] ReferencesElements;
+
     //private IfcRelServicesBuildings[] ServicedBySystems;
-    //private IfcRelContainedInSpatialStructure[] ContainsElements;
+    @InverseAttribute
+    @Order(value = 8)
+    private Set<IfcRelContainedInSpatialStructure> containsElements;
 
     //TODO: test getters and setters
 
@@ -277,5 +284,40 @@ public class IfcSpatialStructureElement extends IfcProduct {
                             "IfcSpatialStructureElement");
         }
         super.setDecomposes(decomposes);
+    }
+
+    /**
+     * @return A copy of containsElements. Operations performed on this Set
+     * don't have any effect on containsElements. This is done to prevent adding
+     * illegal IfcRelContainedInSpatialStructure to the Set.
+     * @see #addToContainsElements(IfcRelContainedInSpatialStructure)
+     */
+    protected Set<IfcRelContainedInSpatialStructure> getcontainsElements() {
+        return new HashSet<>(containsElements);
+    }
+
+    /**
+     * @param relationship The relationship to add to the Set containsElements.
+     * @throws IllegalArgumentException If this object is not the
+     * relatingStructure
+     *                                  in the relationship.
+     */
+    protected void addToContainsElements(
+            IfcRelContainedInSpatialStructure relationship) {
+        if (!relationship.getRelatingStructure().equals(this)) {
+            throw new IllegalArgumentException(
+                    "any IfcRelContainedInSpatialStructure part of " +
+                            "containsElements must have this instance of " +
+                            "IfcSpatialStructureElement as its " +
+                            "relatingStructure");
+        }
+        if (this.containsElements != null) {
+            this.containsElements.add(relationship);
+        } else {
+            Set<IfcRelContainedInSpatialStructure> containsElements =
+                    new HashSet<>();
+            containsElements.add(relationship);
+            this.containsElements = containsElements;
+        }
     }
 }
