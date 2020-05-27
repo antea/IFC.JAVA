@@ -140,7 +140,7 @@ public class Serializer {
      * @return The content of the IFC file, meaning headers + the provided DATA
      * section.
      */
-    public static String generateIfcFileContent(String dataSection) {
+    public static String addHeader(String dataSection) {
         String top = "ISO-10303-21;\n" + "HEADER;\n" +
                 "FILE_DESCRIPTION(('ViewDefinition [CoordinationView]'),'2;" +
                 "1');\n" +
