@@ -35,10 +35,10 @@ import java.util.Objects;
 public abstract class IfcNamedUnit extends IfcEntity implements IfcUnit {
     @Attribute
     @DerivedInSubclass(IfcSIUnit.class)
-    @Order(value = 0)
+    @Order(0)
     private final IfcDimensionalExponents dimensions;
     @Attribute
-    @Order(value = 1)
+    @Order(1)
     private final IfcUnitEnum unitType;
 
     //TODO: test constructor

@@ -35,10 +35,10 @@ import java.util.Objects;
  */
 public abstract class IfcSweptAreaSolid extends IfcSolidModel {
     @Attribute
-    @Order(value = 0)
+    @Order(0)
     private final IfcProfileDef sweptArea;
     @Attribute
-    @Order(value = 1)
+    @Order(1)
     private final IfcAxis2Placement3D position;
 
     /**

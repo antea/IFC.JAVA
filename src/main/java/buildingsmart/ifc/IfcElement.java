@@ -92,7 +92,7 @@ import com.sun.istack.internal.NotNull;
  */
 public abstract class IfcElement extends IfcProduct {
     @Attribute
-    @Order(value = 7)
+    @Order(7)
     private final IfcIdentifier tag;
     /*
     private IfcRelConnectsStructuralElement[] HasStructuralMember;

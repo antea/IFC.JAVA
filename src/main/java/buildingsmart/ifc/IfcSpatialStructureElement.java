@@ -82,10 +82,10 @@ import java.util.Set;
  */
 public class IfcSpatialStructureElement extends IfcProduct {
     @Attribute
-    @Order(value = 7)
+    @Order(7)
     private final IfcLabel longName;
     @Attribute
-    @Order(value = 8)
+    @Order(8)
     private final IfcElementCompositionEnum compositionType;
     //private IfcRelReferencedInSpatialStructure[] ReferencesElements;
 

@@ -35,7 +35,7 @@ import java.util.Set;
  */
 public class IfcPresentationStyleAssignment extends IfcEntity {
     @Attribute
-    @Order(value = 0)
+    @Order(0)
     private final Set<IfcPresentationStyleSelect> styles;
 
     /**

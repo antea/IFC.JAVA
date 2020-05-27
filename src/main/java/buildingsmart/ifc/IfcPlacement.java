@@ -32,7 +32,7 @@ import java.util.Objects;
  */
 public abstract class IfcPlacement extends IfcGeometricRepresentationItem {
     @Attribute
-    @Order(value = 0)
+    @Order(0)
     private final IfcCartesianPoint location;
     //private int Dim;
 

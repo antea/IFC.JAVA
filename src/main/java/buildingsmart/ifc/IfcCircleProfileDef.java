@@ -33,7 +33,7 @@ import java.util.Objects;
  */
 public class IfcCircleProfileDef extends IfcParameterizedProfileDef {
     @Attribute
-    @Order(value = 3)
+    @Order(3)
     private final IfcPositiveLengthMeasure radius;
 
     /**

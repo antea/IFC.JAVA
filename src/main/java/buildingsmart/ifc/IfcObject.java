@@ -73,7 +73,7 @@ import com.sun.istack.internal.NotNull;
  */
 public abstract class IfcObject extends IfcObjectDefinition {
     @Attribute
-    @Order(value = 4)
+    @Order(4)
     private final IfcLabel objectType;
     //private IfcRelDefines[] IsDefinedBy;
 

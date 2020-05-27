@@ -326,13 +326,13 @@ import com.sun.istack.internal.NotNull;
  */
 public class IfcBuilding extends IfcSpatialStructureElement {
     @Attribute
-    @Order(value = 9)
+    @Order(9)
     private final IfcLengthMeasure elevationOfRefHeight;
     @Attribute
-    @Order(value = 10)
+    @Order(10)
     private final IfcLengthMeasure elevationOfTerrain;
     @Attribute
-    @Order(value = 11)
+    @Order(11)
     private final IfcPostalAddress buildingAddress;
 
     /**

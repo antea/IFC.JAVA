@@ -32,19 +32,19 @@ import java.util.Objects;
  */
 public class IfcOrganization extends IfcEntity {
     @Attribute
-    @Order(value = 0)
+    @Order(0)
     private final IfcIdentifier id;
     @Attribute
-    @Order(value = 1)
+    @Order(1)
     private final IfcLabel name;
     @Attribute
-    @Order(value = 2)
+    @Order(2)
     private final IfcText description;
     @Attribute
-    @Order(value = 3)
+    @Order(3)
     private final List<IfcActorRole> roles;
     @Attribute
-    @Order(value = 4)
+    @Order(4)
     private final List<IfcAddress> addresses;
     //private IfcOrganizationRelationship[] IsRelatedBy;
     //private IfcOrganizationRelationship[] Relates;

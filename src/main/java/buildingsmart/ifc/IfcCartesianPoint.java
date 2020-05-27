@@ -34,7 +34,7 @@ import java.util.Objects;
  */
 public class IfcCartesianPoint extends IfcPoint {
     @Attribute
-    @Order(value = 0)
+    @Order(0)
     private final List<IfcLengthMeasure> coordinates;
     private final IfcDimensionCount dim; // derived attribute
 

@@ -310,7 +310,7 @@ import com.sun.istack.internal.NotNull;
  */
 public class IfcBuildingStorey extends IfcSpatialStructureElement {
     @Attribute
-    @Order(value = 9)
+    @Order(9)
     private final IfcLengthMeasure elevation;
 
     /**

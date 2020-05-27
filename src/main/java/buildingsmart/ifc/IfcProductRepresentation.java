@@ -37,13 +37,13 @@ import java.util.Objects;
  */
 public class IfcProductRepresentation extends IfcEntity {
     @Attribute
-    @Order(value = 0)
+    @Order(0)
     private final IfcLabel name;
     @Attribute
-    @Order(value = 1)
+    @Order(1)
     private final IfcText description;
     @Attribute
-    @Order(value = 2)
+    @Order(2)
     private final List<IfcRepresentation> representations;
 
     /**

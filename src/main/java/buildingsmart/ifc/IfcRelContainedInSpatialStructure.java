@@ -86,10 +86,10 @@ import java.util.Set;
  */
 public class IfcRelContainedInSpatialStructure extends IfcRelConnects {
     @Attribute
-    @Order(value = 4)
+    @Order(4)
     private final Set<IfcProduct> relatedElements;
     @Attribute
-    @Order(value = 5)
+    @Order(5)
     private final IfcSpatialStructureElement relatingStructure;
 
     /**

@@ -44,25 +44,25 @@ import java.util.Objects;
  */
 public class IfcDimensionalExponents extends IfcEntity {
     @Attribute
-    @Order(value = 0)
+    @Order(0)
     private final IfcInteger lengthExponent;
     @Attribute
-    @Order(value = 1)
+    @Order(1)
     private final IfcInteger massExponent;
     @Attribute
-    @Order(value = 2)
+    @Order(2)
     private final IfcInteger timeExponent;
     @Attribute
-    @Order(value = 3)
+    @Order(3)
     private final IfcInteger electricCurrentExponent;
     @Attribute
-    @Order(value = 4)
+    @Order(4)
     private final IfcInteger thermodynamicTemperatureExponent;
     @Attribute
-    @Order(value = 5)
+    @Order(5)
     private final IfcInteger amountOfSubstanceExponent;
     @Attribute
-    @Order(value = 6)
+    @Order(6)
     private final IfcInteger luminousIntensityExponent;
 
     /**

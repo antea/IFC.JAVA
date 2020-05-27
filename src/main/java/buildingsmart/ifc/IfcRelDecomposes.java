@@ -54,10 +54,10 @@ import java.util.Set;
  */
 public class IfcRelDecomposes extends IfcRelationship {
     @Attribute
-    @Order(value = 4)
+    @Order(4)
     private final IfcObjectDefinition relatingObject;
     @Attribute
-    @Order(value = 5)
+    @Order(5)
     private final Set<IfcObjectDefinition> relatedObjects;
 
     //TODO: test constructor

@@ -289,19 +289,19 @@ import com.sun.istack.internal.NotNull;
  */
 public class IfcSite extends IfcSpatialStructureElement {
     @Attribute
-    @Order(value = 9)
+    @Order(9)
     private final IfcCompoundPlaneAngleMeasure refLatitude;
     @Attribute
-    @Order(value = 10)
+    @Order(10)
     private final IfcCompoundPlaneAngleMeasure refLongitude;
     @Attribute
-    @Order(value = 11)
+    @Order(11)
     private final IfcLengthMeasure refElevation;
     @Attribute
-    @Order(value = 12)
+    @Order(12)
     private final IfcLabel landTitleNumber;
     @Attribute
-    @Order(value = 13)
+    @Order(13)
     private final IfcPostalAddress siteAddress;
 
     /**

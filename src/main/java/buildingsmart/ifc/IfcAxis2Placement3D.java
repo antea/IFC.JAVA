@@ -40,10 +40,10 @@ import java.util.Objects;
 public class IfcAxis2Placement3D extends IfcPlacement
         implements IfcAxis2Placement {
     @Attribute
-    @Order(value = 1)
+    @Order(1)
     private final IfcDirection axis;
     @Attribute
-    @Order(value = 2)
+    @Order(2)
     private final IfcDirection refDirection;
     //private IfcDirection[] p; TODO: calculate this by normalizing axis and
     // refDirection, and then use this in equals()?

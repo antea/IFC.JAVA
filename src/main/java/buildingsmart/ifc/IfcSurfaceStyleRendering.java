@@ -95,28 +95,28 @@ import java.util.Objects;
  */
 public class IfcSurfaceStyleRendering extends IfcSurfaceStyleShading {
     @Attribute
-    @Order(value = 1)
+    @Order(1)
     private final IfcNormalisedRatioMeasure transparency;
     @Attribute
-    @Order(value = 2)
+    @Order(2)
     private final IfcColourOrFactor diffuseColour;
     @Attribute
-    @Order(value = 3)
+    @Order(3)
     private final IfcColourOrFactor transmissionColour;
     @Attribute
-    @Order(value = 4)
+    @Order(4)
     private final IfcColourOrFactor diffuseTransmissionColour;
     @Attribute
-    @Order(value = 5)
+    @Order(5)
     private final IfcColourOrFactor reflectionColour;
     @Attribute
-    @Order(value = 6)
+    @Order(6)
     private final IfcColourOrFactor specularColour;
     @Attribute
-    @Order(value = 7)
+    @Order(7)
     private final IfcSpecularHighlightSelect specularHighlight;
     @Attribute
-    @Order(value = 8)
+    @Order(8)
     private final IfcReflectanceMethodEnum reflectanceMethod;
 
     /**

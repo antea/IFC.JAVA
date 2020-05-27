@@ -39,7 +39,7 @@ import java.util.Objects;
 public class IfcAxis2Placement2D extends IfcPlacement
         implements IfcAxis2Placement {
     @Attribute
-    @Order(value = 1)
+    @Order(1)
     private final IfcDirection refDirection;
     //private IfcDirection[] P;
 

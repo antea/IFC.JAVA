@@ -44,10 +44,10 @@ import java.util.Set;
 public class IfcSurfaceStyle extends IfcPresentationStyle
         implements IfcPresentationStyleSelect {
     @Attribute
-    @Order(value = 1)
+    @Order(1)
     private final IfcSurfaceSide side;
     @Attribute
-    @Order(value = 2)
+    @Order(2)
     private final Set<IfcSurfaceStyleElementSelect> styles;
 
     //TODO: test constructor

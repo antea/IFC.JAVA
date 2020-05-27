@@ -35,7 +35,7 @@ import java.util.Objects;
 public class IfcDirection extends IfcGeometricRepresentationItem
         implements IfcVectorOrDirection {
     @Attribute
-    @Order(value = 0)
+    @Order(0)
     private final List<IfcReal> directionRatios;
     private final IfcDimensionCount dim; // derived attribute
 

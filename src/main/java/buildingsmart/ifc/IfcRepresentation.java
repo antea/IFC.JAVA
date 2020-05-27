@@ -36,16 +36,16 @@ import java.util.Set;
  */
 public class IfcRepresentation extends IfcEntity {
     @Attribute
-    @Order(value = 0)
+    @Order(0)
     private final IfcRepresentationContext contextOfItems;
     @Attribute
-    @Order(value = 1)
+    @Order(1)
     private final IfcLabel representationIdentifier;
     @Attribute
-    @Order(value = 2)
+    @Order(2)
     private final IfcLabel representationType;
     @Attribute
-    @Order(value = 3)
+    @Order(3)
     private final Set<IfcRepresentationItem> items;
 
     @InverseAttribute

@@ -49,10 +49,10 @@ import java.util.Objects;
  */
 public class IfcExtrudedAreaSolid extends IfcSweptAreaSolid {
     @Attribute
-    @Order(value = 2)
+    @Order(2)
     private final IfcDirection extrudedDirection;
     @Attribute
-    @Order(value = 3)
+    @Order(3)
     private final IfcLengthMeasure depth;
 
     /**

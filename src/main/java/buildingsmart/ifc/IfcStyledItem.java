@@ -37,13 +37,13 @@ import java.util.Set;
  */
 public class IfcStyledItem extends IfcRepresentationItem {
     @Attribute
-    @Order(value = 0)
+    @Order(0)
     private final IfcRepresentationItem item;
     @Attribute
-    @Order(value = 1)
+    @Order(1)
     private final Set<IfcPresentationStyleAssignment> styles;
     @Attribute
-    @Order(value = 2)
+    @Order(2)
     private final IfcLabel name;
 
     /**

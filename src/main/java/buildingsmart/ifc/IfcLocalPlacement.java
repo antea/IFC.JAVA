@@ -42,10 +42,10 @@ import java.util.Objects;
  */
 public class IfcLocalPlacement extends IfcObjectPlacement {
     @Attribute
-    @Order(value = 0)
+    @Order(0)
     private final IfcObjectPlacement placementRelTo;
     @Attribute
-    @Order(value = 1)
+    @Order(1)
     private final IfcAxis2Placement relativePlacement;
 
     //TODO: test constructor

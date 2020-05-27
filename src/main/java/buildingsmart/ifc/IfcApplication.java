@@ -42,16 +42,16 @@ public class IfcApplication extends IfcEntity {
             new HashSet<>();
 
     @Attribute
-    @Order(value = 0)
+    @Order(0)
     private final IfcOrganization applicationDeveloper;
     @Attribute
-    @Order(value = 1)
+    @Order(1)
     private final IfcLabel version;
     @Attribute
-    @Order(value = 2)
+    @Order(2)
     private final IfcLabel applicationFullName;
     @Attribute
-    @Order(value = 3)
+    @Order(3)
     private final IfcIdentifier applicationIdentifier;
 
     /**
