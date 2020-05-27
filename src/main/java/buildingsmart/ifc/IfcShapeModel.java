@@ -20,7 +20,6 @@
 package buildingsmart.ifc;
 
 import buildingsmart.io.InverseAttribute;
-import buildingsmart.io.Order;
 import com.sun.istack.internal.NotNull;
 
 import java.util.Objects;
@@ -44,7 +43,6 @@ import java.util.Set;
  */
 public class IfcShapeModel extends IfcRepresentation {
     @InverseAttribute
-    @Order(value = 3)
     private IfcShapeAspect ofShapeAspect; //inverse attribute
 
     /**

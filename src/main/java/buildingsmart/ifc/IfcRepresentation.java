@@ -49,11 +49,9 @@ public class IfcRepresentation extends IfcEntity {
     private final Set<IfcRepresentationItem> items;
 
     @InverseAttribute
-    @Order(value = 0)
     protected IfcRepresentationMap representationMap;
     //private IfcPresentationLayerAssignment[] layerAssignments;
     @InverseAttribute
-    @Order(value = 2)
     protected IfcProductRepresentation ofProductRepresentation;
 
     /**

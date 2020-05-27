@@ -20,7 +20,6 @@
 package buildingsmart.ifc;
 
 import buildingsmart.io.InverseAttribute;
-import buildingsmart.io.Order;
 import com.sun.istack.internal.NotNull;
 
 import java.util.HashSet;
@@ -67,7 +66,6 @@ public abstract class IfcObjectDefinition extends IfcRoot {
      * association to library, documentation or classification.
      */
     @InverseAttribute
-    @Order(value = 3)
     protected Set<IfcRelAssociates> hasAssociations;
     /**
      * Reference to the decomposition relationship, that allows this object to
@@ -75,7 +73,6 @@ public abstract class IfcObjectDefinition extends IfcRoot {
      * several other objects.
      */
     @InverseAttribute
-    @Order(value = 1)
     private Set<IfcRelDecomposes> isDecomposedBy;
     /**
      * References to the decomposition relationship, that allows this object to
@@ -83,7 +80,6 @@ public abstract class IfcObjectDefinition extends IfcRoot {
      * decomposition (to allow hierarchical strutures only).
      */
     @InverseAttribute
-    @Order(value = 2)
     private IfcRelDecomposes decomposes;
 
     /**

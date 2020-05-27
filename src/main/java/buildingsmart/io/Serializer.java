@@ -48,7 +48,7 @@ public class Serializer {
      * attributes that should be serialized in the representation of {@code
      * entity} in an IFC file; if {@code type} is {@code
      * InverseAttribute.class}, returns the attributes of {@code entity}
-     * representing an inverse relationship.</p> In both cases the returned
+     * representing an inverse relationship.</p> In the first case the returned
      * array is ordered according to the order defined by {@code entity}'s
      * fields' {@link Order} annotation. If there are no attributes, the
      * returned array will have length == 0.
@@ -57,8 +57,7 @@ public class Serializer {
      *                                  InverseAttribute.class}.
      * @throws IllegalArgumentException If the given {@code entity} contains
      *                                  Fields that are annotated with {@link
-     *                                  Attribute} or {@link InverseAttribute}
-     *                                  but not with {@link Order}.
+     *                                  Attribute} but not with {@link Order}.
      */
     private static <T extends Annotation> Object[] getAttributes(
             IfcEntity entity, Class<T> type) {
@@ -70,7 +69,9 @@ public class Serializer {
         }
         List<Field> fields = getAllFields(entity.getClass());
         fields.removeIf(field -> field.getAnnotation(type) == null);
-        sortFields(fields);
+        if (type.equals(Attribute.class)) {
+            sortFields(fields);
+        }
         Object[] attributes = new Object[fields.size()];
         for (int i = 0; i < attributes.length; i++) {
             Field field = fields.get(i);
@@ -196,9 +197,8 @@ public class Serializer {
      *                                  root, where parent nodes are IfcEntity
      *                                  types and children are the Fields of the
      *                                  parent node, contains nodes whose Fields
-     *                                  are annotated with {@link Attribute} or
-     *                                  {@link InverseAttribute} but not with
-     *                                  {@link Order}.
+     *                                  are annotated with {@link Attribute} but
+     *                                  not with {@link Order}.
      */
     public String serialize(IfcProject project) {
         serialize((Object) project);
@@ -236,9 +236,8 @@ public class Serializer {
      * </ul>
      * @throws IllegalArgumentException If the given {@code obj} is an IfcEntity
      *                                  and contains Fields that are annotated
-     *                                  with {@link Attribute} or {@link
-     *                                  InverseAttribute} but not with {@link
-     *                                  Order}.
+     *                                  with {@link Attribute} but not with
+     *                                  {@link Order}.
      */
     private String serialize(Object obj) {
         if (obj == null) {

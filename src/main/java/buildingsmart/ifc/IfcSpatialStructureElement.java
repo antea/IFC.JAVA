@@ -91,7 +91,6 @@ public class IfcSpatialStructureElement extends IfcProduct {
 
     //private IfcRelServicesBuildings[] ServicedBySystems;
     @InverseAttribute
-    @Order(value = 8)
     private Set<IfcRelContainedInSpatialStructure> containsElements;
 
     //TODO: test getters and setters

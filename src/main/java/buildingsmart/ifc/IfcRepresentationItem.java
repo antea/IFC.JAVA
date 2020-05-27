@@ -21,7 +21,6 @@ package buildingsmart.ifc;
 
 import buildingsmart.io.IfcEntity;
 import buildingsmart.io.InverseAttribute;
-import buildingsmart.io.Order;
 
 /**
  * A representation item is an element of product data that participates in one
@@ -33,7 +32,6 @@ import buildingsmart.io.Order;
 public abstract class IfcRepresentationItem extends IfcEntity {
     //private IfcPresentationLayerAssignment[] LayerAssignments;
     @InverseAttribute
-    @Order(value = 1)
     private IfcStyledItem styledByItem;
 
     /**
