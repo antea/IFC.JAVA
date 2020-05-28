@@ -157,9 +157,9 @@ public class Serializer {
      * some of the directories in the filePath do not exist, this method creates
      * them.
      *
-     * @param fileContent the String to write in the file.
-     * @param filePath    the path to the file in which to write.
-     * @throws IllegalArgumentException if {@code filePath} is null or empty.
+     * @param fileContent The String to write in the file.
+     * @param filePath    The path to the file in which to write.
+     * @throws IllegalArgumentException If {@code filePath} is null or empty.
      * @throws IOException              If the file exists but is a directory
      *                                  rather than a regular file, does not
      *                                  exist but cannot be created, or cannot
@@ -168,19 +168,19 @@ public class Serializer {
      */
     public static void writeToFile(String fileContent, String filePath)
             throws IOException {
-        //TODO: test method
         String directoryPath = null;
         if (filePath != null && filePath.length() > 0) {
             int endIndex = filePath.lastIndexOf(File.separatorChar);
             if (endIndex != -1) {
                 directoryPath = filePath.substring(0, endIndex);
             }
-        }
-        if (directoryPath == null) {
+        } else {
             throw new IllegalArgumentException("filePath is null or empty");
         }
-        //noinspection ResultOfMethodCallIgnored
-        new File(directoryPath).mkdirs();
+        if (directoryPath != null) {
+            //noinspection ResultOfMethodCallIgnored
+            new File(directoryPath).mkdirs();
+        }
 
         File outputFile = new File(filePath);
         FileWriter fileWriter = new FileWriter(outputFile);

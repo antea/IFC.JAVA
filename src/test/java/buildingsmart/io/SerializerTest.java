@@ -86,6 +86,7 @@ public class SerializerTest {
                     "'SiteLink'," + "'',#21,(#22));\n" +
                     "#43=IFCRELAGGREGATES('2KdG89VfqHweGDN5zdz5Bw',#5," +
                     "'ProjectLink','',#20,(#21));\n";
+    private static final String testFileContent = "test";
 
     @Test
     public void serialize() {
@@ -240,39 +241,37 @@ public class SerializerTest {
     }
 
     @Test
-    public void writeToFile() {
-        String fileContent = Serializer.addHeader(expectedDataSection);
+    public void writeToFile() throws IOException {
         String filePath = "./ifc-out/freecad-cylinder.ifc";
-        try {
-            Serializer.writeToFile(fileContent, filePath);
-        } catch (IOException e) {
-            e.printStackTrace();
-            Assert.fail();
-        }
+        Serializer.writeToFile(testFileContent, filePath);
 
-        FileReader fr = null;
-        try {
-            fr = new FileReader(filePath);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            Assert.fail();
-        }
+        FileReader fr = new FileReader(filePath);
 
         StringBuilder writtenFileContent = new StringBuilder();
         int i;
-        try {
-            while ((i = fr.read()) != -1) {
-                writtenFileContent.append((char) i);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            Assert.fail();
+        while ((i = fr.read()) != -1) {
+            writtenFileContent.append((char) i);
         }
-        Assert.assertEquals(fileContent, writtenFileContent.toString());
+        Assert.assertEquals(testFileContent, writtenFileContent.toString());
     }
 
-    @Test
-    public void writeToNonexistentFile() {
+    @Test(expected = IllegalArgumentException.class)
+    public void writeToNullPath() throws IOException {
+        Serializer.writeToFile(testFileContent, null);
+    }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void writeToEmptyPath() throws IOException {
+        Serializer.writeToFile(testFileContent, "");
+    }
+
+    @Test(expected = FileNotFoundException.class)
+    public void writeToRoot() throws IOException {
+        Serializer.writeToFile(testFileContent, "/");
+    }
+
+    @Test(expected = FileNotFoundException.class)
+    public void writeToPoint() throws IOException {
+        Serializer.writeToFile(testFileContent, ".");
     }
 }
