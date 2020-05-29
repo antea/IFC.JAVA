@@ -29,7 +29,7 @@ import java.util.Collections;
 
 public class SerializerTest {
     private static final String expectedDataSection =
-            "#1=IFCPERSON($,$,'',$,$,$,$,$);\n" +
+            "DATA;\n" + "#1=IFCPERSON($,$,'',$,$,$,$,$);\n" +
                     "#2=IFCORGANIZATION($,'',$,$,$);\n" +
                     "#3=IFCPERSONANDORGANIZATION(#1,#2,$);\n" +
                     "#4=IFCAPPLICATION(#2,'0.18 build 4 (GitTag)','FreeCAD'," +
@@ -85,7 +85,7 @@ public class SerializerTest {
                     "#42=IFCRELAGGREGATES('2KdHMTVfqHwePlN5zdz5Bw',#5," +
                     "'SiteLink'," + "'',#21,(#22));\n" +
                     "#43=IFCRELAGGREGATES('2KdG89VfqHweGDN5zdz5Bw',#5," +
-                    "'ProjectLink','',#20,(#21));\n";
+                    "'ProjectLink','',#20,(#21));\n" + "ENDSEC;\n";
     private static final String testFileContent = "test";
 
     @Test

@@ -30,6 +30,18 @@ import static java.lang.Math.sqrt;
 public class Functions {
 
     /**
+     * String data types in a STEP file can contain characters "'" and "\" only
+     * as "\'" and "\\". This method formats the given String so that it can be
+     * serialized in a STEP file.
+     *
+     * @param toFormat The String to format.
+     * @return The formatted string.
+     */
+    public static String formatForStepFile(String toFormat) {
+        return toFormat.replaceAll("\\\\", "\\\\").replaceAll("'", "\\'");
+    }
+
+    /**
      * @param arg1 The first input direction.
      * @param arg2 The second input direction.
      * @return The vector (or cross) product of two input directions, after

@@ -20,6 +20,7 @@
 package buildingsmart.ifc;
 
 import buildingsmart.io.IfcDefinedType;
+import buildingsmart.util.Functions;
 import com.sun.istack.internal.NotNull;
 
 import java.util.Objects;
@@ -61,6 +62,6 @@ public class IfcText implements IfcDefinedType, IfcSimpleValue {
 
     @Override
     public String serialize() {
-        return "'" + ifcText + "'";
+        return "'" + Functions.formatForStepFile(ifcText) + "'";
     }
 }

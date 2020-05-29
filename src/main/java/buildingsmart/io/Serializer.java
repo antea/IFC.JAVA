@@ -31,6 +31,7 @@ public class Serializer {
 
     private final Map<IfcEntity, Long> serializedEntitiesToIds;
     private final StringBuilder dataSection;
+    //TODO: write directly to disk instead of using a StringBuilder
     private long idCounter = 0;
 
     public Serializer() {
@@ -133,23 +134,17 @@ public class Serializer {
     }
 
     /**
-     * Placeholder method, it will remain here until I figure out what to put in
-     * the headers of an IFC file.
+     * Creates the content of an IFC file, given its DATA and HEADER sections.
      *
      * @param dataSection The DATA section of the IFC file to generate.
-     * @return The content of the IFC file, meaning headers + the provided DATA
-     * section.
+     * @param header      The object representing the HEADER section of the IFC
+     *                    file.
+     * @return The content of the IFC file.
      */
-    public static String addHeader(String dataSection) {
-        String top = "ISO-10303-21;\n" + "HEADER;\n" +
-                "FILE_DESCRIPTION(('ViewDefinition [CoordinationView]'),'2;" +
-                "1');\n" +
-                "FILE_NAME('freecad-cylinder.ifc','2020-04-14T22:16:25',(''," +
-                "''),(''),'IfcOpenShell 0.5.0-dev','IfcOpenShell 0.5.0-dev'," +
-                "'');\n" + "FILE_SCHEMA(('IFC2X3'));\n" + "ENDSEC;\n" +
-                "DATA;\n";
-        String bottom = "ENDSEC;\n" + "END-ISO-10303-21;\n";
-        return top + dataSection + bottom;
+    public static String generateIfcFile(String dataSection, Header header) {
+        String top = "ISO-10303-21;\n";
+        String bottom = "END-ISO-10303-21;\n";
+        return top + header.serialize() + dataSection + bottom;
     }
 
     /**
@@ -192,7 +187,7 @@ public class Serializer {
      * @param project the {@link IfcProject} to serialize.
      * @return A String containing the DATA section of an IFC file with the
      * representation of the given project. The tags indicating the beginning
-     * and the end of the DATA section are not included.
+     * and the end of the DATA section are included.
      * @throws IllegalArgumentException If the tree having IfcProject as its
      *                                  root, where parent nodes are IfcEntity
      *                                  types and children are the Fields of the
@@ -206,7 +201,7 @@ public class Serializer {
         serializedEntitiesToIds.clear();
         dataSection.setLength(0);
         idCounter = 0;
-        return result;
+        return "DATA;\n" + result + "ENDSEC;\n";
     }
 
     /**
@@ -257,14 +252,14 @@ public class Serializer {
             serializedColl.append(")");
             return serializedColl.toString();
         }
+        IfcEntity entity = (IfcEntity) obj;
         // if obj is neither an IfcDefinedType nor a Collection (List or
         // Set), then it must be an IfcEntity
-        Long entityId = serializedEntitiesToIds.get(obj);
+        Long entityId = serializedEntitiesToIds.get(entity);
         if (entityId != null) {
             return "#" + entityId;
         }
         // obj hasn't been serialized yet, so we'll do it now
-        IfcEntity entity = (IfcEntity) obj;
         StringBuilder serializedEntity = new StringBuilder(
                 entity.getClass().getSimpleName().toUpperCase() + "(");
         Object[] attributes = getAttributes(entity, Attribute.class);
@@ -275,7 +270,7 @@ public class Serializer {
         // removing the last comma
         serializedEntity.append(");\n");
 
-        entityId = serializedEntitiesToIds.get(obj);
+        entityId = serializedEntitiesToIds.get(entity);
         if (entityId != null) {
             return "#" + entityId;
             // the current obj has already been serialized while we were
@@ -297,6 +292,6 @@ public class Serializer {
             // serialized in dataSection.
         }
 
-        return "#" + serializedEntitiesToIds.get(obj);
+        return "#" + serializedEntitiesToIds.get(entity);
     }
 }
