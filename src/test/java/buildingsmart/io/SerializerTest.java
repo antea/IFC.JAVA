@@ -20,76 +20,53 @@ package buildingsmart.io;
 
 import buildingsmart.ifc.*;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Collections;
+import java.util.List;
 
 public class SerializerTest {
-    private static final String expectedDataSection =
-            "DATA;\n" + "#1=IFCPERSON($,$,'',$,$,$,$,$);\n" +
-                    "#2=IFCORGANIZATION($,'',$,$,$);\n" +
-                    "#3=IFCPERSONANDORGANIZATION(#1,#2,$);\n" +
-                    "#4=IFCAPPLICATION(#2,'0.18 build 4 (GitTag)','FreeCAD'," +
-                    "'118df2cf_ed21_438e_a41');\n" +
-                    "#5=IFCOWNERHISTORY(#3,#4,$,.ADDED.,$,#3,#4,1586902585);" +
-                    "\n" + "#6=IFCCARTESIANPOINT((0.0,0.0,0.0));\n" +
-                    "#7=IFCDIRECTION((0.0,0.0,1.0));\n" +
-                    "#8=IFCDIRECTION((1.0,0.0,0.0));\n" +
-                    "#9=IFCAXIS2PLACEMENT3D(#6,#7,#8);\n" +
-                    "#10=IFCDIRECTION((0.0,1.0,0.0));\n" +
-                    "#11=IFCGEOMETRICREPRESENTATIONCONTEXT('Plan','Model',3,1" +
-                    ".0E-5,#9,#10);\n" +
-                    "#12=IFCSIUNIT(*,.LENGTHUNIT.,$,.METRE.);\n" +
-                    "#13=IFCSIUNIT(*,.AREAUNIT.,$,.SQUARE_METRE.);\n" +
-                    "#14=IFCSIUNIT(*,.VOLUMEUNIT.,$,.CUBIC_METRE.);\n" +
-                    "#15=IFCDIMENSIONALEXPONENTS(0,0,0,0,0,0,0);\n" +
-                    "#16=IFCSIUNIT(*,.PLANEANGLEUNIT.,$,.RADIAN.);\n" +
-                    "#17=IFCMEASUREWITHUNIT(IFCPLANEANGLEMEASURE(0" +
-                    ".017453292519943295),#16);\n" +
-                    "#18=IFCCONVERSIONBASEDUNIT(#15,.PLANEANGLEUNIT.," +
-                    "'DEGREE'," + "#17);\n" +
-                    "#19=IFCUNITASSIGNMENT((#12,#13,#14,#18));\n" +
-                    "#20=IFCPROJECT('51f413ef_7964_4d38_b19',#5,'Unnamed',$," +
-                    "$,$," + "$,(#11),#19);\n" +
-                    "#21=IFCSITE('2KdG88VfqHwfDCN5zdz5Bw',#5,'Default Site'," +
-                    "'',$," + "$,$,$,.ELEMENT.,$,$,$,$,$);\n" +
-                    "#22=IFCBUILDING('2KdHMSVfqHwfiJN5zdz5Bw',#5,'Default " +
-                    "Building','',$,$,$,$,.ELEMENT.,$,$,$);\n" +
-                    "#23=IFCBUILDINGSTOREY('2KdHMUVfqHwg4XN5zdz5Bw',#5," +
-                    "'Default " + "Storey','',$,$,$,$,.ELEMENT.,$);\n" +
-                    "#24=IFCLOCALPLACEMENT($,#9);\n" +
-                    "#25=IFCCARTESIANPOINT((0.0,0.0));\n" +
-                    "#26=IFCDIRECTION((1.0,0.0));\n" +
-                    "#27=IFCAXIS2PLACEMENT2D(#25,#26);\n" +
-                    "#28=IFCCIRCLEPROFILEDEF(.AREA.,$,#27,0.1);\n" +
-                    "#29=IFCCARTESIANPOINT((-1.4210854715202E-17,-2" +
-                    ".73641172593403E-18,0.0));\n" +
-                    "#30=IFCAXIS2PLACEMENT3D(#29,#7,#8);\n" +
-                    "#31=IFCEXTRUDEDAREASOLID(#28,#30,#7,0.1);\n" +
-                    "#32=IFCCOLOURRGB($,1.0,1.0,1.0);\n" +
-                    "#33=IFCSURFACESTYLERENDERING(#32,$,$,$,$,$,$,$,.FLAT.);" +
-                    "\n" + "#34=IFCSURFACESTYLE($,.BOTH.,(#33));\n" +
-                    "#35=IFCPRESENTATIONSTYLEASSIGNMENT((#34));\n" +
-                    "#36=IFCSTYLEDITEM(#31,(#35),$);\n" +
-                    "#37=IFCSHAPEREPRESENTATION(#11,'Body','SweptSolid',(#31)" +
-                    ");\n" + "#38=IFCPRODUCTDEFINITIONSHAPE($,$,(#37));\n" +
-                    "#39=IFCWALL('2KcxKeVfqHwhb6N5zdz5Bw',#5,'Wall','',$,#24," +
-                    "#38," + "$);\n" + "#40=IFCRELCONTAINEDINSPATIALSTRUCTURE" +
-                    "('2KdIamVfqHwf$aN5zdz5Bw',#5,'UnassignedObjectsLink',''," +
-                    "(#39),#23);\n" +
-                    "#41=IFCRELAGGREGATES('2KdHMVVfqHwhFMN5zdz5Bw',#5," +
-                    "'DefaultStoreyLink','',#22,(#23));\n" +
-                    "#42=IFCRELAGGREGATES('2KdHMTVfqHwePlN5zdz5Bw',#5," +
-                    "'SiteLink'," + "'',#21,(#22));\n" +
-                    "#43=IFCRELAGGREGATES('2KdG89VfqHweGDN5zdz5Bw',#5," +
-                    "'ProjectLink','',#20,(#21));\n" + "ENDSEC;\n";
-    private static final String testFileContent = "test";
+    private static final String FILE_PATH = "./ifc-out/freecad-cylinder.ifc";
+    private static IfcProject validIfcProject;
 
-    @Test
-    public void serialize() {
+    /**
+     * @param filePath The path to the IFC file of which to retrieve the DATA
+     *                 section.
+     * @return The DATA section of the IFC file.
+     * @throws IOException       If an I/O error occurs reading from the file or
+     *                           a malformed or unmappable byte sequence is
+     *                           read.
+     * @throws SecurityException In the case of the default provider, and a
+     *                           security manager is installed, the {@link
+     *                           SecurityManager#checkRead(String) checkRead}
+     *                           method is invoked to check read access to the
+     *                           file.
+     */
+    private static String getDataSection(String filePath) throws IOException {
+        List<String> lines =
+                Files.readAllLines(Paths.get(filePath), StandardCharsets.UTF_8);
+        StringBuilder dataSection = new StringBuilder();
+        for (int i = 6; i < lines.size() - 1; i++) {
+            // DATA section starts at line 6 (if the first one is line 0) and
+            // ends at the penultimate line
+            dataSection.append(lines.get(i)).append("\n");
+        }
+        return dataSection.toString();
+    }
+
+    /**
+     * Initializes field validIfcProject to an {@link IfcProject} object
+     * containing the representation of a cylinder, ready to be serialized in an
+     * IFC STEP file.
+     */
+    @BeforeClass
+    public static void setUp() {
         IfcPerson person =
                 IfcPerson.Builder.anIfcPerson().givenName(new IfcLabel(""))
                         .build();
@@ -232,46 +209,117 @@ public class SerializerTest {
                         .description(new IfcText(""))
                         .relatingStructure(buildingStorey).relatedElements(wall)
                         .build();
-
-
-        Serializer serializer = new Serializer();
-        String result = serializer.serialize(ifcProject);
-
-        Assert.assertEquals(expectedDataSection, result);
+        validIfcProject = ifcProject;
     }
 
     @Test
-    public void writeToFile() throws IOException {
-        String filePath = "./ifc-out/freecad-cylinder.ifc";
-        Serializer.writeToFile(testFileContent, filePath);
+    public void serialize_correctHeader_correctProject_correctPath()
+            throws IOException {
+        final String expectedDataSection =
+                "DATA;\n" + "#1=IFCPERSON($,$,'',$,$,$,$,$);\n" +
+                        "#2=IFCORGANIZATION($,'',$,$,$);\n" +
+                        "#3=IFCPERSONANDORGANIZATION(#1,#2,$);\n" +
+                        "#4=IFCAPPLICATION(#2,'0.18 build 4 (GitTag)'," +
+                        "'FreeCAD'," + "'118df2cf_ed21_438e_a41');\n" +
+                        "#5=IFCOWNERHISTORY(#3,#4,$,.ADDED.,$,#3,#4," +
+                        "1586902585);" + "\n" +
+                        "#6=IFCCARTESIANPOINT((0.0,0.0,0.0));\n" +
+                        "#7=IFCDIRECTION((0.0,0.0,1.0));\n" +
+                        "#8=IFCDIRECTION((1.0,0.0,0.0));\n" +
+                        "#9=IFCAXIS2PLACEMENT3D(#6,#7,#8);\n" +
+                        "#10=IFCDIRECTION((0.0,1.0,0.0));\n" +
+                        "#11=IFCGEOMETRICREPRESENTATIONCONTEXT('Plan'," +
+                        "'Model',3,1" + ".0E-5,#9,#10);\n" +
+                        "#12=IFCSIUNIT(*,.LENGTHUNIT.,$,.METRE.);\n" +
+                        "#13=IFCSIUNIT(*,.AREAUNIT.,$,.SQUARE_METRE.);\n" +
+                        "#14=IFCSIUNIT(*,.VOLUMEUNIT.,$,.CUBIC_METRE.);\n" +
+                        "#15=IFCDIMENSIONALEXPONENTS(0,0,0,0,0,0,0);\n" +
+                        "#16=IFCSIUNIT(*,.PLANEANGLEUNIT.,$,.RADIAN.);\n" +
+                        "#17=IFCMEASUREWITHUNIT(IFCPLANEANGLEMEASURE(0" +
+                        ".017453292519943295),#16);\n" +
+                        "#18=IFCCONVERSIONBASEDUNIT(#15,.PLANEANGLEUNIT.," +
+                        "'DEGREE'," + "#17);\n" +
+                        "#19=IFCUNITASSIGNMENT((#12,#13,#14,#18));\n" +
+                        "#20=IFCPROJECT('51f413ef_7964_4d38_b19',#5," +
+                        "'Unnamed',$," + "$,$," + "$,(#11),#19);\n" +
+                        "#21=IFCSITE('2KdG88VfqHwfDCN5zdz5Bw',#5,'Default " +
+                        "Site'," + "'',$," + "$,$,$,.ELEMENT.,$,$,$,$,$);\n" +
+                        "#22=IFCBUILDING('2KdHMSVfqHwfiJN5zdz5Bw',#5,'Default" +
+                        " " + "Building','',$,$,$,$,.ELEMENT.,$,$,$);\n" +
+                        "#23=IFCBUILDINGSTOREY('2KdHMUVfqHwg4XN5zdz5Bw',#5," +
+                        "'Default " + "Storey','',$,$,$,$,.ELEMENT.,$);\n" +
+                        "#24=IFCLOCALPLACEMENT($,#9);\n" +
+                        "#25=IFCCARTESIANPOINT((0.0,0.0));\n" +
+                        "#26=IFCDIRECTION((1.0,0.0));\n" +
+                        "#27=IFCAXIS2PLACEMENT2D(#25,#26);\n" +
+                        "#28=IFCCIRCLEPROFILEDEF(.AREA.,$,#27,0.1);\n" +
+                        "#29=IFCCARTESIANPOINT((-1.4210854715202E-17,-2" +
+                        ".73641172593403E-18,0.0));\n" +
+                        "#30=IFCAXIS2PLACEMENT3D(#29,#7,#8);\n" +
+                        "#31=IFCEXTRUDEDAREASOLID(#28,#30,#7,0.1);\n" +
+                        "#32=IFCCOLOURRGB($,1.0,1.0,1.0);\n" +
+                        "#33=IFCSURFACESTYLERENDERING(#32,$,$,$,$,$,$,$,.FLAT" +
+                        ".);" + "\n" +
+                        "#34=IFCSURFACESTYLE($,.BOTH.,(#33));\n" +
+                        "#35=IFCPRESENTATIONSTYLEASSIGNMENT((#34));\n" +
+                        "#36=IFCSTYLEDITEM(#31,(#35),$);\n" +
+                        "#37=IFCSHAPEREPRESENTATION(#11,'Body','SweptSolid'," +
+                        "(#31)" + ");\n" +
+                        "#38=IFCPRODUCTDEFINITIONSHAPE($,$,(#37));\n" +
+                        "#39=IFCWALL('2KcxKeVfqHwhb6N5zdz5Bw',#5,'Wall','',$," +
+                        "#24," + "#38," + "$);\n" +
+                        "#40=IFCRELCONTAINEDINSPATIALSTRUCTURE" +
+                        "('2KdIamVfqHwf$aN5zdz5Bw',#5," +
+                        "'UnassignedObjectsLink',''," + "(#39),#23);\n" +
+                        "#41=IFCRELAGGREGATES('2KdHMVVfqHwhFMN5zdz5Bw',#5," +
+                        "'DefaultStoreyLink','',#22,(#23));\n" +
+                        "#42=IFCRELAGGREGATES('2KdHMTVfqHwePlN5zdz5Bw',#5," +
+                        "'SiteLink'," + "'',#21,(#22));\n" +
+                        "#43=IFCRELAGGREGATES('2KdG89VfqHweGDN5zdz5Bw',#5," +
+                        "'ProjectLink','',#20,(#21));\n" + "ENDSEC;\n";
+        Serializer serializer = new Serializer();
 
-        FileReader fr = new FileReader(filePath);
+        serializer.serialize(new Header(), validIfcProject, FILE_PATH);
 
-        StringBuilder writtenFileContent = new StringBuilder();
-        int i;
-        while ((i = fr.read()) != -1) {
-            writtenFileContent.append((char) i);
-        }
-        Assert.assertEquals(testFileContent, writtenFileContent.toString());
+        String writtenDataSection = getDataSection(FILE_PATH);
+        Assert.assertEquals(expectedDataSection, writtenDataSection);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void writeToNullPath() throws IOException {
-        Serializer.writeToFile(testFileContent, null);
+    public void serialize_nullHeader() throws IOException {
+        Serializer serializer = new Serializer();
+        serializer.serialize(null, validIfcProject, FILE_PATH);
+    }
+
+    @Test
+    public void serialize_nullProject() throws IOException {
+        Serializer serializer = new Serializer();
+        serializer.serialize(new Header(), null, FILE_PATH);
+        String writtenDataSection = getDataSection(FILE_PATH);
+        Assert.assertEquals("DATA;\nENDSEC;\n", writtenDataSection);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void writeToEmptyPath() throws IOException {
-        Serializer.writeToFile(testFileContent, "");
+    public void serialize_nullPath() throws IOException {
+        Serializer serializer = new Serializer();
+        serializer.serialize(new Header(), validIfcProject, null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void serialize_emptyPath() throws IOException {
+        Serializer serializer = new Serializer();
+        serializer.serialize(new Header(), validIfcProject, "");
     }
 
     @Test(expected = FileNotFoundException.class)
-    public void writeToRoot() throws IOException {
-        Serializer.writeToFile(testFileContent, "/");
+    public void serialize_rootPath() throws IOException {
+        Serializer serializer = new Serializer();
+        serializer.serialize(new Header(), validIfcProject, "/");
     }
 
     @Test(expected = FileNotFoundException.class)
-    public void writeToPoint() throws IOException {
-        Serializer.writeToFile(testFileContent, ".");
+    public void serialize_pointPath() throws IOException {
+        Serializer serializer = new Serializer();
+        serializer.serialize(new Header(), validIfcProject, ".");
     }
 }

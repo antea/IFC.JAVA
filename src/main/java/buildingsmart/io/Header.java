@@ -56,7 +56,7 @@ public class Header {
     private static void checkMaxLength(String str) {
         if (str.length() > 256) {
             throw new IllegalArgumentException(
-                    "maximum length is 256 characters");
+                    "maximum length of the string is 256 characters");
         }
     }
 
