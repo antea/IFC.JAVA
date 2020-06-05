@@ -1,6 +1,5 @@
 /*
- * Copyright (C) 2019 Pieter Pauwels, Ghent University
- * Modifications Copyright (C) 2020 Giovanni Velludo
+ * Copyright (C) 2020 Giovanni Velludo
  *
  * This file is part of IFC.JAVA.
  *
@@ -19,13 +18,17 @@
 
 package buildingsmart.ifc;
 
-/**
- * This select type identifies the types of entities which can occur in a
- * geometric set.
- */
-public interface IfcGeometricSetSelect {
-    /**
-     * @return The space dimensionality of this class.
-     */
-    IfcDimensionCount getDim();
+import org.junit.Assert;
+import org.junit.Test;
+
+public class IfcCompoundPlaneAngleMeasureTest {
+
+    @Test
+    public void serialization() {
+        IfcCompoundPlaneAngleMeasure planeAngleMeasure =
+                new IfcCompoundPlaneAngleMeasure(270, 43, 5, 999999);
+        String serialization = planeAngleMeasure.serialize();
+        Assert.assertEquals("(270,43,5,999999)", serialization);
+    }
+
 }

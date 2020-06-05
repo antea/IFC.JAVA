@@ -111,7 +111,7 @@ public class IfcApplication extends IfcEntity {
      * values as ones belonging to instances of this class created before
      * calling this method. Use at your own risk.
      */
-    public void clearUniqueConstraint() {
+    public static void clearUniqueConstraint() {
         uniqueAppFullNameAndVersions.clear();
         uniqueAppIdentifiers.clear();
     }

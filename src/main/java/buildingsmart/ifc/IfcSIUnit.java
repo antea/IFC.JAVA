@@ -38,8 +38,6 @@ public class IfcSIUnit extends IfcNamedUnit {
     @Order(3)
     private final IfcSIUnitName name;
 
-    //TODO: test constructor
-
     /**
      * @param unitType The type of the unit.
      * @param prefix   The SI Prefix for defining decimal multiples and

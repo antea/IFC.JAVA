@@ -1,6 +1,5 @@
 /*
- * Copyright (C) 2019 Pieter Pauwels, Ghent University
- * Modifications Copyright (C) 2020 Giovanni Velludo
+ * Copyright (C) 2020 Giovanni Velludo
  *
  * This file is part of IFC.JAVA.
  *
@@ -19,79 +18,10 @@
 
 package buildingsmart.ifc;
 
-import buildingsmart.io.Attribute;
-import buildingsmart.io.InverseAttribute;
-import buildingsmart.io.Order;
 import com.sun.istack.internal.NotNull;
 
-import java.util.HashSet;
-import java.util.Set;
-
-/**
- * A spatial structure element (<i>IfcSpatialStructureElement</i>) is the
- * generalization of all spatial elements that might be used to define a spatial
- * structure. That spatial structure is often used to provide a project
- * structure to organize a building project.
- * </p>
- * <p>
- * atial project structure might define as many levels of mposition as necessary
- * for the building project. ents within the spatial project structure are:
- * </p>
- * <ul>
- *   <li>site as <i>IfcSite</i>
- *   </li>
- *   <li>building as <i>IfcBuilding</i>
- *   </li>
- *   <li>storey as <i>IfcBuildingStorey</i>
- *   </li>
- *   <li>space as <i>IfcSpace</i>
- *   </li>
- * </ul>
- * <p>
- *   or aggregations or parts thereof. The composition type
- *   declares an element to be either an element itself, or an
- *   aggregation (complex) or a decomposition (part). The
- *   interpretation of these types is given at each subtype of
- *   <i>IfcSpatialStructureElement</i>.
- * </p>
- * <p>
- *   The <i>IfcRelAggregates</i> is defined as an 1-to-many
- *   relationship and used to establish the relationship between
- *   exactly two levels within the spatial project structure.
- *   Finally the highest level of the spatial structure is
- *   assigned to <i>IfcProject</i> using the
- *   <i>IfcRelAggregates</i>.
- * </p>
- * <p>
- *   <u>Informal proposition</u>:
- * </p>
- * <ol>
- *   <li>The spatial project structure, established by the
- *   <i>IfcRelAggregates</i>, shall be acyclic.
- *   </li>
- *   <li>A site should not be (directly or indirectly)
- *   associated to a building, storey or space.
- *   </li>
- *   <li>A building should not be (directly or indirectly)
- *   associated to a storey or space.
- *   </li>
- *   <li>A storey should not be (directly or indirectly)
- *   associated to a space.
- *   </li>
- * </ol>
- */
-public abstract class IfcSpatialStructureElement extends IfcProduct {
-    @Attribute
-    @Order(7)
-    private final IfcLabel longName;
-    @Attribute
-    @Order(8)
-    private final IfcElementCompositionEnum compositionType;
-    //private IfcRelReferencedInSpatialStructure[] ReferencesElements;
-
-    //private IfcRelServicesBuildings[] ServicedBySystems;
-    @InverseAttribute
-    private Set<IfcRelContainedInSpatialStructure> containsElements;
+public class ConcreteIfcSpatialStructureElement
+        extends IfcSpatialStructureElement {
 
     /**
      * Creates a new IfcSpatialStructureElement, using the provided globalId.
@@ -150,22 +80,15 @@ public abstract class IfcSpatialStructureElement extends IfcProduct {
      *                                  IfcProductDefinitionShape; if
      *                                  compositionType is null.
      */
-    public IfcSpatialStructureElement(@NotNull IfcGloballyUniqueId globalId,
-                                      @NotNull IfcOwnerHistory ownerHistory,
-                                      IfcLabel name, IfcText description,
-                                      IfcLabel objectType,
-                                      IfcObjectPlacement objectPlacement,
-                                      IfcProductRepresentation representation,
-                                      IfcLabel longName, @NotNull
-                                              IfcElementCompositionEnum compositionType) {
+    public ConcreteIfcSpatialStructureElement(
+            @NotNull IfcGloballyUniqueId globalId,
+            @NotNull IfcOwnerHistory ownerHistory, IfcLabel name,
+            IfcText description, IfcLabel objectType,
+            IfcObjectPlacement objectPlacement,
+            IfcProductRepresentation representation, IfcLabel longName,
+            @NotNull IfcElementCompositionEnum compositionType) {
         super(globalId, ownerHistory, name, description, objectType,
-                objectPlacement, representation);
-        if (compositionType == null) {
-            throw new IllegalArgumentException(
-                    "compositionType cannot be null");
-        }
-        this.longName = longName;
-        this.compositionType = compositionType;
+                objectPlacement, representation, longName, compositionType);
     }
 
     /**
@@ -223,101 +146,13 @@ public abstract class IfcSpatialStructureElement extends IfcProduct {
      *                                  IfcProductDefinitionShape;
      *                                  if compositionType is null.
      */
-    public IfcSpatialStructureElement(@NotNull IfcOwnerHistory ownerHistory,
-                                      IfcLabel name, IfcText description,
-                                      IfcLabel objectType,
-                                      IfcObjectPlacement objectPlacement,
-                                      IfcProductRepresentation representation,
-                                      IfcLabel longName, @NotNull
-                                              IfcElementCompositionEnum compositionType) {
-        this(new IfcGloballyUniqueId(), ownerHistory, name, description,
-                objectType, objectPlacement, representation, longName,
-                compositionType);
-    }
-
-    @Override
-    protected IfcRelAggregates getDecomposes() {
-        return (IfcRelAggregates) super.getDecomposes();
-    }
-
-    /**
-     * @param decomposes References to the decomposition relationship, that
-     *                   allows this object to be a part of the decomposition.
-     *                   An object can only be part of a single decomposition
-     *                   (to allow hierarchical strutures only).
-     * @throws IllegalArgumentException If decomposes.relatedObjects does not
-     *                                  contain this object; if decomposed is
-     *                                  not of type IfcRelAggregates; if
-     *                                  decomposes.relatingObject is not of type
-     *                                  IfcProject nor
-     *                                  IfcSpatialStructureElement.
-     * @throws NullPointerException     If decomposes is null.
-     */
-    @Override
-    protected void setDecomposes(@NotNull IfcRelDecomposes decomposes) {
-        if (!(decomposes instanceof IfcRelAggregates)) {
-            throw new IllegalArgumentException(
-                    "decomposes must be of type IfcRelAggregates");
-        }
-        setDecomposes((IfcRelAggregates) decomposes);
-    }
-
-    /**
-     * @param decomposes References to the decomposition relationship, that
-     *                   allows this object to be a part of the decomposition.
-     *                   An object can only be part of a single decomposition
-     *                   (to allow hierarchical strutures only).
-     * @throws IllegalArgumentException If decomposes.relatedObjects does not
-     *                                  contain this object; if decomposes
-     *                                  .relatingObject is not of type
-     *                                  IfcProject nor
-     *                                  IfcSpatialStructureElement.
-     * @throws NullPointerException     If decomposes is null.
-     */
-    protected void setDecomposes(@NotNull IfcRelAggregates decomposes) {
-        if (!(decomposes.getRelatingObject() instanceof IfcProject) &&
-                !(decomposes
-                        .getRelatingObject() instanceof IfcSpatialStructureElement)) {
-            throw new IllegalArgumentException(
-                    "decomposes.relatingObject must be of type IfcProject or " +
-                            "IfcSpatialStructureElement");
-        }
-        super.setDecomposes(decomposes);
-    }
-
-    /**
-     * @return A copy of containsElements. Operations performed on this Set
-     * don't have any effect on containsElements. This is done to prevent adding
-     * illegal IfcRelContainedInSpatialStructure to the Set.
-     * @see #addToContainsElements(IfcRelContainedInSpatialStructure)
-     */
-    protected Set<IfcRelContainedInSpatialStructure> getContainsElements() {
-        return new HashSet<>(containsElements);
-    }
-
-    /**
-     * @param relationship The relationship to add to the Set containsElements.
-     * @throws IllegalArgumentException If this object is not the
-     * relatingStructure
-     *                                  in the relationship.
-     * @throws NullPointerException     If relationship is null.
-     */
-    protected void addToContainsElements(
-            @NotNull IfcRelContainedInSpatialStructure relationship) {
-        if (!relationship.getRelatingStructure().equals(this)) {
-            throw new IllegalArgumentException(
-                    "any IfcRelContainedInSpatialStructure part of " +
-                            "containsElements must have this instance of " +
-                            "IfcSpatialStructureElement as its " +
-                            "relatingStructure");
-        }
-        if (this.containsElements != null) {
-            this.containsElements.add(relationship);
-        } else {
-            Set<IfcRelContainedInSpatialStructure> containsElements =
-                    new HashSet<>();
-            containsElements.add(relationship);
-            this.containsElements = containsElements;
-        }
+    public ConcreteIfcSpatialStructureElement(
+            @NotNull IfcOwnerHistory ownerHistory, IfcLabel name,
+            IfcText description, IfcLabel objectType,
+            IfcObjectPlacement objectPlacement,
+            IfcProductRepresentation representation, IfcLabel longName,
+            @NotNull IfcElementCompositionEnum compositionType) {
+        super(ownerHistory, name, description, objectType, objectPlacement,
+                representation, longName, compositionType);
     }
 }

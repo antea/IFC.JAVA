@@ -19,5 +19,6 @@
 
 package buildingsmart.ifc;
 
-public abstract class IfcSurface extends IfcGeometricRepresentationItem {
+public abstract class IfcSurface extends IfcGeometricRepresentationItem
+        implements IfcGeometricSetSelect {
 }

@@ -406,6 +406,7 @@ public class IfcWall extends IfcBuildingElement {
      *                                  IfcRelAssociatesMaterial
      *                                  and hasAssociations already contains an
      *                                  instance of that class.
+     * @throws NullPointerException     If relationship is null.
      */
     @Override
     protected void addToHasAssociations(IfcRelAssociates relationship) {

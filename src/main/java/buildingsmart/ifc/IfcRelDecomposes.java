@@ -60,8 +60,6 @@ public class IfcRelDecomposes extends IfcRelationship {
     @Order(5)
     private final Set<IfcObjectDefinition> relatedObjects;
 
-    //TODO: test constructor
-
     /**
      * Creates a new IfcRelDecomposes, using the provided globalId, and
      * automatically modifies relatingObject and relatedObjects to make them all

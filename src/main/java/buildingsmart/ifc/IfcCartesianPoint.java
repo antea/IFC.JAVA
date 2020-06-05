@@ -93,7 +93,7 @@ public class IfcCartesianPoint extends IfcPoint {
      * @return The space dimensionality of this class, determined by the number
      * of coordinates in the List of Coordinates.
      */
-    protected IfcDimensionCount getDim() {
+    public IfcDimensionCount getDim() {
         return dim;
     }
 

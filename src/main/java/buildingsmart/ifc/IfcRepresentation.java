@@ -126,9 +126,6 @@ public class IfcRepresentation extends IfcEntity {
                 new HashSet<>(Arrays.asList(items)));
     }
 
-    //TODO: look for usages of setters and see if they can be called in
-    // constructors of other entities
-
     /**
      * @param representationMap Use of the representation within an
      *                          IfcRepresentationMap. If used, this
@@ -138,7 +135,8 @@ public class IfcRepresentation extends IfcEntity {
      *                          way to share one representation (often of type
      *                          IfcShapeRepresentation) by many products.
      */
-    public void setRepresentationMap(IfcRepresentationMap representationMap) {
+    protected void setRepresentationMap(
+            IfcRepresentationMap representationMap) {
         this.representationMap = representationMap;
     }
 
@@ -146,7 +144,7 @@ public class IfcRepresentation extends IfcEntity {
      * @param ofProductRepresentation Reference to the product shape, for which
      *                                it is the shape representation.
      */
-    public void setOfProductRepresentation(
+    protected void setOfProductRepresentation(
             IfcProductRepresentation ofProductRepresentation) {
         this.ofProductRepresentation = ofProductRepresentation;
     }
@@ -164,16 +162,12 @@ public class IfcRepresentation extends IfcEntity {
                 Objects.equals(representationIdentifier,
                         that.representationIdentifier) &&
                 Objects.equals(representationType, that.representationType) &&
-                items.equals(that.items) &&
-                Objects.equals(representationMap, that.representationMap) &&
-                Objects.equals(ofProductRepresentation,
-                        that.ofProductRepresentation);
+                items.equals(that.items);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(contextOfItems, representationIdentifier,
-                representationType, items, representationMap,
-                ofProductRepresentation);
+                representationType, items);
     }
 }

@@ -73,6 +73,9 @@ public class IfcProductRepresentation extends IfcEntity {
         this.name = name;
         this.description = description;
         this.representations = representations;
+        for (IfcRepresentation repr : representations) {
+            repr.setOfProductRepresentation(this);
+        }
     }
 
     /**

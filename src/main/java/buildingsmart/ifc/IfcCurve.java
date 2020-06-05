@@ -19,7 +19,8 @@
 
 package buildingsmart.ifc;
 
-public abstract class IfcCurve extends IfcGeometricRepresentationItem {
+public abstract class IfcCurve extends IfcGeometricRepresentationItem
+        implements IfcGeometricSetSelect {
     private IfcDimensionCount dim;
 
     public IfcDimensionCount getDim() {

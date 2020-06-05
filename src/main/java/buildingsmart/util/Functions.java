@@ -158,7 +158,6 @@ public class Functions {
         }
         return null;
     }
-    //TODO: test functions after this comment
 
     /**
      * Tests whether the dimensional exponents are correct for the given unit
@@ -171,9 +170,11 @@ public class Functions {
      * @return {@code true} if the dimensional exponents for the given unit type
      * are correct, {@code false} otherwise. If the given unit type is
      * USERDEFINED, this method returns {@code null}.
+     * @throws NullPointerException If unit or dim is null.
      */
-    public static Boolean ifcCorrectDimensions(IfcUnitEnum unit,
-                                               IfcDimensionalExponents dim) {
+    public static Boolean ifcCorrectDimensions(@NotNull IfcUnitEnum unit,
+                                               @NotNull
+                                                       IfcDimensionalExponents dim) {
         switch (unit) {
             case LENGTHUNIT:
                 return dim.equals(new IfcDimensionalExponents(1, 0, 0, 0, 0, 0,
@@ -280,13 +281,10 @@ public class Functions {
      * unknown (which should not be possible, since this method deals with all
      * possible values of IfcSIUnitName), dimensional exponents all equal to
      * zero will be returned.
-     * @throws IllegalArgumentException If name is null.
+     * @throws NullPointerException If name is null.
      */
     public static IfcDimensionalExponents ifcDimensionsForSiUnit(
-            IfcSIUnitName name) {
-        if (name == null) {
-            throw new IllegalArgumentException("name cannot be null");
-        }
+            @NotNull IfcSIUnitName name) {
         switch (name) {
             case METRE:
                 return new IfcDimensionalExponents(1, 0, 0, 0, 0, 0, 0);
@@ -359,12 +357,9 @@ public class Functions {
      * @return {@code true}, if the Set of IfcUnit only includes units with
      * different unitType (for IfcNamedUnit and IfcDerivedUnit), and a maximum
      * of one IfcMonetaryUnit.
-     * @throws IllegalArgumentException If units is null or has size zero.
+     * @throws NullPointerException If units is null or has size zero.
      */
     public static boolean ifcCorrectUnitAssignment(Set<IfcUnit> units) {
-        if (units == null) {
-            throw new IllegalArgumentException("units cannot be null");
-        }
         if (units.size() < 1) {
             throw new IllegalArgumentException(
                     "size of units must be at least 1");
@@ -382,17 +377,13 @@ public class Functions {
                             IfcUnitEnum.USERDEFINED) {
                 namedUnitNumber++;
                 namedUnitTypes.add(((IfcNamedUnit) unit).getUnitType());
-            } else {
-                if (unit instanceof IfcDerivedUnit &&
-                        ((IfcDerivedUnit) unit).getUnitType() !=
-                                IfcDerivedUnitEnum.USERDEFINED) {
-                    derivedUnitNumber++;
-                    derivedUnitTypes.add(((IfcDerivedUnit) unit).getUnitType());
-                } else {
-                    if (unit instanceof IfcMonetaryUnit) {
-                        monetaryUnitNumber++;
-                    }
-                }
+            } else if (unit instanceof IfcDerivedUnit &&
+                    ((IfcDerivedUnit) unit).getUnitType() !=
+                            IfcDerivedUnitEnum.USERDEFINED) {
+                derivedUnitNumber++;
+                derivedUnitTypes.add(((IfcDerivedUnit) unit).getUnitType());
+            } else if (unit instanceof IfcMonetaryUnit) {
+                monetaryUnitNumber++;
             }
         }
         return namedUnitNumber == namedUnitTypes.size() &&
@@ -405,14 +396,12 @@ public class Functions {
      * @param arg2 A direction in either two- or three-dimensional space.
      * @return The scalar (or dot) product of the two directions.
      * @throws IllegalArgumentException If the two directions have different
-     *                                  dimensionality, or at least one of them
-     *                                  is null.
+     *                                  dimensionality.
+     * @throws NullPointerException     If at least one of the arguments is
+     *                                  null.
      */
     public static IfcReal ifcDotProduct(@NotNull IfcDirection arg1,
                                         @NotNull IfcDirection arg2) {
-        if (arg1 == null || arg2 == null) {
-            throw new IllegalArgumentException("arguments cannot be null");
-        }
         if (!arg1.getDim().equals(arg2.getDim())) {
             throw new IllegalArgumentException(
                     "the two arguments must have the same dimensionality");
@@ -441,10 +430,15 @@ public class Functions {
      * three-dimensional and placementRelTo is also three-dimensional, if
      * placementRelTo is null. {@code null} if placementRelTo is a grid
      * placement. {@code false} otherwise.
+     * @throws IllegalArgumentException If relativePlacement is {@code null}.
      */
     public static Boolean ifcCorrectLocalPlacement(
             IfcAxis2Placement relativePlacement,
             IfcObjectPlacement placementRelTo) {
+        if (relativePlacement == null) {
+            throw new IllegalArgumentException(
+                    "relativePlacement cannot be null");
+        }
         if (placementRelTo != null) {
             if (placementRelTo instanceof IfcGridPlacement) {
                 return null;
@@ -471,18 +465,20 @@ public class Functions {
      * @param items   Items associated to repType.
      * @return {@code true} if the type of the objects contained in items is
      * correct according to the specification of class {@link
-     * buildingsmart.ifc.IfcShapeRepresentation}; {@code null} if repType is
-     * unknown; {@code false} otherwise.
+     * buildingsmart.ifc.IfcShapeRepresentation} or if items is empty; {@code
+     * null} if repType is unknown; {@code false} otherwise.
+     * @throws NullPointerException If repType is {@code null}, or if items is
+     *                              null and repType is known.
      */
     public static Boolean ifcShapeRepresentationTypes(IfcLabel repType,
                                                       Set<IfcRepresentationItem> items) {
-        long count = 0;
+        int correctItems = 0;
         switch (repType.getValue()) {
             case "Curve2D":
                 for (IfcRepresentationItem item : items) {
                     if (item instanceof IfcCurve &&
                             ((IfcCurve) item).getDim().getValue() == 2) {
-                        count++;
+                        correctItems++;
                     }
                 }
                 break;
@@ -494,7 +490,7 @@ public class Functions {
                             item instanceof IfcDefinedSymbol ||
                             item instanceof IfcTextLiteral ||
                             item instanceof IfcDraughtingCallout) {
-                        count++;
+                        correctItems++;
                     }
                 }
                 break;
@@ -504,7 +500,7 @@ public class Functions {
                             item instanceof IfcPoint ||
                             item instanceof IfcCurve ||
                             item instanceof IfcSurface) {
-                        count++;
+                        correctItems++;
                     }
                 }
                 break;
@@ -513,17 +509,14 @@ public class Functions {
                     if (item instanceof IfcGeometricSet ||
                             item instanceof IfcPoint ||
                             item instanceof IfcCurve) {
-                        count++;
-                    }
-                }
-                for (IfcRepresentationItem item : items) {
-                    if (item instanceof IfcGeometricSet) {
-                        for (IfcGeometricSetSelect element :
-                                ((IfcGeometricSet) item)
-                                .getElements()) {
-                            if (element instanceof IfcSurface) {
-                                count--;
-                                break;
+                        correctItems++;
+                        if (item instanceof IfcGeometricSet) {
+                            for (IfcGeometricSetSelect element :
+                                    ((IfcGeometricSet) item)
+                                    .getElements()) {
+                                if (element instanceof IfcSurface) {
+                                    return false;
+                                }
                             }
                         }
                     }
@@ -535,35 +528,35 @@ public class Functions {
                             item instanceof IfcFaceBasedSurfaceModel ||
                             item instanceof IfcFacetedBrep ||
                             item instanceof IfcFacetedBrepWithVoids) {
-                        count++;
+                        correctItems++;
                     }
                 }
                 break;
             case "SolidModel":
                 for (IfcRepresentationItem item : items) {
                     if (item instanceof IfcSolidModel) {
-                        count++;
+                        correctItems++;
                     }
                 }
                 break;
             case "SweptSolid":
                 for (IfcRepresentationItem item : items) {
                     if (item instanceof IfcSweptAreaSolid) {
-                        count++;
+                        correctItems++;
                     }
                 }
                 break;
             case "CSG":
                 for (IfcRepresentationItem item : items) {
                     if (item instanceof IfcBooleanResult) {
-                        count++;
+                        correctItems++;
                     }
                 }
                 break;
             case "Clipping":
                 for (IfcRepresentationItem item : items) {
                     if (item instanceof IfcBooleanClippingResult) {
-                        count++;
+                        correctItems++;
                     }
                 }
                 break;
@@ -571,7 +564,7 @@ public class Functions {
                 for (IfcRepresentationItem item : items) {
                     if (item instanceof IfcSurfaceCurveSweptAreaSolid ||
                             item instanceof IfcSweptDiskSolid) {
-                        count++;
+                        correctItems++;
                     }
                 }
                 break;
@@ -579,37 +572,37 @@ public class Functions {
                 for (IfcRepresentationItem item : items) {
                     if (item instanceof IfcFacetedBrep ||
                             item instanceof IfcFacetedBrepWithVoids) {
-                        count++;
+                        correctItems++;
                     }
                 }
                 break;
             case "BoundingBox":
+                if (items.size() > 1) {
+                    return false;
+                }
                 for (IfcRepresentationItem item : items) {
                     if (item instanceof IfcBoundingBox) {
-                        count++;
-                    }
-                    if (items.size() > 1) {
-                        count = 0;
+                        correctItems++;
                     }
                 }
                 break;
             case "SectionedSpine":
                 for (IfcRepresentationItem item : items) {
                     if (item instanceof IfcSectionedSpine) {
-                        count++;
+                        correctItems++;
                     }
                 }
                 break;
             case "MappedRepresentation":
                 for (IfcRepresentationItem item : items) {
                     if (item instanceof IfcMappedItem) {
-                        count++;
+                        correctItems++;
                     }
                 }
                 break;
             default:
                 return null;
         }
-        return count == items.size();
+        return correctItems == items.size();
     }
 }

@@ -31,9 +31,18 @@ package buildingsmart.io;
  */
 public abstract class IfcEntity {
 
+    /**
+     * Must not include fields annotated with {@link InverseAttribute} in the
+     * comparison, or you might get infinite recursion when comparing objects.
+     */
     @Override
     public abstract boolean equals(Object o);
 
+    /**
+     * Must not include fields annotated with {@link InverseAttribute} in the
+     * computation of the hashCode, or you might get infinite recursion when
+     * computing hashCodes.
+     */
     @Override
     public abstract int hashCode();
 }

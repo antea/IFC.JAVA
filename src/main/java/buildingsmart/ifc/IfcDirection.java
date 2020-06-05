@@ -87,7 +87,7 @@ public class IfcDirection extends IfcGeometricRepresentationItem
             directionRatiosList.add(new IfcReal(dirRatio));
         }
         this.directionRatios = directionRatiosList;
-        this.dim = new IfcDimensionCount((byte) directionRatiosList.size());
+        this.dim = new IfcDimensionCount(directionRatiosList.size());
     }
 
     /**

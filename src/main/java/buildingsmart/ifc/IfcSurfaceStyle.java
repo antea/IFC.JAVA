@@ -50,8 +50,6 @@ public class IfcSurfaceStyle extends IfcPresentationStyle
     @Order(2)
     private final Set<IfcSurfaceStyleElementSelect> styles;
 
-    //TODO: test constructor
-
     /**
      * @param name   Name of the presentation style.
      * @param side   An indication of which side of the surface to apply the

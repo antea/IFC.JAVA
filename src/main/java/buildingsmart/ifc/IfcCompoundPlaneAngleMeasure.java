@@ -43,7 +43,8 @@ import java.util.Objects;
  * fourth integer measure is the number of millionth-seconds in the range {1 000
  * 000; -1 000 000}</li></p>
  */
-public class IfcCompoundPlaneAngleMeasure implements IfcDefinedType, IfcDerivedMeasureValue {
+public class IfcCompoundPlaneAngleMeasure
+        implements IfcDefinedType, IfcDerivedMeasureValue {
     private final List<IfcInteger> value;
 
     /**
@@ -104,7 +105,8 @@ public class IfcCompoundPlaneAngleMeasure implements IfcDefinedType, IfcDerivedM
             throw new IllegalArgumentException("value cannot be null");
         }
         if (value.length != 3 && value.length != 4) {
-            throw new IllegalArgumentException("length of value must be 3 or 4");
+            throw new IllegalArgumentException(
+                    "length of value must be 3 or 4");
         }
         ArrayList<IfcInteger> integers = new ArrayList<>(value.length);
         for (int val : value) {
@@ -114,17 +116,20 @@ public class IfcCompoundPlaneAngleMeasure implements IfcDefinedType, IfcDerivedM
                 integers.get(0).getValue() >= 360) {
             throw new IllegalArgumentException("value[0] is out of bounds");
         }
-        if (integers.get(1).getValue() < -60 || integers.get(1).getValue() >= 60) {
+        if (integers.get(1).getValue() < -60 ||
+                integers.get(1).getValue() >= 60) {
             throw new IllegalArgumentException("value[1] is out of bounds");
         }
-        if (integers.get(2).getValue() < -60 || integers.get(2).getValue() >= 60) {
+        if (integers.get(2).getValue() < -60 ||
+                integers.get(2).getValue() >= 60) {
             throw new IllegalArgumentException("value[2] is out of bounds");
         }
         if (!((integers.get(0).getValue() >= 0 &&
                 integers.get(1).getValue() >= 0 &&
-                integers.get(2).getValue() >= 0) || (integers.get(0).getValue() <= 0 &&
-                integers.get(1).getValue() <= 0 &&
-                integers.get(2).getValue() <= 0))) {
+                integers.get(2).getValue() >= 0) ||
+                (integers.get(0).getValue() <= 0 &&
+                        integers.get(1).getValue() <= 0 &&
+                        integers.get(2).getValue() <= 0))) {
             throw new IllegalArgumentException(
                     "The measure components must have the same sign (positive" +
                             " or negative)");
@@ -148,8 +153,6 @@ public class IfcCompoundPlaneAngleMeasure implements IfcDefinedType, IfcDerivedM
     public int hashCode() {
         return Objects.hash(value);
     }
-
-    //TODO: test serialization
 
     /**
      * @return The representation of the type in an IFC STEP file.

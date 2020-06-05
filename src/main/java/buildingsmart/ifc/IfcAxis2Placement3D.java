@@ -45,9 +45,9 @@ public class IfcAxis2Placement3D extends IfcPlacement
     @Attribute
     @Order(2)
     private final IfcDirection refDirection;
-    //private IfcDirection[] p; TODO: calculate this by normalizing axis and
-    // refDirection, and then use this in equals()?
-    //TODO: test the constructor
+    //private IfcDirection[] p;
+    // TODO: calculate this by normalizing axis and refDirection, and then
+    //  use this in equals()?
 
     /**
      * @param location     The location of the three mutually perpendicular
@@ -84,6 +84,12 @@ public class IfcAxis2Placement3D extends IfcPlacement
             throw new IllegalArgumentException(
                     "location must have dimensionality equal to 3");
         }
+        if ((axis == null && refDirection != null) ||
+                (axis != null && refDirection == null)) {
+            throw new IllegalArgumentException(
+                    "either both axis and refDirection are set, or none " +
+                            "should be set");
+        }
         if (axis != null && axis.getDim().getValue() != 3) {
             throw new IllegalArgumentException(
                     "if axis is not null, it must have dimensionality equal " +
@@ -94,18 +100,12 @@ public class IfcAxis2Placement3D extends IfcPlacement
                     "if refDirection is not null, it must have dimensionality" +
                             " equal to 3");
         }
-        if (axis != null && refDirection != null &&
+        if (axis != null &&
                 Functions.ifcCrossProduct(axis, refDirection).getMagnitude()
                         .getValue() <= 0) {
             throw new IllegalArgumentException(
                     "axis and refDirection cannot be parallel or " +
                             "anti-parallel");
-        }
-        if ((axis == null && refDirection != null) ||
-                (axis != null && refDirection == null)) {
-            throw new IllegalArgumentException(
-                    "either both axis and refDirection are set, or none " +
-                            "should be set");
         }
         this.axis = axis;
         this.refDirection = refDirection;
