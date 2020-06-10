@@ -21,6 +21,7 @@ package buildingsmart.util;
 import buildingsmart.ifc.*;
 import com.sun.istack.internal.NotNull;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -28,6 +29,12 @@ import java.util.Set;
 import static java.lang.Math.sqrt;
 
 public class Functions {
+
+    /**
+     * Max allowed difference for doubles to be considered equal in
+     * comparisons.
+     */
+    protected static final double DELTA = 0.0000000000001;
 
     /**
      * String data types in a STEP file can contain characters "'" and "\" only
@@ -42,26 +49,23 @@ public class Functions {
     }
 
     /**
-     * @param arg1 The first input direction.
-     * @param arg2 The second input direction.
+     * @param arg1 The first input direction. Must be three-dimensional.
+     * @param arg2 The second input direction. Must be three-dimensional
      * @return The vector (or cross) product of two input directions, after
-     * normalizing them. The input directions must be three-dimensional. The
-     * result is always a vector which is unitless. If one of the input
-     * directions has all components equal to zero, or if they are either
-     * parallel or anti-parallel, a vector of zero magnitude is returned.
-     * @throws IllegalArgumentException If at least one of the arguments is
-     *                                  null, or if at least one is not
-     *                                  three-dimensional.
+     * normalizing them. The result is always a vector which is unitless. If one
+     * of the input directions has all components equal to zero, or if they are
+     * either parallel or anti-parallel, a vector of zero magnitude is returned.
+     * If at least one of the arguments is null or not three-dimensional, null
+     * is returned.
      * @see Functions#ifcNormalise(IfcDirection)
      */
-    public static IfcVector ifcCrossProduct(@NotNull IfcDirection arg1,
-                                            @NotNull IfcDirection arg2) {
+    public static IfcVector ifcCrossProduct(IfcDirection arg1,
+                                            IfcDirection arg2) {
         if (arg1 == null || arg2 == null) {
-            throw new IllegalArgumentException("arguments cannot be null");
+            return null;
         }
         if (arg1.getDim().getValue() != 3 || arg2.getDim().getValue() != 3) {
-            throw new IllegalArgumentException(
-                    "arguments must be three-dimensional");
+            return null;
         }
         // default result if the directions are parallel, anti-parallel or
         // one of them has components that are all zero
@@ -107,6 +111,9 @@ public class Functions {
         if (direction == null) {
             return null;
         }
+        if (alreadyNormalised(direction)) {
+            return direction;
+        }
         double magnitude = 0;
         byte dim = direction.getDim().getValue();
 
@@ -138,6 +145,9 @@ public class Functions {
         if (vector == null || vector.getMagnitude().getValue() == 0) {
             return null;
         }
+        if (alreadyNormalised(vector)) {
+            return vector;
+        }
         double magnitude = 0;
         byte dim = vector.getDim().getValue();
 
@@ -157,6 +167,203 @@ public class Functions {
                     new IfcLengthMeasure(1));
         }
         return null;
+    }
+
+    /**
+     * @param direction The direction on which to perform the check.
+     * @return {@code true} if the direction is already normalized (meaning that
+     * the sum of the squares of its components is 1), {@code false} otherwise.
+     * @throws NullPointerException If direction is null.
+     */
+    private static boolean alreadyNormalised(IfcDirection direction) {
+        double squaresSum = 0;
+        for (IfcReal dirRatio : direction.getDirectionRatios()) {
+            double component = dirRatio.getValue();
+            squaresSum += component * component;
+        }
+        return Math.abs(squaresSum - 1) < DELTA;
+    }
+
+    /**
+     * @param vector The vector on which to perform the check.
+     * @return {@code true} if the vector is already normalized (meaning that
+     * the sum of the squares of its components is 1), {@code false} otherwise.
+     * @throws NullPointerException If vector is null.
+     */
+    private static boolean alreadyNormalised(IfcVector vector) {
+        if (vector.getMagnitude().getValue() != 1) {
+            return false;
+        }
+        return alreadyNormalised(vector.getOrientation());
+    }
+
+    /**
+     * @param axis         The axis of the IfcAxis2Placement3D for which this
+     *                     function was called. If this value is not null, then
+     *                     refDirection must also be not null.
+     * @param refDirection The refDirection of the IfcAxis2Placement3D for which
+     *                     this function was called. If this value is not null,
+     *                     then axis must also be not null.
+     * @return Three normalized orthogonal directions. List[2] is the direction
+     * of axis. List[0] is in the direction of the projection of ref_direction
+     * onto the plane normal to List[2], List[1] is the cross product of List[2]
+     * and List[0]. Default values are supplied if both arguments are null.
+     */
+    public static List<IfcDirection> ifcBuildAxes(IfcDirection axis,
+                                                  IfcDirection refDirection) {
+        IfcDirection normalisedAxis = ifcNormalise(axis);
+        IfcDirection d1 = normalisedAxis == null ? new IfcDirection(0, 0, 1) :
+                normalisedAxis;
+        IfcDirection d2 = ifcFirstProjAxis(d1, refDirection);
+        List<IfcDirection> result = new ArrayList<>(3);
+        result.add(d2);
+        result.add(ifcNormalise(ifcCrossProduct(d1, d2)).getOrientation());
+        result.add(d1);
+        return result;
+    }
+
+    /**
+     * @param zAxis The direction onto whose normal plane the direction arg
+     *              should be projected.
+     * @param arg   The direction to project onto the plane normal to zAxis.
+     * @return A three dimensional direction which is, with fully defined input,
+     * the projection of arg onto the plane normal to zAxis. If arg is null, the
+     * result is the projection of (1.0,0.0,0.0) onto this plane except that if
+     * z-axis = (1.0,0.0,0.0) then (0.0,1.0,0.0) is used as initial value of
+     * arg. If arg is in the same direction as the input zAxis, or it is not
+     * three-dimensional, null will be returned. If zAxis is null, null will be
+     * returned.
+     */
+    private static IfcDirection ifcFirstProjAxis(IfcDirection zAxis,
+                                                 IfcDirection arg) {
+        if (zAxis == null) {
+            return null;
+        }
+        IfcDirection xAxis, v, z;
+        IfcVector xVec;
+        z = ifcNormalise(zAxis);
+        if (arg == null) {
+            v = z.equals(new IfcDirection(1, 0, 0)) ?
+                    new IfcDirection(0, 1, 0) : new IfcDirection(1, 0, 0);
+        } else {
+            if (arg.getDim().getValue() != 3) {
+                return null;
+            }
+            if (ifcCrossProduct(arg, z).getMagnitude().getValue() == 0) {
+                return null;
+            } else {
+                v = ifcNormalise(arg);
+            }
+        }
+        xVec = ifcScalarTimesVector(ifcDotProduct(v, z), z);
+        xAxis = ifcVectorDifference(v, xVec).getOrientation();
+        xAxis = ifcNormalise(xAxis);
+        return xAxis;
+    }
+
+    /**
+     * @param scalar The value by which vec should be multiplied.
+     * @param vec    The vector to multiply.
+     * @return The vector that is the scalar multiple of the input vector. The
+     * output is an IfcVector of the same units as the input vector. If any of
+     * the input arguments is null, returns null.
+     */
+    private static IfcVector ifcScalarTimesVector(IfcReal scalar,
+                                                  IfcVector vec) {
+        if (scalar == null || vec == null) {
+            return null;
+        }
+        IfcDirection v = vec.getOrientation();
+        double mag = scalar.getValue() * vec.getMagnitude().getValue();
+        if (mag < 0) {
+            List<IfcReal> directionRatios = v.getDirectionRatios();
+            double[] negativeDirectionRatios =
+                    new double[directionRatios.size()];
+            for (int i = 0; i < directionRatios.size(); i++) {
+                negativeDirectionRatios[i] = -directionRatios.get(i).getValue();
+            }
+            v = new IfcDirection(negativeDirectionRatios);
+            mag = -mag;
+        }
+        return new IfcVector(ifcNormalise(v), new IfcLengthMeasure(mag));
+    }
+
+    /**
+     * @param scalar The value by which dir should be multiplied.
+     * @param dir    The vector to multiply.
+     * @return The vector that is the scalar multiple of the input vector. The
+     * output is unitless. If any of the input arguments is null, returns null.
+     */
+    public static IfcVector ifcScalarTimesVector(IfcReal scalar,
+                                                 IfcDirection dir) {
+        if (scalar == null || dir == null) {
+            return null;
+        }
+        IfcDirection v = dir;
+        double mag = scalar.getValue();
+        if (mag < 0) {
+            List<IfcReal> directionRatios = v.getDirectionRatios();
+            double[] negativeDirectionRatios =
+                    new double[directionRatios.size()];
+            for (int i = 0; i < directionRatios.size(); i++) {
+                negativeDirectionRatios[i] = -directionRatios.get(i).getValue();
+            }
+            v = new IfcDirection(negativeDirectionRatios);
+            mag = -mag;
+        }
+        return new IfcVector(ifcNormalise(v), new IfcLengthMeasure(mag));
+    }
+
+    /**
+     * @param arg1 The first argument of the subtraction {@code arg1 - arg2}. If
+     *             both input arguments are IfcVectors, they must be expressed
+     *             in the same units.
+     * @param arg2 The second argument of the subtraction {@code arg1 - arg2}.
+     *             If both input arguments are IfcVectors, they must be
+     *             expressed in the same units.
+     * @return The vector difference of the two input vectors. If both vectors
+     * are IfcDirections, a unitless result is produced. A zero difference
+     * vector produces a an IfcVector of zero magnitude.
+     * @throws IllegalArgumentException If any of the arguments is null, or if
+     *                                  they have different dimensionality.
+     */
+    private static IfcVector ifcVectorDifference(IfcVectorOrDirection arg1,
+                                                 IfcVectorOrDirection arg2) {
+        if (arg1 == null || arg2 == null ||
+                !arg1.getDim().equals(arg2.getDim())) {
+            return null;
+        }
+        IfcDirection vec1, vec2;
+        double mag1, mag2;
+        if (arg1 instanceof IfcVector) {
+            mag1 = ((IfcVector) arg1).getMagnitude().getValue();
+            vec1 = ((IfcVector) arg1).getOrientation();
+        } else {
+            mag1 = 1;
+            vec1 = (IfcDirection) arg1;
+        }
+        if (arg2 instanceof IfcVector) {
+            mag2 = ((IfcVector) arg2).getMagnitude().getValue();
+            vec2 = ((IfcVector) arg2).getOrientation();
+        } else {
+            mag2 = 1;
+            vec2 = (IfcDirection) arg2;
+        }
+        vec1 = ifcNormalise(vec1);
+        vec2 = ifcNormalise(vec2);
+        double mag = 0;
+        double[] resultDirectionRatios = new double[vec1.getDim().getValue()];
+        for (byte i = 0; i < resultDirectionRatios.length; i++) {
+            resultDirectionRatios[i] =
+                    mag1 * vec1.getDirectionRatios().get(i).getValue() -
+                            mag2 * vec2.getDirectionRatios().get(i).getValue();
+            mag += resultDirectionRatios[i] * resultDirectionRatios[1];
+        }
+        if (mag > 0) {
+            return new IfcVector(new IfcDirection(resultDirectionRatios),
+                    new IfcLengthMeasure(sqrt(mag)));
+        }
+        return new IfcVector(vec1, new IfcLengthMeasure(0));
     }
 
     /**

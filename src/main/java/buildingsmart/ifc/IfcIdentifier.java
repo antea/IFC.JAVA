@@ -30,22 +30,22 @@ import java.util.Objects;
  * be identified. It may not provide natural-language meaning.
  */
 public class IfcIdentifier implements IfcDefinedType, IfcSimpleValue {
-    private final String ifcIdentifier;
+    private final String value;
 
     /**
-     * @param ifcIdentifier Restricted to max. 255 characters, cannot be null.
+     * @param value Restricted to max. 255 characters, cannot be null.
      * @throws IllegalArgumentException If ifcIdentifier is null or longer than
      *                                  255 characters.
      */
-    public IfcIdentifier(@NotNull String ifcIdentifier) {
-        if (ifcIdentifier == null) {
+    public IfcIdentifier(@NotNull String value) {
+        if (value == null) {
             throw new IllegalArgumentException("ifcIdentifier cannot be null");
         }
-        if (ifcIdentifier.length() > 255) {
+        if (value.length() > 255) {
             throw new IllegalArgumentException(
                     "ifcIdentifier cannot be " + "longer than 255 characters");
         }
-        this.ifcIdentifier = ifcIdentifier;
+        this.value = value;
     }
 
     @Override
@@ -57,16 +57,16 @@ public class IfcIdentifier implements IfcDefinedType, IfcSimpleValue {
             return false;
         }
         IfcIdentifier that = (IfcIdentifier) o;
-        return ifcIdentifier.equals(that.ifcIdentifier);
+        return value.equals(that.value);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(ifcIdentifier);
+        return Objects.hash(value);
     }
 
     @Override
     public String serialize() {
-        return "'" + Functions.formatForStepFile(ifcIdentifier) + "'";
+        return "'" + Functions.formatForStepFile(value) + "'";
     }
 }

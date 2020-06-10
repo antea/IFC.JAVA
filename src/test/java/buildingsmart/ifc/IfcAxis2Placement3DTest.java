@@ -18,6 +18,7 @@
 
 package buildingsmart.ifc;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 public class IfcAxis2Placement3DTest {
@@ -62,5 +63,16 @@ public class IfcAxis2Placement3DTest {
         IfcAxis2Placement3D axis2Placement3D =
                 new IfcAxis2Placement3D(new IfcCartesianPoint(0, 0, 0),
                         new IfcDirection(1, 0, 0), null);
+    }
+
+    @Test
+    public void equals() {
+        IfcAxis2Placement3D a1 =
+                new IfcAxis2Placement3D(new IfcCartesianPoint(0, 0, 0),
+                        new IfcDirection(0, 0, 2), new IfcDirection(4, 8, 0));
+        IfcAxis2Placement3D a2 =
+                new IfcAxis2Placement3D(new IfcCartesianPoint(0, 0, 0),
+                        new IfcDirection(0, 0, 1), new IfcDirection(2, 4, 0));
+        Assert.assertEquals(a1, a2);
     }
 }

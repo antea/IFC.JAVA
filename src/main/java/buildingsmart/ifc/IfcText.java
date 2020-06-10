@@ -30,17 +30,17 @@ import java.util.Objects;
  * and understood by a human being. It is for information purposes only.
  */
 public class IfcText implements IfcDefinedType, IfcSimpleValue {
-    private final String ifcText;
+    private final String value;
 
     /**
-     * @param ifcText Cannot be null.
-     * @throws IllegalArgumentException if ifcText is null.
+     * @param value Cannot be null.
+     * @throws IllegalArgumentException if value is null.
      */
-    public IfcText(@NotNull final String ifcText) {
-        if (ifcText == null) {
+    public IfcText(@NotNull final String value) {
+        if (value == null) {
             throw new IllegalArgumentException("ifcText cannot be null");
         }
-        this.ifcText = ifcText;
+        this.value = value;
     }
 
     @Override
@@ -52,16 +52,16 @@ public class IfcText implements IfcDefinedType, IfcSimpleValue {
             return false;
         }
         IfcText ifcText1 = (IfcText) o;
-        return ifcText.equals(ifcText1.ifcText);
+        return value.equals(ifcText1.value);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(ifcText);
+        return Objects.hash(value);
     }
 
     @Override
     public String serialize() {
-        return "'" + Functions.formatForStepFile(ifcText) + "'";
+        return "'" + Functions.formatForStepFile(value) + "'";
     }
 }

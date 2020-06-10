@@ -24,6 +24,7 @@ import buildingsmart.io.Order;
 import buildingsmart.util.Functions;
 import com.sun.istack.internal.NotNull;
 
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -45,9 +46,11 @@ public class IfcAxis2Placement3D extends IfcPlacement
     @Attribute
     @Order(2)
     private final IfcDirection refDirection;
-    //private IfcDirection[] p;
-    // TODO: calculate this by normalizing axis and refDirection, and then
-    //  use this in equals()?
+    /**
+     * The normalized directions of the placement X Axis (P[0]) and the
+     * placement Y Axis (P[1]) and the placement Z Axis (P[2]).
+     */
+    private final List<IfcDirection> p;
 
     /**
      * @param location     The location of the three mutually perpendicular
@@ -109,6 +112,7 @@ public class IfcAxis2Placement3D extends IfcPlacement
         }
         this.axis = axis;
         this.refDirection = refDirection;
+        p = Functions.ifcBuildAxes(axis, refDirection);
     }
 
     @Override
@@ -123,12 +127,11 @@ public class IfcAxis2Placement3D extends IfcPlacement
             return false;
         }
         IfcAxis2Placement3D that = (IfcAxis2Placement3D) o;
-        return Objects.equals(axis, that.axis) &&
-                Objects.equals(refDirection, that.refDirection);
+        return Objects.equals(p, that.p);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), axis, refDirection);
+        return Objects.hash(super.hashCode(), p);
     }
 }

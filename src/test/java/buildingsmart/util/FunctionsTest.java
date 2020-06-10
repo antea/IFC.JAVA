@@ -21,9 +21,10 @@ package buildingsmart.util;
 import buildingsmart.ifc.*;
 import org.junit.Test;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
+import static buildingsmart.util.Functions.DELTA;
+import static buildingsmart.util.Functions.ifcDotProduct;
 import static java.lang.Math.abs;
 import static java.lang.Math.sqrt;
 import static org.junit.Assert.*;
@@ -31,20 +32,67 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class FunctionsTest {
-    // max allowed difference for doubles to be considered equal in comparisons
-    private static final double DELTA = 0.000000001;
     private static final IfcAxis2Placement3D valid3DRelativePlacement =
             new IfcAxis2Placement3D(new IfcCartesianPoint(0, 0, 0), null, null);
 
-    @Test(expected = IllegalArgumentException.class)
-    public void ifcCrossProduct_nullDirection() {
-        Functions.ifcCrossProduct(null, new IfcDirection(1, 2, 3));
+    /**
+     * @param directions The directions on which to perform the check.
+     * @return {@code true} if the supplied directions are all orthogonal to
+     * each other, {@code false} otherwise.
+     * @throws NullPointerException If directions is null.
+     */
+    private static boolean checkOrtogonality(List<IfcDirection> directions) {
+        List<List<IfcDirection>> combinations = getCombinations(directions, 2);
+        for (List<IfcDirection> pair : combinations) {
+            double dotProduct =
+                    ifcDotProduct(pair.get(0), pair.get(1)).getValue();
+            if (Math.abs(dotProduct) > DELTA) {
+                return false;
+            }
+        }
+        return true;
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    /**
+     * Returns all possible combinations for the given items and subset size.
+     *
+     * @param items The list of objects for which to get all possible
+     *              combinations of the given size.
+     * @param size  The size of each combination.
+     * @param <T>   The type of the objects contained in items.
+     * @return A List containing all subsets of items of the given size.
+     * @throws NullPointerException If items is null.
+     */
+    private static <T> List<List<T>> getCombinations(List<T> items, int size) {
+        if (0 == size) {
+            return Collections.singletonList(Collections.emptyList());
+        }
+        if (items.isEmpty()) {
+            return Collections.emptyList();
+        }
+        List<List<T>> combination = new LinkedList<>();
+        T currentItem = items.iterator().next();
+        List<T> subSet = new LinkedList<>(items);
+        subSet.remove(currentItem);
+        List<List<T>> subSetCombination = getCombinations(subSet, size - 1);
+        for (List<T> set : subSetCombination) {
+            List<T> newSet = new LinkedList<>(set);
+            newSet.add(0, currentItem);
+            combination.add(newSet);
+        }
+        combination.addAll(getCombinations(subSet, size));
+        return combination;
+    }
+
+    @Test
+    public void ifcCrossProduct_nullDirection() {
+        assertNull(Functions.ifcCrossProduct(null, new IfcDirection(1, 2, 3)));
+    }
+
+    @Test
     public void ifcCrossProduct_bidimensionalDirection() {
-        Functions.ifcCrossProduct(new IfcDirection(2, 6, 3),
-                new IfcDirection(1, 9));
+        assertNull(Functions.ifcCrossProduct(new IfcDirection(2, 6, 3),
+                new IfcDirection(1, 9)));
     }
 
     @Test
@@ -153,6 +201,20 @@ public class FunctionsTest {
     }
 
     @Test
+    public void ifcBuildAxes_bothNull() {
+        List<IfcDirection> directions = Functions.ifcBuildAxes(null, null);
+        assertTrue(checkOrtogonality(directions));
+    }
+
+    @Test
+    public void ifcBuildAxes_notNullArguments() {
+        List<IfcDirection> directions = Functions
+                .ifcBuildAxes(new IfcDirection(3, 10, 8),
+                        new IfcDirection(9, 0, 1));
+        assertTrue(checkOrtogonality(directions));
+    }
+
+    @Test
     public void ifcCorrectDimensions_userDefined() {
         assertNull(Functions.ifcCorrectDimensions(IfcUnitEnum.USERDEFINED,
                 new IfcDimensionalExponents(123, 456, 678, 0, 0, 0, 0)));
@@ -244,7 +306,7 @@ public class FunctionsTest {
 
     @Test
     public void ifcDotProduct_sameDimensions() {
-        double expectedResult = 0.338331264;
+        double expectedResult = 0.33833126393397145;
         double result = Functions.ifcDotProduct(new IfcDirection(3.5, 1),
                 new IfcDirection(8.234, 123)).getValue();
         assertEquals(expectedResult, result, DELTA);

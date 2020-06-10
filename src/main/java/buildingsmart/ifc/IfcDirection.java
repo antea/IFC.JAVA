@@ -21,6 +21,7 @@ package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
 import buildingsmart.io.Order;
+import buildingsmart.util.Functions;
 import com.sun.istack.internal.NotNull;
 
 import java.util.ArrayList;
@@ -37,6 +38,13 @@ public class IfcDirection extends IfcGeometricRepresentationItem
     @Attribute
     @Order(0)
     private final List<IfcReal> directionRatios;
+    /**
+     * This attribute is not part of the IFC specification, its only purpose is
+     * being used in equals() and hashCode() to avoid writing multiple
+     * IfcDirection in the output IFC file when different objects actually
+     * represent the same direction.
+     */
+    private final List<IfcReal> normalisedDirectionRatios;
     private final IfcDimensionCount dim; // derived attribute
 
     /**
@@ -59,7 +67,9 @@ public class IfcDirection extends IfcGeometricRepresentationItem
                     "size of directionRatios must be 2 or 3");
         }
         this.directionRatios = directionRatios;
-        this.dim = new IfcDimensionCount((byte) directionRatios.size());
+        this.dim = new IfcDimensionCount(directionRatios.size());
+        this.normalisedDirectionRatios =
+                Functions.ifcNormalise(this).directionRatios;
     }
 
     /**
@@ -88,6 +98,9 @@ public class IfcDirection extends IfcGeometricRepresentationItem
         }
         this.directionRatios = directionRatiosList;
         this.dim = new IfcDimensionCount(directionRatiosList.size());
+        IfcDirection normalised = Functions.ifcNormalise(this);
+        this.normalisedDirectionRatios =
+                normalised == null ? null : normalised.directionRatios;
     }
 
     /**
@@ -118,11 +131,12 @@ public class IfcDirection extends IfcGeometricRepresentationItem
             return false;
         }
         IfcDirection that = (IfcDirection) o;
-        return directionRatios.equals(that.directionRatios);
+        return Objects.equals(normalisedDirectionRatios,
+                that.normalisedDirectionRatios);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(directionRatios);
+        return Objects.hash(normalisedDirectionRatios);
     }
 }
