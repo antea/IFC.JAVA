@@ -54,13 +54,11 @@ import java.util.Set;
  */
 public class IfcRelDecomposes extends IfcRelationship {
     @Attribute
-    @Order(value = 4)
+    @Order(4)
     private final IfcObjectDefinition relatingObject;
     @Attribute
-    @Order(value = 5)
+    @Order(5)
     private final Set<IfcObjectDefinition> relatedObjects;
-
-    //TODO: test constructor
 
     /**
      * Creates a new IfcRelDecomposes, using the provided globalId, and
@@ -105,7 +103,7 @@ public class IfcRelDecomposes extends IfcRelationship {
         if (relatedObjects == null) {
             throw new IllegalArgumentException("relatedObjects cannot be null");
         }
-        if (relatedObjects.size() == 1) {
+        if (relatedObjects.size() < 1) {
             throw new IllegalArgumentException(
                     "size of relatedObjects must be at least one");
         }

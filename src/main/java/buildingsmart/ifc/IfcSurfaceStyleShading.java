@@ -35,7 +35,7 @@ import java.util.Objects;
 public class IfcSurfaceStyleShading extends IfcEntity
         implements IfcSurfaceStyleElementSelect {
     @Attribute
-    @Order(value = 0)
+    @Order(0)
     private final IfcColourRgb surfaceColour;
 
     /**

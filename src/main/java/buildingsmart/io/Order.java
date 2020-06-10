@@ -24,15 +24,12 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Indicates the order in which fields with annotation {@link Attribute} or
- * {@link InverseAttribute} should be serialized in an IFC file. All fields
- * annotated with the same {@link Attribute} or {@link InverseAttribute}
- * Annotation must have a different value between each other (including fields
- * of superclasses). When applying this annotation on fields in a class, you
- * should continue counting from the highest value in the class' superclass.
- * Attributes and InverseAttributes have two different orderings, so both the
- * first {@link Attribute} and the first {@link InverseAttribute} in a class
- * will have value == 0. The ordering should follow the one outlined in the IFC
+ * Indicates the order in which fields with annotation {@link Attribute} should
+ * be serialized in an IFC file. All fields annotated with the same {@link
+ * Attribute} Annotation must have a different value between each other
+ * (including fields of superclasses). When applying this annotation on fields
+ * in a class, you should continue counting from the highest value in the class'
+ * superclass. The ordering must follow the one outlined in the IFC
  * specification of each class (look at the section "Inheritance graph" in each
  * entity).
  */
@@ -40,4 +37,3 @@ import java.lang.annotation.Target;
 public @interface Order {
     int value();
 }
-

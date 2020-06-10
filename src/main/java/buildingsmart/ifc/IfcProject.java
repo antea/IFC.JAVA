@@ -44,16 +44,16 @@ import java.util.Set;
  */
 public class IfcProject extends IfcObject {
     @Attribute
-    @Order(value = 5)
+    @Order(5)
     private final IfcLabel longName;
     @Attribute
-    @Order(value = 6)
+    @Order(6)
     private final IfcLabel phase;
     @Attribute
-    @Order(value = 7)
+    @Order(7)
     private final Set<IfcRepresentationContext> representationContexts;
     @Attribute
-    @Order(value = 8)
+    @Order(8)
     private final IfcUnitAssignment unitsInContext;
 
     /**
@@ -202,9 +202,10 @@ public class IfcProject extends IfcObject {
      *                                  not of type IfcRelAggregates; if the
      *                                  relatedObjects in relationship are not
      *                                  of type IfcSite or IfcBuilding.
+     * @throws NullPointerException     If relationship is null.
      */
     @Override
-    protected void addToIsDecomposedBy(IfcRelDecomposes relationship) {
+    protected void addToIsDecomposedBy(@NotNull IfcRelDecomposes relationship) {
         if (!(relationship instanceof IfcRelAggregates)) {
             throw new IllegalArgumentException(
                     "relationship must be of type IfcRelAggregates");
@@ -218,8 +219,9 @@ public class IfcProject extends IfcObject {
      *                                  in the relationship; if the
      *                                  relatedObjects in relationship are not
      *                                  of type IfcSite or IfcBuilding.
+     * @throws NullPointerException     If relationship is null.
      */
-    protected void addToIsDecomposedBy(IfcRelAggregates relationship) {
+    protected void addToIsDecomposedBy(@NotNull IfcRelAggregates relationship) {
         for (IfcObjectDefinition obj : relationship.getRelatedObjects()) {
             if (!(obj instanceof IfcSite) && !(obj instanceof IfcBuilding)) {
                 throw new IllegalArgumentException(

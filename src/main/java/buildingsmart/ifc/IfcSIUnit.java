@@ -32,13 +32,11 @@ import java.util.Objects;
  */
 public class IfcSIUnit extends IfcNamedUnit {
     @Attribute
-    @Order(value = 2)
+    @Order(2)
     private final IfcSIPrefix prefix;
     @Attribute
-    @Order(value = 3)
+    @Order(3)
     private final IfcSIUnitName name;
-
-    //TODO: test constructor
 
     /**
      * @param unitType The type of the unit.

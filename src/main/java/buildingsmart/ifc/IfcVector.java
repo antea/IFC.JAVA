@@ -28,7 +28,8 @@ import java.util.Objects;
  * The vector is defined in terms of the direction and magnitude of the vector.
  * The value of the magnitude attribute defines the magnitude of the vector.
  */
-public class IfcVector extends IfcGeometricRepresentationItem implements IfcVectorOrDirection {
+public class IfcVector extends IfcGeometricRepresentationItem
+        implements IfcVectorOrDirection {
     private final IfcDirection orientation;
     private final IfcLengthMeasure magnitude;
     //private int dim;
@@ -55,6 +56,10 @@ public class IfcVector extends IfcGeometricRepresentationItem implements IfcVect
         }
         this.orientation = orientation;
         this.magnitude = magnitude;
+    }
+
+    public IfcDirection getOrientation() {
+        return orientation;
     }
 
     public IfcLengthMeasure getMagnitude() {
@@ -88,17 +93,15 @@ public class IfcVector extends IfcGeometricRepresentationItem implements IfcVect
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        if (!super.equals(o)) {
-            return false;
-        }
         IfcVector ifcVector = (IfcVector) o;
-        return (orientation.equals(ifcVector.orientation) && magnitude.equals(ifcVector.magnitude)) ||
+        return (orientation.equals(ifcVector.orientation) &&
+                magnitude.equals(ifcVector.magnitude)) ||
                 (magnitude.getValue() == 0 &&
                         ifcVector.magnitude.getValue() == 0);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), orientation, magnitude);
+        return Objects.hash(orientation, magnitude);
     }
 }

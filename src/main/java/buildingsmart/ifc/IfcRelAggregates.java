@@ -21,6 +21,8 @@ package buildingsmart.ifc;
 
 import com.sun.istack.internal.NotNull;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -77,7 +79,8 @@ public class IfcRelAggregates extends IfcRelDecomposes {
      *                                  contains relatingObject.
      */
     public IfcRelAggregates(@NotNull IfcGloballyUniqueId globalId,
-                            @NotNull IfcOwnerHistory ownerHistory, IfcLabel name, IfcText description,
+                            @NotNull IfcOwnerHistory ownerHistory,
+                            IfcLabel name, IfcText description,
                             @NotNull IfcObjectDefinition relatingObject,
                             @NotNull Set<IfcObjectDefinition> relatedObjects) {
         super(globalId, ownerHistory, name, description, relatingObject,
@@ -110,7 +113,8 @@ public class IfcRelAggregates extends IfcRelDecomposes {
      *                                  relatedObjects
      *                                  contains relatingObject.
      */
-    public IfcRelAggregates(@NotNull IfcOwnerHistory ownerHistory, IfcLabel name, IfcText description,
+    public IfcRelAggregates(@NotNull IfcOwnerHistory ownerHistory,
+                            IfcLabel name, IfcText description,
                             @NotNull IfcObjectDefinition relatingObject,
                             @NotNull Set<IfcObjectDefinition> relatedObjects) {
         super(ownerHistory, name, description, relatingObject, relatedObjects);
@@ -182,9 +186,66 @@ public class IfcRelAggregates extends IfcRelDecomposes {
      *                                  relatedObjects
      *                                  contains relatingObject.
      */
-    public IfcRelAggregates(@NotNull IfcOwnerHistory ownerHistory, IfcLabel name, IfcText description,
+    public IfcRelAggregates(@NotNull IfcOwnerHistory ownerHistory,
+                            IfcLabel name, IfcText description,
                             @NotNull IfcObjectDefinition relatingObject,
                             @NotNull IfcObjectDefinition... relatedObjects) {
         super(ownerHistory, name, description, relatingObject, relatedObjects);
+    }
+
+    public static final class Builder {
+        private IfcObjectDefinition relatingObject;
+        private Set<IfcObjectDefinition> relatedObjects;
+        private IfcGloballyUniqueId globalId;
+        private IfcOwnerHistory ownerHistory;
+        private IfcLabel name;
+        private IfcText description;
+
+        private Builder() {
+        }
+
+        public static Builder anIfcRelAggregates() {
+            return new Builder();
+        }
+
+        public Builder relatingObject(IfcObjectDefinition relatingObject) {
+            this.relatingObject = relatingObject;
+            return this;
+        }
+
+        public Builder relatedObjects(Set<IfcObjectDefinition> relatedObjects) {
+            this.relatedObjects = relatedObjects;
+            return this;
+        }
+
+        public Builder relatedObjects(IfcObjectDefinition... relatedObjects) {
+            this.relatedObjects = new HashSet<>(Arrays.asList(relatedObjects));
+            return this;
+        }
+
+        public Builder globalId(IfcGloballyUniqueId globalId) {
+            this.globalId = globalId;
+            return this;
+        }
+
+        public Builder ownerHistory(IfcOwnerHistory ownerHistory) {
+            this.ownerHistory = ownerHistory;
+            return this;
+        }
+
+        public Builder name(IfcLabel name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder description(IfcText description) {
+            this.description = description;
+            return this;
+        }
+
+        public IfcRelAggregates build() {
+            return new IfcRelAggregates(globalId, ownerHistory, name,
+                    description, relatingObject, relatedObjects);
+        }
     }
 }

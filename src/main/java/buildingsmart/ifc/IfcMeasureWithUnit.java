@@ -41,10 +41,10 @@ import java.util.Objects;
  */
 public class IfcMeasureWithUnit extends IfcEntity {
     @Attribute
-    @Order(value = 0)
+    @Order(0)
     private final IfcValue valueComponent;
     @Attribute
-    @Order(value = 1)
+    @Order(1)
     private final IfcUnit unitComponent;
 
     /**

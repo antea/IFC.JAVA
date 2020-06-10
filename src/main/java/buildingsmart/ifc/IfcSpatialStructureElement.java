@@ -20,8 +20,12 @@
 package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
+import buildingsmart.io.InverseAttribute;
 import buildingsmart.io.Order;
 import com.sun.istack.internal.NotNull;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * A spatial structure element (<i>IfcSpatialStructureElement</i>) is the
@@ -76,18 +80,18 @@ import com.sun.istack.internal.NotNull;
  *   </li>
  * </ol>
  */
-public class IfcSpatialStructureElement extends IfcProduct {
+public abstract class IfcSpatialStructureElement extends IfcProduct {
     @Attribute
-    @Order(value = 7)
+    @Order(7)
     private final IfcLabel longName;
     @Attribute
-    @Order(value = 8)
+    @Order(8)
     private final IfcElementCompositionEnum compositionType;
     //private IfcRelReferencedInSpatialStructure[] ReferencesElements;
-    //private IfcRelServicesBuildings[] ServicedBySystems;
-    //private IfcRelContainedInSpatialStructure[] ContainsElements;
 
-    //TODO: test getters and setters
+    //private IfcRelServicesBuildings[] ServicedBySystems;
+    @InverseAttribute
+    private Set<IfcRelContainedInSpatialStructure> containsElements;
 
     /**
      * Creates a new IfcSpatialStructureElement, using the provided globalId.
@@ -247,9 +251,10 @@ public class IfcSpatialStructureElement extends IfcProduct {
      *                                  decomposes.relatingObject is not of type
      *                                  IfcProject nor
      *                                  IfcSpatialStructureElement.
+     * @throws NullPointerException     If decomposes is null.
      */
     @Override
-    protected void setDecomposes(IfcRelDecomposes decomposes) {
+    protected void setDecomposes(@NotNull IfcRelDecomposes decomposes) {
         if (!(decomposes instanceof IfcRelAggregates)) {
             throw new IllegalArgumentException(
                     "decomposes must be of type IfcRelAggregates");
@@ -267,8 +272,9 @@ public class IfcSpatialStructureElement extends IfcProduct {
      *                                  .relatingObject is not of type
      *                                  IfcProject nor
      *                                  IfcSpatialStructureElement.
+     * @throws NullPointerException     If decomposes is null.
      */
-    protected void setDecomposes(IfcRelAggregates decomposes) {
+    protected void setDecomposes(@NotNull IfcRelAggregates decomposes) {
         if (!(decomposes.getRelatingObject() instanceof IfcProject) &&
                 !(decomposes
                         .getRelatingObject() instanceof IfcSpatialStructureElement)) {
@@ -277,5 +283,41 @@ public class IfcSpatialStructureElement extends IfcProduct {
                             "IfcSpatialStructureElement");
         }
         super.setDecomposes(decomposes);
+    }
+
+    /**
+     * @return A copy of containsElements. Operations performed on this Set
+     * don't have any effect on containsElements. This is done to prevent adding
+     * illegal IfcRelContainedInSpatialStructure to the Set.
+     * @see #addToContainsElements(IfcRelContainedInSpatialStructure)
+     */
+    protected Set<IfcRelContainedInSpatialStructure> getContainsElements() {
+        return new HashSet<>(containsElements);
+    }
+
+    /**
+     * @param relationship The relationship to add to the Set containsElements.
+     * @throws IllegalArgumentException If this object is not the
+     * relatingStructure
+     *                                  in the relationship.
+     * @throws NullPointerException     If relationship is null.
+     */
+    protected void addToContainsElements(
+            @NotNull IfcRelContainedInSpatialStructure relationship) {
+        if (!relationship.getRelatingStructure().equals(this)) {
+            throw new IllegalArgumentException(
+                    "any IfcRelContainedInSpatialStructure part of " +
+                            "containsElements must have this instance of " +
+                            "IfcSpatialStructureElement as its " +
+                            "relatingStructure");
+        }
+        if (this.containsElements != null) {
+            this.containsElements.add(relationship);
+        } else {
+            Set<IfcRelContainedInSpatialStructure> containsElements =
+                    new HashSet<>();
+            containsElements.add(relationship);
+            this.containsElements = containsElements;
+        }
     }
 }

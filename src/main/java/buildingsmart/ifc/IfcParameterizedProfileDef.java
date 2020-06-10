@@ -40,7 +40,7 @@ import java.util.Objects;
  */
 public abstract class IfcParameterizedProfileDef extends IfcProfileDef {
     @Attribute
-    @Order(value = 2)
+    @Order(2)
     private final IfcAxis2Placement2D position;
 
     /**

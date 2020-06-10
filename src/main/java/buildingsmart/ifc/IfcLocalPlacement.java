@@ -42,13 +42,11 @@ import java.util.Objects;
  */
 public class IfcLocalPlacement extends IfcObjectPlacement {
     @Attribute
-    @Order(value = 0)
+    @Order(0)
     private final IfcObjectPlacement placementRelTo;
     @Attribute
-    @Order(value = 1)
+    @Order(1)
     private final IfcAxis2Placement relativePlacement;
-
-    //TODO: test constructor
 
     /**
      * @param placementRelTo    Reference to Object that provides the relative
@@ -63,8 +61,9 @@ public class IfcLocalPlacement extends IfcObjectPlacement {
      *                          count of the coordinate system.
      * @throws IllegalArgumentException If relativePlacement is null; if
      *                                  relativePlacement is 3D and
-     *                                  placementRelTo is not; if placementRelTo
-     *                                  is of type IfcGridPlacement.
+     *                                  placementRelTo is not and is not null;
+     *                                  if placementRelTo is of type
+     *                                  IfcGridPlacement.
      */
     public IfcLocalPlacement(IfcObjectPlacement placementRelTo,
                              @NotNull IfcAxis2Placement relativePlacement) {

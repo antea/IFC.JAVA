@@ -28,7 +28,6 @@ import java.util.Objects;
  * dimensionality.
  */
 public class IfcDimensionCount implements IfcDefinedType {
-    //TODO: in all IfcDefinedTypes, rename their attribute to value
     private final byte value;
 
     /**

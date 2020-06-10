@@ -20,7 +20,6 @@
 package buildingsmart.ifc;
 
 import buildingsmart.io.InverseAttribute;
-import buildingsmart.io.Order;
 import com.sun.istack.internal.NotNull;
 
 import java.util.HashSet;
@@ -67,7 +66,6 @@ public abstract class IfcObjectDefinition extends IfcRoot {
      * association to library, documentation or classification.
      */
     @InverseAttribute
-    @Order(value = 3)
     protected Set<IfcRelAssociates> hasAssociations;
     /**
      * Reference to the decomposition relationship, that allows this object to
@@ -75,7 +73,6 @@ public abstract class IfcObjectDefinition extends IfcRoot {
      * several other objects.
      */
     @InverseAttribute
-    @Order(value = 1)
     private Set<IfcRelDecomposes> isDecomposedBy;
     /**
      * References to the decomposition relationship, that allows this object to
@@ -83,7 +80,6 @@ public abstract class IfcObjectDefinition extends IfcRoot {
      * decomposition (to allow hierarchical strutures only).
      */
     @InverseAttribute
-    @Order(value = 2)
     private IfcRelDecomposes decomposes;
 
     /**
@@ -134,8 +130,6 @@ public abstract class IfcObjectDefinition extends IfcRoot {
         super(ownerHistory, name, description);
     }
 
-    //TODO: test setters and getters
-
     /**
      * @return A copy of isDecomposedBy. Operations performed on this Set don't
      * have any effect on isDecomposedBy. This is done to prevent adding illegal
@@ -150,8 +144,9 @@ public abstract class IfcObjectDefinition extends IfcRoot {
      * @param relationship The relationship to add to the Set isDecomposedBy.
      * @throws IllegalArgumentException If this object is not the relatingObject
      *                                  in the relationship.
+     * @throws NullPointerException     If relationship is null.
      */
-    protected void addToIsDecomposedBy(IfcRelDecomposes relationship) {
+    protected void addToIsDecomposedBy(@NotNull IfcRelDecomposes relationship) {
         if (!relationship.getRelatingObject().equals(this)) {
             throw new IllegalArgumentException(
                     "any IfcRelDecomposes part of isDecomposedBy must " +
@@ -178,8 +173,9 @@ public abstract class IfcObjectDefinition extends IfcRoot {
      *                   (to allow hierarchical strutures only).
      * @throws IllegalArgumentException If decomposes.relatedObjects does not
      *                                  contain this object.
+     * @throws NullPointerException     If decomposes is null.
      */
-    protected void setDecomposes(IfcRelDecomposes decomposes) {
+    protected void setDecomposes(@NotNull IfcRelDecomposes decomposes) {
         if (!decomposes.getRelatedObjects().contains(this)) {
             throw new IllegalArgumentException(
                     "decomposes.relatedObjects must contain this object");
@@ -201,8 +197,9 @@ public abstract class IfcObjectDefinition extends IfcRoot {
      * @param relationship The relationship to add to the Set hasAssociations.
      * @throws IllegalArgumentException If this object is not contained in the
      *                                  relationship's relatedObjects.
+     * @throws NullPointerException     If relationship is null.
      */
-    protected void addToHasAssociations(IfcRelAssociates relationship) {
+    protected void addToHasAssociations(@NotNull IfcRelAssociates relationship) {
         if (!relationship.getRelatedObjects().contains(this)) {
             throw new IllegalArgumentException(
                     "this object must be contained in relationship" +

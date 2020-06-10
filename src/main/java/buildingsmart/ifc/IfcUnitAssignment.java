@@ -44,7 +44,7 @@ import java.util.concurrent.CopyOnWriteArraySet;
  */
 public class IfcUnitAssignment extends IfcEntity {
     @Attribute
-    @Order(value = 0)
+    @Order(0)
     private final Set<IfcUnit> units;
 
     /**
@@ -64,7 +64,11 @@ public class IfcUnitAssignment extends IfcEntity {
                     "size of units must be at least 1");
         }
         if (!Functions.ifcCorrectUnitAssignment(units)) {
-            throw new IllegalArgumentException("");
+            throw new IllegalArgumentException(
+                    "units can contain at most 1 IfcMonetaryUnit, cannot " +
+                            "include multiple IfcNamedUnit with the same " +
+                            "unitType, and cannot include multiple " +
+                            "IfcDerivedUnit with the same unitType");
         }
         this.units = units;
     }

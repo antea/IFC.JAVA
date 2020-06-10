@@ -32,13 +32,13 @@ import java.util.Objects;
  */
 public class IfcPersonAndOrganization extends IfcEntity {
     @Attribute
-    @Order(value = 0)
+    @Order(0)
     private final IfcPerson thePerson;
     @Attribute
-    @Order(value = 1)
+    @Order(1)
     private final IfcOrganization theOrganization;
     @Attribute
-    @Order(value = 2)
+    @Order(2)
     private final List<IfcActorRole> roles;
 
     /**

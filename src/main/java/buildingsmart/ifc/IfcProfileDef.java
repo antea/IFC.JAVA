@@ -94,10 +94,10 @@ import java.util.Objects;
  */
 public abstract class IfcProfileDef extends IfcEntity {
     @Attribute
-    @Order(value = 0)
+    @Order(0)
     private final IfcProfileTypeEnum profileType;
     @Attribute
-    @Order(value = 1)
+    @Order(1)
     private final IfcLabel profileName;
 
     /**

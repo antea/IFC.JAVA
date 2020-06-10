@@ -1,6 +1,5 @@
 /*
- * Copyright (C) 2019 Pieter Pauwels, Ghent University
- * Modifications Copyright (C) 2020 Giovanni Velludo
+ * Copyright (C) 2020 Giovanni Velludo
  *
  * This file is part of IFC.JAVA.
  *
@@ -19,98 +18,13 @@
 
 package buildingsmart.ifc;
 
-import buildingsmart.io.Attribute;
-import buildingsmart.io.Order;
 import com.sun.istack.internal.NotNull;
 
-/**
- * Generalization of all components that make up an AEC product. Those elements
- * can be logically contained by a spatial structure element that constitutes a
- * certain level within a project structure hierarchy (e.g., site, building,
- * storey or space). This is done by using the
- * <i>IfcRelContainedInSpatialStructure</i>
- * relationship.
- * </p>
- * <p>
- * Elements are physically existent objects, although they might be void
- * elements, such as holes. Elements either remain permanently in the AEC
- * product, or only temporarily, as formwork does. Elements can be either
- * assembled on site or pre-manufactured and built in on site.
- * </p>
- * <blockquote>
- * <font size="-1">EXAMPLEs of elements in a building
- * construction context are walls, floors, windows and recesses.</font>
- * </blockquote>
- * <p>
- * An element can have material and quantity information assigned through the
- * <i>IfcRelAssociatesMaterial</i> and
- * <i>IfcRelDefinesByProperties</i> relationship.
- * </p>
- * <p>
- * In addition an element can be declared to be a specific occurrence of an
- * element type (and thereby be defined by the element type properties) using
- * the
- * <i>IfcRelDefinesByType</i> relationship.
- * </p>
- * <p>
- * An element can also be defined as an element assembly that is a group of
- * semantically and topologically related elements that form a higher level part
- * of the AEC product. Those element assemblies are defined by virtue of the
- * <i>IfcRelAggregates</i> relationship.
- * </p>
- * <blockquote>
- * <font size="-1">EXAMPLEs for element assembly are complete
- * Roof Structures, made by several Roof Areas, or a Stair, composed by Flights
- * and Landings.</font>
- * </blockquote>
- * <p>
- * Elements that performs the same function may be grouped by an "Element Group
- * By Function". It is realized by an instance of <i>IfcGroup</i> with the
- * <i>ObjectType</i> = 'ElementGroupByFunction".
- * </p>
- * <p>
- * <u><b>Quantity Use Definition</b></u>:
- * </p>
- * <p>
- * The quantities relating to the <i>IfcElement</i> are defined by the
- * <i>IfcElementQuantity</i> and attached by the
- * <i>IfcRelDefinesByProperties</i>.
- * A detailed specification for individual quantities is introduced at the level
- * of subtypes of <i>IfcElement</i>.
- * </p>
- * <p>
- * <u><b>Geometry Use Definitions</b></u>
- * </p>
- * <p>
- * The geometric representation of any <i>IfcElement</i> is given by the
- * <i>IfcProductDefinitionShape</i> and
- * <i>IfcLocalPlacement</i> allowing multiple geometric
- * representations. A detailed specification for the shape representation is
- * introduced at the level of subtypes of
- * <i>IfcElement</i>.
- * </p>
- */
-public abstract class IfcElement extends IfcProduct {
-    @Attribute
-    @Order(7)
-    private final IfcIdentifier tag;
-    /*
-    private IfcRelConnectsStructuralElement[] HasStructuralMember;
-    private IfcRelFillsElement[] FillsVoids;
-    private IfcRelConnectsElements[] ConnectedTo;
-    private IfcRelCoversBldgElements[] HasCoverings;
-    private IfcRelProjectsElement[] HasProjections;
-    private IfcRelReferencedInSpatialStructure[] ReferencedInStructures;
-    private IfcRelConnectsPortToElement[] HasPorts;
-    private IfcRelVoidsElement[] HasOpenings;
-    private IfcRelConnectsWithRealizingElements[] IsConnectionRealization;
-    private IfcRelSpaceBoundary[] ProvidesBoundaries;
-    private IfcRelConnectsElements[] ConnectedFrom;
-    private IfcRelContainedInSpatialStructure[] ContainedInStructure;
-     */
+public class ConcreteIfcSpatialStructureElement
+        extends IfcSpatialStructureElement {
 
     /**
-     * Creates a new IfcElement, using the provided globalId.
+     * Creates a new IfcSpatialStructureElement, using the provided globalId.
      *
      * @param globalId        Assignment of a globally unique identifier within
      *                        the entire software world.
@@ -150,30 +64,36 @@ public abstract class IfcElement extends IfcProduct {
      *                        representations of the shape property of the
      *                        object within the same object coordinate system,
      *                        defined by the object placement.
-     * @param tag             The tag (or label) identifier at the particular
-     *                        instance of a product, e.g. the serial number, or
-     *                        the position number. It is the identifier at the
-     *                        occurrence level.
+     * @param longName        Long name for a spatial structure element, used
+     *                        for informal purposes. Maybe used in conjunction
+     *                        with the inherited Name attribute.
+     * @param compositionType Denotes, whether the predefined spatial structure
+     *                        element represents itself, or an aggregate
+     *                        (complex) or a part (part). The interpretation is
+     *                        given separately for each subtype of spatial
+     *                        structure element.
      * @throws IllegalArgumentException If globalId or ownerHistory are null; if
      *                                  globalId was used in another instance of
      *                                  this class; if representation is not
      *                                  null and objectPlacement is, while
      *                                  representation is an instance of
-     *                                  IfcProductDefinitionShape.
+     *                                  IfcProductDefinitionShape; if
+     *                                  compositionType is null.
      */
-    public IfcElement(@NotNull IfcGloballyUniqueId globalId,
-                      @NotNull IfcOwnerHistory ownerHistory, IfcLabel name,
-                      IfcText description, IfcLabel objectType,
-                      IfcObjectPlacement objectPlacement,
-                      IfcProductRepresentation representation,
-                      IfcIdentifier tag) {
+    public ConcreteIfcSpatialStructureElement(
+            @NotNull IfcGloballyUniqueId globalId,
+            @NotNull IfcOwnerHistory ownerHistory, IfcLabel name,
+            IfcText description, IfcLabel objectType,
+            IfcObjectPlacement objectPlacement,
+            IfcProductRepresentation representation, IfcLabel longName,
+            @NotNull IfcElementCompositionEnum compositionType) {
         super(globalId, ownerHistory, name, description, objectType,
-                objectPlacement, representation);
-        this.tag = tag;
+                objectPlacement, representation, longName, compositionType);
     }
 
     /**
-     * Creates a new IfcElement and generates a pseudo random globalId.
+     * Creates a new IfcSpatialStructureElement and generates a pseudo random
+     * globalId.
      *
      * @param ownerHistory    Assignment of the information about the current
      *                        ownership of that object, including owning actor,
@@ -211,22 +131,28 @@ public abstract class IfcElement extends IfcProduct {
      *                        representations of the shape property of the
      *                        object within the same object coordinate system,
      *                        defined by the object placement.
-     * @param tag             The tag (or label) identifier at the particular
-     *                        instance of a product, e.g. the serial number, or
-     *                        the position number. It is the identifier at the
-     *                        occurrence level.
+     * @param longName        Long name for a spatial structure element, used
+     *                        for informal purposes. Maybe used in conjunction
+     *                        with the inherited Name attribute.
+     * @param compositionType Denotes, whether the predefined spatial structure
+     *                        element represents itself, or an aggregate
+     *                        (complex) or a part (part). The interpretation is
+     *                        given separately for each subtype of spatial
+     *                        structure element.
      * @throws IllegalArgumentException If ownerHistory is null; if
      *                                  representation is not null and
      *                                  objectPlacement is, while representation
      *                                  is an instance of
-     *                                  IfcProductDefinitionShape.
+     *                                  IfcProductDefinitionShape;
+     *                                  if compositionType is null.
      */
-    public IfcElement(@NotNull IfcOwnerHistory ownerHistory, IfcLabel name,
-                      IfcText description, IfcLabel objectType,
-                      IfcObjectPlacement objectPlacement,
-                      IfcProductRepresentation representation,
-                      IfcIdentifier tag) {
-        this(new IfcGloballyUniqueId(), ownerHistory, name, description,
-                objectType, objectPlacement, representation, tag);
+    public ConcreteIfcSpatialStructureElement(
+            @NotNull IfcOwnerHistory ownerHistory, IfcLabel name,
+            IfcText description, IfcLabel objectType,
+            IfcObjectPlacement objectPlacement,
+            IfcProductRepresentation representation, IfcLabel longName,
+            @NotNull IfcElementCompositionEnum compositionType) {
+        super(ownerHistory, name, description, objectType, objectPlacement,
+                representation, longName, compositionType);
     }
 }

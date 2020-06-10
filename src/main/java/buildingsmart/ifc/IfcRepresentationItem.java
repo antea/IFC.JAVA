@@ -21,9 +21,6 @@ package buildingsmart.ifc;
 
 import buildingsmart.io.IfcEntity;
 import buildingsmart.io.InverseAttribute;
-import buildingsmart.io.Order;
-
-import java.util.Objects;
 
 /**
  * A representation item is an element of product data that participates in one
@@ -35,7 +32,6 @@ import java.util.Objects;
 public abstract class IfcRepresentationItem extends IfcEntity {
     //private IfcPresentationLayerAssignment[] LayerAssignments;
     @InverseAttribute
-    @Order(value = 1)
     private IfcStyledItem styledByItem;
 
     /**
@@ -46,22 +42,5 @@ public abstract class IfcRepresentationItem extends IfcEntity {
      */
     protected void setStyledByItem(IfcStyledItem styledByItem) {
         this.styledByItem = styledByItem;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        IfcRepresentationItem that = (IfcRepresentationItem) o;
-        return Objects.equals(styledByItem, that.styledByItem);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(styledByItem);
     }
 }

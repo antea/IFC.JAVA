@@ -30,15 +30,15 @@ import java.util.TimeZone;
  * elapsed since the beginning of the year 1970.
  */
 public class IfcTimeStamp implements IfcDefinedType, IfcDerivedMeasureValue {
-    private final long ifcTimeStamp;
+    private final long value;
 
     /**
-     * @param ifcTimeStamp An indication of date and time by measuring the
+     * @param value An indication of date and time by measuring the
      *                     number of seconds which have elapsed since the
      *                     beginning of the year 1970.
      */
-    public IfcTimeStamp(long ifcTimeStamp) {
-        this.ifcTimeStamp = ifcTimeStamp;
+    public IfcTimeStamp(long value) {
+        this.value = value;
     }
 
     /**
@@ -47,7 +47,7 @@ public class IfcTimeStamp implements IfcDefinedType, IfcDerivedMeasureValue {
      */
     public IfcTimeStamp() {
         Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
-        this.ifcTimeStamp = calendar.getTimeInMillis() / 1000; // seconds
+        this.value = calendar.getTimeInMillis() / 1000; // seconds
     }
 
     /**
@@ -55,7 +55,7 @@ public class IfcTimeStamp implements IfcDefinedType, IfcDerivedMeasureValue {
      */
     @Override
     public String serialize() {
-        return Long.toString(ifcTimeStamp);
+        return Long.toString(value);
     }
 
     @Override
@@ -67,11 +67,11 @@ public class IfcTimeStamp implements IfcDefinedType, IfcDerivedMeasureValue {
             return false;
         }
         IfcTimeStamp that = (IfcTimeStamp) o;
-        return ifcTimeStamp == that.ifcTimeStamp;
+        return value == that.value;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(ifcTimeStamp);
+        return Objects.hash(value);
     }
 }

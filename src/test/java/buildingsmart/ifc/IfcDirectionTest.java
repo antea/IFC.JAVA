@@ -18,6 +18,7 @@
 
 package buildingsmart.ifc;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -29,9 +30,9 @@ public class IfcDirectionTest {
 
     /**
      * Tests whether an object initialized with the varargs constructor is the
-     * same as one initialized with the constructor that takes a List as
-     * input, provided that the values passed in the varargs constructor are
-     * the ones contained in the List.
+     * same as one initialized with the constructor that takes a List as input,
+     * provided that the values passed in the varargs constructor are the ones
+     * contained in the List.
      */
     @Test
     public void varArgsConstructor() {
@@ -42,7 +43,8 @@ public class IfcDirectionTest {
         directionRatios[0] = new IfcReal(d0);
         directionRatios[1] = new IfcReal(d1);
         directionRatios[2] = new IfcReal(d2);
-        IfcDirection expectedIfcDirection = new IfcDirection(Arrays.asList(directionRatios));
+        IfcDirection expectedIfcDirection =
+                new IfcDirection(Arrays.asList(directionRatios));
 
         IfcDirection ifcDirection = new IfcDirection(d0, d1, d2);
 
@@ -52,5 +54,12 @@ public class IfcDirectionTest {
     @Test(expected = IllegalArgumentException.class)
     public void nullConstructor() {
         IfcDirection ifcDirection = new IfcDirection((List<IfcReal>) null);
+    }
+
+    @Test
+    public void equals() {
+        IfcDirection d1 = new IfcDirection(3, 6, 9);
+        IfcDirection d2 = new IfcDirection(1, 2, 3);
+        Assert.assertEquals(d1, d2);
     }
 }

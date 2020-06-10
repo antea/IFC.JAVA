@@ -31,10 +31,10 @@ import java.util.Objects;
  */
 public class IfcRepresentationContext extends IfcEntity {
     @Attribute
-    @Order(value = 0)
+    @Order(0)
     private final IfcLabel contextIdentifier;
     @Attribute
-    @Order(value = 1)
+    @Order(1)
     private final IfcLabel contextType;
     //private IfcRepresentation[] RepresentationsInContext;
 

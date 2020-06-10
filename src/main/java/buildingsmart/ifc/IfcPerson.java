@@ -31,28 +31,28 @@ import java.util.Objects;
  */
 public class IfcPerson extends IfcEntity {
     @Attribute
-    @Order(value = 0)
+    @Order(0)
     private final IfcIdentifier id;
     @Attribute
-    @Order(value = 1)
+    @Order(1)
     private final IfcLabel familyName;
     @Attribute
-    @Order(value = 2)
+    @Order(2)
     private final IfcLabel givenName;
     @Attribute
-    @Order(value = 3)
+    @Order(3)
     private final List<IfcLabel> middleNames;
     @Attribute
-    @Order(value = 4)
+    @Order(4)
     private final List<IfcLabel> prefixTitles;
     @Attribute
-    @Order(value = 5)
+    @Order(5)
     private final List<IfcLabel> suffixTitles;
     @Attribute
-    @Order(value = 6)
+    @Order(6)
     private final List<IfcActorRole> roles;
     @Attribute
-    @Order(value = 7)
+    @Order(7)
     private final List<IfcAddress> addresses;
     //private IfcPersonAndOrganization[] engagedIn;
 

@@ -20,10 +20,8 @@
 package buildingsmart.ifc;
 
 import buildingsmart.io.InverseAttribute;
-import buildingsmart.io.Order;
 import com.sun.istack.internal.NotNull;
 
-import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -44,8 +42,7 @@ import java.util.Set;
  */
 public class IfcShapeModel extends IfcRepresentation {
     @InverseAttribute
-    @Order(value = 3)
-    private IfcShapeAspect ofShapeAspect; //inverse attribute
+    private IfcShapeAspect ofShapeAspect;
 
     /**
      * @param contextOfItems           Definition of the representation context
@@ -106,10 +103,6 @@ public class IfcShapeModel extends IfcRepresentation {
         super(contextOfItems, representationIdentifier, representationType,
                 items);
     }
-
-    //TODO: test setters
-    //TODO: call setters when this object is used by the types passed as
-    // arguments in the setters, do the inverse in IfcRelDecomposes
 
     /**
      * @param ofShapeAspect Reference to the shape aspect, for which it is the
@@ -174,25 +167,5 @@ public class IfcShapeModel extends IfcRepresentation {
                     "ofShapeAspect or representationMap is already" + " set!");
         }
         super.setOfProductRepresentation(ofProductRepresentation);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        if (!super.equals(o)) {
-            return false;
-        }
-        IfcShapeModel that = (IfcShapeModel) o;
-        return Objects.equals(ofShapeAspect, that.ofShapeAspect);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), ofShapeAspect);
     }
 }

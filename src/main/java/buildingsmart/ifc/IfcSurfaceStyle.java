@@ -23,6 +23,8 @@ import buildingsmart.io.Attribute;
 import buildingsmart.io.Order;
 import com.sun.istack.internal.NotNull;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -42,13 +44,11 @@ import java.util.Set;
 public class IfcSurfaceStyle extends IfcPresentationStyle
         implements IfcPresentationStyleSelect {
     @Attribute
-    @Order(value = 1)
+    @Order(1)
     private final IfcSurfaceSide side;
     @Attribute
-    @Order(value = 2)
+    @Order(2)
     private final Set<IfcSurfaceStyleElementSelect> styles;
-
-    //TODO: test constructor
 
     /**
      * @param name   Name of the presentation style.
@@ -105,6 +105,22 @@ public class IfcSurfaceStyle extends IfcPresentationStyle
 
         this.side = side;
         this.styles = styles;
+    }
+
+    /**
+     * @param name   Name of the presentation style.
+     * @param side   An indication of which side of the surface to apply the
+     *               style.
+     * @param styles A collection of different surface styles.
+     * @throws IllegalArgumentException If side or syles is null; if the size of
+     *                                  styles is lower than 1 or bigger than 5;
+     *                                  if styles contains more than one
+     *                                  instance of each type that implements
+     *                                  IfcSurfaceStyleElementSelect.
+     */
+    public IfcSurfaceStyle(IfcLabel name, @NotNull IfcSurfaceSide side,
+                           @NotNull IfcSurfaceStyleElementSelect... styles) {
+        this(name, side, new HashSet<>(Arrays.asList(styles)));
     }
 
     @Override

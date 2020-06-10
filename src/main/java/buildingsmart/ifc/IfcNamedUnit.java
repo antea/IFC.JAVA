@@ -35,13 +35,11 @@ import java.util.Objects;
 public abstract class IfcNamedUnit extends IfcEntity implements IfcUnit {
     @Attribute
     @DerivedInSubclass(IfcSIUnit.class)
-    @Order(value = 0)
+    @Order(0)
     private final IfcDimensionalExponents dimensions;
     @Attribute
-    @Order(value = 1)
+    @Order(1)
     private final IfcUnitEnum unitType;
-
-    //TODO: test constructor
 
     /**
      * @param dimensions The dimensional exponents of the SI base units by which
@@ -60,14 +58,10 @@ public abstract class IfcNamedUnit extends IfcEntity implements IfcUnit {
         if (unitType == null) {
             throw new IllegalArgumentException("unitType cannot be null");
         }
-        try {
-            if (!Functions.ifcCorrectDimensions(unitType, dimensions)) {
-                throw new IllegalArgumentException(
-                        "given dimensions for this unitType are wrong");
-            }
-        } catch (NullPointerException e) {
-            // unitType is USERDEFINED, so we can't check if dimensions is
-            // correct
+        if (Objects.equals(Functions.ifcCorrectDimensions(unitType, dimensions),
+                false)) {
+            throw new IllegalArgumentException(
+                    "given dimensions for this unitType are wrong");
         }
         this.dimensions = dimensions;
         this.unitType = unitType;

@@ -64,10 +64,10 @@ import com.sun.istack.internal.NotNull;
  */
 public abstract class IfcProduct extends IfcObject {
     @Attribute
-    @Order(value = 5)
+    @Order(5)
     private final IfcObjectPlacement objectPlacement;
     @Attribute
-    @Order(value = 6)
+    @Order(6)
     private final IfcProductRepresentation representation;
     //private IfcRelAssignsToProduct[] referencedBy;
 

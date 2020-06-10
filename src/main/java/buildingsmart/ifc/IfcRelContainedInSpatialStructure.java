@@ -86,10 +86,10 @@ import java.util.Set;
  */
 public class IfcRelContainedInSpatialStructure extends IfcRelConnects {
     @Attribute
-    @Order(value = 4)
+    @Order(4)
     private final Set<IfcProduct> relatedElements;
     @Attribute
-    @Order(value = 5)
+    @Order(5)
     private final IfcSpatialStructureElement relatingStructure;
 
     /**
@@ -148,11 +148,13 @@ public class IfcRelContainedInSpatialStructure extends IfcRelConnects {
             if (prod instanceof IfcSpatialStructureElement) {
                 throw new IllegalArgumentException(
                         "relatedElements cannot contain objects of type " +
-                                "IfcSpatialStructureElement");
+                                "IfcSpatialStructureElement, use " +
+                                "IfcRelAggregates for that");
             }
         }
         this.relatedElements = relatedElements;
         this.relatingStructure = relatingStructure;
+        relatingStructure.addToContainsElements(this);
     }
 
     /**
@@ -274,5 +276,77 @@ public class IfcRelContainedInSpatialStructure extends IfcRelConnects {
         this(ownerHistory, name, description,
                 new HashSet<>(Arrays.asList(relatedElements)),
                 relatingStructure);
+    }
+
+    /**
+     * @return A copy of relatedElements. Operations performed on this Set don't
+     * have any effect on relatedElements. This is done to prevent its size from
+     * becoming zero, and to prevent the addition of illegal IfcProducts to
+     * relatedElements.
+     */
+    public Set<IfcProduct> getRelatedElements() {
+        return new HashSet<>(relatedElements);
+    }
+
+    public IfcSpatialStructureElement getRelatingStructure() {
+        return relatingStructure;
+    }
+
+    public static final class Builder {
+        private Set<IfcProduct> relatedElements;
+        private IfcSpatialStructureElement relatingStructure;
+        private IfcGloballyUniqueId globalId;
+        private IfcOwnerHistory ownerHistory;
+        private IfcLabel name;
+        private IfcText description;
+
+        private Builder() {
+        }
+
+        public static Builder anIfcRelContainedInSpatialStructure() {
+            return new Builder();
+        }
+
+        public Builder relatedElements(Set<IfcProduct> relatedElements) {
+            this.relatedElements = relatedElements;
+            return this;
+        }
+
+        public Builder relatedElements(IfcProduct... relatedElements) {
+            this.relatedElements =
+                    new HashSet<>(Arrays.asList(relatedElements));
+            return this;
+        }
+
+        public Builder relatingStructure(
+                IfcSpatialStructureElement relatingStructure) {
+            this.relatingStructure = relatingStructure;
+            return this;
+        }
+
+        public Builder globalId(IfcGloballyUniqueId globalId) {
+            this.globalId = globalId;
+            return this;
+        }
+
+        public Builder ownerHistory(IfcOwnerHistory ownerHistory) {
+            this.ownerHistory = ownerHistory;
+            return this;
+        }
+
+        public Builder name(IfcLabel name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder description(IfcText description) {
+            this.description = description;
+            return this;
+        }
+
+        public IfcRelContainedInSpatialStructure build() {
+            return new IfcRelContainedInSpatialStructure(globalId, ownerHistory,
+                    name, description, relatedElements, relatingStructure);
+        }
     }
 }

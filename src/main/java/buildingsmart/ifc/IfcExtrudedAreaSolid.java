@@ -49,10 +49,10 @@ import java.util.Objects;
  */
 public class IfcExtrudedAreaSolid extends IfcSweptAreaSolid {
     @Attribute
-    @Order(value = 2)
+    @Order(2)
     private final IfcDirection extrudedDirection;
     @Attribute
-    @Order(value = 3)
+    @Order(3)
     private final IfcLengthMeasure depth;
 
     /**
@@ -70,7 +70,8 @@ public class IfcExtrudedAreaSolid extends IfcSweptAreaSolid {
      *                                  or depth are null; if sweptArea
      *                                  .profileType is not AREA; if
      *                                  extrudedDirection is perpendicular to
-     *                                  the local z-axis.
+     *                                  the local z-axis or it is not
+     *                                  three-dimensional.
      */
     public IfcExtrudedAreaSolid(@NotNull IfcProfileDef sweptArea,
                                 @NotNull IfcAxis2Placement3D position,

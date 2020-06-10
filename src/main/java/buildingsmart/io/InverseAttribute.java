@@ -26,8 +26,7 @@ import java.lang.annotation.Target;
 /**
  * Indicates a field that represent an inverse relationship (that should be
  * serialized after the entity) of an IFC entity. All fields having this
- * annotation must also be annotated with {@link Order}, and they cannot be
- * annotated with {@link Attribute}.
+ * annotation cannot be annotated with {@link Attribute}.
  * </p>
  * Fields annotated with this Annotation are serialized after the entity they're
  * in, because inverse relationships are references to entities which contain a

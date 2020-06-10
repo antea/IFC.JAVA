@@ -289,19 +289,19 @@ import com.sun.istack.internal.NotNull;
  */
 public class IfcSite extends IfcSpatialStructureElement {
     @Attribute
-    @Order(value = 9)
+    @Order(9)
     private final IfcCompoundPlaneAngleMeasure refLatitude;
     @Attribute
-    @Order(value = 10)
+    @Order(10)
     private final IfcCompoundPlaneAngleMeasure refLongitude;
     @Attribute
-    @Order(value = 11)
+    @Order(11)
     private final IfcLengthMeasure refElevation;
     @Attribute
-    @Order(value = 12)
+    @Order(12)
     private final IfcLabel landTitleNumber;
     @Attribute
-    @Order(value = 13)
+    @Order(13)
     private final IfcPostalAddress siteAddress;
 
     /**
@@ -499,5 +499,107 @@ public class IfcSite extends IfcSpatialStructureElement {
                 objectType, objectPlacement, representation, longName,
                 compositionType, refLatitude, refLongitude, refElevation,
                 landTitleNumber, siteAddress);
+    }
+
+    public static final class Builder {
+        private IfcCompoundPlaneAngleMeasure refLatitude;
+        private IfcCompoundPlaneAngleMeasure refLongitude;
+        private IfcLengthMeasure refElevation;
+        private IfcLabel landTitleNumber;
+        private IfcPostalAddress siteAddress;
+        private IfcLabel longName;
+        private IfcElementCompositionEnum compositionType;
+        private IfcObjectPlacement objectPlacement;
+        private IfcProductRepresentation representation;
+        private IfcLabel objectType;
+        private IfcGloballyUniqueId globalId;
+        private IfcOwnerHistory ownerHistory;
+        private IfcLabel name;
+        private IfcText description;
+
+        private Builder() {
+        }
+
+        public static Builder anIfcSite() {
+            return new Builder();
+        }
+
+        public Builder refLatitude(IfcCompoundPlaneAngleMeasure refLatitude) {
+            this.refLatitude = refLatitude;
+            return this;
+        }
+
+        public Builder refLongitude(IfcCompoundPlaneAngleMeasure refLongitude) {
+            this.refLongitude = refLongitude;
+            return this;
+        }
+
+        public Builder refElevation(IfcLengthMeasure refElevation) {
+            this.refElevation = refElevation;
+            return this;
+        }
+
+        public Builder landTitleNumber(IfcLabel landTitleNumber) {
+            this.landTitleNumber = landTitleNumber;
+            return this;
+        }
+
+        public Builder siteAddress(IfcPostalAddress siteAddress) {
+            this.siteAddress = siteAddress;
+            return this;
+        }
+
+        public Builder longName(IfcLabel longName) {
+            this.longName = longName;
+            return this;
+        }
+
+        public Builder compositionType(
+                IfcElementCompositionEnum compositionType) {
+            this.compositionType = compositionType;
+            return this;
+        }
+
+        public Builder objectPlacement(IfcObjectPlacement objectPlacement) {
+            this.objectPlacement = objectPlacement;
+            return this;
+        }
+
+        public Builder representation(IfcProductRepresentation representation) {
+            this.representation = representation;
+            return this;
+        }
+
+        public Builder objectType(IfcLabel objectType) {
+            this.objectType = objectType;
+            return this;
+        }
+
+        public Builder globalId(IfcGloballyUniqueId globalId) {
+            this.globalId = globalId;
+            return this;
+        }
+
+        public Builder ownerHistory(IfcOwnerHistory ownerHistory) {
+            this.ownerHistory = ownerHistory;
+            return this;
+        }
+
+        public Builder name(IfcLabel name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder description(IfcText description) {
+            this.description = description;
+            return this;
+        }
+
+        public IfcSite build() {
+            return new IfcSite(globalId, ownerHistory, name, description,
+                    objectType, objectPlacement, representation, longName,
+                    compositionType, refLatitude, refLongitude, refElevation,
+                    landTitleNumber, siteAddress);
+        }
     }
 }

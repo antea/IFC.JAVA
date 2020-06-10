@@ -34,7 +34,7 @@ import java.util.Objects;
  */
 public class IfcCartesianPoint extends IfcPoint {
     @Attribute
-    @Order(value = 0)
+    @Order(0)
     private final List<IfcLengthMeasure> coordinates;
     private final IfcDimensionCount dim; // derived attribute
 
@@ -93,7 +93,7 @@ public class IfcCartesianPoint extends IfcPoint {
      * @return The space dimensionality of this class, determined by the number
      * of coordinates in the List of Coordinates.
      */
-    protected IfcDimensionCount getDim() {
+    public IfcDimensionCount getDim() {
         return dim;
     }
 
@@ -105,15 +105,12 @@ public class IfcCartesianPoint extends IfcPoint {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        if (!super.equals(o)) {
-            return false;
-        }
         IfcCartesianPoint that = (IfcCartesianPoint) o;
         return coordinates.equals(that.coordinates);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), coordinates);
+        return Objects.hash(coordinates);
     }
 }

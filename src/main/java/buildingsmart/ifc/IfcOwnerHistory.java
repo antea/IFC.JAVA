@@ -33,28 +33,28 @@ import java.util.Objects;
  */
 public class IfcOwnerHistory extends IfcEntity {
     @Attribute
-    @Order(value = 0)
+    @Order(0)
     private final IfcPersonAndOrganization owningUser;
     @Attribute
-    @Order(value = 1)
+    @Order(1)
     private final IfcApplication owningApplication;
     @Attribute
-    @Order(value = 2)
+    @Order(2)
     private final IfcStateEnum state;
     @Attribute
-    @Order(value = 3)
+    @Order(3)
     private final IfcChangeActionEnum changeAction;
     @Attribute
-    @Order(value = 4)
+    @Order(4)
     private final IfcTimeStamp lastModifiedDate;
     @Attribute
-    @Order(value = 5)
+    @Order(5)
     private final IfcPersonAndOrganization lastModifyingUser;
     @Attribute
-    @Order(value = 6)
+    @Order(6)
     private final IfcApplication lastModifyingApplication;
     @Attribute
-    @Order(value = 7)
+    @Order(7)
     private final IfcTimeStamp creationDate;
 
     /**
