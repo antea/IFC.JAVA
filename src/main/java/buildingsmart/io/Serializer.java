@@ -18,6 +18,7 @@
 
 package buildingsmart.io;
 
+import buildingsmart.ifc.IfcProduct;
 import buildingsmart.ifc.IfcProject;
 import com.sun.istack.internal.NotNull;
 
@@ -63,6 +64,12 @@ public class Serializer {
      *                                  Attribute} but not with {@link Order}.
      * @throws NullPointerException     If {@code entity} or {@code type} is
      *                                  null.
+     * @throws SecurityException        If a security manager is present and
+     *                                  access to private Fields of {@code
+     *                                  entity} by calling { @link
+     *                                  Field#setAccessible(boolean)}
+     *                                  is not permitted based on the security
+     *                                  policy currently in effect.
      * @throws SecurityException        If a security manager, <i>s</i>, is
      *                                  present and any of the following
      *                                  conditions is met:
@@ -92,12 +99,6 @@ public class Serializer {
      *                                      {@code entity.getClass()}
      *                                    </li>
      *                                  </ul>
-     * @throws SecurityException        If a security manager is present and
-     *                                  access to private Fields of {@code
-     *                                  entity} by calling { @link
-     *                                  Field#setAccessible(boolean)}
-     *                                  is not permitted based on the security
-     *                                  policy currently in effect.
      */
     private static <T extends Annotation> Object[] getAttributes(
             @NotNull IfcEntity entity, Class<T> type) {
@@ -233,6 +234,57 @@ public class Serializer {
     }
 
     /**
+     * Serializes the given Collection. If coll contains only objects of type
+     * IfcProduct (for example, if the given coll is
+     * IfcRelContainedInSpatialStructure.relatedElements),
+     * each of them will be serialized in its own thread.
+     *
+     * @param coll The Collection to serialize.
+     * @param <T>  The type of the elements contained in the Collection.
+     * @return The serialization of the given Collection in an IFC file.
+     * @throws IOException          If an I/O error occurs.
+     * @throws ExecutionException   If an exception was thrown in one of the
+     *                              threads serializing IfcEntities contained in
+     *                              the project.
+     * @throws InterruptedException If one of the threads serializing
+     *                              IfcEntities was interrupted while waiting.
+     */
+    private <T> String serializeCollection(Collection<T> coll)
+            throws ExecutionException, InterruptedException, IOException {
+        boolean collectionOfIfcProducts = true;
+        for (T element : coll) {
+            if (!(element instanceof IfcProduct)) {
+                collectionOfIfcProducts = false;
+                break;
+            }
+        }
+        List<String> serializations = new ArrayList<>(coll.size());
+        if (collectionOfIfcProducts) {
+            List<Future<String>> productSerializers =
+                    new ArrayList<>(coll.size());
+            for (T ifcProduct : coll) {
+                Callable<String> worker = () -> serialize(ifcProduct);
+                productSerializers.add(exec.submit(worker));
+            }
+            for (Future<String> result : productSerializers) {
+                serializations.add(result.get());
+            }
+        } else {
+            for (T element : coll) {
+                serializations.add(serialize(element));
+            }
+        }
+        StringBuilder serializedColl = new StringBuilder("(");
+        for (String serialization : serializations) {
+            serializedColl.append(serialization).append(",");
+        }
+        serializedColl.deleteCharAt(serializedColl.length() - 1);
+        // removing the last comma
+        serializedColl.append(")");
+        return serializedColl.toString();
+    }
+
+    /**
      * Creates an IFC STEP file in the given filePath. If some of the
      * directories in the filePath do not exist, this method creates them. Note
      * that if this operation fails it may have succeeded in creating the file
@@ -260,6 +312,23 @@ public class Serializer {
      *                                  exist but cannot be created, or cannot
      *                                  be opened for any other reason; if an
      *                                  I/O error occurs.
+     * @throws ExecutionException       If an exception was thrown in one of the
+     *                                  threads serializing IfcEntities
+     *                                  contained in the project.
+     * @throws InterruptedException     If one of the threads serializing
+     *                                  IfcEntities was interrupted while
+     *                                  waiting.
+     * @throws SecurityException        Let {@code obj} be any node of the tree
+     *                                  having the IfcProject as its root, where
+     *                                  parent nodes are IfcEntity types and
+     *                                  children are the {@link Attribute}s and
+     *                                  {@link InverseAttribute}s of the parent
+     *                                  node. This exception is thrown if a
+     *                                  security manager is present and access
+     *                                  to private Fields of {@code obj} by
+     *                                  calling { @link Field#setAccessible
+     *                                  (boolean)} is not permitted based on the
+     *                                  security policy currently in effect.
      * @throws SecurityException        If a security manager exists and its
      *                                  <code>{@link java.lang.SecurityManager#checkRead(java.lang.String)}</code>
      *                                  method does not permit verification of
@@ -306,23 +375,6 @@ public class Serializer {
      *                                      {@code obj.getClass()}
      *                                    </li>
      *                                  </ul>
-     * @throws SecurityException        Let {@code obj} be any node of the tree
-     *                                  having the IfcProject as its root, where
-     *                                  parent nodes are IfcEntity types and
-     *                                  children are the {@link Attribute}s and
-     *                                  {@link InverseAttribute}s of the parent
-     *                                  node. This exception is thrown if a
-     *                                  security manager is present and access
-     *                                  to private Fields of {@code obj} by
-     *                                  calling { @link Field#setAccessible
-     *                                  (boolean)} is not permitted based on the
-     *                                  security policy currently in effect.
-     * @throws ExecutionException       If an exception was thrown in one of the
-     *                                  threads serializing IfcEntities
-     *                                  contained in the project.
-     * @throws InterruptedException     If one of the threads serializing
-     *                                  IfcEntities was interrupted while
-     *                                  waiting.
      */
     public void serialize(@NotNull Header header, IfcProject project,
                           @NotNull String filePath)
@@ -385,8 +437,7 @@ public class Serializer {
      *     <li>if it is a List or a Set, each contained object will be
      *     serialized, its serialization put between parenthesis, and a
      *     String containing the parentheses and everything between them
-     *     will
-     *     be returned;</li>
+     *     will be returned;</li>
      *     <li>if it is an instance of IfcEntity:</li>
      *          <li>if the entity was already serialized, a String
      *          containing
@@ -406,6 +457,18 @@ public class Serializer {
      *                                  with {@link Attribute} but not with
      *                                  {@link Order}.
      * @throws IOException              If an I/O error occurs.
+     * @throws ExecutionException       If an exception was thrown in one of the
+     *                                  threads serializing IfcEntities
+     *                                  contained in the project.
+     * @throws InterruptedException     If one of the threads serializing
+     *                                  IfcEntities was interrupted while
+     *                                  waiting.
+     * @throws SecurityException        If obj is an instance of IfcEntity, a
+     *                                  security manager is present and access
+     *                                  to private Fields of {@code obj} by
+     *                                  calling { @link Field#setAccessible
+     *                                  (boolean)} is not permitted based on the
+     *                                  security policy currently in effect.
      * @throws SecurityException        If obj is an instance of a class that
      *                                  extends IfcEntity, a security manager,
      *                                  <i>s</i>, is present and any of the
@@ -436,14 +499,9 @@ public class Serializer {
      *                                      {@code obj.getClass()}
      *                                    </li>
      *                                  </ul>
-     * @throws SecurityException        If obj is an instance of IfcEntity, a
-     *                                  security manager is present and access
-     *                                  to private Fields of {@code obj} by
-     *                                  calling { @link Field#setAccessible
-     *                                  (boolean)} is not permitted based on the
-     *                                  security policy currently in effect.
      */
-    private String serialize(Object obj) throws IOException {
+    private String serialize(Object obj)
+            throws IOException, ExecutionException, InterruptedException {
         if (obj == null) {
             return "$";
         }
@@ -451,15 +509,7 @@ public class Serializer {
             return ((IfcDefinedType) obj).serialize();
         }
         if (obj instanceof Collection) {
-            Collection coll = (Collection) obj;
-            StringBuilder serializedColl = new StringBuilder("(");
-            for (Object element : coll) {
-                serializedColl.append(serialize(element)).append(",");
-            }
-            serializedColl.deleteCharAt(serializedColl.length() - 1);
-            // removing the last comma
-            serializedColl.append(")");
-            return serializedColl.toString();
+            return serializeCollection((Collection) obj);
         }
         IfcEntity entity = (IfcEntity) obj;
         // if obj is neither an IfcDefinedType nor a Collection (List or
@@ -487,7 +537,7 @@ public class Serializer {
                 Runnable worker = () -> {
                     try {
                         serialize(attr);
-                    } catch (IOException e) {
+                    } catch (IOException | ExecutionException | InterruptedException e) {
                         e.printStackTrace();
                     }
                 };
@@ -502,7 +552,7 @@ public class Serializer {
 
         return "#" + serializedEntitiesToIds.get(entity);
         // because we call exec.submit(a new Runnable) before completing the
-        // current Runnable, we know for sure that if each future in
+        // current Runnable, we know for sure that if each Future in
         // tasksToComplete has completed, then no other Runnables are running
         // or waiting to be run
     }
