@@ -18,8 +18,7 @@
 
 package buildingsmart.io;
 
-import buildingsmart.ifc.IfcProduct;
-import buildingsmart.ifc.IfcProject;
+import buildingsmart.ifc.*;
 import com.sun.istack.internal.NotNull;
 
 import java.io.*;
@@ -27,49 +26,84 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
-import java.util.concurrent.*;
+import java.util.concurrent.ExecutionException;
 
 public class Serializer {
 
-    private final Set<Future<?>> tasksToComplete;
-    private final Map<IfcEntity, Long> serializedEntitiesToIds;
-    private ExecutorService exec;
-    private Writer fileWriter;
-    private long idCounter;
+    /**
+     * Minimum number of IfcProducts in an IfcProject
+     */
+    private final static int MIN_IFCPRODUCTS_FOR_MULTITHREADING = 8;
+    //FIXME: placeholder value, test at which point it's more efficient to
+    // use multithreading
+    protected Map<IfcEntity, Long> serializedEntitiesToIds;
+    protected Writer fileWriter;
+    protected long idCounter;
+    private MultiThreadedSerializer multiThreadedSerializer;
 
     public Serializer() {
-        tasksToComplete = ConcurrentHashMap.newKeySet();
-        serializedEntitiesToIds = new ConcurrentHashMap<>();
         idCounter = 0;
     }
 
     /**
-     * @param entity The entity for which to return the array of attributes.
-     * @param type   The Annotation indicating what type of attributes to
-     *               return, either regular attributes ({@link Attribute}) or
-     *               inverse attributes ({@link InverseAttribute}).
-     * @return If {@code type} is {@code Attribute.class}, returns the
+     * Creates a File in the given filePath. If some of the directories in the
+     * filePath do not exist, this method creates them.
+     *
+     * @param filePath The path to the file to create, or to an already existing
+     *                 file.
+     * @throws IllegalArgumentException If {@code filePath} is null or empty.
+     * @throws SecurityException        If a security manager exists and its
+     *                                  <code>{@link java.lang.SecurityManager#checkRead(java.lang.String)}</code>
+     *                                  method does not permit verification of
+     *                                  the existence of the named directory and
+     *                                  all necessary parent directories; or if
+     *                                  the
+     *                                  <code>{@link java.lang.SecurityManager#checkWrite(java.lang.String)}</code>
+     *                                  method does not permit the named
+     *                                  directory and all necessary parent
+     *                                  directories to be created
+     */
+    protected static File createFile(@NotNull String filePath) {
+        String directoryPath = null;
+        if (filePath != null && filePath.length() > 0) {
+            int endIndex = filePath.lastIndexOf(File.separatorChar);
+            if (endIndex != -1) {
+                directoryPath = filePath.substring(0, endIndex);
+            }
+        } else {
+            throw new IllegalArgumentException("filePath is null or empty");
+        }
+        if (directoryPath != null) {
+            //noinspection ResultOfMethodCallIgnored
+            new File(directoryPath).mkdirs();
+        }
+
+        return new File(filePath);
+    }
+
+    /**
+     * @param entity        The entity for which to return the array of
+     *                      attributes.
+     * @param attributeType The Annotation indicating what type of attributes to
+     *                      return, either regular attributes ({@link
+     *                      Attribute}) or inverse attributes ({@link
+     *                      InverseAttribute}).
+     * @return If {@code attributeType} is {@code Attribute.class}, returns the
      * attributes that should be serialized in the representation of {@code
-     * entity} in an IFC file; if {@code type} is {@code
+     * entity} in an IFC file; if {@code attributeType} is {@code
      * InverseAttribute.class}, returns the attributes of {@code entity}
      * representing an inverse relationship.</p> In the first case the returned
      * array is ordered according to the order defined by {@code entity}'s
      * fields' {@link Order} annotation. If there are no attributes, the
      * returned array will have length == 0.
-     * @throws IllegalArgumentException If {@code type} is not {@code
+     * @throws IllegalArgumentException If {@code attributeType} is not {@code
      *                                  Attribute.class} nor {@code
      *                                  InverseAttribute.class}.
      * @throws IllegalArgumentException If the given {@code entity} contains
      *                                  Fields that are annotated with {@link
      *                                  Attribute} but not with {@link Order}.
-     * @throws NullPointerException     If {@code entity} or {@code type} is
-     *                                  null.
-     * @throws SecurityException        If a security manager is present and
-     *                                  access to private Fields of {@code
-     *                                  entity} by calling { @link
-     *                                  Field#setAccessible(boolean)}
-     *                                  is not permitted based on the security
-     *                                  policy currently in effect.
+     * @throws NullPointerException     If {@code entity} or {@code
+     *                                  attributeType} is null.
      * @throws SecurityException        If a security manager, <i>s</i>, is
      *                                  present and any of the following
      *                                  conditions is met:
@@ -89,7 +123,8 @@ public class Serializer {
      *                                    </li>
      *                                    <li>
      *                                      the class loader of
-     *                                      {@link Serializer} is not the
+     *                                      {@link MultiThreadedSerializer}
+     *                                      is not the
      *                                      same as or an ancestor of the
      *                                      class loader for {@code entity
      *                                      .getClass()} and invocation of
@@ -99,18 +134,24 @@ public class Serializer {
      *                                      {@code entity.getClass()}
      *                                    </li>
      *                                  </ul>
+     * @throws SecurityException        If a security manager is present and
+     *                                  access to private Fields of {@code
+     *                                  entity} by calling { @link
+     *                                  Field#setAccessible(boolean)}
+     *                                  is not permitted based on the security
+     *                                  policy currently in effect.
      */
-    private static <T extends Annotation> Object[] getAttributes(
-            @NotNull IfcEntity entity, Class<T> type) {
-        if (!(type.equals(Attribute.class) ||
-                type.equals(InverseAttribute.class))) {
+    protected static <T extends Annotation> Object[] getAttributes(
+            @NotNull IfcEntity entity, Class<T> attributeType) {
+        if (!(attributeType.equals(Attribute.class) ||
+                attributeType.equals(InverseAttribute.class))) {
             throw new IllegalArgumentException(
-                    "type must be either Attribute.class or InverseAttribute" +
-                            ".class");
+                    "attributeType must be either Attribute.class or " +
+                            "InverseAttribute" + ".class");
         }
         List<Field> fields = getAllFields(entity.getClass());
-        fields.removeIf(field -> field.getAnnotation(type) == null);
-        if (type.equals(Attribute.class)) {
+        fields.removeIf(field -> field.getAnnotation(attributeType) == null);
+        if (attributeType.equals(Attribute.class)) {
             sortFields(fields);
         }
         Object[] attributes = new Object[fields.size()];
@@ -198,90 +239,49 @@ public class Serializer {
     }
 
     /**
-     * Creates a File in the given filePath. If some of the directories in the
-     * filePath do not exist, this method creates them.
-     *
-     * @param filePath The path to the file to create, or to an already existing
-     *                 file.
-     * @throws IllegalArgumentException If {@code filePath} is null or empty.
-     * @throws SecurityException        If a security manager exists and its
-     *                                  <code>{@link java.lang.SecurityManager#checkRead(java.lang.String)}</code>
-     *                                  method does not permit verification of
-     *                                  the existence of the named directory and
-     *                                  all necessary parent directories; or if
-     *                                  the
-     *                                  <code>{@link java.lang.SecurityManager#checkWrite(java.lang.String)}</code>
-     *                                  method does not permit the named
-     *                                  directory and all necessary parent
-     *                                  directories to be created
+     * @param project The {@link IfcProject} for which to count the number of
+     *                {@link IfcProduct} objects contained.
+     * @return The number of objects of type {@link IfcProduct} contained in the
+     * {@link IfcSite} and/or {@link IfcBuilding} objects that decompose the
+     * project.
+     * @throws NullPointerException If {@code project} is null.
      */
-    private static File createFile(@NotNull String filePath) {
-        String directoryPath = null;
-        if (filePath != null && filePath.length() > 0) {
-            int endIndex = filePath.lastIndexOf(File.separatorChar);
-            if (endIndex != -1) {
-                directoryPath = filePath.substring(0, endIndex);
+    private static int countProducts(@NotNull IfcProject project) {
+        int counter = 0;
+        for (IfcRelDecomposes rel : project.getIsDecomposedBy()) {
+            for (IfcObjectDefinition relatedObject : rel.getRelatedObjects()) {
+                counter += countProducts(
+                        (IfcSpatialStructureElement) relatedObject);
             }
-        } else {
-            throw new IllegalArgumentException("filePath is null or empty");
         }
-        if (directoryPath != null) {
-            //noinspection ResultOfMethodCallIgnored
-            new File(directoryPath).mkdirs();
-        }
-
-        return new File(filePath);
+        return counter;
     }
 
     /**
-     * Serializes the given Collection. If coll contains only objects of type
-     * IfcProduct (for example, if the given coll is
-     * IfcRelContainedInSpatialStructure.relatedElements),
-     * each of them will be serialized in its own thread.
-     *
-     * @param coll The Collection to serialize.
-     * @param <T>  The type of the elements contained in the Collection.
-     * @return The serialization of the given Collection in an IFC file.
-     * @throws IOException          If an I/O error occurs.
-     * @throws ExecutionException   If an exception was thrown in one of the
-     *                              threads serializing IfcEntities contained in
-     *                              the project.
-     * @throws InterruptedException If one of the threads serializing
-     *                              IfcEntities was interrupted while waiting.
+     * @param spStrElement The {@link IfcSpatialStructureElement} for which to
+     *                     count the number of {@link IfcProduct} objects
+     *                     contained.
+     * @return The number of objects of type {@link IfcProduct} contained in
+     * this object's {@code containsElements} and in all the {@link
+     * IfcSpatialStructureElement} objects that decompose {@code spStrElement}.
+     * @throws NullPointerException If {@code spStrElement} is null.
      */
-    private <T> String serializeCollection(Collection<T> coll)
-            throws ExecutionException, InterruptedException, IOException {
-        boolean collectionOfIfcProducts = true;
-        for (T element : coll) {
-            if (!(element instanceof IfcProduct)) {
-                collectionOfIfcProducts = false;
-                break;
+    private static int countProducts(
+            @NotNull IfcSpatialStructureElement spStrElement) {
+        int counter = 0;
+        for (IfcRelContainedInSpatialStructure rel : spStrElement
+                .getContainsElements()) {
+            counter += rel.getRelatedElements().size();
+        }
+        for (IfcRelDecomposes rel : spStrElement.getIsDecomposedBy()) {
+            for (IfcObjectDefinition relatedObject : rel.getRelatedObjects()) {
+                if (relatedObject instanceof IfcSpatialStructureElement) {
+                    counter += countProducts(
+                            (IfcSpatialStructureElement) relatedObject);
+                }
             }
         }
-        List<String> serializations = new ArrayList<>(coll.size());
-        if (collectionOfIfcProducts) {
-            List<Future<String>> productSerializers =
-                    new ArrayList<>(coll.size());
-            for (T ifcProduct : coll) {
-                Callable<String> worker = () -> serialize(ifcProduct);
-                productSerializers.add(exec.submit(worker));
-            }
-            for (Future<String> result : productSerializers) {
-                serializations.add(result.get());
-            }
-        } else {
-            for (T element : coll) {
-                serializations.add(serialize(element));
-            }
-        }
-        StringBuilder serializedColl = new StringBuilder("(");
-        for (String serialization : serializations) {
-            serializedColl.append(serialization).append(",");
-        }
-        serializedColl.deleteCharAt(serializedColl.length() - 1);
-        // removing the last comma
-        serializedColl.append(")");
-        return serializedColl.toString();
+        return counter;
     }
 
     /**
@@ -305,30 +305,14 @@ public class Serializer {
      *                                  of the parent node, contains nodes whose
      *                                  Fields are annotated with {@link
      *                                  Attribute} but not with {@link Order}.
-     * @throws IllegalArgumentException If {@code header} is null; if {@code
-     *                                  filePath} is null or empty.
+     * @throws IllegalArgumentException If {@code header} is null, if {@code
+     *                                  project} is null, if {@code filePath} is
+     *                                  null or empty.
      * @throws IOException              If the file exists but is a directory
      *                                  rather than a regular file, does not
      *                                  exist but cannot be created, or cannot
      *                                  be opened for any other reason; if an
      *                                  I/O error occurs.
-     * @throws ExecutionException       If an exception was thrown in one of the
-     *                                  threads serializing IfcEntities
-     *                                  contained in the project.
-     * @throws InterruptedException     If one of the threads serializing
-     *                                  IfcEntities was interrupted while
-     *                                  waiting.
-     * @throws SecurityException        Let {@code obj} be any node of the tree
-     *                                  having the IfcProject as its root, where
-     *                                  parent nodes are IfcEntity types and
-     *                                  children are the {@link Attribute}s and
-     *                                  {@link InverseAttribute}s of the parent
-     *                                  node. This exception is thrown if a
-     *                                  security manager is present and access
-     *                                  to private Fields of {@code obj} by
-     *                                  calling { @link Field#setAccessible
-     *                                  (boolean)} is not permitted based on the
-     *                                  security policy currently in effect.
      * @throws SecurityException        If a security manager exists and its
      *                                  <code>{@link java.lang.SecurityManager#checkRead(java.lang.String)}</code>
      *                                  method does not permit verification of
@@ -365,7 +349,8 @@ public class Serializer {
      *                                    </li>
      *                                    <li>
      *                                      the class loader of
-     *                                      {@link Serializer} is not the
+     *                                      {@link MultiThreadedSerializer}
+     *                                      is not the
      *                                      same as or an ancestor of the
      *                                      class loader for {@code obj
      *                                      .getClass()} and invocation of
@@ -375,54 +360,57 @@ public class Serializer {
      *                                      {@code obj.getClass()}
      *                                    </li>
      *                                  </ul>
+     * @throws SecurityException        Let {@code obj} be any node of the tree
+     *                                  having the IfcProject as its root, where
+     *                                  parent nodes are IfcEntity types and
+     *                                  children are the {@link Attribute}s and
+     *                                  {@link InverseAttribute}s of the parent
+     *                                  node. This exception is thrown if a
+     *                                  security manager is present and access
+     *                                  to private Fields of {@code obj} by
+     *                                  calling { @link Field#setAccessible
+     *                                  (boolean)} is not permitted based on the
+     *                                  security policy currently in effect.
+     * @throws ExecutionException       If multithreading was used to serialize
+     *                                  the given project, and an exception was
+     *                                  thrown in one of the threads serializing
+     *                                  IfcEntities contained in the project.
+     * @throws InterruptedException     If multithreading was used to serialize
+     *                                  the given project, and one of the
+     *                                  threads serializing IfcEntities was
+     *                                  interrupted while waiting.
      */
-    public void serialize(@NotNull Header header, IfcProject project,
+    public void serialize(@NotNull Header header, @NotNull IfcProject project,
                           @NotNull String filePath)
             throws IOException, ExecutionException, InterruptedException {
         if (header == null) {
             throw new IllegalArgumentException("header cannot be null");
         }
-        exec = Executors
-                .newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+        if (project == null) {
+            throw new IllegalArgumentException("project cannot be null");
+        }
         File output = createFile(filePath);
+        if (countProducts(project) >= MIN_IFCPRODUCTS_FOR_MULTITHREADING) {
+            multiThreadedSerializer = multiThreadedSerializer == null ?
+                    new MultiThreadedSerializer() : multiThreadedSerializer;
+            multiThreadedSerializer.serialize(header, project, filePath);
+            return;
+        }
+        if (serializedEntitiesToIds == null) {
+            serializedEntitiesToIds = new HashMap<>();
+        }
         header.setFileName(output.getName());
+
         fileWriter = new BufferedWriter(
                 new OutputStreamWriter(new FileOutputStream(output),
                         StandardCharsets.UTF_8));
-        fileWriter.write("ISO-10303-21;\n" + header.serialize() + "DATA;\n");
 
+        fileWriter.write("ISO-10303-21;\n" + header.serialize() + "DATA;\n");
         serialize(project);
-        boolean done = false;
-        while (!done) {
-            int initialSize = tasksToComplete.size();
-            for (Future<?> taskResult : tasksToComplete) {
-                taskResult.get();
-                //will block the current thread until all tasks are completed
-            }
-            int finalSize = tasksToComplete.size();
-            if (initialSize == finalSize) {
-                done = true;
-                // if the size of tasksToComplete before iterating on the
-                // Set is the same as after having iterated on the Set,
-                // that means no elements were added to the Set while
-                // we were iterating on the older Iterator; because we're out
-                // of the above for cycle, then all tasksToComplete must have
-                // completed.
-            }
-        }
         fileWriter.write("ENDSEC;\n" + "END-ISO-10303-21;\n");
         fileWriter.close();
         serializedEntitiesToIds.clear();
         idCounter = 0;
-        tasksToComplete.clear();
-        exec.shutdown();
-        try {
-            if (!exec.awaitTermination(1000, TimeUnit.MILLISECONDS)) {
-                exec.shutdownNow();
-            }
-        } catch (InterruptedException e) {
-            exec.shutdownNow();
-        }
     }
 
     /**
@@ -437,7 +425,8 @@ public class Serializer {
      *     <li>if it is a List or a Set, each contained object will be
      *     serialized, its serialization put between parenthesis, and a
      *     String containing the parentheses and everything between them
-     *     will be returned;</li>
+     *     will
+     *     be returned;</li>
      *     <li>if it is an instance of IfcEntity:</li>
      *          <li>if the entity was already serialized, a String
      *          containing
@@ -457,18 +446,6 @@ public class Serializer {
      *                                  with {@link Attribute} but not with
      *                                  {@link Order}.
      * @throws IOException              If an I/O error occurs.
-     * @throws ExecutionException       If an exception was thrown in one of the
-     *                                  threads serializing IfcEntities
-     *                                  contained in the project.
-     * @throws InterruptedException     If one of the threads serializing
-     *                                  IfcEntities was interrupted while
-     *                                  waiting.
-     * @throws SecurityException        If obj is an instance of IfcEntity, a
-     *                                  security manager is present and access
-     *                                  to private Fields of {@code obj} by
-     *                                  calling { @link Field#setAccessible
-     *                                  (boolean)} is not permitted based on the
-     *                                  security policy currently in effect.
      * @throws SecurityException        If obj is an instance of a class that
      *                                  extends IfcEntity, a security manager,
      *                                  <i>s</i>, is present and any of the
@@ -489,7 +466,8 @@ public class Serializer {
      *                                    </li>
      *                                    <li>
      *                                      the class loader of
-     *                                      {@link Serializer} is not the
+     *                                      {@link MultiThreadedSerializer}
+     *                                      is not the
      *                                      same as or an ancestor of the
      *                                      class loader for {@code obj
      *                                      .getClass()} and invocation of
@@ -499,9 +477,14 @@ public class Serializer {
      *                                      {@code obj.getClass()}
      *                                    </li>
      *                                  </ul>
+     * @throws SecurityException        If obj is an instance of IfcEntity, a
+     *                                  security manager is present and access
+     *                                  to private Fields of {@code obj} by
+     *                                  calling { @link Field#setAccessible
+     *                                  (boolean)} is not permitted based on the
+     *                                  security policy currently in effect.
      */
-    private String serialize(Object obj)
-            throws IOException, ExecutionException, InterruptedException {
+    private String serialize(Object obj) throws IOException {
         if (obj == null) {
             return "$";
         }
@@ -509,7 +492,15 @@ public class Serializer {
             return ((IfcDefinedType) obj).serialize();
         }
         if (obj instanceof Collection) {
-            return serializeCollection((Collection) obj);
+            Collection coll = (Collection) obj;
+            StringBuilder serializedColl = new StringBuilder("(");
+            for (Object element : coll) {
+                serializedColl.append(serialize(element)).append(",");
+            }
+            serializedColl.deleteCharAt(serializedColl.length() - 1);
+            // removing the last comma
+            serializedColl.append(")");
+            return serializedColl.toString();
         }
         IfcEntity entity = (IfcEntity) obj;
         // if obj is neither an IfcDefinedType nor a Collection (List or
@@ -528,58 +519,29 @@ public class Serializer {
         serializedEntity.deleteCharAt(serializedEntity.length() - 1);
         // removing the last comma
         serializedEntity.append(");\n");
-        boolean wrote = writeToFile(entity, serializedEntity.toString());
 
-        if (wrote) {
-            Object[] invAttributes =
-                    getAttributes(entity, InverseAttribute.class);
-            for (Object attr : invAttributes) {
-                Runnable worker = () -> {
-                    try {
-                        serialize(attr);
-                    } catch (IOException | ExecutionException | InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                };
-                tasksToComplete.add(exec.submit(worker));
-                // the return value of serialize() is ignored, because the only
-                // thing that matters is that the entities in invAttributes are
-                // serialized in the output file. For example, if entity is
-                // IfcProject we want the entities referenced in
-                // isDecomposedBy to be serialized in the file.
-            }
+        entityId = serializedEntitiesToIds.get(entity);
+        if (entityId != null) {
+            return "#" + entityId;
+            // the current obj has already been serialized while we were
+            // serializing our attributes, because one of our attributes
+            // contained a reference to obj in its inverse relationships
+        }
+        String serializedEntityString =
+                "#" + ++idCounter + "=" + serializedEntity.toString();
+        fileWriter.write(serializedEntityString);
+        serializedEntitiesToIds.put(entity, idCounter);
+
+        Object[] invAttributes = getAttributes(entity, InverseAttribute.class);
+        for (Object attr : invAttributes) {
+            serialize(attr);
+            // the return value of serialize() is ignored, because the only
+            // thing that matters is that the entities in invAttributes are
+            // serialized in dataSection. For example, if entity is IfcProject
+            // we want the entities referenced in isDecomposedBy to be
+            // serialized in dataSection.
         }
 
         return "#" + serializedEntitiesToIds.get(entity);
-        // because we call exec.submit(a new Runnable) before completing the
-        // current Runnable, we know for sure that if each Future in
-        // tasksToComplete has completed, then no other Runnables are running
-        // or waiting to be run
-    }
-
-    /**
-     * @param entity           The entity to serialize in the output file.
-     * @param serializedEntity The serialization of the given {@code entity} in
-     *                         the form "IFCENTITY(#1,#2,'text',#4);\n", that is
-     *                         without the id of the entity in the beginning of
-     *                         the String.
-     * @return {@code true} If the serialization of the given entity was
-     * successfully written to file, {@code false} if the serialization was not
-     * written, because another Thread managed to serialize the same entity
-     * before the current Thread.
-     * @throws IOException If an I/O error occurs.
-     */
-    private synchronized boolean writeToFile(IfcEntity entity,
-                                             String serializedEntity)
-            throws IOException {
-        Long entityId = serializedEntitiesToIds.get(entity);
-        if (entityId != null) {
-            return false;
-        }
-        String serializedEntityWithId =
-                "#" + ++idCounter + "=" + serializedEntity;
-        fileWriter.write(serializedEntityWithId);
-        serializedEntitiesToIds.put(entity, idCounter);
-        return true;
     }
 }

@@ -288,7 +288,7 @@ public class IfcRelContainedInSpatialStructure extends IfcRelConnects {
         return new HashSet<>(relatedElements);
     }
 
-    public IfcSpatialStructureElement getRelatingStructure() {
+    protected IfcSpatialStructureElement getRelatingStructure() {
         return relatingStructure;
     }
 

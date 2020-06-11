@@ -291,8 +291,9 @@ public abstract class IfcSpatialStructureElement extends IfcProduct {
      * illegal IfcRelContainedInSpatialStructure to the Set.
      * @see #addToContainsElements(IfcRelContainedInSpatialStructure)
      */
-    protected Set<IfcRelContainedInSpatialStructure> getContainsElements() {
-        return new HashSet<>(containsElements);
+    public Set<IfcRelContainedInSpatialStructure> getContainsElements() {
+        return containsElements == null ? new HashSet<>(0) :
+                new HashSet<>(containsElements);
     }
 
     /**

@@ -1,12 +1,11 @@
 # IFC.JAVA
-Java class library for IFC2x3_TC1 serialization into STEP files.  
+Library for IFC2x3_TC1 serialization into STEP files.  
 The library is not complete, classes were generated automatically and are mostly
 broken, I fixed only the ones I needed to use. A quick way to spot a broken
 class is looking at its fields, if none are annotated then it's probably broken.
 
 To serialize an `IfcProject`, you should pass it to
-`Serialize.serialize(IfcProject project)`, this will generate the DATA section
-of the IFC STEP file.
+`Serializer.serialize(Header, IfcProject, String)`.
  
 Some notes on the implementation:
 + classes having constructors with lots of parameters that can be null contain

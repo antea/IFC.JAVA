@@ -20,21 +20,40 @@ package buildingsmart.io;
 
 import buildingsmart.ifc.*;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameter;
+import org.junit.runners.Parameterized.Parameters;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+@RunWith(Parameterized.class)
 public class SerializerTest {
     private static final String FILE_PATH = "./ifc-out/freecad-cylinder.ifc";
     private static IfcProject validIfcProject;
+    @Parameter
+    public Class<?> serializerClass;
+    private Serializer testedSerializer;
+
+    @Parameters(name = "{index}: Impl Class: {0}")
+    public static Collection<Class<?>[]> serializersToTest() {
+        List<Class<?>[]> serializers = new ArrayList<>(2);
+        serializers.add(new Class<?>[]{Serializer.class});
+        serializers.add(new Class<?>[]{MultiThreadedSerializer.class});
+        return serializers;
+    }
 
     /**
      * @param filePath The path to the IFC file of which to retrieve the DATA
@@ -67,7 +86,7 @@ public class SerializerTest {
      * IFC STEP file.
      */
     @BeforeClass
-    public static void setUp() {
+    public static void setUpClass() {
         IfcPerson person =
                 IfcPerson.Builder.anIfcPerson().givenName(new IfcLabel(""))
                         .build();
@@ -213,10 +232,51 @@ public class SerializerTest {
         validIfcProject = ifcProject;
     }
 
+    @Before
+    public void setUp() throws IllegalAccessException, InstantiationException {
+        testedSerializer = (Serializer) serializerClass.newInstance();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void serialize_nullHeader()
+            throws IOException, ExecutionException, InterruptedException {
+        testedSerializer.serialize(null, validIfcProject, FILE_PATH);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void serialize_nullProject()
+            throws IOException, ExecutionException, InterruptedException {
+        testedSerializer.serialize(new Header(), null, FILE_PATH);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void serialize_nullPath()
+            throws IOException, ExecutionException, InterruptedException {
+        testedSerializer.serialize(new Header(), validIfcProject, null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void serialize_emptyPath()
+            throws IOException, ExecutionException, InterruptedException {
+        testedSerializer.serialize(new Header(), validIfcProject, "");
+    }
+
+    @Test(expected = FileNotFoundException.class)
+    public void serialize_rootPath()
+            throws IOException, ExecutionException, InterruptedException {
+        testedSerializer.serialize(new Header(), validIfcProject, "/");
+    }
+
+    @Test(expected = FileNotFoundException.class)
+    public void serialize_pointPath()
+            throws IOException, ExecutionException, InterruptedException {
+        testedSerializer.serialize(new Header(), validIfcProject, ".");
+    }
+
     @Test
     public void serialize_correctHeader_correctProject_correctPath()
             throws IOException, ExecutionException, InterruptedException {
-        final String expectedDataSection =
+        String expectedDataSection =
                 "DATA;\n" + "#1=IFCPERSON($,$,'',$,$,$,$,$);\n" +
                         "#2=IFCORGANIZATION($,'',$,$,$);\n" +
                         "#3=IFCPERSONANDORGANIZATION(#1,#2,$);\n" +
@@ -278,7 +338,7 @@ public class SerializerTest {
                         "'SiteLink'," + "'',#21,(#22));\n" +
                         "#43=IFCRELAGGREGATES('2KdG89VfqHweGDN5zdz5Bw',#5," +
                         "'ProjectLink','',#20,(#21));\n" + "ENDSEC;\n";
-        final String expectedDataSectionMultithreading =
+        String expectedDataSectionMultiThreading0 =
                 "DATA;\n" + "#1=IFCPERSON($,$,'',$,$,$,$,$);\n" +
                         "#2=IFCORGANIZATION($,'',$,$,$);\n" +
                         "#3=IFCPERSONANDORGANIZATION(#1,#2,$);\n" +
@@ -339,56 +399,328 @@ public class SerializerTest {
                         ".);\n" + "#41=IFCSURFACESTYLE($,.BOTH.,(#40));\n" +
                         "#42=IFCPRESENTATIONSTYLEASSIGNMENT((#41));\n" +
                         "#43=IFCSTYLEDITEM(#34,(#42),$);\n" + "ENDSEC;\n";
-        Serializer serializer = new Serializer();
+        String expetedDataSectionMultiThreading1 =
+                "DATA;\n" + "#1=IFCPERSON($,$,'',$,$,$,$,$);\n" +
+                        "#2=IFCORGANIZATION($,'',$,$,$);\n" +
+                        "#3=IFCPERSONANDORGANIZATION(#1,#2,$);\n" +
+                        "#4=IFCAPPLICATION(#2,'0.18 build 4 (GitTag)'," +
+                        "'FreeCAD'," + "'118df2cf_ed21_438e_a41');\n" +
+                        "#5=IFCOWNERHISTORY(#3,#4,$,.ADDED.,$,#3,#4," +
+                        "1586902585);\n" +
+                        "#6=IFCCARTESIANPOINT((0.0,0.0,0.0));\n" +
+                        "#7=IFCDIRECTION((0.0,0.0,1.0));\n" +
+                        "#8=IFCDIRECTION((1.0,0.0,0.0));\n" +
+                        "#9=IFCAXIS2PLACEMENT3D(#6,#7,#8);\n" +
+                        "#10=IFCDIRECTION((0.0,1.0,0.0));\n" +
+                        "#11=IFCGEOMETRICREPRESENTATIONCONTEXT('Plan'," +
+                        "'Model',3,1" + ".0E-5,#9,#10);\n" +
+                        "#12=IFCSIUNIT(*,.LENGTHUNIT.,$,.METRE.);\n" +
+                        "#13=IFCSIUNIT(*,.AREAUNIT.,$,.SQUARE_METRE.);\n" +
+                        "#14=IFCSIUNIT(*,.VOLUMEUNIT.,$,.CUBIC_METRE.);\n" +
+                        "#15=IFCDIMENSIONALEXPONENTS(0,0,0,0,0,0,0);\n" +
+                        "#16=IFCSIUNIT(*,.PLANEANGLEUNIT.,$,.RADIAN.);\n" +
+                        "#17=IFCMEASUREWITHUNIT(IFCPLANEANGLEMEASURE(0" +
+                        ".017453292519943295),#16);\n" +
+                        "#18=IFCCONVERSIONBASEDUNIT(#15,.PLANEANGLEUNIT.," +
+                        "'DEGREE'," + "#17);\n" +
+                        "#19=IFCUNITASSIGNMENT((#12,#13,#14,#18));\n" +
+                        "#20=IFCPROJECT('51f413ef_7964_4d38_b19',#5," +
+                        "'Unnamed',$,$,$," + "$,(#11),#19);\n" +
+                        "#21=IFCSITE('2KdG88VfqHwfDCN5zdz5Bw',#5,'Default " +
+                        "Site','',$," + "$,$,$,.ELEMENT.,$,$,$,$,$);\n" +
+                        "#22=IFCRELAGGREGATES('2KdG89VfqHweGDN5zdz5Bw',#5," +
+                        "'ProjectLink','',#20,(#21));\n" +
+                        "#23=IFCBUILDING('2KdHMSVfqHwfiJN5zdz5Bw',#5,'Default" +
+                        " " + "Building','',$,$,$,$,.ELEMENT.,$,$,$);\n" +
+                        "#24=IFCRELAGGREGATES('2KdHMTVfqHwePlN5zdz5Bw',#5," +
+                        "'SiteLink'," + "'',#21,(#23));\n" +
+                        "#25=IFCBUILDINGSTOREY('2KdHMUVfqHwg4XN5zdz5Bw',#5," +
+                        "'Default " + "Storey','',$,$,$,$,.ELEMENT.,$);\n" +
+                        "#26=IFCRELAGGREGATES('2KdHMVVfqHwhFMN5zdz5Bw',#5," +
+                        "'DefaultStoreyLink','',#23,(#25));\n" +
+                        "#27=IFCLOCALPLACEMENT($,#9);\n" +
+                        "#28=IFCCARTESIANPOINT((0.0,0.0));\n" +
+                        "#29=IFCDIRECTION((1.0,0.0));\n" +
+                        "#30=IFCAXIS2PLACEMENT2D(#28,#29);\n" +
+                        "#31=IFCCIRCLEPROFILEDEF(.AREA.,$,#30,0.1);\n" +
+                        "#32=IFCCARTESIANPOINT((-1.4210854715202E-17,-2" +
+                        ".73641172593403E-18,0.0));\n" +
+                        "#33=IFCAXIS2PLACEMENT3D(#32,#7,#8);\n" +
+                        "#34=IFCEXTRUDEDAREASOLID(#31,#33,#7,0.1);\n" +
+                        "#35=IFCSHAPEREPRESENTATION(#11,'Body','SweptSolid'," +
+                        "(#34));\n" +
+                        "#36=IFCPRODUCTDEFINITIONSHAPE($,$,(#35));\n" +
+                        "#37=IFCCOLOURRGB($,1.0,1.0,1.0);\n" +
+                        "#38=IFCSURFACESTYLERENDERING(#37,$,$,$,$,$,$,$,.FLAT" +
+                        ".);\n" +
+                        "#39=IFCWALL('2KcxKeVfqHwhb6N5zdz5Bw',#5,'Wall','',$," +
+                        "#27,#36," + "$);\n" +
+                        "#40=IFCSURFACESTYLE($,.BOTH.,(#38));\n" +
+                        "#41=IFCPRESENTATIONSTYLEASSIGNMENT((#40));\n" +
+                        "#42=IFCSTYLEDITEM(#34,(#41),$);\n" +
+                        "#43=IFCRELCONTAINEDINSPATIALSTRUCTURE" +
+                        "('2KdIamVfqHwf$aN5zdz5Bw',#5," +
+                        "'UnassignedObjectsLink',''," + "(#39),#25);\n" +
+                        "ENDSEC;\n";
+        String expectedDataSectionMultiThreading2 =
+                "DATA;\n" + "#1=IFCPERSON($,$,'',$,$,$,$,$);\n" +
+                        "#2=IFCORGANIZATION($,'',$,$,$);\n" +
+                        "#3=IFCPERSONANDORGANIZATION(#1,#2,$);\n" +
+                        "#4=IFCAPPLICATION(#2,'0.18 build 4 (GitTag)'," +
+                        "'FreeCAD','118df2cf_ed21_438e_a41');\n" +
+                        "#5=IFCOWNERHISTORY(#3,#4,$,.ADDED.,$,#3,#4," +
+                        "1586902585);\n" +
+                        "#6=IFCCARTESIANPOINT((0.0,0.0,0.0));\n" +
+                        "#7=IFCDIRECTION((0.0,0.0,1.0));\n" +
+                        "#8=IFCDIRECTION((1.0,0.0,0.0));\n" +
+                        "#9=IFCAXIS2PLACEMENT3D(#6,#7,#8);\n" +
+                        "#10=IFCDIRECTION((0.0,1.0,0.0));\n" +
+                        "#11=IFCGEOMETRICREPRESENTATIONCONTEXT('Plan'," +
+                        "'Model',3,1.0E-5,#9,#10);\n" +
+                        "#12=IFCSIUNIT(*,.LENGTHUNIT.,$,.METRE.);\n" +
+                        "#13=IFCSIUNIT(*,.AREAUNIT.,$,.SQUARE_METRE.);\n" +
+                        "#14=IFCSIUNIT(*,.VOLUMEUNIT.,$,.CUBIC_METRE.);\n" +
+                        "#15=IFCDIMENSIONALEXPONENTS(0,0,0,0,0,0,0);\n" +
+                        "#16=IFCSIUNIT(*,.PLANEANGLEUNIT.,$,.RADIAN.);\n" +
+                        "#17=IFCMEASUREWITHUNIT(IFCPLANEANGLEMEASURE(0" +
+                        ".017453292519943295),#16);\n" +
+                        "#18=IFCCONVERSIONBASEDUNIT(#15,.PLANEANGLEUNIT.," +
+                        "'DEGREE',#17);\n" +
+                        "#19=IFCUNITASSIGNMENT((#12,#13,#14,#18));\n" +
+                        "#20=IFCPROJECT('51f413ef_7964_4d38_b19',#5," +
+                        "'Unnamed',$,$,$,$,(#11),#19);\n" +
+                        "#21=IFCSITE('2KdG88VfqHwfDCN5zdz5Bw',#5,'Default " +
+                        "Site','',$,$,$,$,.ELEMENT.,$,$,$,$,$);\n" +
+                        "#22=IFCRELAGGREGATES('2KdG89VfqHweGDN5zdz5Bw',#5," +
+                        "'ProjectLink','',#20,(#21));\n" +
+                        "#23=IFCBUILDING('2KdHMSVfqHwfiJN5zdz5Bw',#5,'Default" +
+                        " Building','',$,$,$,$,.ELEMENT.,$,$,$);\n" +
+                        "#24=IFCRELAGGREGATES('2KdHMTVfqHwePlN5zdz5Bw',#5," +
+                        "'SiteLink','',#21,(#23));\n" +
+                        "#25=IFCBUILDINGSTOREY('2KdHMUVfqHwg4XN5zdz5Bw',#5," +
+                        "'Default Storey','',$,$,$,$,.ELEMENT.,$);\n" +
+                        "#26=IFCRELAGGREGATES('2KdHMVVfqHwhFMN5zdz5Bw',#5," +
+                        "'DefaultStoreyLink','',#23,(#25));\n" +
+                        "#27=IFCLOCALPLACEMENT($,#9);\n" +
+                        "#28=IFCCARTESIANPOINT((0.0,0.0));\n" +
+                        "#29=IFCDIRECTION((1.0,0.0));\n" +
+                        "#30=IFCAXIS2PLACEMENT2D(#28,#29);\n" +
+                        "#31=IFCCIRCLEPROFILEDEF(.AREA.,$,#30,0.1);\n" +
+                        "#32=IFCCARTESIANPOINT((-1.4210854715202E-17,-2" +
+                        ".73641172593403E-18,0.0));\n" +
+                        "#33=IFCAXIS2PLACEMENT3D(#32,#7,#8);\n" +
+                        "#34=IFCEXTRUDEDAREASOLID(#31,#33,#7,0.1);\n" +
+                        "#35=IFCSHAPEREPRESENTATION(#11,'Body','SweptSolid'," +
+                        "(#34));\n" +
+                        "#36=IFCPRODUCTDEFINITIONSHAPE($,$,(#35));\n" +
+                        "#37=IFCCOLOURRGB($,1.0,1.0,1.0);\n" +
+                        "#38=IFCSURFACESTYLERENDERING(#37,$,$,$,$,$,$,$,.FLAT" +
+                        ".);\n" +
+                        "#39=IFCWALL('2KcxKeVfqHwhb6N5zdz5Bw',#5,'Wall','',$," +
+                        "#27,#36,$);\n" +
+                        "#40=IFCSURFACESTYLE($,.BOTH.,(#38));\n" +
+                        "#41=IFCPRESENTATIONSTYLEASSIGNMENT((#40));\n" +
+                        "#42=IFCRELCONTAINEDINSPATIALSTRUCTURE" +
+                        "('2KdIamVfqHwf$aN5zdz5Bw',#5," +
+                        "'UnassignedObjectsLink','',(#39),#25);\n" +
+                        "#43=IFCSTYLEDITEM(#34,(#41),$);\n" + "ENDSEC;\n";
+        String expectedDataSectionMultiThreading3 =
+                "DATA;\n" + "#1=IFCPERSON($,$,'',$,$,$,$,$);\n" +
+                        "#2=IFCORGANIZATION($,'',$,$,$);\n" +
+                        "#3=IFCPERSONANDORGANIZATION(#1,#2,$);\n" +
+                        "#4=IFCAPPLICATION(#2,'0.18 build 4 (GitTag)'," +
+                        "'FreeCAD','118df2cf_ed21_438e_a41');\n" +
+                        "#5=IFCOWNERHISTORY(#3,#4,$,.ADDED.,$,#3,#4," +
+                        "1586902585);\n" +
+                        "#6=IFCCARTESIANPOINT((0.0,0.0,0.0));\n" +
+                        "#7=IFCDIRECTION((0.0,0.0,1.0));\n" +
+                        "#8=IFCDIRECTION((1.0,0.0,0.0));\n" +
+                        "#9=IFCAXIS2PLACEMENT3D(#6,#7,#8);\n" +
+                        "#10=IFCDIRECTION((0.0,1.0,0.0));\n" +
+                        "#11=IFCGEOMETRICREPRESENTATIONCONTEXT('Plan'," +
+                        "'Model',3,1.0E-5,#9,#10);\n" +
+                        "#12=IFCSIUNIT(*,.LENGTHUNIT.,$,.METRE.);\n" +
+                        "#13=IFCSIUNIT(*,.AREAUNIT.,$,.SQUARE_METRE.);\n" +
+                        "#14=IFCSIUNIT(*,.VOLUMEUNIT.,$,.CUBIC_METRE.);\n" +
+                        "#15=IFCDIMENSIONALEXPONENTS(0,0,0,0,0,0,0);\n" +
+                        "#16=IFCSIUNIT(*,.PLANEANGLEUNIT.,$,.RADIAN.);\n" +
+                        "#17=IFCMEASUREWITHUNIT(IFCPLANEANGLEMEASURE(0" +
+                        ".017453292519943295),#16);\n" +
+                        "#18=IFCCONVERSIONBASEDUNIT(#15,.PLANEANGLEUNIT.," +
+                        "'DEGREE',#17);\n" +
+                        "#19=IFCUNITASSIGNMENT((#12,#13,#14,#18));\n" +
+                        "#20=IFCPROJECT('51f413ef_7964_4d38_b19',#5," +
+                        "'Unnamed',$,$,$,$,(#11),#19);\n" +
+                        "#21=IFCSITE('2KdG88VfqHwfDCN5zdz5Bw',#5,'Default " +
+                        "Site','',$,$,$,$,.ELEMENT.,$,$,$,$,$);\n" +
+                        "#22=IFCRELAGGREGATES('2KdG89VfqHweGDN5zdz5Bw',#5," +
+                        "'ProjectLink','',#20,(#21));\n" +
+                        "#23=IFCBUILDING('2KdHMSVfqHwfiJN5zdz5Bw',#5,'Default" +
+                        " Building','',$,$,$,$,.ELEMENT.,$,$,$);\n" +
+                        "#24=IFCRELAGGREGATES('2KdHMTVfqHwePlN5zdz5Bw',#5," +
+                        "'SiteLink','',#21,(#23));\n" +
+                        "#25=IFCBUILDINGSTOREY('2KdHMUVfqHwg4XN5zdz5Bw',#5," +
+                        "'Default Storey','',$,$,$,$,.ELEMENT.,$);\n" +
+                        "#26=IFCRELAGGREGATES('2KdHMVVfqHwhFMN5zdz5Bw',#5," +
+                        "'DefaultStoreyLink','',#23,(#25));\n" +
+                        "#27=IFCLOCALPLACEMENT($,#9);\n" +
+                        "#28=IFCCARTESIANPOINT((0.0,0.0));\n" +
+                        "#29=IFCDIRECTION((1.0,0.0));\n" +
+                        "#30=IFCAXIS2PLACEMENT2D(#28,#29);\n" +
+                        "#31=IFCCIRCLEPROFILEDEF(.AREA.,$,#30,0.1);\n" +
+                        "#32=IFCCARTESIANPOINT((-1.4210854715202E-17,-2" +
+                        ".73641172593403E-18,0.0));\n" +
+                        "#33=IFCAXIS2PLACEMENT3D(#32,#7,#8);\n" +
+                        "#34=IFCEXTRUDEDAREASOLID(#31,#33,#7,0.1);\n" +
+                        "#35=IFCSHAPEREPRESENTATION(#11,'Body','SweptSolid'," +
+                        "(#34));\n" +
+                        "#36=IFCPRODUCTDEFINITIONSHAPE($,$,(#35));\n" +
+                        "#37=IFCWALL('2KcxKeVfqHwhb6N5zdz5Bw',#5,'Wall','',$," +
+                        "#27,#36,$);\n" + "#38=IFCCOLOURRGB($,1.0,1.0,1.0);\n" +
+                        "#39=IFCRELCONTAINEDINSPATIALSTRUCTURE" +
+                        "('2KdIamVfqHwf$aN5zdz5Bw',#5," +
+                        "'UnassignedObjectsLink','',(#37),#25);\n" +
+                        "#40=IFCSURFACESTYLERENDERING(#38,$,$,$,$,$,$,$,.FLAT" +
+                        ".);\n" + "#41=IFCSURFACESTYLE($,.BOTH.,(#40));\n" +
+                        "#42=IFCPRESENTATIONSTYLEASSIGNMENT((#41));\n" +
+                        "#43=IFCSTYLEDITEM(#34,(#42),$);\n" + "ENDSEC;\n";
+        String expectedDataSectionMultiThreading4 =
+                "DATA;\n" + "#1=IFCPERSON($,$,'',$,$,$,$,$);\n" +
+                        "#2=IFCORGANIZATION($,'',$,$,$);\n" +
+                        "#3=IFCPERSONANDORGANIZATION(#1,#2,$);\n" +
+                        "#4=IFCAPPLICATION(#2,'0.18 build 4 (GitTag)'," +
+                        "'FreeCAD'," + "'118df2cf_ed21_438e_a41');\n" +
+                        "#5=IFCOWNERHISTORY(#3,#4,$,.ADDED.,$,#3,#4," +
+                        "1586902585);\n" +
+                        "#6=IFCCARTESIANPOINT((0.0,0.0,0.0));\n" +
+                        "#7=IFCDIRECTION((0.0,0.0,1.0));\n" +
+                        "#8=IFCDIRECTION((1.0,0.0,0.0));\n" +
+                        "#9=IFCAXIS2PLACEMENT3D(#6,#7,#8);\n" +
+                        "#10=IFCDIRECTION((0.0,1.0,0.0));\n" +
+                        "#11=IFCGEOMETRICREPRESENTATIONCONTEXT('Plan'," +
+                        "'Model',3,1" + ".0E-5,#9,#10);\n" +
+                        "#12=IFCSIUNIT(*,.LENGTHUNIT.,$,.METRE.);\n" +
+                        "#13=IFCSIUNIT(*,.AREAUNIT.,$,.SQUARE_METRE.);\n" +
+                        "#14=IFCSIUNIT(*,.VOLUMEUNIT.,$,.CUBIC_METRE.);\n" +
+                        "#15=IFCDIMENSIONALEXPONENTS(0,0,0,0,0,0,0);\n" +
+                        "#16=IFCSIUNIT(*,.PLANEANGLEUNIT.,$,.RADIAN.);\n" +
+                        "#17=IFCMEASUREWITHUNIT(IFCPLANEANGLEMEASURE(0" +
+                        ".017453292519943295),#16);\n" +
+                        "#18=IFCCONVERSIONBASEDUNIT(#15,.PLANEANGLEUNIT.," +
+                        "'DEGREE'," + "#17);\n" +
+                        "#19=IFCUNITASSIGNMENT((#12,#13,#14,#18));\n" +
+                        "#20=IFCPROJECT('51f413ef_7964_4d38_b19',#5," +
+                        "'Unnamed',$,$,$," + "$,(#11),#19);\n" +
+                        "#21=IFCSITE('2KdG88VfqHwfDCN5zdz5Bw',#5,'Default " +
+                        "Site','',$," + "$,$,$,.ELEMENT.,$,$,$,$,$);\n" +
+                        "#22=IFCRELAGGREGATES('2KdG89VfqHweGDN5zdz5Bw',#5," +
+                        "'ProjectLink','',#20,(#21));\n" +
+                        "#23=IFCBUILDING('2KdHMSVfqHwfiJN5zdz5Bw',#5,'Default" +
+                        " " + "Building','',$,$,$,$,.ELEMENT.,$,$,$);\n" +
+                        "#24=IFCRELAGGREGATES('2KdHMTVfqHwePlN5zdz5Bw',#5," +
+                        "'SiteLink'," + "'',#21,(#23));\n" +
+                        "#25=IFCBUILDINGSTOREY('2KdHMUVfqHwg4XN5zdz5Bw',#5," +
+                        "'Default " + "Storey','',$,$,$,$,.ELEMENT.,$);\n" +
+                        "#26=IFCRELAGGREGATES('2KdHMVVfqHwhFMN5zdz5Bw',#5," +
+                        "'DefaultStoreyLink','',#23,(#25));\n" +
+                        "#27=IFCLOCALPLACEMENT($,#9);\n" +
+                        "#28=IFCCARTESIANPOINT((0.0,0.0));\n" +
+                        "#29=IFCDIRECTION((1.0,0.0));\n" +
+                        "#30=IFCAXIS2PLACEMENT2D(#28,#29);\n" +
+                        "#31=IFCCIRCLEPROFILEDEF(.AREA.,$,#30,0.1);\n" +
+                        "#32=IFCCARTESIANPOINT((-1.4210854715202E-17,-2" +
+                        ".73641172593403E-18,0.0));\n" +
+                        "#33=IFCAXIS2PLACEMENT3D(#32,#7,#8);\n" +
+                        "#34=IFCEXTRUDEDAREASOLID(#31,#33,#7,0.1);\n" +
+                        "#35=IFCSHAPEREPRESENTATION(#11,'Body','SweptSolid'," +
+                        "(#34));\n" +
+                        "#36=IFCPRODUCTDEFINITIONSHAPE($,$,(#35));\n" +
+                        "#37=IFCWALL('2KcxKeVfqHwhb6N5zdz5Bw',#5,'Wall','',$," +
+                        "#27,#36," + "$);\n" +
+                        "#38=IFCCOLOURRGB($,1.0,1.0,1.0);\n" +
+                        "#39=IFCSURFACESTYLERENDERING(#38,$,$,$,$,$,$,$,.FLAT" +
+                        ".);\n" + "#40=IFCSURFACESTYLE($,.BOTH.,(#39));\n" +
+                        "#41=IFCPRESENTATIONSTYLEASSIGNMENT((#40));\n" +
+                        "#42=IFCSTYLEDITEM(#34,(#41),$);\n" +
+                        "#43=IFCRELCONTAINEDINSPATIALSTRUCTURE" +
+                        "('2KdIamVfqHwf$aN5zdz5Bw',#5," +
+                        "'UnassignedObjectsLink',''," + "(#37),#25);\n" +
+                        "ENDSEC;\n";
+        String expectedDataSectionMultiThreading5 =
+                "DATA;\n" + "#1=IFCPERSON($,$,'',$,$,$,$,$);\n" +
+                        "#2=IFCORGANIZATION($,'',$,$,$);\n" +
+                        "#3=IFCPERSONANDORGANIZATION(#1,#2,$);\n" +
+                        "#4=IFCAPPLICATION(#2,'0.18 build 4 (GitTag)'," +
+                        "'FreeCAD'," + "'118df2cf_ed21_438e_a41');\n" +
+                        "#5=IFCOWNERHISTORY(#3,#4,$,.ADDED.,$,#3,#4," +
+                        "1586902585);\n" +
+                        "#6=IFCCARTESIANPOINT((0.0,0.0,0.0));\n" +
+                        "#7=IFCDIRECTION((0.0,0.0,1.0));\n" +
+                        "#8=IFCDIRECTION((1.0,0.0,0.0));\n" +
+                        "#9=IFCAXIS2PLACEMENT3D(#6,#7,#8);\n" +
+                        "#10=IFCDIRECTION((0.0,1.0,0.0));\n" +
+                        "#11=IFCGEOMETRICREPRESENTATIONCONTEXT('Plan'," +
+                        "'Model',3,1" + ".0E-5,#9,#10);\n" +
+                        "#12=IFCSIUNIT(*,.LENGTHUNIT.,$,.METRE.);\n" +
+                        "#13=IFCSIUNIT(*,.AREAUNIT.,$,.SQUARE_METRE.);\n" +
+                        "#14=IFCSIUNIT(*,.VOLUMEUNIT.,$,.CUBIC_METRE.);\n" +
+                        "#15=IFCDIMENSIONALEXPONENTS(0,0,0,0,0,0,0);\n" +
+                        "#16=IFCSIUNIT(*,.PLANEANGLEUNIT.,$,.RADIAN.);\n" +
+                        "#17=IFCMEASUREWITHUNIT(IFCPLANEANGLEMEASURE(0" +
+                        ".017453292519943295),#16);\n" +
+                        "#18=IFCCONVERSIONBASEDUNIT(#15,.PLANEANGLEUNIT.," +
+                        "'DEGREE'," + "#17);\n" +
+                        "#19=IFCUNITASSIGNMENT((#12,#13,#14,#18));\n" +
+                        "#20=IFCPROJECT('51f413ef_7964_4d38_b19',#5," +
+                        "'Unnamed',$,$,$," + "$,(#11),#19);\n" +
+                        "#21=IFCSITE('2KdG88VfqHwfDCN5zdz5Bw',#5,'Default " +
+                        "Site','',$," + "$,$,$,.ELEMENT.,$,$,$,$,$);\n" +
+                        "#22=IFCRELAGGREGATES('2KdG89VfqHweGDN5zdz5Bw',#5," +
+                        "'ProjectLink','',#20,(#21));\n" +
+                        "#23=IFCBUILDING('2KdHMSVfqHwfiJN5zdz5Bw',#5,'Default" +
+                        " " + "Building','',$,$,$,$,.ELEMENT.,$,$,$);\n" +
+                        "#24=IFCRELAGGREGATES('2KdHMTVfqHwePlN5zdz5Bw',#5," +
+                        "'SiteLink'," + "'',#21,(#23));\n" +
+                        "#25=IFCBUILDINGSTOREY('2KdHMUVfqHwg4XN5zdz5Bw',#5," +
+                        "'Default " + "Storey','',$,$,$,$,.ELEMENT.,$);\n" +
+                        "#26=IFCRELAGGREGATES('2KdHMVVfqHwhFMN5zdz5Bw',#5," +
+                        "'DefaultStoreyLink','',#23,(#25));\n" +
+                        "#27=IFCLOCALPLACEMENT($,#9);\n" +
+                        "#28=IFCCARTESIANPOINT((0.0,0.0));\n" +
+                        "#29=IFCDIRECTION((1.0,0.0));\n" +
+                        "#30=IFCAXIS2PLACEMENT2D(#28,#29);\n" +
+                        "#31=IFCCIRCLEPROFILEDEF(.AREA.,$,#30,0.1);\n" +
+                        "#32=IFCCARTESIANPOINT((-1.4210854715202E-17,-2" +
+                        ".73641172593403E-18,0.0));\n" +
+                        "#33=IFCAXIS2PLACEMENT3D(#32,#7,#8);\n" +
+                        "#34=IFCEXTRUDEDAREASOLID(#31,#33,#7,0.1);\n" +
+                        "#35=IFCSHAPEREPRESENTATION(#11,'Body','SweptSolid'," +
+                        "(#34));\n" +
+                        "#36=IFCPRODUCTDEFINITIONSHAPE($,$,(#35));\n" +
+                        "#37=IFCCOLOURRGB($,1.0,1.0,1.0);\n" +
+                        "#38=IFCSURFACESTYLERENDERING(#37,$,$,$,$,$,$,$,.FLAT" +
+                        ".);\n" + "#39=IFCSURFACESTYLE($,.BOTH.,(#38));\n" +
+                        "#40=IFCWALL('2KcxKeVfqHwhb6N5zdz5Bw',#5,'Wall','',$," +
+                        "#27,#36," + "$);\n" +
+                        "#41=IFCPRESENTATIONSTYLEASSIGNMENT((#39));\n" +
+                        "#42=IFCSTYLEDITEM(#34,(#41),$);\n" +
+                        "#43=IFCRELCONTAINEDINSPATIALSTRUCTURE" +
+                        "('2KdIamVfqHwf$aN5zdz5Bw',#5," +
+                        "'UnassignedObjectsLink',''," + "(#40),#25);\n" +
+                        "ENDSEC;\n";
 
-        serializer.serialize(new Header(), validIfcProject, FILE_PATH);
+        testedSerializer.serialize(new Header(), validIfcProject, FILE_PATH);
 
         String writtenDataSection = getDataSection(FILE_PATH);
+
+        //TODO: write a parser and compare the models in memory instead of
+        // having this mess that doesn't always work, or remove multithreading
         Assert.assertTrue(expectedDataSection.equals(writtenDataSection) ||
-                expectedDataSectionMultithreading.equals(writtenDataSection));
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void serialize_nullHeader()
-            throws IOException, ExecutionException, InterruptedException {
-        Serializer serializer = new Serializer();
-        serializer.serialize(null, validIfcProject, FILE_PATH);
-    }
-
-    @Test
-    public void serialize_nullProject()
-            throws IOException, ExecutionException, InterruptedException {
-        Serializer serializer = new Serializer();
-        serializer.serialize(new Header(), null, FILE_PATH);
-        String writtenDataSection = getDataSection(FILE_PATH);
-        Assert.assertEquals("DATA;\nENDSEC;\n", writtenDataSection);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void serialize_nullPath()
-            throws IOException, ExecutionException, InterruptedException {
-        Serializer serializer = new Serializer();
-        serializer.serialize(new Header(), validIfcProject, null);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void serialize_emptyPath()
-            throws IOException, ExecutionException, InterruptedException {
-        Serializer serializer = new Serializer();
-        serializer.serialize(new Header(), validIfcProject, "");
-    }
-
-    @Test(expected = FileNotFoundException.class)
-    public void serialize_rootPath()
-            throws IOException, ExecutionException, InterruptedException {
-        Serializer serializer = new Serializer();
-        serializer.serialize(new Header(), validIfcProject, "/");
-    }
-
-    @Test(expected = FileNotFoundException.class)
-    public void serialize_pointPath()
-            throws IOException, ExecutionException, InterruptedException {
-        Serializer serializer = new Serializer();
-        serializer.serialize(new Header(), validIfcProject, ".");
+                expectedDataSectionMultiThreading0.equals(writtenDataSection) ||
+                expetedDataSectionMultiThreading1.equals(writtenDataSection) ||
+                expectedDataSectionMultiThreading2.equals(writtenDataSection) ||
+                expectedDataSectionMultiThreading3.equals(writtenDataSection) ||
+                expectedDataSectionMultiThreading4.equals(writtenDataSection) ||
+                expectedDataSectionMultiThreading5.equals(writtenDataSection));
     }
 }
