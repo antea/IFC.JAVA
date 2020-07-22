@@ -21,10 +21,8 @@ package buildingsmart.util;
 import buildingsmart.ifc.*;
 import lombok.NonNull;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.function.Predicate;
 
 import static java.lang.Math.sqrt;
 
@@ -40,7 +38,6 @@ public class Functions {
      * String data types in a STEP file can contain characters "'" and "\" only
      * as "\'" and "\\". This method formats the given String so that it can be
      * serialized in a STEP file.
-     *
      * @param toFormat The String to format.
      * @return The formatted string.
      */
@@ -60,7 +57,7 @@ public class Functions {
      * @see Functions#ifcNormalise(IfcDirection)
      */
     public static IfcVector ifcCrossProduct(IfcDirection arg1,
-                                            IfcDirection arg2) {
+            IfcDirection arg2) {
         if (arg1 == null || arg2 == null) {
             return null;
         }
@@ -102,7 +99,7 @@ public class Functions {
 
     /**
      * @param direction The IfcDirection of which the components should be
-     *                  normalized.
+     * normalized.
      * @return IfcDirection whose components are normalized to have a sum of
      * squares of 1.0. If the input argument is null or its components are all
      * zero then the output is null.
@@ -136,7 +133,7 @@ public class Functions {
 
     /**
      * @param vector The IfcVector of which the components should be
-     *               normalized.
+     * normalized.
      * @return IfcVector whose components are normalized to have a sum of
      * squares of 1.0. If the input argument is null or its components are all
      * zero then the output is null.
@@ -198,19 +195,19 @@ public class Functions {
     }
 
     /**
-     * @param axis         The axis of the IfcAxis2Placement3D for which this
-     *                     function was called. If this value is not null, then
-     *                     refDirection must also be not null.
+     * @param axis The axis of the IfcAxis2Placement3D for which this
+     * function was called. If this value is not null, then
+     * refDirection must also be not null.
      * @param refDirection The refDirection of the IfcAxis2Placement3D for which
-     *                     this function was called. If this value is not null,
-     *                     then axis must also be not null.
+     * this function was called. If this value is not null,
+     * then axis must also be not null.
      * @return Three normalized orthogonal directions. List[2] is the direction
      * of axis. List[0] is in the direction of the projection of ref_direction
      * onto the plane normal to List[2], List[1] is the cross product of List[2]
      * and List[0]. Default values are supplied if both arguments are null.
      */
     public static List<IfcDirection> ifcBuildAxes(IfcDirection axis,
-                                                  IfcDirection refDirection) {
+            IfcDirection refDirection) {
         IfcDirection normalisedAxis = ifcNormalise(axis);
         IfcDirection d1 = normalisedAxis == null ? new IfcDirection(0, 0, 1) :
                 normalisedAxis;
@@ -224,8 +221,8 @@ public class Functions {
 
     /**
      * @param zAxis The direction onto whose normal plane the direction arg
-     *              should be projected.
-     * @param arg   The direction to project onto the plane normal to zAxis.
+     * should be projected.
+     * @param arg The direction to project onto the plane normal to zAxis.
      * @return A three dimensional direction which is, with fully defined input,
      * the projection of arg onto the plane normal to zAxis. If arg is null, the
      * result is the projection of (1.0,0.0,0.0) onto this plane except that if
@@ -235,7 +232,7 @@ public class Functions {
      * returned.
      */
     private static IfcDirection ifcFirstProjAxis(IfcDirection zAxis,
-                                                 IfcDirection arg) {
+            IfcDirection arg) {
         if (zAxis == null) {
             return null;
         }
@@ -263,13 +260,13 @@ public class Functions {
 
     /**
      * @param scalar The value by which vec should be multiplied.
-     * @param vec    The vector to multiply.
+     * @param vec The vector to multiply.
      * @return The vector that is the scalar multiple of the input vector. The
      * output is an IfcVector of the same units as the input vector. If any of
      * the input arguments is null, returns null.
      */
     private static IfcVector ifcScalarTimesVector(IfcReal scalar,
-                                                  IfcVector vec) {
+            IfcVector vec) {
         if (scalar == null || vec == null) {
             return null;
         }
@@ -290,12 +287,12 @@ public class Functions {
 
     /**
      * @param scalar The value by which dir should be multiplied.
-     * @param dir    The vector to multiply.
+     * @param dir The vector to multiply.
      * @return The vector that is the scalar multiple of the input vector. The
      * output is unitless. If any of the input arguments is null, returns null.
      */
     public static IfcVector ifcScalarTimesVector(IfcReal scalar,
-                                                 IfcDirection dir) {
+            IfcDirection dir) {
         if (scalar == null || dir == null) {
             return null;
         }
@@ -316,19 +313,19 @@ public class Functions {
 
     /**
      * @param arg1 The first argument of the subtraction {@code arg1 - arg2}. If
-     *             both input arguments are IfcVectors, they must be expressed
-     *             in the same units.
+     * both input arguments are IfcVectors, they must be expressed
+     * in the same units.
      * @param arg2 The second argument of the subtraction {@code arg1 - arg2}.
-     *             If both input arguments are IfcVectors, they must be
-     *             expressed in the same units.
+     * If both input arguments are IfcVectors, they must be
+     * expressed in the same units.
      * @return The vector difference of the two input vectors. If both vectors
      * are IfcDirections, a unitless result is produced. A zero difference
      * vector produces a an IfcVector of zero magnitude.
      * @throws IllegalArgumentException If any of the arguments is null, or if
-     *                                  they have different dimensionality.
+     * they have different dimensionality.
      */
     private static IfcVector ifcVectorDifference(IfcVectorOrDirection arg1,
-                                                 IfcVectorOrDirection arg2) {
+            IfcVectorOrDirection arg2) {
         if (arg1 == null || arg2 == null ||
                 !arg1.getDim().equals(arg2.getDim())) {
             return null;
@@ -369,18 +366,17 @@ public class Functions {
     /**
      * Tests whether the dimensional exponents are correct for the given unit
      * type.
-     *
      * @param unit The name of the unit type for which the dimensional exponents
-     *             are tested.
-     * @param dim  The dimensional exponents to be tested against corresponding
-     *             unit type name.
+     * are tested.
+     * @param dim The dimensional exponents to be tested against corresponding
+     * unit type name.
      * @return {@code true} if the dimensional exponents for the given unit type
      * are correct, {@code false} otherwise. If the given unit type is
      * USERDEFINED, this method returns {@code null}.
      * @throws NullPointerException If unit or dim is null.
      */
     public static Boolean ifcCorrectDimensions(@NonNull IfcUnitEnum unit,
-                                               @NonNull IfcDimensionalExponents dim) {
+            @NonNull IfcDimensionalExponents dim) {
         switch (unit) {
             case LENGTHUNIT:
                 return dim.equals(new IfcDimensionalExponents(1, 0, 0, 0, 0, 0,
@@ -482,7 +478,7 @@ public class Functions {
 
     /**
      * @param name The name of the unit for which the dimensional exponents will
-     *             be returned. Cannot be null.
+     * be returned. Cannot be null.
      * @return The dimensional exponents of the given SI-unit. If the unit is
      * unknown (which should not be possible, since this method deals with all
      * possible values of IfcSIUnitName), dimensional exponents all equal to
@@ -558,8 +554,8 @@ public class Functions {
 
     /**
      * @param units The Set of IfcUnit for which to check if it's an appropriate
-     *              parameter for
-     *              {@link IfcUnitAssignment#IfcUnitAssignment(Set)}.
+     * parameter for
+     * {@link IfcUnitAssignment#IfcUnitAssignment(Set)}.
      * @return {@code true}, if the Set of IfcUnit only includes units with
      * different unitType (for IfcNamedUnit and IfcDerivedUnit), and a maximum
      * of one IfcMonetaryUnit.
@@ -602,12 +598,12 @@ public class Functions {
      * @param arg2 A direction in either two- or three-dimensional space.
      * @return The scalar (or dot) product of the two directions.
      * @throws IllegalArgumentException If the two directions have different
-     *                                  dimensionality.
-     * @throws NullPointerException     If at least one of the arguments is
-     *                                  null.
+     * dimensionality.
+     * @throws NullPointerException If at least one of the arguments is
+     * null.
      */
     public static IfcReal ifcDotProduct(@NonNull IfcDirection arg1,
-                                        @NonNull IfcDirection arg2) {
+            @NonNull IfcDirection arg2) {
         if (!arg1.getDim().equals(arg2.getDim())) {
             throw new IllegalArgumentException(
                     "the two arguments must have the same dimensionality");
@@ -629,9 +625,8 @@ public class Functions {
      * The function checks that a relative placement (i.e. relative to another
      * local placement, and not grid placement) of a 3D local placement has to
      * be relative to a 3D parent placement (and not to a 2D parent placement).
-     *
      * @param relativePlacement The local placement.
-     * @param placementRelTo    The parent placement.
+     * @param placementRelTo The parent placement.
      * @return {@code true} if relativePlacement is bi-dimensional, if it is
      * three-dimensional and placementRelTo is also three-dimensional, if
      * placementRelTo is null. {@code null} if placementRelTo is a grid
@@ -678,15 +673,14 @@ public class Functions {
      * The function gets the representation type and the assigned set of
      * representation items as input and verifies whether the correct items are
      * assigned according to the representation type given.
-     *
      * @param repType The representation type.
-     * @param items   Items associated to repType.
+     * @param items Items associated to repType.
      * @return {@code true} if the type of the objects contained in items is
      * correct according to the specification of class {@link
      * buildingsmart.ifc.IfcShapeRepresentation} or if items is empty; {@code
      * null} if repType is unknown; {@code false} otherwise.
      * @throws NullPointerException If repType is {@code null}, or if items is
-     *                              null and repType is known.
+     * null and repType is known.
      */
     public static Boolean ifcShapeRepresentationTypes(IfcLabel repType,
             Set<IfcRepresentationItem> items) {
@@ -733,7 +727,7 @@ public class Functions {
                         if (item instanceof IfcGeometricSet) {
                             for (IfcGeometricSetSelect element :
                                     ((IfcGeometricSet) item)
-                                    .getElements()) {
+                                            .getElements()) {
                                 if (element instanceof IfcSurface) {
                                     return false;
                                 }
