@@ -662,6 +662,18 @@ public class Functions {
         return true;
     }
 
+    static Map<String, Predicate<IfcRepresentationItem>> map1 =
+            new HashMap<String, Predicate<IfcRepresentationItem>>() {{
+                put("Curve2D", item -> item instanceof IfcCurve &&
+                        ((IfcCurve) item).getDim().getValue() == 2);
+                put("Annotation2D",item->item instanceof IfcPoint || item instanceof IfcCurve ||
+                        item instanceof IfcGeometricCurveSet ||
+                        item instanceof IfcAnnotationFillArea ||
+                        item instanceof IfcDefinedSymbol ||
+                        item instanceof IfcTextLiteral ||
+                        item instanceof IfcDraughtingCallout);
+            }};
+
     /**
      * The function gets the representation type and the assigned set of
      * representation items as input and verifies whether the correct items are
@@ -677,7 +689,9 @@ public class Functions {
      *                              null and repType is known.
      */
     public static Boolean ifcShapeRepresentationTypes(IfcLabel repType,
-                                                      Set<IfcRepresentationItem> items) {
+            Set<IfcRepresentationItem> items) {
+        return items.stream().anyMatch(i->!map1.get(repType.getValue()).test(i));
+
         int correctItems = 0;
         switch (repType.getValue()) {
             case "Curve2D":
