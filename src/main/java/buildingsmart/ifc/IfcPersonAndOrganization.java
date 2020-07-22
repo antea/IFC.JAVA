@@ -22,7 +22,7 @@ package buildingsmart.ifc;
 import buildingsmart.io.Attribute;
 import buildingsmart.io.IfcEntity;
 import buildingsmart.io.Order;
-import com.sun.istack.internal.NotNull;
+import lombok.NonNull;
 
 import java.util.List;
 import java.util.Objects;
@@ -50,8 +50,8 @@ public class IfcPersonAndOrganization extends IfcEntity {
      *                                  if roles is not null and has size lower
      *                                  than 1.
      */
-    public IfcPersonAndOrganization(@NotNull IfcPerson thePerson,
-                                    @NotNull IfcOrganization theOrganization,
+    public IfcPersonAndOrganization(@NonNull IfcPerson thePerson,
+                                    @NonNull IfcOrganization theOrganization,
                                     List<IfcActorRole> roles) {
         if (thePerson == null) {
             throw new IllegalArgumentException("thePerson cannot be null");

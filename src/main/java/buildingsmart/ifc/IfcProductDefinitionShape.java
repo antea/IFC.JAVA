@@ -19,7 +19,7 @@
 
 package buildingsmart.ifc;
 
-import com.sun.istack.internal.NotNull;
+import lombok.NonNull;
 
 import java.util.Arrays;
 import java.util.List;
@@ -50,7 +50,7 @@ public class IfcProductDefinitionShape extends IfcProductRepresentation {
      *                                  IfcShapeModel.
      */
     public IfcProductDefinitionShape(IfcLabel name, IfcText description,
-                                     @NotNull List<IfcRepresentation> representations) {
+                                     @NonNull List<IfcRepresentation> representations) {
         super(name, description, representations);
         for (IfcRepresentation repr : representations) {
             if (!(repr instanceof IfcShapeModel)) {
@@ -86,7 +86,7 @@ public class IfcProductDefinitionShape extends IfcProductRepresentation {
      *                                  IfcShapeModel.
      */
     public IfcProductDefinitionShape(IfcLabel name, IfcText description,
-                                     @NotNull IfcRepresentation... representations) {
+                                     @NonNull IfcRepresentation... representations) {
         this(name, description, Arrays.asList(representations));
     }
 }

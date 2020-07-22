@@ -21,7 +21,7 @@ package buildingsmart.ifc;
 
 import buildingsmart.io.IfcDefinedType;
 import buildingsmart.util.Functions;
-import com.sun.istack.internal.NotNull;
+import lombok.NonNull;
 
 import java.util.Objects;
 
@@ -38,7 +38,7 @@ public class IfcLabel implements IfcDefinedType, IfcSimpleValue {
      * @throws IllegalArgumentException If value is null or longer than 255
      *                                  characters.
      */
-    public IfcLabel(@NotNull String value) {
+    public IfcLabel(@NonNull String value) {
         if (value == null) {
             throw new IllegalArgumentException("ifcLabel cannot be null");
         }

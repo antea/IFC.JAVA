@@ -22,7 +22,7 @@ package buildingsmart.ifc;
 import buildingsmart.io.Attribute;
 import buildingsmart.io.IfcEntity;
 import buildingsmart.io.Order;
-import com.sun.istack.internal.NotNull;
+import lombok.NonNull;
 
 import java.util.Objects;
 
@@ -110,7 +110,7 @@ public abstract class IfcProfileDef extends IfcEntity {
      *                    profile table.
      * @throws IllegalArgumentException If profileType is null.
      */
-    public IfcProfileDef(@NotNull IfcProfileTypeEnum profileType,
+    public IfcProfileDef(@NonNull IfcProfileTypeEnum profileType,
                          IfcLabel profileName) {
         if (profileType == null) {
             throw new IllegalArgumentException("profileType cannot be null");

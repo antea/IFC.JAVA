@@ -22,7 +22,7 @@ package buildingsmart.ifc;
 import buildingsmart.io.Attribute;
 import buildingsmart.io.IfcEntity;
 import buildingsmart.io.Order;
-import com.sun.istack.internal.NotNull;
+import lombok.NonNull;
 
 import java.util.Objects;
 
@@ -82,15 +82,15 @@ public class IfcDimensionalExponents extends IfcEntity {
      *                                         intensity base quantity.
      * @throws IllegalArgumentException If any of the parameters are null.
      */
-    public IfcDimensionalExponents(@NotNull IfcInteger lengthExponent,
-                                   @NotNull IfcInteger massExponent,
-                                   @NotNull IfcInteger timeExponent,
-                                   @NotNull IfcInteger electricCurrentExponent,
-                                   @NotNull
+    public IfcDimensionalExponents(@NonNull IfcInteger lengthExponent,
+                                   @NonNull IfcInteger massExponent,
+                                   @NonNull IfcInteger timeExponent,
+                                   @NonNull IfcInteger electricCurrentExponent,
+                                   @NonNull
                                            IfcInteger thermodynamicTemperatureExponent,
-                                   @NotNull
+                                   @NonNull
                                            IfcInteger amountOfSubstanceExponent,
-                                   @NotNull
+                                   @NonNull
                                            IfcInteger luminousIntensityExponent) {
         if (lengthExponent == null || massExponent == null ||
                 timeExponent == null || electricCurrentExponent == null ||
@@ -127,14 +127,14 @@ public class IfcDimensionalExponents extends IfcEntity {
      *                                         intensity base quantity.
      * @throws IllegalArgumentException If any of the parameters are null.
      */
-    public IfcDimensionalExponents(@NotNull long lengthExponent,
-                                   @NotNull long massExponent,
-                                   @NotNull long timeExponent,
-                                   @NotNull long electricCurrentExponent,
-                                   @NotNull
+    public IfcDimensionalExponents(@NonNull long lengthExponent,
+                                   @NonNull long massExponent,
+                                   @NonNull long timeExponent,
+                                   @NonNull long electricCurrentExponent,
+                                   @NonNull
                                            long thermodynamicTemperatureExponent,
-                                   @NotNull long amountOfSubstanceExponent,
-                                   @NotNull long luminousIntensityExponent) {
+                                   @NonNull long amountOfSubstanceExponent,
+                                   @NonNull long luminousIntensityExponent) {
         this(new IfcInteger(lengthExponent), new IfcInteger(massExponent),
                 new IfcInteger(timeExponent),
                 new IfcInteger(electricCurrentExponent),

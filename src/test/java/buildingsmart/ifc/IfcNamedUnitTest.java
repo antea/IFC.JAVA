@@ -18,7 +18,7 @@
 
 package buildingsmart.ifc;
 
-import com.sun.istack.internal.NotNull;
+import lombok.NonNull;
 import org.junit.Test;
 
 public class IfcNamedUnitTest {
@@ -56,8 +56,8 @@ public class IfcNamedUnitTest {
          * @see buildingsmart.util.Functions#ifcCorrectDimensions(IfcUnitEnum,
          * IfcDimensionalExponents)
          */
-        public ConcreteIfcNamedUnit(@NotNull IfcDimensionalExponents dimensions,
-                                    @NotNull IfcUnitEnum unitType) {
+        public ConcreteIfcNamedUnit(@NonNull IfcDimensionalExponents dimensions,
+                                    @NonNull IfcUnitEnum unitType) {
             super(dimensions, unitType);
         }
     }

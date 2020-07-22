@@ -21,7 +21,7 @@ package buildingsmart.ifc;
 
 import buildingsmart.io.IfcDefinedType;
 import buildingsmart.util.Functions;
-import com.sun.istack.internal.NotNull;
+import lombok.NonNull;
 
 import java.util.Objects;
 
@@ -36,7 +36,7 @@ public class IfcText implements IfcDefinedType, IfcSimpleValue {
      * @param value Cannot be null.
      * @throws IllegalArgumentException if value is null.
      */
-    public IfcText(@NotNull final String value) {
+    public IfcText(@NonNull final String value) {
         if (value == null) {
             throw new IllegalArgumentException("ifcText cannot be null");
         }

@@ -21,7 +21,7 @@ package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
 import buildingsmart.io.Order;
-import com.sun.istack.internal.NotNull;
+import lombok.NonNull;
 
 import java.util.Objects;
 
@@ -53,7 +53,7 @@ public class IfcAxis2Placement2D extends IfcPlacement
      *                                  bidimensional, if refDirection is not
      *                                  null and not bidimensional.
      */
-    public IfcAxis2Placement2D(@NotNull IfcCartesianPoint location,
+    public IfcAxis2Placement2D(@NonNull IfcCartesianPoint location,
                                IfcDirection refDirection) {
         super(location);
         if (refDirection != null && refDirection.getDim().getValue() != 2) {

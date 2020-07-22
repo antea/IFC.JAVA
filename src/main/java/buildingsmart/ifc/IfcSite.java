@@ -21,7 +21,7 @@ package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
 import buildingsmart.io.Order;
-import com.sun.istack.internal.NotNull;
+import lombok.NonNull;
 
 /**
  * A defined area of land, possibly covered with water, on which the project
@@ -387,12 +387,12 @@ public class IfcSite extends IfcSpatialStructureElement {
      *                                  IfcProductDefinitionShape; if
      *                                  compositionType is null.
      */
-    public IfcSite(@NotNull IfcGloballyUniqueId globalId,
-                   @NotNull IfcOwnerHistory ownerHistory, IfcLabel name,
+    public IfcSite(@NonNull IfcGloballyUniqueId globalId,
+                   @NonNull IfcOwnerHistory ownerHistory, IfcLabel name,
                    IfcText description, IfcLabel objectType,
                    IfcObjectPlacement objectPlacement,
                    IfcProductRepresentation representation, IfcLabel longName,
-                   @NotNull IfcElementCompositionEnum compositionType,
+                   @NonNull IfcElementCompositionEnum compositionType,
                    IfcCompoundPlaneAngleMeasure refLatitude,
                    IfcCompoundPlaneAngleMeasure refLongitude,
                    IfcLengthMeasure refElevation, IfcLabel landTitleNumber,
@@ -486,11 +486,11 @@ public class IfcSite extends IfcSpatialStructureElement {
      *                                  IfcProductDefinitionShape;
      *                                  if compositionType is null.
      */
-    public IfcSite(@NotNull IfcOwnerHistory ownerHistory, IfcLabel name,
+    public IfcSite(@NonNull IfcOwnerHistory ownerHistory, IfcLabel name,
                    IfcText description, IfcLabel objectType,
                    IfcObjectPlacement objectPlacement,
                    IfcProductRepresentation representation, IfcLabel longName,
-                   @NotNull IfcElementCompositionEnum compositionType,
+                   @NonNull IfcElementCompositionEnum compositionType,
                    IfcCompoundPlaneAngleMeasure refLatitude,
                    IfcCompoundPlaneAngleMeasure refLongitude,
                    IfcLengthMeasure refElevation, IfcLabel landTitleNumber,

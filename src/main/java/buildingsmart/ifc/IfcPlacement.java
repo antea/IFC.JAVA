@@ -21,7 +21,7 @@ package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
 import buildingsmart.io.Order;
-import com.sun.istack.internal.NotNull;
+import lombok.NonNull;
 
 import java.util.Objects;
 
@@ -42,7 +42,7 @@ public abstract class IfcPlacement extends IfcGeometricRepresentationItem {
      *                 null
      * @throws IllegalArgumentException If location is null.
      */
-    public IfcPlacement(@NotNull IfcCartesianPoint location) {
+    public IfcPlacement(@NonNull IfcCartesianPoint location) {
         if (location == null) {
             throw new IllegalArgumentException("location can't be null");
         }
@@ -61,7 +61,7 @@ public abstract class IfcPlacement extends IfcGeometricRepresentationItem {
      *                                  2 or bigger than 3, or if coordinates is
      *                                  null.
      */
-    public IfcPlacement(@NotNull double... coordinates) {
+    public IfcPlacement(@NonNull double... coordinates) {
         this.location = new IfcCartesianPoint(coordinates);
     }
 

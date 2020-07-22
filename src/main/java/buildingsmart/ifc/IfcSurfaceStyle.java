@@ -21,7 +21,7 @@ package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
 import buildingsmart.io.Order;
-import com.sun.istack.internal.NotNull;
+import lombok.NonNull;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -61,8 +61,8 @@ public class IfcSurfaceStyle extends IfcPresentationStyle
      *                                  instance of each type that implements
      *                                  IfcSurfaceStyleElementSelect.
      */
-    public IfcSurfaceStyle(IfcLabel name, @NotNull IfcSurfaceSide side,
-                           @NotNull Set<IfcSurfaceStyleElementSelect> styles) {
+    public IfcSurfaceStyle(IfcLabel name, @NonNull IfcSurfaceSide side,
+                           @NonNull Set<IfcSurfaceStyleElementSelect> styles) {
         super(name);
         if (side == null) {
             throw new IllegalArgumentException("side cannot be null");
@@ -118,8 +118,8 @@ public class IfcSurfaceStyle extends IfcPresentationStyle
      *                                  instance of each type that implements
      *                                  IfcSurfaceStyleElementSelect.
      */
-    public IfcSurfaceStyle(IfcLabel name, @NotNull IfcSurfaceSide side,
-                           @NotNull IfcSurfaceStyleElementSelect... styles) {
+    public IfcSurfaceStyle(IfcLabel name, @NonNull IfcSurfaceSide side,
+                           @NonNull IfcSurfaceStyleElementSelect... styles) {
         this(name, side, new HashSet<>(Arrays.asList(styles)));
     }
 

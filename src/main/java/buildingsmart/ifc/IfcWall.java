@@ -19,7 +19,7 @@
 
 package buildingsmart.ifc;
 
-import com.sun.istack.internal.NotNull;
+import lombok.NonNull;
 
 /**
  * The wall represents a vertical construction that bounds or subdivides spaces.
@@ -332,8 +332,8 @@ public class IfcWall extends IfcBuildingElement {
      *                                  representation is an instance of
      *                                  IfcProductDefinitionShape.
      */
-    public IfcWall(@NotNull IfcGloballyUniqueId globalId,
-                   @NotNull IfcOwnerHistory ownerHistory, IfcLabel name,
+    public IfcWall(@NonNull IfcGloballyUniqueId globalId,
+                   @NonNull IfcOwnerHistory ownerHistory, IfcLabel name,
                    IfcText description, IfcLabel objectType,
                    IfcObjectPlacement objectPlacement,
                    IfcProductRepresentation representation, IfcIdentifier tag) {
@@ -390,7 +390,7 @@ public class IfcWall extends IfcBuildingElement {
      *                                  is an instance of
      *                                  IfcProductDefinitionShape.
      */
-    public IfcWall(@NotNull IfcOwnerHistory ownerHistory, IfcLabel name,
+    public IfcWall(@NonNull IfcOwnerHistory ownerHistory, IfcLabel name,
                    IfcText description, IfcLabel objectType,
                    IfcObjectPlacement objectPlacement,
                    IfcProductRepresentation representation, IfcIdentifier tag) {

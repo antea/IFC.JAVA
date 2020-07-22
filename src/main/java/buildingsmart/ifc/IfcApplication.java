@@ -23,7 +23,7 @@ import buildingsmart.io.Attribute;
 import buildingsmart.io.IfcEntity;
 import buildingsmart.io.Order;
 import buildingsmart.util.Pair;
-import com.sun.istack.internal.NotNull;
+import lombok.NonNull;
 
 import java.util.HashSet;
 import java.util.Objects;
@@ -74,10 +74,10 @@ public class IfcApplication extends IfcEntity {
      *                                  applicationFullName and version is the
      *                                  same as the one passed as parameter.
      */
-    public IfcApplication(@NotNull IfcOrganization applicationDeveloper,
-                          @NotNull IfcLabel version,
-                          @NotNull IfcLabel applicationFullName,
-                          @NotNull IfcIdentifier applicationIdentifier) {
+    public IfcApplication(@NonNull IfcOrganization applicationDeveloper,
+                          @NonNull IfcLabel version,
+                          @NonNull IfcLabel applicationFullName,
+                          @NonNull IfcIdentifier applicationIdentifier) {
         if (applicationDeveloper == null || version == null ||
                 applicationFullName == null || applicationIdentifier == null) {
             throw new IllegalArgumentException(

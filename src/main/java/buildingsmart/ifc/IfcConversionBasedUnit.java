@@ -21,7 +21,7 @@ package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
 import buildingsmart.io.Order;
-import com.sun.istack.internal.NotNull;
+import lombok.NonNull;
 
 import java.util.Objects;
 
@@ -114,9 +114,9 @@ public class IfcConversionBasedUnit extends IfcNamedUnit {
      * @see buildingsmart.util.Functions#ifcCorrectDimensions(IfcUnitEnum,
      * IfcDimensionalExponents)
      */
-    public IfcConversionBasedUnit(@NotNull IfcDimensionalExponents dimensions,
-                                  @NotNull IfcUnitEnum unitType,
-                                  @NotNull IfcLabel name, @NotNull
+    public IfcConversionBasedUnit(@NonNull IfcDimensionalExponents dimensions,
+                                  @NonNull IfcUnitEnum unitType,
+                                  @NonNull IfcLabel name, @NonNull
                                           IfcMeasureWithUnit conversionFactor) {
         super(dimensions, unitType);
         if (name == null) {

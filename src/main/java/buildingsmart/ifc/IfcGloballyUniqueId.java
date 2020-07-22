@@ -18,7 +18,7 @@
 package buildingsmart.ifc;
 
 import buildingsmart.io.IfcDefinedType;
-import com.sun.istack.internal.NotNull;
+import lombok.NonNull;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -88,7 +88,7 @@ public class IfcGloballyUniqueId implements IfcDefinedType {
      *                                  in the following string: {@code
      *                                  "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_$"}
      */
-    public IfcGloballyUniqueId(@NotNull String value) {
+    public IfcGloballyUniqueId(@NonNull String value) {
         if (value == null) {
             throw new IllegalArgumentException("value cannot be null");
         }

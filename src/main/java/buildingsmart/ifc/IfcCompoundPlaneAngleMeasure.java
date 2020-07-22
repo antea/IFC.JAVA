@@ -20,7 +20,7 @@
 package buildingsmart.ifc;
 
 import buildingsmart.io.IfcDefinedType;
-import com.sun.istack.internal.NotNull;
+import lombok.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,7 +60,7 @@ public class IfcCompoundPlaneAngleMeasure
      *                                  the elements of value do not have the
      *                                  same sign.
      */
-    public IfcCompoundPlaneAngleMeasure(@NotNull List<IfcInteger> value) {
+    public IfcCompoundPlaneAngleMeasure(@NonNull List<IfcInteger> value) {
         if (value == null) {
             throw new IllegalArgumentException("value cannot be null");
         }
@@ -100,7 +100,7 @@ public class IfcCompoundPlaneAngleMeasure
      *                                  the elements of value do not have the
      *                                  same sign.
      */
-    public IfcCompoundPlaneAngleMeasure(@NotNull int... value) {
+    public IfcCompoundPlaneAngleMeasure(@NonNull int... value) {
         if (value == null) {
             throw new IllegalArgumentException("value cannot be null");
         }

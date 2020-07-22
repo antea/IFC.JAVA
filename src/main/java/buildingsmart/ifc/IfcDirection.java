@@ -22,7 +22,7 @@ package buildingsmart.ifc;
 import buildingsmart.io.Attribute;
 import buildingsmart.io.Order;
 import buildingsmart.util.Functions;
-import com.sun.istack.internal.NotNull;
+import lombok.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,7 +57,7 @@ public class IfcDirection extends IfcGeometricRepresentationItem
      * @throws IllegalArgumentException If the size of directionRatios is not 2
      *                                  or 3, or if directionRatios is null.
      */
-    public IfcDirection(@NotNull List<IfcReal> directionRatios) {
+    public IfcDirection(@NonNull List<IfcReal> directionRatios) {
         if (directionRatios == null) {
             throw new IllegalArgumentException(
                     "directionRatios cannot be null");
@@ -82,7 +82,7 @@ public class IfcDirection extends IfcGeometricRepresentationItem
      * @throws IllegalArgumentException If the size of directionRatios is not 2
      *                                  or 3, or if directionRatios is null.
      */
-    public IfcDirection(@NotNull double... directionRatios) {
+    public IfcDirection(@NonNull double... directionRatios) {
         if (directionRatios == null) {
             throw new IllegalArgumentException(
                     "directionRatios cannot be null");

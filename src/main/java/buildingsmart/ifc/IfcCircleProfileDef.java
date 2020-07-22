@@ -21,7 +21,7 @@ package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
 import buildingsmart.io.Order;
-import com.sun.istack.internal.NotNull;
+import lombok.NonNull;
 
 import java.util.Objects;
 
@@ -50,10 +50,10 @@ public class IfcCircleProfileDef extends IfcParameterizedProfileDef {
      * @throws IllegalArgumentException If profileType,position or radius are
      *                                  null.
      */
-    public IfcCircleProfileDef(@NotNull IfcProfileTypeEnum profileType,
+    public IfcCircleProfileDef(@NonNull IfcProfileTypeEnum profileType,
                                IfcLabel profileName,
-                               @NotNull IfcAxis2Placement2D position,
-                               @NotNull IfcPositiveLengthMeasure radius) {
+                               @NonNull IfcAxis2Placement2D position,
+                               @NonNull IfcPositiveLengthMeasure radius) {
         super(profileType, profileName, position);
         if (radius == null) {
             throw new IllegalArgumentException("radius cannot be null");

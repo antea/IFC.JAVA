@@ -20,7 +20,7 @@
 package buildingsmart.ifc;
 
 import buildingsmart.io.InverseAttribute;
-import com.sun.istack.internal.NotNull;
+import lombok.NonNull;
 
 import java.util.Set;
 
@@ -66,10 +66,10 @@ public class IfcShapeModel extends IfcRepresentation {
      * @throws IllegalArgumentException If contextOfItems or items are null; if
      *                                  the size of items is lower than 1.
      */
-    public IfcShapeModel(@NotNull IfcRepresentationContext contextOfItems,
+    public IfcShapeModel(@NonNull IfcRepresentationContext contextOfItems,
                          IfcLabel representationIdentifier,
                          IfcLabel representationType,
-                         @NotNull Set<IfcRepresentationItem> items) {
+                         @NonNull Set<IfcRepresentationItem> items) {
         super(contextOfItems, representationIdentifier, representationType,
                 items);
     }
@@ -96,10 +96,10 @@ public class IfcShapeModel extends IfcRepresentation {
      * @throws IllegalArgumentException If contextOfItems or items are null; if
      *                                  the size of items is lower than 1.
      */
-    public IfcShapeModel(@NotNull IfcRepresentationContext contextOfItems,
+    public IfcShapeModel(@NonNull IfcRepresentationContext contextOfItems,
                          IfcLabel representationIdentifier,
                          IfcLabel representationType,
-                         @NotNull IfcRepresentationItem... items) {
+                         @NonNull IfcRepresentationItem... items) {
         super(contextOfItems, representationIdentifier, representationType,
                 items);
     }

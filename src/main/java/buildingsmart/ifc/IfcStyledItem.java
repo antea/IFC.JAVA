@@ -21,7 +21,7 @@ package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
 import buildingsmart.io.Order;
-import com.sun.istack.internal.NotNull;
+import lombok.NonNull;
 
 import java.util.Collections;
 import java.util.Objects;
@@ -60,7 +60,7 @@ public class IfcStyledItem extends IfcRepresentationItem {
      *                                  1; if item is of type IfcStyledItem.
      */
     public IfcStyledItem(IfcRepresentationItem item,
-                         @NotNull Set<IfcPresentationStyleAssignment> styles,
+                         @NonNull Set<IfcPresentationStyleAssignment> styles,
                          IfcLabel name) {
         if (styles == null) {
             throw new IllegalArgumentException("styles cannot be null");
@@ -92,7 +92,7 @@ public class IfcStyledItem extends IfcRepresentationItem {
      *                                  IfcStyledItem.
      */
     public IfcStyledItem(IfcRepresentationItem item,
-                         @NotNull IfcPresentationStyleAssignment styles,
+                         @NonNull IfcPresentationStyleAssignment styles,
                          IfcLabel name) {
         this(item, Collections.singleton(styles), name);
     }

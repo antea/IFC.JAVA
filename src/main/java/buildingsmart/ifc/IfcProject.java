@@ -21,7 +21,7 @@ package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
 import buildingsmart.io.Order;
-import com.sun.istack.internal.NotNull;
+import lombok.NonNull;
 
 import java.util.Set;
 
@@ -105,13 +105,13 @@ public class IfcProject extends IfcObject {
      *                                  more objects of type
      *                                  IfcGeometricRepresentationSubContexts.
      */
-    public IfcProject(@NotNull IfcGloballyUniqueId globalId,
-                      @NotNull IfcOwnerHistory ownerHistory,
-                      @NotNull IfcLabel name, IfcText description,
+    public IfcProject(@NonNull IfcGloballyUniqueId globalId,
+                      @NonNull IfcOwnerHistory ownerHistory,
+                      @NonNull IfcLabel name, IfcText description,
                       IfcLabel objectType, IfcLabel longName, IfcLabel phase,
-                      @NotNull
+                      @NonNull
                               Set<IfcRepresentationContext> representationContexts,
-                      @NotNull IfcUnitAssignment unitsInContext) {
+                      @NonNull IfcUnitAssignment unitsInContext) {
         super(globalId, ownerHistory, name, description, objectType);
         if (representationContexts == null) {
             throw new IllegalArgumentException(
@@ -184,12 +184,12 @@ public class IfcProject extends IfcObject {
      *                                  or more objects of type
      *                                  IfcGeometricRepresentationSubContexts.
      */
-    public IfcProject(@NotNull IfcOwnerHistory ownerHistory,
-                      @NotNull IfcLabel name, IfcText description,
+    public IfcProject(@NonNull IfcOwnerHistory ownerHistory,
+                      @NonNull IfcLabel name, IfcText description,
                       IfcLabel objectType, IfcLabel longName, IfcLabel phase,
-                      @NotNull
+                      @NonNull
                               Set<IfcRepresentationContext> representationContexts,
-                      @NotNull IfcUnitAssignment unitsInContext) {
+                      @NonNull IfcUnitAssignment unitsInContext) {
         this(new IfcGloballyUniqueId(), ownerHistory, name, description,
                 objectType, longName, phase, representationContexts,
                 unitsInContext);
@@ -205,7 +205,7 @@ public class IfcProject extends IfcObject {
      * @throws NullPointerException     If relationship is null.
      */
     @Override
-    protected void addToIsDecomposedBy(@NotNull IfcRelDecomposes relationship) {
+    protected void addToIsDecomposedBy(@NonNull IfcRelDecomposes relationship) {
         if (!(relationship instanceof IfcRelAggregates)) {
             throw new IllegalArgumentException(
                     "relationship must be of type IfcRelAggregates");
@@ -221,7 +221,7 @@ public class IfcProject extends IfcObject {
      *                                  of type IfcSite or IfcBuilding.
      * @throws NullPointerException     If relationship is null.
      */
-    protected void addToIsDecomposedBy(@NotNull IfcRelAggregates relationship) {
+    protected void addToIsDecomposedBy(@NonNull IfcRelAggregates relationship) {
         for (IfcObjectDefinition obj : relationship.getRelatedObjects()) {
             if (!(obj instanceof IfcSite) && !(obj instanceof IfcBuilding)) {
                 throw new IllegalArgumentException(

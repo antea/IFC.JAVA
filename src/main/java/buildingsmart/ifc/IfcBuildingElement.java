@@ -19,7 +19,7 @@
 
 package buildingsmart.ifc;
 
-import com.sun.istack.internal.NotNull;
+import lombok.NonNull;
 
 /**
  * The building element comprises all elements that are primarily part of the
@@ -477,8 +477,8 @@ public abstract class IfcBuildingElement extends IfcElement {
      *                                  representation is an instance of
      *                                  IfcProductDefinitionShape.
      */
-    public IfcBuildingElement(@NotNull IfcGloballyUniqueId globalId,
-                              @NotNull IfcOwnerHistory ownerHistory,
+    public IfcBuildingElement(@NonNull IfcGloballyUniqueId globalId,
+                              @NonNull IfcOwnerHistory ownerHistory,
                               IfcLabel name, IfcText description,
                               IfcLabel objectType,
                               IfcObjectPlacement objectPlacement,
@@ -537,7 +537,7 @@ public abstract class IfcBuildingElement extends IfcElement {
      *                                  is an instance of
      *                                  IfcProductDefinitionShape.
      */
-    public IfcBuildingElement(@NotNull IfcOwnerHistory ownerHistory,
+    public IfcBuildingElement(@NonNull IfcOwnerHistory ownerHistory,
                               IfcLabel name, IfcText description,
                               IfcLabel objectType,
                               IfcObjectPlacement objectPlacement,

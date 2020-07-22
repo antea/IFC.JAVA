@@ -19,7 +19,7 @@
 
 package buildingsmart.ifc;
 
-import com.sun.istack.internal.NotNull;
+import lombok.NonNull;
 
 import java.util.List;
 import java.util.Objects;
@@ -42,8 +42,8 @@ public class IfcVector extends IfcGeometricRepresentationItem
      * @throws IllegalArgumentException If orientation or magnitude are null, or
      *                                  if magnitude is not positive or zero.
      */
-    public IfcVector(@NotNull IfcDirection orientation,
-                     @NotNull IfcLengthMeasure magnitude) {
+    public IfcVector(@NonNull IfcDirection orientation,
+                     @NonNull IfcLengthMeasure magnitude) {
         if (orientation == null) {
             throw new IllegalArgumentException("orientation cannot be null");
         }

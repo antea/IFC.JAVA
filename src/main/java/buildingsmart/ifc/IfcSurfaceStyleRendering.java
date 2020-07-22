@@ -21,7 +21,7 @@ package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
 import buildingsmart.io.Order;
-import com.sun.istack.internal.NotNull;
+import lombok.NonNull;
 
 import java.util.Objects;
 
@@ -215,7 +215,7 @@ public class IfcSurfaceStyleRendering extends IfcSurfaceStyleShading {
      * @throws IllegalArgumentException If surfaceColour or reflectanceMethod
      *                                  are null.
      */
-    public IfcSurfaceStyleRendering(@NotNull IfcColourRgb surfaceColour,
+    public IfcSurfaceStyleRendering(@NonNull IfcColourRgb surfaceColour,
                                     IfcNormalisedRatioMeasure transparency,
                                     IfcColourOrFactor diffuseColour,
                                     IfcColourOrFactor transmissionColour,
@@ -223,7 +223,7 @@ public class IfcSurfaceStyleRendering extends IfcSurfaceStyleShading {
                                     IfcColourOrFactor reflectionColour,
                                     IfcColourOrFactor specularColour,
                                     IfcSpecularHighlightSelect specularHighlight,
-                                    @NotNull
+                                    @NonNull
                                             IfcReflectanceMethodEnum reflectanceMethod) {
         super(surfaceColour);
         if (reflectanceMethod == null) {

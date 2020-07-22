@@ -19,7 +19,7 @@
 package buildingsmart.util;
 
 import buildingsmart.ifc.*;
-import com.sun.istack.internal.NotNull;
+import lombok.NonNull;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -379,9 +379,8 @@ public class Functions {
      * USERDEFINED, this method returns {@code null}.
      * @throws NullPointerException If unit or dim is null.
      */
-    public static Boolean ifcCorrectDimensions(@NotNull IfcUnitEnum unit,
-                                               @NotNull
-                                                       IfcDimensionalExponents dim) {
+    public static Boolean ifcCorrectDimensions(@NonNull IfcUnitEnum unit,
+                                               @NonNull IfcDimensionalExponents dim) {
         switch (unit) {
             case LENGTHUNIT:
                 return dim.equals(new IfcDimensionalExponents(1, 0, 0, 0, 0, 0,
@@ -491,7 +490,7 @@ public class Functions {
      * @throws NullPointerException If name is null.
      */
     public static IfcDimensionalExponents ifcDimensionsForSiUnit(
-            @NotNull IfcSIUnitName name) {
+            @NonNull IfcSIUnitName name) {
         switch (name) {
             case METRE:
                 return new IfcDimensionalExponents(1, 0, 0, 0, 0, 0, 0);
@@ -607,8 +606,8 @@ public class Functions {
      * @throws NullPointerException     If at least one of the arguments is
      *                                  null.
      */
-    public static IfcReal ifcDotProduct(@NotNull IfcDirection arg1,
-                                        @NotNull IfcDirection arg2) {
+    public static IfcReal ifcDotProduct(@NonNull IfcDirection arg1,
+                                        @NonNull IfcDirection arg2) {
         if (!arg1.getDim().equals(arg2.getDim())) {
             throw new IllegalArgumentException(
                     "the two arguments must have the same dimensionality");

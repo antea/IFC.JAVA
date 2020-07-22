@@ -22,7 +22,7 @@ package buildingsmart.ifc;
 import buildingsmart.io.Attribute;
 import buildingsmart.io.IfcEntity;
 import buildingsmart.io.Order;
-import com.sun.istack.internal.NotNull;
+import lombok.NonNull;
 
 import java.util.Arrays;
 import java.util.List;
@@ -60,7 +60,7 @@ public class IfcProductRepresentation extends IfcEntity {
      * @throws IllegalArgumentException If representations is null, or if its
      *                                  size is lower than 1.
      */
-    public IfcProductRepresentation(IfcLabel name, IfcText description, @NotNull
+    public IfcProductRepresentation(IfcLabel name, IfcText description, @NonNull
             List<IfcRepresentation> representations) {
         if (representations == null) {
             throw new IllegalArgumentException(
@@ -92,7 +92,7 @@ public class IfcProductRepresentation extends IfcEntity {
      * @throws IllegalArgumentException If representations is null, or if its
      *                                  size is lower than 1.
      */
-    public IfcProductRepresentation(IfcLabel name, IfcText description, @NotNull
+    public IfcProductRepresentation(IfcLabel name, IfcText description, @NonNull
             IfcRepresentation... representations) {
         if (representations == null) {
             throw new IllegalArgumentException(

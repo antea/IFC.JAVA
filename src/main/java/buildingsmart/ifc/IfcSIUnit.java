@@ -22,7 +22,7 @@ package buildingsmart.ifc;
 import buildingsmart.io.Attribute;
 import buildingsmart.io.Order;
 import buildingsmart.util.Functions;
-import com.sun.istack.internal.NotNull;
+import lombok.NonNull;
 
 import java.util.Objects;
 
@@ -48,8 +48,8 @@ public class IfcSIUnit extends IfcNamedUnit {
      *                                  given unitType is not the appropriate
      *                                  one for the given name.
      */
-    public IfcSIUnit(@NotNull IfcUnitEnum unitType, IfcSIPrefix prefix,
-                     @NotNull IfcSIUnitName name) {
+    public IfcSIUnit(@NonNull IfcUnitEnum unitType, IfcSIPrefix prefix,
+                     @NonNull IfcSIUnitName name) {
         super(Functions.ifcDimensionsForSiUnit(name), unitType);
         this.prefix = prefix;
         this.name = name;

@@ -21,7 +21,7 @@ package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
 import buildingsmart.io.Order;
-import com.sun.istack.internal.NotNull;
+import lombok.NonNull;
 
 /**
  * A building represents a structure that provides shelter for its occupants or
@@ -406,13 +406,13 @@ public class IfcBuilding extends IfcSpatialStructureElement {
      *                                  IfcProductDefinitionShape; if
      *                                  compositionType is null.
      */
-    public IfcBuilding(@NotNull IfcGloballyUniqueId globalId,
-                       @NotNull IfcOwnerHistory ownerHistory, IfcLabel name,
+    public IfcBuilding(@NonNull IfcGloballyUniqueId globalId,
+                       @NonNull IfcOwnerHistory ownerHistory, IfcLabel name,
                        IfcText description, IfcLabel objectType,
                        IfcObjectPlacement objectPlacement,
                        IfcProductRepresentation representation,
                        IfcLabel longName,
-                       @NotNull IfcElementCompositionEnum compositionType,
+                       @NonNull IfcElementCompositionEnum compositionType,
                        IfcLengthMeasure elevationOfRefHeight,
                        IfcLengthMeasure elevationOfTerrain,
                        IfcPostalAddress buildingAddress) {
@@ -491,12 +491,12 @@ public class IfcBuilding extends IfcSpatialStructureElement {
      *                                  IfcProductDefinitionShape;
      *                                  if compositionType is null.
      */
-    public IfcBuilding(@NotNull IfcOwnerHistory ownerHistory, IfcLabel name,
+    public IfcBuilding(@NonNull IfcOwnerHistory ownerHistory, IfcLabel name,
                        IfcText description, IfcLabel objectType,
                        IfcObjectPlacement objectPlacement,
                        IfcProductRepresentation representation,
                        IfcLabel longName,
-                       @NotNull IfcElementCompositionEnum compositionType,
+                       @NonNull IfcElementCompositionEnum compositionType,
                        IfcLengthMeasure elevationOfRefHeight,
                        IfcLengthMeasure elevationOfTerrain,
                        IfcPostalAddress buildingAddress) {

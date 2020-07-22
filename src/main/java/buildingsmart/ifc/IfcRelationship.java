@@ -19,7 +19,7 @@
 
 package buildingsmart.ifc;
 
-import com.sun.istack.internal.NotNull;
+import lombok.NonNull;
 
 /**
  * The abstract generalization of all objectified relationships in IFC.
@@ -61,8 +61,8 @@ public abstract class IfcRelationship extends IfcRoot {
      *                                  if globalId was used in another instance
      *                                  of this class or its superclass.
      */
-    public IfcRelationship(@NotNull IfcGloballyUniqueId globalId,
-                           @NotNull IfcOwnerHistory ownerHistory, IfcLabel name,
+    public IfcRelationship(@NonNull IfcGloballyUniqueId globalId,
+                           @NonNull IfcOwnerHistory ownerHistory, IfcLabel name,
                            IfcText description) {
         super(globalId, ownerHistory, name, description);
     }
@@ -83,7 +83,7 @@ public abstract class IfcRelationship extends IfcRoot {
      *                     informative comments.
      * @throws IllegalArgumentException If ownerHistory is null.
      */
-    public IfcRelationship(@NotNull IfcOwnerHistory ownerHistory, IfcLabel name,
+    public IfcRelationship(@NonNull IfcOwnerHistory ownerHistory, IfcLabel name,
                            IfcText description) {
         super(ownerHistory, name, description);
     }

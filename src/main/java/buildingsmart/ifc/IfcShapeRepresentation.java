@@ -20,7 +20,7 @@
 package buildingsmart.ifc;
 
 import buildingsmart.util.Functions;
-import com.sun.istack.internal.NotNull;
+import lombok.NonNull;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -142,10 +142,10 @@ public class IfcShapeRepresentation extends IfcShapeModel {
      *                                  specification of this class).
      */
     public IfcShapeRepresentation(
-            @NotNull IfcRepresentationContext contextOfItems,
+            @NonNull IfcRepresentationContext contextOfItems,
             IfcLabel representationIdentifier,
-            @NotNull IfcLabel representationType,
-            @NotNull Set<IfcRepresentationItem> items) {
+            @NonNull IfcLabel representationType,
+            @NonNull Set<IfcRepresentationItem> items) {
         super(contextOfItems, representationIdentifier, representationType,
                 items);
         if (!(contextOfItems instanceof IfcGeometricRepresentationContext)) {
@@ -216,10 +216,10 @@ public class IfcShapeRepresentation extends IfcShapeModel {
      *                                  specification of this class).
      */
     public IfcShapeRepresentation(
-            @NotNull IfcRepresentationContext contextOfItems,
+            @NonNull IfcRepresentationContext contextOfItems,
             IfcLabel representationIdentifier,
-            @NotNull IfcLabel representationType,
-            @NotNull IfcRepresentationItem... items) {
+            @NonNull IfcLabel representationType,
+            @NonNull IfcRepresentationItem... items) {
         this(contextOfItems, representationIdentifier, representationType,
                 new HashSet<>(Arrays.asList(items)));
     }

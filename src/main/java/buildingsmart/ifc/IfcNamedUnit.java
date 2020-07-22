@@ -24,7 +24,7 @@ import buildingsmart.io.DerivedInSubclass;
 import buildingsmart.io.IfcEntity;
 import buildingsmart.io.Order;
 import buildingsmart.util.Functions;
-import com.sun.istack.internal.NotNull;
+import lombok.NonNull;
 
 import java.util.Objects;
 
@@ -50,8 +50,8 @@ public abstract class IfcNamedUnit extends IfcEntity implements IfcUnit {
      *                                  given unitType.
      * @see Functions#ifcCorrectDimensions(IfcUnitEnum, IfcDimensionalExponents)
      */
-    public IfcNamedUnit(@NotNull IfcDimensionalExponents dimensions,
-                        @NotNull IfcUnitEnum unitType) {
+    public IfcNamedUnit(@NonNull IfcDimensionalExponents dimensions,
+                        @NonNull IfcUnitEnum unitType) {
         if (dimensions == null) {
             throw new IllegalArgumentException("dimensions cannot be null");
         }

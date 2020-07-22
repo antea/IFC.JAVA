@@ -21,7 +21,7 @@ package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
 import buildingsmart.io.Order;
-import com.sun.istack.internal.NotNull;
+import lombok.NonNull;
 
 import java.util.Objects;
 
@@ -55,9 +55,9 @@ public abstract class IfcParameterizedProfileDef extends IfcProfileDef {
      *                    profile definition.
      * @throws IllegalArgumentException If profileType or position are null.
      */
-    public IfcParameterizedProfileDef(@NotNull IfcProfileTypeEnum profileType,
+    public IfcParameterizedProfileDef(@NonNull IfcProfileTypeEnum profileType,
                                       IfcLabel profileName,
-                                      @NotNull IfcAxis2Placement2D position) {
+                                      @NonNull IfcAxis2Placement2D position) {
         super(profileType, profileName);
         if (position == null) {
             throw new IllegalArgumentException("position cannot be null");

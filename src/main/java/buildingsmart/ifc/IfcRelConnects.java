@@ -19,7 +19,7 @@
 
 package buildingsmart.ifc;
 
-import com.sun.istack.internal.NotNull;
+import lombok.NonNull;
 
 /**
  * A connectivity relationship (IfcRelConnects) that connects objects under some
@@ -48,8 +48,8 @@ public class IfcRelConnects extends IfcRelationship {
      *                                  if globalId was used in another instance
      *                                  of this class or its superclass.
      */
-    public IfcRelConnects(@NotNull IfcGloballyUniqueId globalId,
-                          @NotNull IfcOwnerHistory ownerHistory, IfcLabel name,
+    public IfcRelConnects(@NonNull IfcGloballyUniqueId globalId,
+                          @NonNull IfcOwnerHistory ownerHistory, IfcLabel name,
                           IfcText description) {
         super(globalId, ownerHistory, name, description);
     }
@@ -70,7 +70,7 @@ public class IfcRelConnects extends IfcRelationship {
      *                     informative comments.
      * @throws IllegalArgumentException If ownerHistory is null.
      */
-    public IfcRelConnects(@NotNull IfcOwnerHistory ownerHistory, IfcLabel name,
+    public IfcRelConnects(@NonNull IfcOwnerHistory ownerHistory, IfcLabel name,
                           IfcText description) {
         this(new IfcGloballyUniqueId(), ownerHistory, name, description);
     }

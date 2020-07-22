@@ -19,7 +19,7 @@
 package buildingsmart.io;
 
 import buildingsmart.ifc.IfcProject;
-import com.sun.istack.internal.NotNull;
+import lombok.NonNull;
 
 import java.io.*;
 import java.lang.annotation.Annotation;
@@ -117,7 +117,7 @@ public class Serializer {
      *                                  policy currently in effect.
      */
     private static <T extends Annotation> Object[] getAttributes(
-            @NotNull IfcEntity entity, Class<T> type) {
+            @NonNull IfcEntity entity, Class<T> type) {
         if (!(type.equals(Attribute.class) ||
                 type.equals(InverseAttribute.class))) {
             throw new IllegalArgumentException(
@@ -231,7 +231,7 @@ public class Serializer {
      *                                  directory and all necessary parent
      *                                  directories to be created
      */
-    private static File createFile(@NotNull String filePath) {
+    private static File createFile(@NonNull String filePath) {
         String directoryPath = null;
         if (filePath != null && filePath.length() > 0) {
             int endIndex = filePath.lastIndexOf(File.separatorChar);
@@ -355,8 +355,8 @@ public class Serializer {
      *                                  is not permitted based on the security
      *                                  policy currently in effect.
      */
-    public void serialize(@NotNull Header header, IfcProject project,
-                          @NotNull String filePath) throws IOException {
+    public void serialize(@NonNull Header header, IfcProject project,
+                          @NonNull String filePath) throws IOException {
         if (header == null) {
             throw new IllegalArgumentException("header cannot be null");
         }

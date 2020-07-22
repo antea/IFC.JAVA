@@ -22,7 +22,7 @@ package buildingsmart.ifc;
 import buildingsmart.io.Attribute;
 import buildingsmart.io.Order;
 import buildingsmart.util.Functions;
-import com.sun.istack.internal.NotNull;
+import lombok.NonNull;
 
 import java.util.List;
 import java.util.Objects;
@@ -80,7 +80,7 @@ public class IfcAxis2Placement3D extends IfcPlacement
      *                                  or both shall be given.</li>
      *                                  </bl>
      */
-    public IfcAxis2Placement3D(@NotNull IfcCartesianPoint location,
+    public IfcAxis2Placement3D(@NonNull IfcCartesianPoint location,
                                IfcDirection axis, IfcDirection refDirection) {
         super(location);
         if (super.getDim().getValue() != 3) {

@@ -18,7 +18,7 @@
 
 package buildingsmart.ifc;
 
-import com.sun.istack.internal.NotNull;
+import lombok.NonNull;
 
 public class ConcreteIfcObjectDefinition extends IfcObjectDefinition {
 
@@ -42,8 +42,8 @@ public class ConcreteIfcObjectDefinition extends IfcObjectDefinition {
      *                                  if globalId was used in another instance
      *                                  of this class.
      */
-    public ConcreteIfcObjectDefinition(@NotNull IfcGloballyUniqueId globalId,
-                                       @NotNull IfcOwnerHistory ownerHistory,
+    public ConcreteIfcObjectDefinition(@NonNull IfcGloballyUniqueId globalId,
+                                       @NonNull IfcOwnerHistory ownerHistory,
                                        IfcLabel name, IfcText description) {
         super(globalId, ownerHistory, name, description);
     }
@@ -65,7 +65,7 @@ public class ConcreteIfcObjectDefinition extends IfcObjectDefinition {
      *                     informative comments.
      * @throws IllegalArgumentException If ownerHistory is null.
      */
-    public ConcreteIfcObjectDefinition(@NotNull IfcOwnerHistory ownerHistory,
+    public ConcreteIfcObjectDefinition(@NonNull IfcOwnerHistory ownerHistory,
                                        IfcLabel name, IfcText description) {
         super(ownerHistory, name, description);
     }

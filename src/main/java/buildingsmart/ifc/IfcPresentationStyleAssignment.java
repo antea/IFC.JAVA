@@ -22,7 +22,7 @@ package buildingsmart.ifc;
 import buildingsmart.io.Attribute;
 import buildingsmart.io.IfcEntity;
 import buildingsmart.io.Order;
-import com.sun.istack.internal.NotNull;
+import lombok.NonNull;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -45,7 +45,7 @@ public class IfcPresentationStyleAssignment extends IfcEntity {
      *                                  than 1.
      */
     public IfcPresentationStyleAssignment(
-            @NotNull Set<IfcPresentationStyleSelect> styles) {
+            @NonNull Set<IfcPresentationStyleSelect> styles) {
         if (styles == null) {
             throw new IllegalArgumentException("styles cannot be null");
         }
@@ -64,7 +64,7 @@ public class IfcPresentationStyleAssignment extends IfcEntity {
      *                                  styles has size lower than 1.
      */
     public IfcPresentationStyleAssignment(
-            @NotNull IfcPresentationStyleSelect... styles) {
+            @NonNull IfcPresentationStyleSelect... styles) {
         if (styles == null) {
             throw new IllegalArgumentException("styles cannot be null");
         }

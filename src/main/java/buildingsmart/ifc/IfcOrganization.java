@@ -22,7 +22,7 @@ package buildingsmart.ifc;
 import buildingsmart.io.Attribute;
 import buildingsmart.io.IfcEntity;
 import buildingsmart.io.Order;
-import com.sun.istack.internal.NotNull;
+import lombok.NonNull;
 
 import java.util.List;
 import java.util.Objects;
@@ -60,7 +60,7 @@ public class IfcOrganization extends IfcEntity {
      * @throws IllegalArgumentException If name is null, or roles or addresses'
      *                                  size is zero.
      */
-    public IfcOrganization(IfcIdentifier id, @NotNull IfcLabel name,
+    public IfcOrganization(IfcIdentifier id, @NonNull IfcLabel name,
                            IfcText description, List<IfcActorRole> roles,
                            List<IfcAddress> addresses) {
         if (name == null) {

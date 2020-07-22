@@ -21,7 +21,7 @@ package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
 import buildingsmart.io.Order;
-import com.sun.istack.internal.NotNull;
+import lombok.NonNull;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -48,7 +48,7 @@ public class IfcGeometricSet extends IfcGeometricRepresentationItem {
      *                                  than 1 or if elements contains objects
      *                                  with different dimensions.
      */
-    public IfcGeometricSet(@NotNull Set<IfcGeometricSetSelect> elements) {
+    public IfcGeometricSet(@NonNull Set<IfcGeometricSetSelect> elements) {
         if (elements == null) {
             throw new IllegalArgumentException("elements cannot be null");
         }
@@ -75,7 +75,7 @@ public class IfcGeometricSet extends IfcGeometricRepresentationItem {
      *                                  than 1 or if elements contains objects
      *                                  with different dimensions.
      */
-    public IfcGeometricSet(@NotNull IfcGeometricSetSelect... elements) {
+    public IfcGeometricSet(@NonNull IfcGeometricSetSelect... elements) {
         this(new HashSet<>(Arrays.asList(elements)));
     }
 

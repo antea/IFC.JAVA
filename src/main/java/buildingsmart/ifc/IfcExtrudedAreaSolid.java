@@ -22,7 +22,7 @@ package buildingsmart.ifc;
 import buildingsmart.io.Attribute;
 import buildingsmart.io.Order;
 import buildingsmart.util.Functions;
-import com.sun.istack.internal.NotNull;
+import lombok.NonNull;
 
 import java.util.Objects;
 
@@ -73,10 +73,10 @@ public class IfcExtrudedAreaSolid extends IfcSweptAreaSolid {
      *                                  the local z-axis or it is not
      *                                  three-dimensional.
      */
-    public IfcExtrudedAreaSolid(@NotNull IfcProfileDef sweptArea,
-                                @NotNull IfcAxis2Placement3D position,
-                                @NotNull IfcDirection extrudedDirection,
-                                @NotNull IfcLengthMeasure depth) {
+    public IfcExtrudedAreaSolid(@NonNull IfcProfileDef sweptArea,
+                                @NonNull IfcAxis2Placement3D position,
+                                @NonNull IfcDirection extrudedDirection,
+                                @NonNull IfcLengthMeasure depth) {
         super(sweptArea, position);
         if (extrudedDirection == null) {
             throw new IllegalArgumentException(

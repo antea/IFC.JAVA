@@ -22,7 +22,7 @@ package buildingsmart.ifc;
 import buildingsmart.io.Attribute;
 import buildingsmart.io.InverseAttribute;
 import buildingsmart.io.Order;
-import com.sun.istack.internal.NotNull;
+import lombok.NonNull;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -150,13 +150,13 @@ public abstract class IfcSpatialStructureElement extends IfcProduct {
      *                                  IfcProductDefinitionShape; if
      *                                  compositionType is null.
      */
-    public IfcSpatialStructureElement(@NotNull IfcGloballyUniqueId globalId,
-                                      @NotNull IfcOwnerHistory ownerHistory,
+    public IfcSpatialStructureElement(@NonNull IfcGloballyUniqueId globalId,
+                                      @NonNull IfcOwnerHistory ownerHistory,
                                       IfcLabel name, IfcText description,
                                       IfcLabel objectType,
                                       IfcObjectPlacement objectPlacement,
                                       IfcProductRepresentation representation,
-                                      IfcLabel longName, @NotNull
+                                      IfcLabel longName, @NonNull
                                               IfcElementCompositionEnum compositionType) {
         super(globalId, ownerHistory, name, description, objectType,
                 objectPlacement, representation);
@@ -223,12 +223,12 @@ public abstract class IfcSpatialStructureElement extends IfcProduct {
      *                                  IfcProductDefinitionShape;
      *                                  if compositionType is null.
      */
-    public IfcSpatialStructureElement(@NotNull IfcOwnerHistory ownerHistory,
+    public IfcSpatialStructureElement(@NonNull IfcOwnerHistory ownerHistory,
                                       IfcLabel name, IfcText description,
                                       IfcLabel objectType,
                                       IfcObjectPlacement objectPlacement,
                                       IfcProductRepresentation representation,
-                                      IfcLabel longName, @NotNull
+                                      IfcLabel longName, @NonNull
                                               IfcElementCompositionEnum compositionType) {
         this(new IfcGloballyUniqueId(), ownerHistory, name, description,
                 objectType, objectPlacement, representation, longName,
@@ -254,7 +254,7 @@ public abstract class IfcSpatialStructureElement extends IfcProduct {
      * @throws NullPointerException     If decomposes is null.
      */
     @Override
-    protected void setDecomposes(@NotNull IfcRelDecomposes decomposes) {
+    protected void setDecomposes(@NonNull IfcRelDecomposes decomposes) {
         if (!(decomposes instanceof IfcRelAggregates)) {
             throw new IllegalArgumentException(
                     "decomposes must be of type IfcRelAggregates");
@@ -274,7 +274,7 @@ public abstract class IfcSpatialStructureElement extends IfcProduct {
      *                                  IfcSpatialStructureElement.
      * @throws NullPointerException     If decomposes is null.
      */
-    protected void setDecomposes(@NotNull IfcRelAggregates decomposes) {
+    protected void setDecomposes(@NonNull IfcRelAggregates decomposes) {
         if (!(decomposes.getRelatingObject() instanceof IfcProject) &&
                 !(decomposes
                         .getRelatingObject() instanceof IfcSpatialStructureElement)) {
@@ -303,7 +303,7 @@ public abstract class IfcSpatialStructureElement extends IfcProduct {
      * @throws NullPointerException     If relationship is null.
      */
     protected void addToContainsElements(
-            @NotNull IfcRelContainedInSpatialStructure relationship) {
+            @NonNull IfcRelContainedInSpatialStructure relationship) {
         if (!relationship.getRelatingStructure().equals(this)) {
             throw new IllegalArgumentException(
                     "any IfcRelContainedInSpatialStructure part of " +

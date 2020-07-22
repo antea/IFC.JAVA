@@ -19,7 +19,7 @@
 
 package buildingsmart.ifc;
 
-import com.sun.istack.internal.NotNull;
+import lombok.NonNull;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -90,9 +90,9 @@ public class IfcRelAssociates extends IfcRelationship {
      *                                  IfcObjectDefinition nor
      *                                  IfcPropertyDefinition.
      */
-    public IfcRelAssociates(@NotNull IfcGloballyUniqueId globalId,
-                            @NotNull IfcOwnerHistory ownerHistory, IfcLabel name, IfcText description,
-                            @NotNull Set<IfcRoot> relatedObjects) {
+    public IfcRelAssociates(@NonNull IfcGloballyUniqueId globalId,
+                            @NonNull IfcOwnerHistory ownerHistory, IfcLabel name, IfcText description,
+                            @NonNull Set<IfcRoot> relatedObjects) {
         super(globalId, ownerHistory, name, description);
         if (relatedObjects == null) {
             throw new IllegalArgumentException("relatedObjects cannot be null");
@@ -142,8 +142,8 @@ public class IfcRelAssociates extends IfcRelationship {
      *                                  are not of type IfcObjectDefinition nor
      *                                  IfcPropertyDefinition.
      */
-    public IfcRelAssociates(@NotNull IfcOwnerHistory ownerHistory, IfcLabel name, IfcText description,
-                            @NotNull Set<IfcRoot> relatedObjects) {
+    public IfcRelAssociates(@NonNull IfcOwnerHistory ownerHistory, IfcLabel name, IfcText description,
+                            @NonNull Set<IfcRoot> relatedObjects) {
         this(new IfcGloballyUniqueId(), ownerHistory, name, description,
                 relatedObjects);
     }
@@ -178,9 +178,9 @@ public class IfcRelAssociates extends IfcRelationship {
      *                                  IfcObjectDefinition nor
      *                                  IfcPropertyDefinition.
      */
-    public IfcRelAssociates(@NotNull IfcGloballyUniqueId globalId,
-                            @NotNull IfcOwnerHistory ownerHistory, IfcLabel name, IfcText description,
-                            @NotNull IfcRoot... relatedObjects) {
+    public IfcRelAssociates(@NonNull IfcGloballyUniqueId globalId,
+                            @NonNull IfcOwnerHistory ownerHistory, IfcLabel name, IfcText description,
+                            @NonNull IfcRoot... relatedObjects) {
         this(globalId, ownerHistory, name, description, new HashSet<>(Arrays.asList(relatedObjects)));
     }
 
@@ -209,8 +209,8 @@ public class IfcRelAssociates extends IfcRelationship {
      *                                  are not of type IfcObjectDefinition nor
      *                                  IfcPropertyDefinition.
      */
-    public IfcRelAssociates(@NotNull IfcOwnerHistory ownerHistory, IfcLabel name, IfcText description,
-                            @NotNull IfcRoot... relatedObjects) {
+    public IfcRelAssociates(@NonNull IfcOwnerHistory ownerHistory, IfcLabel name, IfcText description,
+                            @NonNull IfcRoot... relatedObjects) {
         this(new IfcGloballyUniqueId(), ownerHistory, name, description,
                 relatedObjects);
     }

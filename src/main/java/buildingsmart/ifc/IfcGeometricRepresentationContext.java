@@ -21,7 +21,7 @@ package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
 import buildingsmart.io.Order;
-import com.sun.istack.internal.NotNull;
+import lombok.NonNull;
 
 import java.util.Objects;
 
@@ -97,9 +97,9 @@ public class IfcGeometricRepresentationContext
      *                                  worldCoordinateSystem are null.
      */
     public IfcGeometricRepresentationContext(IfcLabel contextIdentifier,
-                                             IfcLabel contextType, @NotNull
+                                             IfcLabel contextType, @NonNull
                                                      IfcDimensionCount coordinateSpaceDimension,
-                                             IfcReal precision, @NotNull
+                                             IfcReal precision, @NonNull
                                                      IfcAxis2Placement worldCoordinateSystem,
                                              IfcDirection trueNorth) {
         super(contextIdentifier, contextType);

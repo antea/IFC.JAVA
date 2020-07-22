@@ -22,7 +22,7 @@ package buildingsmart.ifc;
 import buildingsmart.io.Attribute;
 import buildingsmart.io.IfcEntity;
 import buildingsmart.io.Order;
-import com.sun.istack.internal.NotNull;
+import lombok.NonNull;
 
 import java.util.HashSet;
 import java.util.Objects;
@@ -77,8 +77,8 @@ public abstract class IfcRoot extends IfcEntity {
      *                                  if globalId was used in another instance
      *                                  of this class.
      */
-    public IfcRoot(@NotNull IfcGloballyUniqueId globalId,
-                   @NotNull IfcOwnerHistory ownerHistory, IfcLabel name,
+    public IfcRoot(@NonNull IfcGloballyUniqueId globalId,
+                   @NonNull IfcOwnerHistory ownerHistory, IfcLabel name,
                    IfcText description) {
         if (globalId == null) {
             throw new IllegalArgumentException("globalId cannot be null");
@@ -114,7 +114,7 @@ public abstract class IfcRoot extends IfcEntity {
      *                     informative comments.
      * @throws IllegalArgumentException If ownerHistory is null.
      */
-    public IfcRoot(@NotNull IfcOwnerHistory ownerHistory, IfcLabel name,
+    public IfcRoot(@NonNull IfcOwnerHistory ownerHistory, IfcLabel name,
                    IfcText description) {
         this(new IfcGloballyUniqueId(), ownerHistory, name, description);
     }

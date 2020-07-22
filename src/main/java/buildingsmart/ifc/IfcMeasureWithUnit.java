@@ -22,7 +22,7 @@ package buildingsmart.ifc;
 import buildingsmart.io.Attribute;
 import buildingsmart.io.IfcEntity;
 import buildingsmart.io.Order;
-import com.sun.istack.internal.NotNull;
+import lombok.NonNull;
 
 import java.util.Objects;
 
@@ -53,8 +53,8 @@ public class IfcMeasureWithUnit extends IfcEntity {
      * @param unitComponent  The unit in which the physical quantity is
      *                       expressed.
      */
-    public IfcMeasureWithUnit(@NotNull IfcValue valueComponent,
-                              @NotNull IfcUnit unitComponent) {
+    public IfcMeasureWithUnit(@NonNull IfcValue valueComponent,
+                              @NonNull IfcUnit unitComponent) {
         if (valueComponent == null) {
             throw new IllegalArgumentException("valueComponent cannot be null");
         }

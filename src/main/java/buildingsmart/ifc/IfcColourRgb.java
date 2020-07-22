@@ -21,7 +21,7 @@ package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
 import buildingsmart.io.Order;
-import com.sun.istack.internal.NotNull;
+import lombok.NonNull;
 
 import java.util.Objects;
 
@@ -72,9 +72,9 @@ public class IfcColourRgb extends IfcColourSpecification
      * @throws IllegalArgumentException If at least one of the red, green and
      *                                  blue parameters is null.
      */
-    public IfcColourRgb(IfcLabel name, @NotNull IfcNormalisedRatioMeasure red,
-                        @NotNull IfcNormalisedRatioMeasure green,
-                        @NotNull IfcNormalisedRatioMeasure blue) {
+    public IfcColourRgb(IfcLabel name, @NonNull IfcNormalisedRatioMeasure red,
+                        @NonNull IfcNormalisedRatioMeasure green,
+                        @NonNull IfcNormalisedRatioMeasure blue) {
         super(name);
         if (red == null || green == null || blue == null) {
             throw new IllegalArgumentException(

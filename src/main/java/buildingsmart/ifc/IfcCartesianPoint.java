@@ -21,7 +21,7 @@ package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
 import buildingsmart.io.Order;
-import com.sun.istack.internal.NotNull;
+import lombok.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +49,7 @@ public class IfcCartesianPoint extends IfcPoint {
      *                                  2 or bigger than 3, or if coordinates is
      *                                  null.
      */
-    public IfcCartesianPoint(@NotNull List<IfcLengthMeasure> coordinates) {
+    public IfcCartesianPoint(@NonNull List<IfcLengthMeasure> coordinates) {
         if (coordinates == null) {
             throw new IllegalArgumentException("coordinates cannot be null");
         }
@@ -72,7 +72,7 @@ public class IfcCartesianPoint extends IfcPoint {
      *                                  2 or bigger than 3, or if coordinates is
      *                                  null.
      */
-    public IfcCartesianPoint(@NotNull double... coordinates) {
+    public IfcCartesianPoint(@NonNull double... coordinates) {
         if (coordinates == null) {
             throw new IllegalArgumentException("coordinates cannot be null");
         }

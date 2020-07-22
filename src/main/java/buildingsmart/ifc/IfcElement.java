@@ -21,7 +21,7 @@ package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
 import buildingsmart.io.Order;
-import com.sun.istack.internal.NotNull;
+import lombok.NonNull;
 
 /**
  * Generalization of all components that make up an AEC product. Those elements
@@ -161,8 +161,8 @@ public abstract class IfcElement extends IfcProduct {
      *                                  representation is an instance of
      *                                  IfcProductDefinitionShape.
      */
-    public IfcElement(@NotNull IfcGloballyUniqueId globalId,
-                      @NotNull IfcOwnerHistory ownerHistory, IfcLabel name,
+    public IfcElement(@NonNull IfcGloballyUniqueId globalId,
+                      @NonNull IfcOwnerHistory ownerHistory, IfcLabel name,
                       IfcText description, IfcLabel objectType,
                       IfcObjectPlacement objectPlacement,
                       IfcProductRepresentation representation,
@@ -221,7 +221,7 @@ public abstract class IfcElement extends IfcProduct {
      *                                  is an instance of
      *                                  IfcProductDefinitionShape.
      */
-    public IfcElement(@NotNull IfcOwnerHistory ownerHistory, IfcLabel name,
+    public IfcElement(@NonNull IfcOwnerHistory ownerHistory, IfcLabel name,
                       IfcText description, IfcLabel objectType,
                       IfcObjectPlacement objectPlacement,
                       IfcProductRepresentation representation,

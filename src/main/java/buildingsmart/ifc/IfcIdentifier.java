@@ -21,7 +21,7 @@ package buildingsmart.ifc;
 
 import buildingsmart.io.IfcDefinedType;
 import buildingsmart.util.Functions;
-import com.sun.istack.internal.NotNull;
+import lombok.NonNull;
 
 import java.util.Objects;
 
@@ -37,7 +37,7 @@ public class IfcIdentifier implements IfcDefinedType, IfcSimpleValue {
      * @throws IllegalArgumentException If ifcIdentifier is null or longer than
      *                                  255 characters.
      */
-    public IfcIdentifier(@NotNull String value) {
+    public IfcIdentifier(@NonNull String value) {
         if (value == null) {
             throw new IllegalArgumentException("ifcIdentifier cannot be null");
         }

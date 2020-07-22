@@ -21,7 +21,7 @@ package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
 import buildingsmart.io.Order;
-import com.sun.istack.internal.NotNull;
+import lombok.NonNull;
 
 import java.util.Objects;
 
@@ -50,8 +50,8 @@ public abstract class IfcSweptAreaSolid extends IfcSolidModel {
      * @throws IllegalArgumentException If sweptArea or position are null, and
      *                                  if sweptArea.profileType is not AREA.
      */
-    public IfcSweptAreaSolid(@NotNull IfcProfileDef sweptArea,
-                             @NotNull IfcAxis2Placement3D position) {
+    public IfcSweptAreaSolid(@NonNull IfcProfileDef sweptArea,
+                             @NonNull IfcAxis2Placement3D position) {
         if (sweptArea == null) {
             throw new IllegalArgumentException("sweptArea cannot be null");
         }

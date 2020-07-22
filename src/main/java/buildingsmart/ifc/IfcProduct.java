@@ -21,7 +21,7 @@ package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
 import buildingsmart.io.Order;
-import com.sun.istack.internal.NotNull;
+import lombok.NonNull;
 
 /**
  * Any object, or any aid to define, organize and annotate an object, that
@@ -118,8 +118,8 @@ public abstract class IfcProduct extends IfcObject {
      *                                  representation is an instance of
      *                                  IfcProductDefinitionShape.
      */
-    public IfcProduct(@NotNull IfcGloballyUniqueId globalId,
-                      @NotNull IfcOwnerHistory ownerHistory, IfcLabel name,
+    public IfcProduct(@NonNull IfcGloballyUniqueId globalId,
+                      @NonNull IfcOwnerHistory ownerHistory, IfcLabel name,
                       IfcText description, IfcLabel objectType,
                       IfcObjectPlacement objectPlacement,
                       IfcProductRepresentation representation) {
@@ -181,7 +181,7 @@ public abstract class IfcProduct extends IfcObject {
      *                                  is an instance of
      *                                  IfcProductDefinitionShape.
      */
-    public IfcProduct(@NotNull IfcOwnerHistory ownerHistory, IfcLabel name,
+    public IfcProduct(@NonNull IfcOwnerHistory ownerHistory, IfcLabel name,
                       IfcText description, IfcLabel objectType,
                       IfcObjectPlacement objectPlacement,
                       IfcProductRepresentation representation) {

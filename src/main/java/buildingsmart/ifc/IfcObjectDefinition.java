@@ -20,7 +20,7 @@
 package buildingsmart.ifc;
 
 import buildingsmart.io.InverseAttribute;
-import com.sun.istack.internal.NotNull;
+import lombok.NonNull;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -102,8 +102,8 @@ public abstract class IfcObjectDefinition extends IfcRoot {
      *                                  if globalId was used in another instance
      *                                  of this class.
      */
-    public IfcObjectDefinition(@NotNull IfcGloballyUniqueId globalId,
-                               @NotNull IfcOwnerHistory ownerHistory,
+    public IfcObjectDefinition(@NonNull IfcGloballyUniqueId globalId,
+                               @NonNull IfcOwnerHistory ownerHistory,
                                IfcLabel name, IfcText description) {
         super(globalId, ownerHistory, name, description);
     }
@@ -125,7 +125,7 @@ public abstract class IfcObjectDefinition extends IfcRoot {
      *                     informative comments.
      * @throws IllegalArgumentException If ownerHistory is null.
      */
-    public IfcObjectDefinition(@NotNull IfcOwnerHistory ownerHistory,
+    public IfcObjectDefinition(@NonNull IfcOwnerHistory ownerHistory,
                                IfcLabel name, IfcText description) {
         super(ownerHistory, name, description);
     }
@@ -146,7 +146,7 @@ public abstract class IfcObjectDefinition extends IfcRoot {
      *                                  in the relationship.
      * @throws NullPointerException     If relationship is null.
      */
-    protected void addToIsDecomposedBy(@NotNull IfcRelDecomposes relationship) {
+    protected void addToIsDecomposedBy(@NonNull IfcRelDecomposes relationship) {
         if (!relationship.getRelatingObject().equals(this)) {
             throw new IllegalArgumentException(
                     "any IfcRelDecomposes part of isDecomposedBy must " +
@@ -175,7 +175,7 @@ public abstract class IfcObjectDefinition extends IfcRoot {
      *                                  contain this object.
      * @throws NullPointerException     If decomposes is null.
      */
-    protected void setDecomposes(@NotNull IfcRelDecomposes decomposes) {
+    protected void setDecomposes(@NonNull IfcRelDecomposes decomposes) {
         if (!decomposes.getRelatedObjects().contains(this)) {
             throw new IllegalArgumentException(
                     "decomposes.relatedObjects must contain this object");
@@ -199,7 +199,7 @@ public abstract class IfcObjectDefinition extends IfcRoot {
      *                                  relationship's relatedObjects.
      * @throws NullPointerException     If relationship is null.
      */
-    protected void addToHasAssociations(@NotNull IfcRelAssociates relationship) {
+    protected void addToHasAssociations(@NonNull IfcRelAssociates relationship) {
         if (!relationship.getRelatedObjects().contains(this)) {
             throw new IllegalArgumentException(
                     "this object must be contained in relationship" +

@@ -22,7 +22,7 @@ package buildingsmart.ifc;
 import buildingsmart.io.Attribute;
 import buildingsmart.io.IfcEntity;
 import buildingsmart.io.Order;
-import com.sun.istack.internal.NotNull;
+import lombok.NonNull;
 
 import java.util.Objects;
 
@@ -44,7 +44,7 @@ public class IfcSurfaceStyleShading extends IfcEntity
      *                      the intensity of red, green and blue.
      * @throws IllegalArgumentException If surfaceColour is null.
      */
-    public IfcSurfaceStyleShading(@NotNull IfcColourRgb surfaceColour) {
+    public IfcSurfaceStyleShading(@NonNull IfcColourRgb surfaceColour) {
         if (surfaceColour == null) {
             throw new IllegalArgumentException("surfaceColour cannot be null");
         }

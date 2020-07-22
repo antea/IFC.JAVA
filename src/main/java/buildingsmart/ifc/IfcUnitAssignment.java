@@ -23,7 +23,7 @@ import buildingsmart.io.Attribute;
 import buildingsmart.io.IfcEntity;
 import buildingsmart.io.Order;
 import buildingsmart.util.Functions;
-import com.sun.istack.internal.NotNull;
+import lombok.NonNull;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -55,7 +55,7 @@ public class IfcUnitAssignment extends IfcEntity {
      *                                  IfcDerivedUnit), or includes more than
      *                                  one IfcMonetaryUnit.
      */
-    public IfcUnitAssignment(@NotNull Set<IfcUnit> units) {
+    public IfcUnitAssignment(@NonNull Set<IfcUnit> units) {
         if (units == null) {
             throw new IllegalArgumentException("units cannot be null");
         }
@@ -81,7 +81,7 @@ public class IfcUnitAssignment extends IfcEntity {
      *                                  IfcDerivedUnit), or includes more than
      *                                  one IfcMonetaryUnit.
      */
-    public IfcUnitAssignment(@NotNull IfcUnit... units) {
+    public IfcUnitAssignment(@NonNull IfcUnit... units) {
         this(new CopyOnWriteArraySet<>(Arrays.asList(units)));
     }
 

@@ -19,7 +19,7 @@
 
 package buildingsmart.ifc;
 
-import com.sun.istack.internal.NotNull;
+import lombok.NonNull;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -78,11 +78,11 @@ public class IfcRelAggregates extends IfcRelDecomposes {
      *                                  relatedObjects
      *                                  contains relatingObject.
      */
-    public IfcRelAggregates(@NotNull IfcGloballyUniqueId globalId,
-                            @NotNull IfcOwnerHistory ownerHistory,
+    public IfcRelAggregates(@NonNull IfcGloballyUniqueId globalId,
+                            @NonNull IfcOwnerHistory ownerHistory,
                             IfcLabel name, IfcText description,
-                            @NotNull IfcObjectDefinition relatingObject,
-                            @NotNull Set<IfcObjectDefinition> relatedObjects) {
+                            @NonNull IfcObjectDefinition relatingObject,
+                            @NonNull Set<IfcObjectDefinition> relatedObjects) {
         super(globalId, ownerHistory, name, description, relatingObject,
                 relatedObjects);
     }
@@ -113,10 +113,10 @@ public class IfcRelAggregates extends IfcRelDecomposes {
      *                                  relatedObjects
      *                                  contains relatingObject.
      */
-    public IfcRelAggregates(@NotNull IfcOwnerHistory ownerHistory,
+    public IfcRelAggregates(@NonNull IfcOwnerHistory ownerHistory,
                             IfcLabel name, IfcText description,
-                            @NotNull IfcObjectDefinition relatingObject,
-                            @NotNull Set<IfcObjectDefinition> relatedObjects) {
+                            @NonNull IfcObjectDefinition relatingObject,
+                            @NonNull Set<IfcObjectDefinition> relatedObjects) {
         super(ownerHistory, name, description, relatingObject, relatedObjects);
     }
 
@@ -151,11 +151,11 @@ public class IfcRelAggregates extends IfcRelDecomposes {
      *                                  relatedObjects
      *                                  contains relatingObject.
      */
-    public IfcRelAggregates(@NotNull IfcGloballyUniqueId globalId,
-                            @NotNull IfcOwnerHistory ownerHistory,
+    public IfcRelAggregates(@NonNull IfcGloballyUniqueId globalId,
+                            @NonNull IfcOwnerHistory ownerHistory,
                             IfcLabel name, IfcText description,
-                            @NotNull IfcObjectDefinition relatingObject,
-                            @NotNull IfcObjectDefinition... relatedObjects) {
+                            @NonNull IfcObjectDefinition relatingObject,
+                            @NonNull IfcObjectDefinition... relatedObjects) {
         super(globalId, ownerHistory, name, description, relatingObject,
                 relatedObjects);
     }
@@ -186,10 +186,10 @@ public class IfcRelAggregates extends IfcRelDecomposes {
      *                                  relatedObjects
      *                                  contains relatingObject.
      */
-    public IfcRelAggregates(@NotNull IfcOwnerHistory ownerHistory,
+    public IfcRelAggregates(@NonNull IfcOwnerHistory ownerHistory,
                             IfcLabel name, IfcText description,
-                            @NotNull IfcObjectDefinition relatingObject,
-                            @NotNull IfcObjectDefinition... relatedObjects) {
+                            @NonNull IfcObjectDefinition relatingObject,
+                            @NonNull IfcObjectDefinition... relatedObjects) {
         super(ownerHistory, name, description, relatingObject, relatedObjects);
     }
 

@@ -22,7 +22,7 @@ package buildingsmart.ifc;
 import buildingsmart.io.Attribute;
 import buildingsmart.io.Order;
 import buildingsmart.util.Functions;
-import com.sun.istack.internal.NotNull;
+import lombok.NonNull;
 
 import java.util.Objects;
 
@@ -66,7 +66,7 @@ public class IfcLocalPlacement extends IfcObjectPlacement {
      *                                  IfcGridPlacement.
      */
     public IfcLocalPlacement(IfcObjectPlacement placementRelTo,
-                             @NotNull IfcAxis2Placement relativePlacement) {
+                             @NonNull IfcAxis2Placement relativePlacement) {
         if (relativePlacement == null) {
             throw new IllegalArgumentException(
                     "relativePlacement cannot be null");

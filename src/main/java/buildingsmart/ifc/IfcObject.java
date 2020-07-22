@@ -21,7 +21,7 @@ package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
 import buildingsmart.io.Order;
-import com.sun.istack.internal.NotNull;
+import lombok.NonNull;
 
 /**
  * An <i>IfcObject</i> is the generalization of any semantically treated thing
@@ -102,8 +102,8 @@ public abstract class IfcObject extends IfcObjectDefinition {
      *                                  if globalId was used in another instance
      *                                  of this class.
      */
-    public IfcObject(@NotNull IfcGloballyUniqueId globalId,
-                     @NotNull IfcOwnerHistory ownerHistory, IfcLabel name,
+    public IfcObject(@NonNull IfcGloballyUniqueId globalId,
+                     @NonNull IfcOwnerHistory ownerHistory, IfcLabel name,
                      IfcText description, IfcLabel objectType) {
         super(globalId, ownerHistory, name, description);
         this.objectType = objectType;
@@ -130,7 +130,7 @@ public abstract class IfcObject extends IfcObjectDefinition {
      *                     the attribute PredefinedType is set to USERDEFINED.
      * @throws IllegalArgumentException If ownerHistory is null.
      */
-    public IfcObject(@NotNull IfcOwnerHistory ownerHistory, IfcLabel name,
+    public IfcObject(@NonNull IfcOwnerHistory ownerHistory, IfcLabel name,
                      IfcText description, IfcLabel objectType) {
         this(new IfcGloballyUniqueId(), ownerHistory, name, description,
                 objectType);

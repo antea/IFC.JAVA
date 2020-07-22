@@ -22,7 +22,7 @@ package buildingsmart.ifc;
 import buildingsmart.io.Attribute;
 import buildingsmart.io.IfcEntity;
 import buildingsmart.io.Order;
-import com.sun.istack.internal.NotNull;
+import lombok.NonNull;
 
 import java.util.Objects;
 
@@ -87,14 +87,14 @@ public class IfcOwnerHistory extends IfcEntity {
      * @throws IllegalArgumentException If owningUser, owningApplication,
      *                                  changeAction or creationDate are null.
      */
-    public IfcOwnerHistory(@NotNull IfcPersonAndOrganization owningUser,
-                           @NotNull IfcApplication owningApplication,
+    public IfcOwnerHistory(@NonNull IfcPersonAndOrganization owningUser,
+                           @NonNull IfcApplication owningApplication,
                            IfcStateEnum state,
-                           @NotNull IfcChangeActionEnum changeAction,
+                           @NonNull IfcChangeActionEnum changeAction,
                            IfcTimeStamp lastModifiedDate,
                            IfcPersonAndOrganization lastModifyingUser,
                            IfcApplication lastModifyingApplication,
-                           @NotNull IfcTimeStamp creationDate) {
+                           @NonNull IfcTimeStamp creationDate) {
         if (owningUser == null) {
             throw new IllegalArgumentException("owningUser cannot be null");
         }

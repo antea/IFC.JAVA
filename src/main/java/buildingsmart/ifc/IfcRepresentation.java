@@ -23,7 +23,7 @@ import buildingsmart.io.Attribute;
 import buildingsmart.io.IfcEntity;
 import buildingsmart.io.InverseAttribute;
 import buildingsmart.io.Order;
-import com.sun.istack.internal.NotNull;
+import lombok.NonNull;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -76,10 +76,10 @@ public class IfcRepresentation extends IfcEntity {
      * @throws IllegalArgumentException If contextOfItems or items are null; if
      *                                  the size of items is lower than 1.
      */
-    public IfcRepresentation(@NotNull IfcRepresentationContext contextOfItems,
+    public IfcRepresentation(@NonNull IfcRepresentationContext contextOfItems,
                              IfcLabel representationIdentifier,
                              IfcLabel representationType,
-                             @NotNull Set<IfcRepresentationItem> items) {
+                             @NonNull Set<IfcRepresentationItem> items) {
         if (contextOfItems == null) {
             throw new IllegalArgumentException("contextOfItems cannot be null");
         }
@@ -118,10 +118,10 @@ public class IfcRepresentation extends IfcEntity {
      * @throws IllegalArgumentException If contextOfItems or items are null; if
      *                                  the size of items is lower than 1.
      */
-    public IfcRepresentation(@NotNull IfcRepresentationContext contextOfItems,
+    public IfcRepresentation(@NonNull IfcRepresentationContext contextOfItems,
                              IfcLabel representationIdentifier,
                              IfcLabel representationType,
-                             @NotNull IfcRepresentationItem... items) {
+                             @NonNull IfcRepresentationItem... items) {
         this(contextOfItems, representationIdentifier, representationType,
                 new HashSet<>(Arrays.asList(items)));
     }

@@ -19,7 +19,7 @@
 
 package buildingsmart.ifc;
 
-import com.sun.istack.internal.NotNull;
+import lombok.NonNull;
 
 import java.util.Objects;
 
@@ -43,7 +43,7 @@ public class IfcActorRole {
      *                                  invalid combination of role and
      *                                  userDefinedRole.
      */
-    public IfcActorRole(@NotNull IfcRoleEnum role, IfcLabel userDefinedRole,
+    public IfcActorRole(@NonNull IfcRoleEnum role, IfcLabel userDefinedRole,
                         IfcText description) {
         if (role == null) {
             throw new IllegalArgumentException("role cannot be null");

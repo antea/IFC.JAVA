@@ -18,7 +18,7 @@
 
 package buildingsmart.ifc;
 
-import com.sun.istack.internal.NotNull;
+import lombok.NonNull;
 
 public class ConcreteIfcSpatialStructureElement
         extends IfcSpatialStructureElement {
@@ -81,12 +81,12 @@ public class ConcreteIfcSpatialStructureElement
      *                                  compositionType is null.
      */
     public ConcreteIfcSpatialStructureElement(
-            @NotNull IfcGloballyUniqueId globalId,
-            @NotNull IfcOwnerHistory ownerHistory, IfcLabel name,
+            @NonNull IfcGloballyUniqueId globalId,
+            @NonNull IfcOwnerHistory ownerHistory, IfcLabel name,
             IfcText description, IfcLabel objectType,
             IfcObjectPlacement objectPlacement,
             IfcProductRepresentation representation, IfcLabel longName,
-            @NotNull IfcElementCompositionEnum compositionType) {
+            @NonNull IfcElementCompositionEnum compositionType) {
         super(globalId, ownerHistory, name, description, objectType,
                 objectPlacement, representation, longName, compositionType);
     }
@@ -147,11 +147,11 @@ public class ConcreteIfcSpatialStructureElement
      *                                  if compositionType is null.
      */
     public ConcreteIfcSpatialStructureElement(
-            @NotNull IfcOwnerHistory ownerHistory, IfcLabel name,
+            @NonNull IfcOwnerHistory ownerHistory, IfcLabel name,
             IfcText description, IfcLabel objectType,
             IfcObjectPlacement objectPlacement,
             IfcProductRepresentation representation, IfcLabel longName,
-            @NotNull IfcElementCompositionEnum compositionType) {
+            @NonNull IfcElementCompositionEnum compositionType) {
         super(ownerHistory, name, description, objectType, objectPlacement,
                 representation, longName, compositionType);
     }
