@@ -21,9 +21,9 @@ package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
 import buildingsmart.io.Order;
+import lombok.EqualsAndHashCode;
 import lombok.NonNull;
-
-import java.util.Objects;
+import lombok.ToString;
 
 /**
  * The location and orientation in two dimensional space of two mutually
@@ -36,6 +36,8 @@ import java.util.Objects;
  * direction defines the placement X axis direction, the placement Y axis is
  * derived from this.
  */
+@EqualsAndHashCode(of = {"refDirection"}, callSuper = true)
+@ToString(callSuper = true, of = {"refDirection"})
 public class IfcAxis2Placement2D extends IfcPlacement
         implements IfcAxis2Placement {
     @Attribute
@@ -44,17 +46,17 @@ public class IfcAxis2Placement2D extends IfcPlacement
     //private IfcDirection[] P;
 
     /**
-     * @param location     The geometric position of a reference point, such as
-     *                     the center of a circle, of the item to be located.
-     *                     Cannot be null
+     * @param location The geometric position of a reference point, such as
+     * the center of a circle, of the item to be located.
+     * Cannot be null
      * @param refDirection The direction used to determine the direction of the
-     *                     local X Axis.
+     * local X Axis.
      * @throws IllegalArgumentException If location is null or it is not
-     *                                  bidimensional, if refDirection is not
-     *                                  null and not bidimensional.
+     * bidimensional, if refDirection is not
+     * null and not bidimensional.
      */
     public IfcAxis2Placement2D(@NonNull IfcCartesianPoint location,
-                               IfcDirection refDirection) {
+            IfcDirection refDirection) {
         super(location);
         if (refDirection != null && refDirection.getDim().getValue() != 2) {
             throw new IllegalArgumentException(
@@ -65,25 +67,5 @@ public class IfcAxis2Placement2D extends IfcPlacement
                     "location must be bidimensional");
         }
         this.refDirection = refDirection;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        if (!super.equals(o)) {
-            return false;
-        }
-        IfcAxis2Placement2D that = (IfcAxis2Placement2D) o;
-        return Objects.equals(refDirection, that.refDirection);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), refDirection);
     }
 }
