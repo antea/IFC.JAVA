@@ -32,7 +32,8 @@ import java.lang.annotation.Target;
  * found in {@link buildingsmart.ifc.IfcNamedUnit}: in its subclass {@link
  * buildingsmart.ifc.IfcSIUnit}, dimensions is a derived attribute.
  */
-@Target(ElementType.FIELD) @Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.FIELD)
+@Retention(RetentionPolicy.RUNTIME)
 public @interface DerivedInSubclass {
     Class<?> value();
 }

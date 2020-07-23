@@ -238,7 +238,7 @@ public class IfcRelDecomposes extends IfcRelationship {
      * becoming zero, and to forbid the addition of relatingObject to
      * relatedObjects.
      */
-    protected Set<IfcObjectDefinition> getRelatedObjects() {
+    public Set<IfcObjectDefinition> getRelatedObjects() {
         return new HashSet<>(relatedObjects);
     }
 }

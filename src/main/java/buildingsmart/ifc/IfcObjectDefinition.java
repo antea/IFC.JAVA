@@ -136,8 +136,9 @@ public abstract class IfcObjectDefinition extends IfcRoot {
      * IfcRelDecomposes to the Set.
      * @see #addToIsDecomposedBy(IfcRelDecomposes)
      */
-    protected Set<IfcRelDecomposes> getIsDecomposedBy() {
-        return new HashSet<>(isDecomposedBy);
+    public Set<IfcRelDecomposes> getIsDecomposedBy() {
+        return isDecomposedBy == null ? new HashSet<>(0) :
+                new HashSet<>(isDecomposedBy);
     }
 
     /**
@@ -190,7 +191,8 @@ public abstract class IfcObjectDefinition extends IfcRoot {
      * @see #addToHasAssociations(IfcRelAssociates)
      */
     protected Set<IfcRelAssociates> getHasAssociations() {
-        return new HashSet<>(hasAssociations);
+        return hasAssociations == null ? new HashSet<>(0) :
+                new HashSet<>(hasAssociations);
     }
 
     /**

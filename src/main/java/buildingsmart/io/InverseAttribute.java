@@ -35,6 +35,7 @@ import java.lang.annotation.Target;
  * referenced directly in the tree of {@link Attribute}s starting from
  * IfcProject.
  */
-@Target(ElementType.FIELD) @Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.FIELD)
+@Retention(RetentionPolicy.RUNTIME)
 public @interface InverseAttribute {
 }
