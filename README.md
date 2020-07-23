@@ -23,7 +23,7 @@ serialization of the entities they belong to. However, in some cases they're
 needed to check if constraints from the specification are met, or to
 contain references to other entities which must be serialized after the
 current entity: in these cases they're present and annotated with
-`@InverseAttribute`. For example, the inverse relationship `isDecomposedBy` in
+`@InverseRelationship`. For example, the inverse relationship `isDecomposedBy` in
 `IfcProject` contains the entities which compose the `IfcProject`, so all the
 entities referenced by that inverse relationship must be serialized after
 `IfcProject`.

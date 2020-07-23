@@ -19,7 +19,7 @@
 
 package buildingsmart.ifc;
 
-import buildingsmart.io.InverseAttribute;
+import buildingsmart.io.InverseRelationship;
 import lombok.NonNull;
 
 import java.util.Set;
@@ -41,7 +41,7 @@ import java.util.Set;
  * component of a product shape (via <i>IfcShapeAspect</i>).<br>
  */
 public class IfcShapeModel extends IfcRepresentation {
-    @InverseAttribute
+    @InverseRelationship
     private IfcShapeAspect ofShapeAspect;
 
     /**

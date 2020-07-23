@@ -19,7 +19,7 @@
 
 package buildingsmart.ifc;
 
-import buildingsmart.io.InverseAttribute;
+import buildingsmart.io.InverseRelationship;
 import lombok.NonNull;
 
 import java.util.HashSet;
@@ -65,21 +65,21 @@ public abstract class IfcObjectDefinition extends IfcRoot {
      * references or other resource definitions to the object.. Examples are the
      * association to library, documentation or classification.
      */
-    @InverseAttribute
+    @InverseRelationship
     protected Set<IfcRelAssociates> hasAssociations;
     /**
      * Reference to the decomposition relationship, that allows this object to
      * be the composition of other objects. An object can be decomposed by
      * several other objects.
      */
-    @InverseAttribute
+    @InverseRelationship
     private Set<IfcRelDecomposes> isDecomposedBy;
     /**
      * References to the decomposition relationship, that allows this object to
      * be a part of the decomposition. An object can only be part of a single
      * decomposition (to allow hierarchical strutures only).
      */
-    @InverseAttribute
+    @InverseRelationship
     private IfcRelDecomposes decomposes;
 
     /**

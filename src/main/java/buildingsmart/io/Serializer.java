@@ -31,7 +31,7 @@ public class Serializer {
 
     private final Map<IfcEntity, Long> serializedEntitiesToIds;
     private Writer fileWriter;
-    private long idCounter = 0;
+    private long idCounter;
 
     public Serializer() {
         serializedEntitiesToIds = new HashMap<>();
@@ -42,18 +42,19 @@ public class Serializer {
      * @param entity The entity for which to return the array of attributes.
      * @param type   The Annotation indicating what type of attributes to
      *               return, either regular attributes ({@link Attribute}) or
-     *               inverse attributes ({@link InverseAttribute}).
+     *               inverse attributes ({@link InverseRelationship}).
      * @return If {@code type} is {@code Attribute.class}, returns the
      * attributes that should be serialized in the representation of {@code
      * entity} in an IFC file; if {@code type} is {@code
-     * InverseAttribute.class}, returns the attributes of {@code entity}
+     * InverseRelationship.class}, returns the attributes of {@code entity}
      * representing an inverse relationship.</p> In the first case the returned
      * array is ordered according to the order defined by {@code entity}'s
      * fields' {@link Order} annotation. If there are no attributes, the
      * returned array will have length == 0.
+     *
      * @throws IllegalArgumentException If {@code type} is not {@code
      *                                  Attribute.class} nor {@code
-     *                                  InverseAttribute.class}.
+     *                                  InverseRelationship.class}.
      * @throws IllegalArgumentException If the given {@code entity} contains
      *                                  Fields that are annotated with {@link
      *                                  Attribute} but not with {@link Order}.
@@ -62,67 +63,46 @@ public class Serializer {
      * @throws SecurityException        If a security manager, <i>s</i>, is
      *                                  present and any of the following
      *                                  conditions is met:
-     *                                                   <ul>
-     *                                                   <li> the class
-     *                                                   loader of
-     *                                                   {@code
-     *                                                   Serializer}
-     *                                                   is not the
-     *                                                   same as the
-     *                                                   class loader of {@code
-     *                                                   entity
-     *                                                   .getClass()} and
-     *                                                   invocation of
-     *
-     *                                    {@link SecurityManager#checkPermission
-     *                                                   s.checkPermission}
-     *                                                   method
-     *                                                   with
-     *                                                   {@code
-     *                                                   RuntimePermission
-     *                                                   ("accessDeclaredMembers")}
-     *                                                   denies access to the
-     *                                                   declared
-     *                                                   fields
-     *                                                   within
-     *                                                   {@code entity
-     *                                                   .getClass()}
-     *                                                   <li> the class
-     *                                                   loader of
-     *                                                   {@link Serializer}
-     *                                                   is not the
-     *                                                   same as or an
-     *                                                   ancestor of the class
-     *                                                   loader
-     *                                                   for
-     *                                                   {@code entity
-     *                                                   .getClass()
-     *                                                   } and
-     *                                                   invocation of
-     *
-     *                                 {@link SecurityManager#checkPackageAccess
-     *                                                   s.checkPackageAccess()}
-     *                                                   denies
-     *                                                   access
-     *                                                   to the
-     *                                                   package
-     *                                                   of {@code entity
-     *                                                   .getClass()}
-     *                                                   </ul>
+     *                                  <ul>
+     *                                    <li>
+     *                                      the class loader of {@code
+     *                                      Serializer} is not the same as
+     *                                      the class loader of {@code entity
+     *                                      .getClass()} and invocation of
+     *                                      {@link SecurityManager
+     *                                      #checkPermission(Permission)}
+     *                                      method with {@code
+     *                                      RuntimePermission
+     *                                      ("accessDeclaredMembers")} denies
+     *                                      access to the declared fields
+     *                                      within{@code entity.getClass()}
+     *                                    </li>
+     *                                    <li>
+     *                                      the class loader of
+     *                                      {@link Serializer} is not the
+     *                                      same as or an ancestor of the
+     *                                      class loader for {@code entity
+     *                                      .getClass()} and invocation of
+     *                                      {@link SecurityManager
+     *                                      #checkPackageAccess(String) denies
+     *                                      access to the package of
+     *                                      {@code entity.getClass()}
+     *                                    </li>
+     *                                  </ul>
      * @throws SecurityException        If a security manager is present and
      *                                  access to private Fields of {@code
-     *                                  entity} by calling
-     *                                  {@link Field#setAccessible(boolean)}
+     *                                  entity} by calling { @link
+     *                                  Field#setAccessible(boolean)}
      *                                  is not permitted based on the security
      *                                  policy currently in effect.
      */
-    private static <T extends Annotation> Object[] getAttributes(
-            @NonNull IfcEntity entity, Class<T> type) {
+    private static <T extends Annotation> Object[] getAttributes(@NonNull IfcEntity entity,
+                                                                 Class<T> type) {
         if (!(type.equals(Attribute.class) ||
-                type.equals(InverseAttribute.class))) {
+                type.equals(InverseRelationship.class))) {
             throw new IllegalArgumentException(
-                    "type must be either Attribute.class or InverseAttribute" +
-                            ".class");
+                    "type must be either Attribute.class or " +
+                            "InverseRelationship" + ".class");
         }
         List<Field> fields = getAllFields(entity.getClass());
         fields.removeIf(field -> field.getAnnotation(type) == null);
@@ -156,13 +136,13 @@ public class Serializer {
      * @param type The type for which to get all fields.
      * @return The unsorted fields of the given type and all its superclasses.
      * If there are none, the returned List will be empty.
+     *
      * @throws SecurityException If a security manager, <i>s</i>, is present and
      *                           any of the following conditions is met:
      *                           <ul>
      *                           <li> the class loader of {@code Serializer}
-     *                           is not the
-     *                           same as the
-     *                           class loader of {@code type} and invocation of
+     *                           is not the same as the class loader of
+     *                           {@code type} and invocation of
      *                           {@link SecurityManager#checkPermission
      *                           s.checkPermission} method with
      *                           {@code RuntimePermission
@@ -170,15 +150,11 @@ public class Serializer {
      *                           denies access to the declared fields within
      *                           {@code type}
      *                           <li> the class loader of {@link Serializer}
-     *                           is not the
-     *                           same as or an
-     *                           ancestor of the class loader for {@code type
-     *                           } and
-     *                           invocation of
+     *                           is not the same as or an ancestor of the class
+     *                           loader for {@code type} and invocation of
      *                           {@link SecurityManager#checkPackageAccess
      *                           s.checkPackageAccess()} denies access to the
-     *                           package
-     *                           of {@code type}
+     *                           package of {@code type}
      *                           </ul>
      */
     private static List<Field> getAllFields(Class<?> type) {
@@ -266,7 +242,7 @@ public class Serializer {
      *                                  root, where parent nodes are IfcEntity
      *                                  types and children are the {@link
      *                                  Attribute}s and
-     *                                  {@link InverseAttribute}s
+     *                                  {@link InverseRelationship}s
      *                                  of the parent node, contains nodes whose
      *                                  Fields are annotated with {@link
      *                                  Attribute} but not with {@link Order}.
@@ -292,70 +268,51 @@ public class Serializer {
      *                                  having the IfcProject as its root, where
      *                                  parent nodes are IfcEntity types and
      *                                  children are the {@link Attribute}s and
-     *                                  {@link InverseAttribute}s of the parent
-     *                                  node. This exception is thrown if a
-     *                                  security manager,
+     *                                  {@link InverseRelationship}s of the
+     *                                  parent node. This exception is thrown if
+     *                                  a security manager,
      *                                  <i>s</i>, is present and any of the
      *                                  following conditions is met:
-     *                                                   <ul>
-     *                                                   <li> the class
-     *                                                   loader of
-     *                                                   {@code
-     *                                                   Serializer}
-     *                                                   is not the
-     *                                                   same as the class
-     *                                                   loader of
-     *                                                   {@code obj.getClass()}
-     *                                                   and
-     *                                                   invocation of
-     *
-     *                                    {@link SecurityManager#checkPermission
-     *                                                   s.checkPermission}
-     *                                                   method
-     *                                                   with
-     *                                                   {@code
-     *                                                   RuntimePermission
-     *                                                   ("accessDeclaredMembers")}
-     *                                                   denies access to the
-     *                                                   declared
-     *                                                   fields
-     *                                                   within
-     *                                                   {@code obj.getClass()}
-     *                                                   <li> the class
-     *                                                   loader of
-     *                                                   {@link Serializer}
-     *                                                   is not the
-     *                                                   same as or an
-     *                                                   ancestor of the class
-     *                                                   loader
-     *                                                   for
-     *                                                   {@code obj.getClass()
-     *                                                   } and
-     *                                                   invocation of
-     *
-     *                                 {@link SecurityManager#checkPackageAccess
-     *                                                   s.checkPackageAccess()}
-     *                                                   denies
-     *                                                   access
-     *                                                   to the
-     *                                                   package
-     *                                                   of {@code obj
-     *                                                   .getClass()}
-     *                                                   </ul>
+     *                                  <ul>
+     *                                    <li>
+     *                                      the class loader of {@code
+     *                                      Serializer} is not the same as
+     *                                      the class loader of {@code obj
+     *                                      .getClass()} and invocation of
+     *                                      {@link SecurityManager
+     *                                      #checkPermission(Permission)}
+     *                                      method with {@code
+     *                                      RuntimePermission
+     *                                      ("accessDeclaredMembers")} denies
+     *                                      access to the declared fields
+     *                                      within{@code obj.getClass()}
+     *                                    </li>
+     *                                    <li>
+     *                                      the class loader of
+     *                                      {@link Serializer} is not the
+     *                                      same as or an ancestor of the
+     *                                      class loader for {@code obj
+     *                                      .getClass()} and invocation of
+     *                                      {@link SecurityManager
+     *                                      #checkPackageAccess(String) denies
+     *                                      access to the package of
+     *                                      {@code obj.getClass()}
+     *                                    </li>
+     *                                  </ul>
      * @throws SecurityException        Let {@code obj} be any node of the tree
      *                                  having the IfcProject as its root, where
      *                                  parent nodes are IfcEntity types and
      *                                  children are the {@link Attribute}s and
-     *                                  {@link InverseAttribute}s of the parent
-     *                                  node. This exception is thrown if a
-     *                                  security manager is present and access
+     *                                  {@link InverseRelationship}s of the
+     *                                  parent node. This exception is thrown if
+     *                                  a security manager is present and access
      *                                  to private Fields of {@code obj} by
-     *                                  calling
-     *                                  {@link Field#setAccessible(boolean)}
-     *                                  is not permitted based on the security
-     *                                  policy currently in effect.
+     *                                  calling { @link Field#setAccessible
+     *                                  (boolean)} is not permitted based on the
+     *                                  security policy currently in effect.
      */
-    public void serialize(@NonNull Header header, IfcProject project,
+    public void serialize(@NonNull Header header,
+                          IfcProject project,
                           @NonNull String filePath) throws IOException {
         if (header == null) {
             throw new IllegalArgumentException("header cannot be null");
@@ -363,9 +320,9 @@ public class Serializer {
         File output = createFile(filePath);
         header.setFileName(output.getName());
 
-        fileWriter = new BufferedWriter(
-                new OutputStreamWriter(new FileOutputStream(output),
-                        StandardCharsets.UTF_8));
+        fileWriter =
+                new BufferedWriter(new OutputStreamWriter(new FileOutputStream(
+                        output), StandardCharsets.UTF_8));
 
         fileWriter.write("ISO-10303-21;\n" + header.serialize() + "DATA;\n");
         serialize(project);
@@ -403,6 +360,7 @@ public class Serializer {
      *          IFC
      *          file will be returned;</li>
      * </ul>
+     *
      * @throws IllegalArgumentException If the given {@code obj} is an IfcEntity
      *                                  and contains Fields that are annotated
      *                                  with {@link Attribute} but not with
@@ -412,58 +370,38 @@ public class Serializer {
      *                                  extends IfcEntity, a security manager,
      *                                  <i>s</i>, is present and any of the
      *                                  following conditions is met:
-     *                                                   <ul>
-     *                                                   <li> the class
-     *                                                   loader of
-     *                                                   {@code
-     *                                                   Serializer}
-     *                                                   is not the
-     *                                                   same as the class
-     *                                                   loader of
-     *                                                   {@code obj.getClass()}
-     *                                                   and
-     *                                                   invocation of
-     *
-     *                                    {@link SecurityManager#checkPermission
-     *                                                   s.checkPermission}
-     *                                                   method
-     *                                                   with
-     *                                                   {@code
-     *                                                   RuntimePermission
-     *                                                   ("accessDeclaredMembers")}
-     *                                                   denies access to the
-     *                                                   declared
-     *                                                   fields
-     *                                                   within
-     *                                                   {@code obj.getClass()}
-     *                                                   <li> the class
-     *                                                   loader of
-     *                                                   {@link Serializer}
-     *                                                   is not the
-     *                                                   same as or an
-     *                                                   ancestor of the class
-     *                                                   loader
-     *                                                   for
-     *                                                   {@code obj.getClass()
-     *                                                   } and
-     *                                                   invocation of
-     *
-     *                                 {@link SecurityManager#checkPackageAccess
-     *                                                   s.checkPackageAccess()}
-     *                                                   denies
-     *                                                   access
-     *                                                   to the
-     *                                                   package
-     *                                                   of {@code obj
-     *                                                   .getClass()}
-     *                                                   </ul>
+     *                                  <ul>
+     *                                    <li>
+     *                                      the class loader of {@code
+     *                                      Serializer} is not the same as
+     *                                      the class loader of {@code obj
+     *                                      .getClass()} and invocation of
+     *                                      {@link SecurityManager
+     *                                      #checkPermission(Permission)}
+     *                                      method with {@code
+     *                                      RuntimePermission
+     *                                      ("accessDeclaredMembers")} denies
+     *                                      access to the declared fields
+     *                                      within{@code obj.getClass()}
+     *                                    </li>
+     *                                    <li>
+     *                                      the class loader of
+     *                                      {@link Serializer} is not the
+     *                                      same as or an ancestor of the
+     *                                      class loader for {@code obj
+     *                                      .getClass()} and invocation of
+     *                                      {@link SecurityManager
+     *                                      #checkPackageAccess(String) denies
+     *                                      access to the package of
+     *                                      {@code obj.getClass()}
+     *                                    </li>
+     *                                  </ul>
      * @throws SecurityException        If obj is an instance of IfcEntity, a
      *                                  security manager is present and access
      *                                  to private Fields of {@code obj} by
-     *                                  calling
-     *                                  {@link Field#setAccessible(boolean)}
-     *                                  is not permitted based on the security
-     *                                  policy currently in effect.
+     *                                  calling { @link Field#setAccessible
+     *                                  (boolean)} is not permitted based on the
+     *                                  security policy currently in effect.
      */
     private String serialize(Object obj) throws IOException {
         if (obj == null) {
@@ -513,7 +451,8 @@ public class Serializer {
         fileWriter.write(serializedEntityString);
         serializedEntitiesToIds.put(entity, idCounter);
 
-        Object[] invAttributes = getAttributes(entity, InverseAttribute.class);
+        Object[] invAttributes =
+                getAttributes(entity, InverseRelationship.class);
         for (Object attr : invAttributes) {
             serialize(attr);
             // the return value of serialize() is ignored, because the only

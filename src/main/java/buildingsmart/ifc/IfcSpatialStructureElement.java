@@ -20,7 +20,7 @@
 package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
-import buildingsmart.io.InverseAttribute;
+import buildingsmart.io.InverseRelationship;
 import buildingsmart.io.Order;
 import lombok.NonNull;
 
@@ -90,7 +90,7 @@ public abstract class IfcSpatialStructureElement extends IfcProduct {
     //private IfcRelReferencedInSpatialStructure[] ReferencesElements;
 
     //private IfcRelServicesBuildings[] ServicedBySystems;
-    @InverseAttribute
+    @InverseRelationship
     private Set<IfcRelContainedInSpatialStructure> containsElements;
 
     /**

@@ -20,7 +20,7 @@
 package buildingsmart.ifc;
 
 import buildingsmart.io.IfcEntity;
-import buildingsmart.io.InverseAttribute;
+import buildingsmart.io.InverseRelationship;
 
 /**
  * A representation item is an element of product data that participates in one
@@ -31,7 +31,7 @@ import buildingsmart.io.InverseAttribute;
  */
 public abstract class IfcRepresentationItem extends IfcEntity {
     //private IfcPresentationLayerAssignment[] LayerAssignments;
-    @InverseAttribute
+    @InverseRelationship
     private IfcStyledItem styledByItem;
 
     /**

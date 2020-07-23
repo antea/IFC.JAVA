@@ -25,21 +25,21 @@ package buildingsmart.io;
  * </p>
  * Subclasses of this class must have fields of type {@link IfcEntity} (or
  * Collections thereof) annotated with either {@link Attribute} or {@link
- * InverseAttribute}, in the first case they must also be annotated with {@link
+ * InverseRelationship}, in the first case they must also be annotated with {@link
  * Order}. Fields of type {@link IfcDefinedType} must be annotated with {@link
  * Attribute} and {@link Order}.
  */
 public abstract class IfcEntity {
 
     /**
-     * Must not include fields annotated with {@link InverseAttribute} in the
+     * Must not include fields annotated with {@link InverseRelationship} in the
      * comparison, or you might get infinite recursion when comparing objects.
      */
     @Override
     public abstract boolean equals(Object o);
 
     /**
-     * Must not include fields annotated with {@link InverseAttribute} in the
+     * Must not include fields annotated with {@link InverseRelationship} in the
      * computation of the hashCode, or you might get infinite recursion when
      * computing hashCodes.
      */

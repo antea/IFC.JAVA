@@ -21,7 +21,7 @@ package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
 import buildingsmart.io.IfcEntity;
-import buildingsmart.io.InverseAttribute;
+import buildingsmart.io.InverseRelationship;
 import buildingsmart.io.Order;
 import lombok.NonNull;
 
@@ -48,10 +48,10 @@ public class IfcRepresentation extends IfcEntity {
     @Order(3)
     private final Set<IfcRepresentationItem> items;
 
-    @InverseAttribute
+    @InverseRelationship
     protected IfcRepresentationMap representationMap;
     //private IfcPresentationLayerAssignment[] layerAssignments;
-    @InverseAttribute
+    @InverseRelationship
     protected IfcProductRepresentation ofProductRepresentation;
 
     /**
