@@ -324,11 +324,11 @@ import lombok.NonNull;
  * </p>
  */
 public class IfcBuilding extends IfcSpatialStructureElement {
-    @Attribute(order = 9)
+    @Attribute(9)
     private final IfcLengthMeasure elevationOfRefHeight;
-    @Attribute(order = 10)
+    @Attribute(10)
     private final IfcLengthMeasure elevationOfTerrain;
-    @Attribute(order = 11)
+    @Attribute(11)
     private final IfcPostalAddress buildingAddress;
 
     /**

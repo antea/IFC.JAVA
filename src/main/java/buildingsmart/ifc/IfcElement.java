@@ -90,7 +90,7 @@ import lombok.NonNull;
  * </p>
  */
 public abstract class IfcElement extends IfcProduct {
-    @Attribute(order = 7)
+    @Attribute(7)
     private final IfcIdentifier tag;
     /*
     private IfcRelConnectsStructuralElement[] HasStructuralMember;

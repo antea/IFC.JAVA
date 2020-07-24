@@ -42,9 +42,9 @@ import java.util.Set;
  */
 public class IfcSurfaceStyle extends IfcPresentationStyle
         implements IfcPresentationStyleSelect {
-    @Attribute(order = 1)
+    @Attribute(1)
     private final IfcSurfaceSide side;
-    @Attribute(order = 2)
+    @Attribute(2)
     private final Set<IfcSurfaceStyleElementSelect> styles;
 
     /**

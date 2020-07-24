@@ -31,21 +31,21 @@ import java.util.Objects;
  * objects, relationships and properties.
  */
 public class IfcOwnerHistory extends IfcEntity {
-    @Attribute(order = 0)
+    @Attribute(0)
     private final IfcPersonAndOrganization owningUser;
-    @Attribute(order = 1)
+    @Attribute(1)
     private final IfcApplication owningApplication;
-    @Attribute(order = 2)
+    @Attribute(2)
     private final IfcStateEnum state;
-    @Attribute(order = 3)
+    @Attribute(3)
     private final IfcChangeActionEnum changeAction;
-    @Attribute(order = 4)
+    @Attribute(4)
     private final IfcTimeStamp lastModifiedDate;
-    @Attribute(order = 5)
+    @Attribute(5)
     private final IfcPersonAndOrganization lastModifyingUser;
-    @Attribute(order = 6)
+    @Attribute(6)
     private final IfcApplication lastModifyingApplication;
-    @Attribute(order = 7)
+    @Attribute(7)
     private final IfcTimeStamp creationDate;
 
     /**

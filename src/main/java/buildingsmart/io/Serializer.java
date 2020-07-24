@@ -94,7 +94,7 @@ public class Serializer {
      *                                  policy currently in effect.
      */
     private static <T extends Annotation> Object[] getAttributes(@NonNull IfcEntity entity,
-                                                                 Class<T> type) {
+                                                                 @NonNull Class<T> type) {
         if (!(type.equals(Attribute.class) ||
                 type.equals(InverseRelationship.class))) {
             throw new IllegalArgumentException(
@@ -105,18 +105,20 @@ public class Serializer {
         fields.removeIf(field -> field.getAnnotation(type) == null);
         if (type.equals(Attribute.class)) {
             fields.sort((field1, field2) -> {
-                int order1 = field1.getAnnotation(Attribute.class).order();
-                int order2 = field2.getAnnotation(Attribute.class).order();
+                int order1 = field1.getAnnotation(Attribute.class).value();
+                int order2 = field2.getAnnotation(Attribute.class).value();
                 return order1 - order2;
             });
         }
+        DerivedAttributes derivedAttributes =
+                entity.getClass().getAnnotation(DerivedAttributes.class);
+        Set<String> derivedAttributesNames =
+                derivedAttributes == null ? new HashSet<>(0) :
+                        new HashSet<>(Arrays.asList(derivedAttributes.value()));
         Object[] attributes = new Object[fields.size()];
         for (int i = 0; i < attributes.length; i++) {
             Field field = fields.get(i);
-            DerivedInSubclass derivedAnnotation =
-                    field.getAnnotation(DerivedInSubclass.class);
-            if (derivedAnnotation != null &&
-                    entity.getClass().equals(derivedAnnotation.value())) {
+            if (derivedAttributesNames.contains(field.getName())) {
                 // field is a derived attribute in entity, so it will be
                 // serialized as an asterisk
                 attributes[i] = (IfcDefinedType) () -> "*";

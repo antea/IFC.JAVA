@@ -308,7 +308,7 @@ import lombok.NonNull;
  * </p>
  */
 public class IfcBuildingStorey extends IfcSpatialStructureElement {
-    @Attribute(order = 9)
+    @Attribute(9)
     private final IfcLengthMeasure elevation;
 
     /**

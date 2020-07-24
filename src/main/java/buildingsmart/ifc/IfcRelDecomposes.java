@@ -52,9 +52,9 @@ import java.util.Set;
  * Cyclic references have to be prevented at application level.</P>
  */
 public class IfcRelDecomposes extends IfcRelationship {
-    @Attribute(order = 4)
+    @Attribute(4)
     private final IfcObjectDefinition relatingObject;
-    @Attribute(order = 5)
+    @Attribute(5)
     private final Set<IfcObjectDefinition> relatedObjects;
 
     /**

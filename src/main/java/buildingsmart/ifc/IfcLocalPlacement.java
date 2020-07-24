@@ -40,9 +40,9 @@ import java.util.Objects;
  * system.</p>
  */
 public class IfcLocalPlacement extends IfcObjectPlacement {
-    @Attribute(order = 0)
+    @Attribute(0)
     private final IfcObjectPlacement placementRelTo;
-    @Attribute(order = 1)
+    @Attribute(1)
     private final IfcAxis2Placement relativePlacement;
 
     /**

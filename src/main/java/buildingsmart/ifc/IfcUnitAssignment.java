@@ -42,7 +42,7 @@ import java.util.concurrent.CopyOnWriteArraySet;
  * project unit assignment.</small>
  */
 public class IfcUnitAssignment extends IfcEntity {
-    @Attribute(order = 0)
+    @Attribute(0)
     private final Set<IfcUnit> units;
 
     /**

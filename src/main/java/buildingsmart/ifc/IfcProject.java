@@ -42,13 +42,13 @@ import java.util.Set;
  * </ul>
  */
 public class IfcProject extends IfcObject {
-    @Attribute(order = 5)
+    @Attribute(5)
     private final IfcLabel longName;
-    @Attribute(order = 6)
+    @Attribute(6)
     private final IfcLabel phase;
-    @Attribute(order = 7)
+    @Attribute(7)
     private final Set<IfcRepresentationContext> representationContexts;
-    @Attribute(order = 8)
+    @Attribute(8)
     private final IfcUnitAssignment unitsInContext;
 
     /**

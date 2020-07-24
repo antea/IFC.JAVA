@@ -92,9 +92,9 @@ import java.util.Objects;
  * </TABLE>
  */
 public class IfcConversionBasedUnit extends IfcNamedUnit {
-    @Attribute(order = 2)
+    @Attribute(2)
     private final IfcLabel name;
-    @Attribute(order = 3)
+    @Attribute(3)
     private final IfcMeasureWithUnit conversionFactor;
 
     /**

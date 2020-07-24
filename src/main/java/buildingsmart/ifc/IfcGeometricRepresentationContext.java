@@ -36,13 +36,13 @@ import java.util.Objects;
  */
 public class IfcGeometricRepresentationContext
         extends IfcRepresentationContext {
-    @Attribute(order = 2)
+    @Attribute(2)
     private final IfcDimensionCount coordinateSpaceDimension;
-    @Attribute(order = 3)
+    @Attribute(3)
     private final IfcReal precision;
-    @Attribute(order = 4)
+    @Attribute(4)
     private final IfcAxis2Placement worldCoordinateSystem;
-    @Attribute(order = 5)
+    @Attribute(5)
     private final IfcDirection trueNorth;
     //private IfcGeometricRepresentationSubContext[] HasSubContexts;
 

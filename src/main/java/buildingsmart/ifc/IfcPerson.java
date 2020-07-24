@@ -29,21 +29,21 @@ import java.util.Objects;
  * An individual human being.
  */
 public class IfcPerson extends IfcEntity {
-    @Attribute(order = 0)
+    @Attribute(0)
     private final IfcIdentifier id;
-    @Attribute(order = 1)
+    @Attribute(1)
     private final IfcLabel familyName;
-    @Attribute(order = 2)
+    @Attribute(2)
     private final IfcLabel givenName;
-    @Attribute(order = 3)
+    @Attribute(3)
     private final List<IfcLabel> middleNames;
-    @Attribute(order = 4)
+    @Attribute(4)
     private final List<IfcLabel> prefixTitles;
-    @Attribute(order = 5)
+    @Attribute(5)
     private final List<IfcLabel> suffixTitles;
-    @Attribute(order = 6)
+    @Attribute(6)
     private final List<IfcActorRole> roles;
-    @Attribute(order = 7)
+    @Attribute(7)
     private final List<IfcAddress> addresses;
     //private IfcPersonAndOrganization[] engagedIn;
 

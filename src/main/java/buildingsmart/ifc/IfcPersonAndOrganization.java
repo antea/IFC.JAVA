@@ -30,11 +30,11 @@ import java.util.Objects;
  * Identification of a person within an organization.
  */
 public class IfcPersonAndOrganization extends IfcEntity {
-    @Attribute(order = 0)
+    @Attribute(0)
     private final IfcPerson thePerson;
-    @Attribute(order = 1)
+    @Attribute(1)
     private final IfcOrganization theOrganization;
-    @Attribute(order = 2)
+    @Attribute(2)
     private final List<IfcActorRole> roles;
 
     /**

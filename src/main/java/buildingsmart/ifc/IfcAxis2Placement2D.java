@@ -39,7 +39,7 @@ import lombok.ToString;
 @ToString(callSuper = true, of = {"refDirection"})
 public class IfcAxis2Placement2D extends IfcPlacement
         implements IfcAxis2Placement {
-    @Attribute(order = 1)
+    @Attribute(1)
     private final IfcDirection refDirection;
     //private IfcDirection[] P;
 

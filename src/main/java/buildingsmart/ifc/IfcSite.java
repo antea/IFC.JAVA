@@ -287,15 +287,15 @@ import lombok.NonNull;
  * </ul>
  */
 public class IfcSite extends IfcSpatialStructureElement {
-    @Attribute(order = 9)
+    @Attribute(9)
     private final IfcCompoundPlaneAngleMeasure refLatitude;
-    @Attribute(order = 10)
+    @Attribute(10)
     private final IfcCompoundPlaneAngleMeasure refLongitude;
-    @Attribute(order = 11)
+    @Attribute(11)
     private final IfcLengthMeasure refElevation;
-    @Attribute(order = 12)
+    @Attribute(12)
     private final IfcLabel landTitleNumber;
-    @Attribute(order = 13)
+    @Attribute(13)
     private final IfcPostalAddress siteAddress;
 
     /**

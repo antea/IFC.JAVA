@@ -43,13 +43,13 @@ import java.util.Set;
 public abstract class IfcRoot extends IfcEntity {
     private static final Set<IfcGloballyUniqueId> uniqueGlobalIds =
             new HashSet<>();
-    @Attribute(order = 0)
+    @Attribute(0)
     private final IfcGloballyUniqueId globalId;
-    @Attribute(order = 1)
+    @Attribute(1)
     private final IfcOwnerHistory ownerHistory;
-    @Attribute(order = 2)
+    @Attribute(2)
     private final IfcLabel name;
-    @Attribute(order = 3)
+    @Attribute(3)
     private final IfcText description;
 
     /**

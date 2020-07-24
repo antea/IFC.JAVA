@@ -39,9 +39,9 @@ import java.util.Objects;
  * </ol>
  */
 public class IfcMeasureWithUnit extends IfcEntity {
-    @Attribute(order = 0)
+    @Attribute(0)
     private final IfcValue valueComponent;
-    @Attribute(order = 1)
+    @Attribute(1)
     private final IfcUnit unitComponent;
 
     /**

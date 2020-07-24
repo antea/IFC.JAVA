@@ -24,16 +24,17 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Indicates a field annotated with {@link Attribute} that will have to be
- * serialized as an asterisk in the specified subclass, because it's a derived
- * attribute in that subclass.
+ * To be used on subclasses to have attributes from superclasses ignored in the
+ * subclass' serialization. Indicates that certain {@link Attribute}s from a
+ * superclass will have to be serialized as asterisks in the subclass, because
+ * they have become derived attributes.
  * </p>
  * One example of an attribute becoming a derived attribute in a subclass can be
  * found in {@link buildingsmart.ifc.IfcNamedUnit}: in its subclass {@link
- * buildingsmart.ifc.IfcSIUnit}, dimensions is a derived attribute.
+ * buildingsmart.ifc.IfcSIUnit}, {@code dimensions} is a derived attribute.
  */
-@Target(ElementType.FIELD)
+@Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface DerivedInSubclass {
-    Class<?> value();
+public @interface DerivedAttributes {
+    String[] value();
 }

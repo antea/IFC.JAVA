@@ -29,7 +29,7 @@ import java.util.Objects;
  * component values refer directly to a specific colour space.
  */
 public abstract class IfcColourSpecification extends IfcEntity {
-    @Attribute(order = 0)
+    @Attribute(0)
     private final IfcLabel name;
 
     /**

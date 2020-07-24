@@ -62,9 +62,9 @@ import lombok.NonNull;
  * is set to <font size="-1">USERDEFINED</font>.</p>
  */
 public abstract class IfcProduct extends IfcObject {
-    @Attribute(order = 5)
+    @Attribute(5)
     private final IfcObjectPlacement objectPlacement;
-    @Attribute(order = 6)
+    @Attribute(6)
     private final IfcProductRepresentation representation;
     //private IfcRelAssignsToProduct[] referencedBy;
 

@@ -33,7 +33,7 @@ import java.util.Set;
  * styled items for the purpose of presenting these styled items.
  */
 public class IfcPresentationStyleAssignment extends IfcEntity {
-    @Attribute(order = 0)
+    @Attribute(0)
     private final Set<IfcPresentationStyleSelect> styles;
 
     /**

@@ -93,21 +93,21 @@ import java.util.Objects;
  * </UL></BLOCKQUOTE>
  */
 public class IfcSurfaceStyleRendering extends IfcSurfaceStyleShading {
-    @Attribute(order = 1)
+    @Attribute(1)
     private final IfcNormalisedRatioMeasure transparency;
-    @Attribute(order = 2)
+    @Attribute(2)
     private final IfcColourOrFactor diffuseColour;
-    @Attribute(order = 3)
+    @Attribute(3)
     private final IfcColourOrFactor transmissionColour;
-    @Attribute(order = 4)
+    @Attribute(4)
     private final IfcColourOrFactor diffuseTransmissionColour;
-    @Attribute(order = 5)
+    @Attribute(5)
     private final IfcColourOrFactor reflectionColour;
-    @Attribute(order = 6)
+    @Attribute(6)
     private final IfcColourOrFactor specularColour;
-    @Attribute(order = 7)
+    @Attribute(7)
     private final IfcSpecularHighlightSelect specularHighlight;
-    @Attribute(order = 8)
+    @Attribute(8)
     private final IfcReflectanceMethodEnum reflectanceMethod;
 
     /**

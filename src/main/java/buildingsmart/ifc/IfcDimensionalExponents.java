@@ -42,19 +42,19 @@ import java.util.Objects;
  * and a time exponent of -1. The remaining exponents are equal to 0.</small>
  */
 public class IfcDimensionalExponents extends IfcEntity {
-    @Attribute(order = 0)
+    @Attribute(0)
     private final IfcInteger lengthExponent;
-    @Attribute(order = 1)
+    @Attribute(1)
     private final IfcInteger massExponent;
-    @Attribute(order = 2)
+    @Attribute(2)
     private final IfcInteger timeExponent;
-    @Attribute(order = 3)
+    @Attribute(3)
     private final IfcInteger electricCurrentExponent;
-    @Attribute(order = 4)
+    @Attribute(4)
     private final IfcInteger thermodynamicTemperatureExponent;
-    @Attribute(order = 5)
+    @Attribute(5)
     private final IfcInteger amountOfSubstanceExponent;
-    @Attribute(order = 6)
+    @Attribute(6)
     private final IfcInteger luminousIntensityExponent;
 
     /**

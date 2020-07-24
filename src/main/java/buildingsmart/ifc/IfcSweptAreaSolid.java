@@ -33,9 +33,9 @@ import java.util.Objects;
  * degrees).
  */
 public abstract class IfcSweptAreaSolid extends IfcSolidModel {
-    @Attribute(order = 0)
+    @Attribute(0)
     private final IfcProfileDef sweptArea;
-    @Attribute(order = 1)
+    @Attribute(1)
     private final IfcAxis2Placement3D position;
 
     /**

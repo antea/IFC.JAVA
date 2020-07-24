@@ -30,7 +30,7 @@ import java.util.Objects;
  * placement subtypes, gives its orientation.
  */
 public abstract class IfcPlacement extends IfcGeometricRepresentationItem {
-    @Attribute(order = 0)
+    @Attribute(0)
     private final IfcCartesianPoint location;
     //private int Dim;
 

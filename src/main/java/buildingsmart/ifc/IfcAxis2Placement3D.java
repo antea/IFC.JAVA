@@ -39,9 +39,9 @@ import java.util.Objects;
  */
 public class IfcAxis2Placement3D extends IfcPlacement
         implements IfcAxis2Placement {
-    @Attribute(order = 1)
+    @Attribute(1)
     private final IfcDirection axis;
-    @Attribute(order = 2)
+    @Attribute(2)
     private final IfcDirection refDirection;
     /**
      * The normalized directions of the placement X Axis (P[0]) and the

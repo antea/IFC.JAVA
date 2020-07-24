@@ -38,7 +38,7 @@ import java.util.Objects;
  * solid.
  */
 public abstract class IfcParameterizedProfileDef extends IfcProfileDef {
-    @Attribute(order = 2)
+    @Attribute(2)
     private final IfcAxis2Placement2D position;
 
     /**

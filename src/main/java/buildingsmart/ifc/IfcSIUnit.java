@@ -20,7 +20,7 @@
 package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
-import buildingsmart.io.IgnoreAttribute;
+import buildingsmart.io.DerivedAttributes;
 import buildingsmart.util.Functions;
 import lombok.NonNull;
 
@@ -30,11 +30,11 @@ import java.util.Objects;
  * An SI unit is the fixed quantity used as a standard in terms of which items
  * are measured as defined by ISO 1000 (clause 2).
  */
-@IgnoreAttribute("dimensions")
+@DerivedAttributes("dimensions")
 public class IfcSIUnit extends IfcNamedUnit {
-    @Attribute(order = 2)
+    @Attribute(2)
     private final IfcSIPrefix prefix;
-    @Attribute(order = 3)
+    @Attribute(3)
     private final IfcSIUnitName name;
 
     /**

@@ -92,9 +92,9 @@ import java.util.Objects;
  * profile tables for steel profiles.</p>
  */
 public abstract class IfcProfileDef extends IfcEntity {
-    @Attribute(order = 0)
+    @Attribute(0)
     private final IfcProfileTypeEnum profileType;
-    @Attribute(order = 1)
+    @Attribute(1)
     private final IfcLabel profileName;
 
     /**

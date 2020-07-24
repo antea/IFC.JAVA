@@ -84,9 +84,9 @@ import java.util.Set;
  * </blockquote>
  */
 public class IfcRelContainedInSpatialStructure extends IfcRelConnects {
-    @Attribute(order = 4)
+    @Attribute(4)
     private final Set<IfcProduct> relatedElements;
-    @Attribute(order = 5)
+    @Attribute(5)
     private final IfcSpatialStructureElement relatingStructure;
 
     /**

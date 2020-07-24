@@ -40,13 +40,13 @@ public class IfcApplication extends IfcEntity {
     private static final Set<IfcIdentifier> uniqueAppIdentifiers =
             new HashSet<>();
 
-    @Attribute(order = 0)
+    @Attribute(0)
     private final IfcOrganization applicationDeveloper;
-    @Attribute(order = 1)
+    @Attribute(1)
     private final IfcLabel version;
-    @Attribute(order = 2)
+    @Attribute(2)
     private final IfcLabel applicationFullName;
-    @Attribute(order = 3)
+    @Attribute(3)
     private final IfcIdentifier applicationIdentifier;
 
     /**

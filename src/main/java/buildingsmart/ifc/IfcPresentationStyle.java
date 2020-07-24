@@ -35,7 +35,7 @@ import java.util.Objects;
  * <i>IfcStyledItem</i> or one of its subtypes.</p>
  */
 public abstract class IfcPresentationStyle extends IfcEntity {
-    @Attribute(order = 0)
+    @Attribute(0)
     private final IfcLabel name;
 
     /**

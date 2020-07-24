@@ -71,7 +71,7 @@ import lombok.NonNull;
  * </ul>
  */
 public abstract class IfcObject extends IfcObjectDefinition {
-    @Attribute(order = 4)
+    @Attribute(4)
     private final IfcLabel objectType;
     //private IfcRelDefines[] IsDefinedBy;
 

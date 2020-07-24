@@ -31,7 +31,7 @@ import java.util.Objects;
  * established by the Position attribute.
  */
 public class IfcCircleProfileDef extends IfcParameterizedProfileDef {
-    @Attribute(order = 3)
+    @Attribute(3)
     private final IfcPositiveLengthMeasure radius;
 
     /**

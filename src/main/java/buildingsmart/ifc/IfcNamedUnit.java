@@ -20,7 +20,6 @@
 package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
-import buildingsmart.io.DerivedInSubclass;
 import buildingsmart.io.IfcEntity;
 import buildingsmart.util.Functions;
 import lombok.NonNull;
@@ -32,10 +31,9 @@ import java.util.Objects;
  * by which the unit is identified.
  */
 public abstract class IfcNamedUnit extends IfcEntity implements IfcUnit {
-    @Attribute(order = 0)
-    @DerivedInSubclass(IfcSIUnit.class)
+    @Attribute(0)
     private final IfcDimensionalExponents dimensions;
-    @Attribute(order = 1)
+    @Attribute(1)
     private final IfcUnitEnum unitType;
 
     /**

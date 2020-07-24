@@ -29,9 +29,9 @@ import java.util.Objects;
  * are related.
  */
 public class IfcRepresentationContext extends IfcEntity {
-    @Attribute(order = 0)
+    @Attribute(0)
     private final IfcLabel contextIdentifier;
-    @Attribute(order = 1)
+    @Attribute(1)
     private final IfcLabel contextType;
     //private IfcRepresentation[] RepresentationsInContext;
 

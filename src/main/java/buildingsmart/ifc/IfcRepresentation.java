@@ -34,13 +34,13 @@ import java.util.Set;
  * specified representation context as the representation of some concept.
  */
 public class IfcRepresentation extends IfcEntity {
-    @Attribute(order = 0)
+    @Attribute(0)
     private final IfcRepresentationContext contextOfItems;
-    @Attribute(order = 1)
+    @Attribute(1)
     private final IfcLabel representationIdentifier;
-    @Attribute(order = 2)
+    @Attribute(2)
     private final IfcLabel representationType;
-    @Attribute(order = 3)
+    @Attribute(3)
     private final Set<IfcRepresentationItem> items;
 
     @InverseRelationship

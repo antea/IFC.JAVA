@@ -35,11 +35,11 @@ import java.util.Set;
  * other representation for a product.</p>
  */
 public class IfcStyledItem extends IfcRepresentationItem {
-    @Attribute(order = 0)
+    @Attribute(0)
     private final IfcRepresentationItem item;
-    @Attribute(order = 1)
+    @Attribute(1)
     private final Set<IfcPresentationStyleAssignment> styles;
-    @Attribute(order = 2)
+    @Attribute(2)
     private final IfcLabel name;
 
     /**

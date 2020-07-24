@@ -47,9 +47,9 @@ import java.util.Objects;
  * profile.</P>
  */
 public class IfcExtrudedAreaSolid extends IfcSweptAreaSolid {
-    @Attribute(order = 2)
+    @Attribute(2)
     private final IfcDirection extrudedDirection;
-    @Attribute(order = 3)
+    @Attribute(3)
     private final IfcLengthMeasure depth;
 
     /**

@@ -34,7 +34,7 @@ import java.util.Objects;
  */
 public class IfcDirection extends IfcGeometricRepresentationItem
         implements IfcVectorOrDirection {
-    @Attribute(order = 0)
+    @Attribute(0)
     private final List<IfcReal> directionRatios;
     /**
      * This attribute is not part of the IFC specification, its only purpose is

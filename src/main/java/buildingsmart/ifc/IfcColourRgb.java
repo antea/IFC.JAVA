@@ -37,11 +37,11 @@ import java.util.Objects;
  */
 public class IfcColourRgb extends IfcColourSpecification
         implements IfcColourOrFactor {
-    @Attribute(order = 1)
+    @Attribute(1)
     private final IfcNormalisedRatioMeasure red;
-    @Attribute(order = 2)
+    @Attribute(2)
     private final IfcNormalisedRatioMeasure green;
-    @Attribute(order = 3)
+    @Attribute(3)
     private final IfcNormalisedRatioMeasure blue;
 
     /**

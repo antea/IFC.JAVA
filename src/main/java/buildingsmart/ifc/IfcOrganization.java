@@ -30,15 +30,15 @@ import java.util.Objects;
  * A named and structured grouping with a corporate identity.
  */
 public class IfcOrganization extends IfcEntity {
-    @Attribute(order = 0)
+    @Attribute(0)
     private final IfcIdentifier id;
-    @Attribute(order = 1)
+    @Attribute(1)
     private final IfcLabel name;
-    @Attribute(order = 2)
+    @Attribute(2)
     private final IfcText description;
-    @Attribute(order = 3)
+    @Attribute(3)
     private final List<IfcActorRole> roles;
-    @Attribute(order = 4)
+    @Attribute(4)
     private final List<IfcAddress> addresses;
     //private IfcOrganizationRelationship[] IsRelatedBy;
     //private IfcOrganizationRelationship[] Relates;
