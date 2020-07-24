@@ -20,7 +20,6 @@
 package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
-import buildingsmart.io.Order;
 import lombok.NonNull;
 
 import java.util.Objects;
@@ -94,29 +93,21 @@ import java.util.Objects;
  * </UL></BLOCKQUOTE>
  */
 public class IfcSurfaceStyleRendering extends IfcSurfaceStyleShading {
-    @Attribute
-    @Order(1)
+    @Attribute(order = 1)
     private final IfcNormalisedRatioMeasure transparency;
-    @Attribute
-    @Order(2)
+    @Attribute(order = 2)
     private final IfcColourOrFactor diffuseColour;
-    @Attribute
-    @Order(3)
+    @Attribute(order = 3)
     private final IfcColourOrFactor transmissionColour;
-    @Attribute
-    @Order(4)
+    @Attribute(order = 4)
     private final IfcColourOrFactor diffuseTransmissionColour;
-    @Attribute
-    @Order(5)
+    @Attribute(order = 5)
     private final IfcColourOrFactor reflectionColour;
-    @Attribute
-    @Order(6)
+    @Attribute(order = 6)
     private final IfcColourOrFactor specularColour;
-    @Attribute
-    @Order(7)
+    @Attribute(order = 7)
     private final IfcSpecularHighlightSelect specularHighlight;
-    @Attribute
-    @Order(8)
+    @Attribute(order = 8)
     private final IfcReflectanceMethodEnum reflectanceMethod;
 
     /**

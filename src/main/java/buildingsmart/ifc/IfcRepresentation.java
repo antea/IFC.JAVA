@@ -22,7 +22,6 @@ package buildingsmart.ifc;
 import buildingsmart.io.Attribute;
 import buildingsmart.io.IfcEntity;
 import buildingsmart.io.InverseRelationship;
-import buildingsmart.io.Order;
 import lombok.NonNull;
 
 import java.util.Arrays;
@@ -35,17 +34,13 @@ import java.util.Set;
  * specified representation context as the representation of some concept.
  */
 public class IfcRepresentation extends IfcEntity {
-    @Attribute
-    @Order(0)
+    @Attribute(order = 0)
     private final IfcRepresentationContext contextOfItems;
-    @Attribute
-    @Order(1)
+    @Attribute(order = 1)
     private final IfcLabel representationIdentifier;
-    @Attribute
-    @Order(2)
+    @Attribute(order = 2)
     private final IfcLabel representationType;
-    @Attribute
-    @Order(3)
+    @Attribute(order = 3)
     private final Set<IfcRepresentationItem> items;
 
     @InverseRelationship

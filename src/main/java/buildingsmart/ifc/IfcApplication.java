@@ -21,7 +21,6 @@ package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
 import buildingsmart.io.IfcEntity;
-import buildingsmart.io.Order;
 import buildingsmart.util.Pair;
 import lombok.NonNull;
 
@@ -41,17 +40,13 @@ public class IfcApplication extends IfcEntity {
     private static final Set<IfcIdentifier> uniqueAppIdentifiers =
             new HashSet<>();
 
-    @Attribute
-    @Order(0)
+    @Attribute(order = 0)
     private final IfcOrganization applicationDeveloper;
-    @Attribute
-    @Order(1)
+    @Attribute(order = 1)
     private final IfcLabel version;
-    @Attribute
-    @Order(2)
+    @Attribute(order = 2)
     private final IfcLabel applicationFullName;
-    @Attribute
-    @Order(3)
+    @Attribute(order = 3)
     private final IfcIdentifier applicationIdentifier;
 
     /**

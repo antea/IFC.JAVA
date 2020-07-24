@@ -21,7 +21,6 @@ package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
 import buildingsmart.io.IfcEntity;
-import buildingsmart.io.Order;
 import lombok.NonNull;
 
 import java.util.Objects;
@@ -43,26 +42,19 @@ import java.util.Objects;
  * and a time exponent of -1. The remaining exponents are equal to 0.</small>
  */
 public class IfcDimensionalExponents extends IfcEntity {
-    @Attribute
-    @Order(0)
+    @Attribute(order = 0)
     private final IfcInteger lengthExponent;
-    @Attribute
-    @Order(1)
+    @Attribute(order = 1)
     private final IfcInteger massExponent;
-    @Attribute
-    @Order(2)
+    @Attribute(order = 2)
     private final IfcInteger timeExponent;
-    @Attribute
-    @Order(3)
+    @Attribute(order = 3)
     private final IfcInteger electricCurrentExponent;
-    @Attribute
-    @Order(4)
+    @Attribute(order = 4)
     private final IfcInteger thermodynamicTemperatureExponent;
-    @Attribute
-    @Order(5)
+    @Attribute(order = 5)
     private final IfcInteger amountOfSubstanceExponent;
-    @Attribute
-    @Order(6)
+    @Attribute(order = 6)
     private final IfcInteger luminousIntensityExponent;
 
     /**

@@ -21,7 +21,6 @@ package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
 import buildingsmart.io.IfcEntity;
-import buildingsmart.io.Order;
 import buildingsmart.util.Functions;
 import lombok.NonNull;
 
@@ -43,8 +42,7 @@ import java.util.concurrent.CopyOnWriteArraySet;
  * project unit assignment.</small>
  */
 public class IfcUnitAssignment extends IfcEntity {
-    @Attribute
-    @Order(0)
+    @Attribute(order = 0)
     private final Set<IfcUnit> units;
 
     /**

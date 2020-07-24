@@ -21,7 +21,6 @@ package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
 import buildingsmart.io.IfcEntity;
-import buildingsmart.io.Order;
 import lombok.NonNull;
 
 import java.util.Arrays;
@@ -34,8 +33,7 @@ import java.util.Set;
  * styled items for the purpose of presenting these styled items.
  */
 public class IfcPresentationStyleAssignment extends IfcEntity {
-    @Attribute
-    @Order(0)
+    @Attribute(order = 0)
     private final Set<IfcPresentationStyleSelect> styles;
 
     /**

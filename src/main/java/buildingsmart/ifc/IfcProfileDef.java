@@ -21,7 +21,6 @@ package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
 import buildingsmart.io.IfcEntity;
-import buildingsmart.io.Order;
 import lombok.NonNull;
 
 import java.util.Objects;
@@ -93,11 +92,9 @@ import java.util.Objects;
  * profile tables for steel profiles.</p>
  */
 public abstract class IfcProfileDef extends IfcEntity {
-    @Attribute
-    @Order(0)
+    @Attribute(order = 0)
     private final IfcProfileTypeEnum profileType;
-    @Attribute
-    @Order(1)
+    @Attribute(order = 1)
     private final IfcLabel profileName;
 
     /**

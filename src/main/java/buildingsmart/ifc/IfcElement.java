@@ -20,7 +20,6 @@
 package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
-import buildingsmart.io.Order;
 import lombok.NonNull;
 
 /**
@@ -91,8 +90,7 @@ import lombok.NonNull;
  * </p>
  */
 public abstract class IfcElement extends IfcProduct {
-    @Attribute
-    @Order(7)
+    @Attribute(order = 7)
     private final IfcIdentifier tag;
     /*
     private IfcRelConnectsStructuralElement[] HasStructuralMember;

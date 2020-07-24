@@ -21,7 +21,6 @@ package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
 import buildingsmart.io.IfcEntity;
-import buildingsmart.io.Order;
 import lombok.NonNull;
 
 import java.util.Objects;
@@ -32,29 +31,21 @@ import java.util.Objects;
  * objects, relationships and properties.
  */
 public class IfcOwnerHistory extends IfcEntity {
-    @Attribute
-    @Order(0)
+    @Attribute(order = 0)
     private final IfcPersonAndOrganization owningUser;
-    @Attribute
-    @Order(1)
+    @Attribute(order = 1)
     private final IfcApplication owningApplication;
-    @Attribute
-    @Order(2)
+    @Attribute(order = 2)
     private final IfcStateEnum state;
-    @Attribute
-    @Order(3)
+    @Attribute(order = 3)
     private final IfcChangeActionEnum changeAction;
-    @Attribute
-    @Order(4)
+    @Attribute(order = 4)
     private final IfcTimeStamp lastModifiedDate;
-    @Attribute
-    @Order(5)
+    @Attribute(order = 5)
     private final IfcPersonAndOrganization lastModifyingUser;
-    @Attribute
-    @Order(6)
+    @Attribute(order = 6)
     private final IfcApplication lastModifyingApplication;
-    @Attribute
-    @Order(7)
+    @Attribute(order = 7)
     private final IfcTimeStamp creationDate;
 
     /**

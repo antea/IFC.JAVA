@@ -49,15 +49,12 @@ public class Serializer {
      * InverseRelationship.class}, returns the attributes of {@code entity}
      * representing an inverse relationship.</p> In the first case the returned
      * array is ordered according to the order defined by {@code entity}'s
-     * fields' {@link Order} annotation. If there are no attributes, the
+     * fields' {@link Attribute} annotation. If there are no attributes, the
      * returned array will have length == 0.
      *
      * @throws IllegalArgumentException If {@code type} is not {@code
      *                                  Attribute.class} nor {@code
      *                                  InverseRelationship.class}.
-     * @throws IllegalArgumentException If the given {@code entity} contains
-     *                                  Fields that are annotated with {@link
-     *                                  Attribute} but not with {@link Order}.
      * @throws NullPointerException     If {@code entity} or {@code type} is
      *                                  null.
      * @throws SecurityException        If a security manager, <i>s</i>, is
@@ -107,7 +104,11 @@ public class Serializer {
         List<Field> fields = getAllFields(entity.getClass());
         fields.removeIf(field -> field.getAnnotation(type) == null);
         if (type.equals(Attribute.class)) {
-            sortFields(fields);
+            fields.sort((field1, field2) -> {
+                int order1 = field1.getAnnotation(Attribute.class).order();
+                int order2 = field2.getAnnotation(Attribute.class).order();
+                return order1 - order2;
+            });
         }
         Object[] attributes = new Object[fields.size()];
         for (int i = 0; i < attributes.length; i++) {
@@ -168,28 +169,6 @@ public class Serializer {
     }
 
     /**
-     * Sorts a List of Fields based on the value of the field's Order annotation
-     * (ascending).
-     *
-     * @param unsortedFields The List of Field to sort. All Fields should be
-     *                       annotated with {@link Order}.
-     * @throws IllegalArgumentException If any of the Fields in unsortedFields
-     *                                  are not annotated with {@link Order}.
-     */
-    private static void sortFields(List<Field> unsortedFields) {
-        unsortedFields.sort((field1, field2) -> {
-            Order order1 = field1.getAnnotation(Order.class);
-            Order order2 = field2.getAnnotation(Order.class);
-            if (order1 != null && order2 != null) {
-                return order1.value() - order2.value();
-            }
-            throw new IllegalArgumentException(
-                    "unsortedFields must contain only Fields annotated " +
-                            "with Order");
-        });
-    }
-
-    /**
      * Creates a File in the given filePath. If some of the directories in the
      * filePath do not exist, this method creates them.
      *
@@ -238,14 +217,6 @@ public class Serializer {
      * @param project  The {@link IfcProject} to serialize.
      * @param filePath The path to the file to create, or to an already existing
      *                 file.
-     * @throws IllegalArgumentException If the tree having the IfcProject as its
-     *                                  root, where parent nodes are IfcEntity
-     *                                  types and children are the {@link
-     *                                  Attribute}s and
-     *                                  {@link InverseRelationship}s
-     *                                  of the parent node, contains nodes whose
-     *                                  Fields are annotated with {@link
-     *                                  Attribute} but not with {@link Order}.
      * @throws IllegalArgumentException If {@code header} is null; if {@code
      *                                  filePath} is null or empty.
      * @throws IOException              If the file exists but is a directory
@@ -361,47 +332,43 @@ public class Serializer {
      *          file will be returned;</li>
      * </ul>
      *
-     * @throws IllegalArgumentException If the given {@code obj} is an IfcEntity
-     *                                  and contains Fields that are annotated
-     *                                  with {@link Attribute} but not with
-     *                                  {@link Order}.
-     * @throws IOException              If an I/O error occurs.
-     * @throws SecurityException        If obj is an instance of a class that
-     *                                  extends IfcEntity, a security manager,
-     *                                  <i>s</i>, is present and any of the
-     *                                  following conditions is met:
-     *                                  <ul>
-     *                                    <li>
-     *                                      the class loader of {@code
-     *                                      Serializer} is not the same as
-     *                                      the class loader of {@code obj
-     *                                      .getClass()} and invocation of
-     *                                      {@link SecurityManager
-     *                                      #checkPermission(Permission)}
-     *                                      method with {@code
-     *                                      RuntimePermission
-     *                                      ("accessDeclaredMembers")} denies
-     *                                      access to the declared fields
-     *                                      within{@code obj.getClass()}
-     *                                    </li>
-     *                                    <li>
-     *                                      the class loader of
-     *                                      {@link Serializer} is not the
-     *                                      same as or an ancestor of the
-     *                                      class loader for {@code obj
-     *                                      .getClass()} and invocation of
-     *                                      {@link SecurityManager
-     *                                      #checkPackageAccess(String) denies
-     *                                      access to the package of
-     *                                      {@code obj.getClass()}
-     *                                    </li>
-     *                                  </ul>
-     * @throws SecurityException        If obj is an instance of IfcEntity, a
-     *                                  security manager is present and access
-     *                                  to private Fields of {@code obj} by
-     *                                  calling { @link Field#setAccessible
-     *                                  (boolean)} is not permitted based on the
-     *                                  security policy currently in effect.
+     * @throws IOException       If an I/O error occurs.
+     * @throws SecurityException If obj is an instance of a class that extends
+     *                           IfcEntity, a security manager,
+     *                           <i>s</i>, is present and any of the
+     *                           following conditions is met:
+     *                           <ul>
+     *                             <li>
+     *                               the class loader of {@code
+     *                               Serializer} is not the same as
+     *                               the class loader of {@code obj
+     *                               .getClass()} and invocation of
+     *                               {@link SecurityManager
+     *                               #checkPermission(Permission)}
+     *                               method with {@code
+     *                               RuntimePermission
+     *                               ("accessDeclaredMembers")} denies
+     *                               access to the declared fields
+     *                               within{@code obj.getClass()}
+     *                             </li>
+     *                             <li>
+     *                               the class loader of
+     *                               {@link Serializer} is not the
+     *                               same as or an ancestor of the
+     *                               class loader for {@code obj
+     *                               .getClass()} and invocation of
+     *                               {@link SecurityManager
+     *                               #checkPackageAccess(String) denies
+     *                               access to the package of
+     *                               {@code obj.getClass()}
+     *                             </li>
+     *                           </ul>
+     * @throws SecurityException If obj is an instance of IfcEntity, a security
+     *                           manager is present and access to private Fields
+     *                           of {@code obj} by calling { @link
+     *                           Field#setAccessible (boolean)} is not permitted
+     *                           based on the security policy currently in
+     *                           effect.
      */
     private String serialize(Object obj) throws IOException {
         if (obj == null) {

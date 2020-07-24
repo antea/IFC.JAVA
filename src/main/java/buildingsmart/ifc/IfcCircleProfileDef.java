@@ -20,7 +20,6 @@
 package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
-import buildingsmart.io.Order;
 import lombok.NonNull;
 
 import java.util.Objects;
@@ -32,8 +31,7 @@ import java.util.Objects;
  * established by the Position attribute.
  */
 public class IfcCircleProfileDef extends IfcParameterizedProfileDef {
-    @Attribute
-    @Order(3)
+    @Attribute(order = 3)
     private final IfcPositiveLengthMeasure radius;
 
     /**

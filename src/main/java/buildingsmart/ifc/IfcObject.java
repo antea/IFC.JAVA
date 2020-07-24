@@ -20,7 +20,6 @@
 package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
-import buildingsmart.io.Order;
 import lombok.NonNull;
 
 /**
@@ -72,8 +71,7 @@ import lombok.NonNull;
  * </ul>
  */
 public abstract class IfcObject extends IfcObjectDefinition {
-    @Attribute
-    @Order(4)
+    @Attribute(order = 4)
     private final IfcLabel objectType;
     //private IfcRelDefines[] IsDefinedBy;
 

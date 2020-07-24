@@ -25,11 +25,16 @@ import java.lang.annotation.Target;
 
 /**
  * Indicates a field that is an attribute of an IFC entity, meaning that it must
- * be included in the serialization of the entity. All fields having this
- * annotation must also be annotated with {@link Order}, and they cannot be
- * annotated with {@link InverseRelationship}.
+ * be included in the serialization of the entity. Fields having this annotation
+ * cannot be annotated with {@link InverseRelationship}. {@code order()}
+ * indicates the order in which the annotated fields should be serialized in an
+ * IFC file (ascending). All fields annotated with {@link Attribute} must have a
+ * different order between each other (including fields of superclasses). The
+ * ordering must follow what is outlined in the IFC specification of each class
+ * (look at the section "Inheritance graph" in the corresponding IFC entity).
  */
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Attribute {
+    int order();
 }

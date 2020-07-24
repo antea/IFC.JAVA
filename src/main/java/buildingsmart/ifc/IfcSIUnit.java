@@ -21,7 +21,6 @@ package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
 import buildingsmart.io.IgnoreAttribute;
-import buildingsmart.io.Order;
 import buildingsmart.util.Functions;
 import lombok.NonNull;
 
@@ -33,11 +32,9 @@ import java.util.Objects;
  */
 @IgnoreAttribute("dimensions")
 public class IfcSIUnit extends IfcNamedUnit {
-    @Attribute
-    @Order(2)
+    @Attribute(order = 2)
     private final IfcSIPrefix prefix;
-    @Attribute
-    @Order(3)
+    @Attribute(order = 3)
     private final IfcSIUnitName name;
 
     /**

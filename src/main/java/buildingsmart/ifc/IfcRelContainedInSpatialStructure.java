@@ -20,7 +20,6 @@
 package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
-import buildingsmart.io.Order;
 import lombok.NonNull;
 
 import java.util.Arrays;
@@ -85,11 +84,9 @@ import java.util.Set;
  * </blockquote>
  */
 public class IfcRelContainedInSpatialStructure extends IfcRelConnects {
-    @Attribute
-    @Order(4)
+    @Attribute(order = 4)
     private final Set<IfcProduct> relatedElements;
-    @Attribute
-    @Order(5)
+    @Attribute(order = 5)
     private final IfcSpatialStructureElement relatingStructure;
 
     /**

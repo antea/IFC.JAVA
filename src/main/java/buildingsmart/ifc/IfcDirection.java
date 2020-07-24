@@ -20,7 +20,6 @@
 package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
-import buildingsmart.io.Order;
 import buildingsmart.util.Functions;
 import lombok.NonNull;
 
@@ -35,8 +34,7 @@ import java.util.Objects;
  */
 public class IfcDirection extends IfcGeometricRepresentationItem
         implements IfcVectorOrDirection {
-    @Attribute
-    @Order(0)
+    @Attribute(order = 0)
     private final List<IfcReal> directionRatios;
     /**
      * This attribute is not part of the IFC specification, its only purpose is

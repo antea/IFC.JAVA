@@ -20,7 +20,6 @@
 package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
-import buildingsmart.io.Order;
 import buildingsmart.util.Functions;
 import lombok.NonNull;
 
@@ -48,11 +47,9 @@ import java.util.Objects;
  * profile.</P>
  */
 public class IfcExtrudedAreaSolid extends IfcSweptAreaSolid {
-    @Attribute
-    @Order(2)
+    @Attribute(order = 2)
     private final IfcDirection extrudedDirection;
-    @Attribute
-    @Order(3)
+    @Attribute(order = 3)
     private final IfcLengthMeasure depth;
 
     /**

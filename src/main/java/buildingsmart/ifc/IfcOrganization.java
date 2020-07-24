@@ -21,7 +21,6 @@ package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
 import buildingsmart.io.IfcEntity;
-import buildingsmart.io.Order;
 import lombok.NonNull;
 
 import java.util.List;
@@ -31,20 +30,15 @@ import java.util.Objects;
  * A named and structured grouping with a corporate identity.
  */
 public class IfcOrganization extends IfcEntity {
-    @Attribute
-    @Order(0)
+    @Attribute(order = 0)
     private final IfcIdentifier id;
-    @Attribute
-    @Order(1)
+    @Attribute(order = 1)
     private final IfcLabel name;
-    @Attribute
-    @Order(2)
+    @Attribute(order = 2)
     private final IfcText description;
-    @Attribute
-    @Order(3)
+    @Attribute(order = 3)
     private final List<IfcActorRole> roles;
-    @Attribute
-    @Order(4)
+    @Attribute(order = 4)
     private final List<IfcAddress> addresses;
     //private IfcOrganizationRelationship[] IsRelatedBy;
     //private IfcOrganizationRelationship[] Relates;

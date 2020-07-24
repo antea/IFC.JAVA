@@ -20,7 +20,6 @@
 package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
-import buildingsmart.io.Order;
 import lombok.NonNull;
 
 import java.util.Arrays;
@@ -43,11 +42,9 @@ import java.util.Set;
  */
 public class IfcSurfaceStyle extends IfcPresentationStyle
         implements IfcPresentationStyleSelect {
-    @Attribute
-    @Order(1)
+    @Attribute(order = 1)
     private final IfcSurfaceSide side;
-    @Attribute
-    @Order(2)
+    @Attribute(order = 2)
     private final Set<IfcSurfaceStyleElementSelect> styles;
 
     /**

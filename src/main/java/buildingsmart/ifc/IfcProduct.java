@@ -20,7 +20,6 @@
 package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
-import buildingsmart.io.Order;
 import lombok.NonNull;
 
 /**
@@ -63,11 +62,9 @@ import lombok.NonNull;
  * is set to <font size="-1">USERDEFINED</font>.</p>
  */
 public abstract class IfcProduct extends IfcObject {
-    @Attribute
-    @Order(5)
+    @Attribute(order = 5)
     private final IfcObjectPlacement objectPlacement;
-    @Attribute
-    @Order(6)
+    @Attribute(order = 6)
     private final IfcProductRepresentation representation;
     //private IfcRelAssignsToProduct[] referencedBy;
 

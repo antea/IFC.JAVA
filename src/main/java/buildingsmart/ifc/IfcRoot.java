@@ -21,7 +21,6 @@ package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
 import buildingsmart.io.IfcEntity;
-import buildingsmart.io.Order;
 import lombok.NonNull;
 
 import java.util.HashSet;
@@ -44,17 +43,13 @@ import java.util.Set;
 public abstract class IfcRoot extends IfcEntity {
     private static final Set<IfcGloballyUniqueId> uniqueGlobalIds =
             new HashSet<>();
-    @Attribute
-    @Order(0)
+    @Attribute(order = 0)
     private final IfcGloballyUniqueId globalId;
-    @Attribute
-    @Order(1)
+    @Attribute(order = 1)
     private final IfcOwnerHistory ownerHistory;
-    @Attribute
-    @Order(2)
+    @Attribute(order = 2)
     private final IfcLabel name;
-    @Attribute
-    @Order(3)
+    @Attribute(order = 3)
     private final IfcText description;
 
     /**

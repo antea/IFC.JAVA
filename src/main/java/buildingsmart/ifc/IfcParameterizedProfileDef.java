@@ -20,7 +20,6 @@
 package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
-import buildingsmart.io.Order;
 import lombok.NonNull;
 
 import java.util.Objects;
@@ -39,8 +38,7 @@ import java.util.Objects;
  * solid.
  */
 public abstract class IfcParameterizedProfileDef extends IfcProfileDef {
-    @Attribute
-    @Order(2)
+    @Attribute(order = 2)
     private final IfcAxis2Placement2D position;
 
     /**

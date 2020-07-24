@@ -20,7 +20,6 @@
 package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
-import buildingsmart.io.Order;
 import lombok.NonNull;
 
 import java.util.Objects;
@@ -37,17 +36,13 @@ import java.util.Objects;
  */
 public class IfcGeometricRepresentationContext
         extends IfcRepresentationContext {
-    @Attribute
-    @Order(2)
+    @Attribute(order = 2)
     private final IfcDimensionCount coordinateSpaceDimension;
-    @Attribute
-    @Order(3)
+    @Attribute(order = 3)
     private final IfcReal precision;
-    @Attribute
-    @Order(4)
+    @Attribute(order = 4)
     private final IfcAxis2Placement worldCoordinateSystem;
-    @Attribute
-    @Order(5)
+    @Attribute(order = 5)
     private final IfcDirection trueNorth;
     //private IfcGeometricRepresentationSubContext[] HasSubContexts;
 

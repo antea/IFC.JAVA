@@ -25,9 +25,8 @@ package buildingsmart.io;
  * </p>
  * Subclasses of this class must have fields of type {@link IfcEntity} (or
  * Collections thereof) annotated with either {@link Attribute} or {@link
- * InverseRelationship}, in the first case they must also be annotated with {@link
- * Order}. Fields of type {@link IfcDefinedType} must be annotated with {@link
- * Attribute} and {@link Order}.
+ * InverseRelationship}. Fields of type {@link IfcDefinedType} must be annotated
+ * with {@link Attribute}.
  */
 public abstract class IfcEntity {
 

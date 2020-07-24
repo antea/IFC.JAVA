@@ -20,7 +20,6 @@
 package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
-import buildingsmart.io.Order;
 import lombok.NonNull;
 
 import java.util.Collections;
@@ -36,14 +35,11 @@ import java.util.Set;
  * other representation for a product.</p>
  */
 public class IfcStyledItem extends IfcRepresentationItem {
-    @Attribute
-    @Order(0)
+    @Attribute(order = 0)
     private final IfcRepresentationItem item;
-    @Attribute
-    @Order(1)
+    @Attribute(order = 1)
     private final Set<IfcPresentationStyleAssignment> styles;
-    @Attribute
-    @Order(2)
+    @Attribute(order = 2)
     private final IfcLabel name;
 
     /**

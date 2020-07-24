@@ -20,7 +20,6 @@
 package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
-import buildingsmart.io.Order;
 import lombok.NonNull;
 
 import java.util.Objects;
@@ -34,11 +33,9 @@ import java.util.Objects;
  * degrees).
  */
 public abstract class IfcSweptAreaSolid extends IfcSolidModel {
-    @Attribute
-    @Order(0)
+    @Attribute(order = 0)
     private final IfcProfileDef sweptArea;
-    @Attribute
-    @Order(1)
+    @Attribute(order = 1)
     private final IfcAxis2Placement3D position;
 
     /**

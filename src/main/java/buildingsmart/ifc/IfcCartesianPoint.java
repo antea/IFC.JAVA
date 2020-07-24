@@ -20,7 +20,6 @@
 package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
-import buildingsmart.io.Order;
 import lombok.NonNull;
 
 import java.util.ArrayList;
@@ -33,8 +32,7 @@ import java.util.Objects;
  * entity is defined in a two or three dimensional space.
  */
 public class IfcCartesianPoint extends IfcPoint {
-    @Attribute
-    @Order(0)
+    @Attribute(order = 0)
     private final List<IfcLengthMeasure> coordinates;
     private final IfcDimensionCount dim; // derived attribute
 

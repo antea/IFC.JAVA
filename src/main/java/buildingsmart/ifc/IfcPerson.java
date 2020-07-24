@@ -21,7 +21,6 @@ package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
 import buildingsmart.io.IfcEntity;
-import buildingsmart.io.Order;
 
 import java.util.List;
 import java.util.Objects;
@@ -30,29 +29,21 @@ import java.util.Objects;
  * An individual human being.
  */
 public class IfcPerson extends IfcEntity {
-    @Attribute
-    @Order(0)
+    @Attribute(order = 0)
     private final IfcIdentifier id;
-    @Attribute
-    @Order(1)
+    @Attribute(order = 1)
     private final IfcLabel familyName;
-    @Attribute
-    @Order(2)
+    @Attribute(order = 2)
     private final IfcLabel givenName;
-    @Attribute
-    @Order(3)
+    @Attribute(order = 3)
     private final List<IfcLabel> middleNames;
-    @Attribute
-    @Order(4)
+    @Attribute(order = 4)
     private final List<IfcLabel> prefixTitles;
-    @Attribute
-    @Order(5)
+    @Attribute(order = 5)
     private final List<IfcLabel> suffixTitles;
-    @Attribute
-    @Order(6)
+    @Attribute(order = 6)
     private final List<IfcActorRole> roles;
-    @Attribute
-    @Order(7)
+    @Attribute(order = 7)
     private final List<IfcAddress> addresses;
     //private IfcPersonAndOrganization[] engagedIn;
 

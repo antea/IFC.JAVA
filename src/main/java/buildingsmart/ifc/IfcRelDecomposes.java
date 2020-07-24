@@ -20,7 +20,6 @@
 package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
-import buildingsmart.io.Order;
 import lombok.NonNull;
 
 import java.util.Arrays;
@@ -53,11 +52,9 @@ import java.util.Set;
  * Cyclic references have to be prevented at application level.</P>
  */
 public class IfcRelDecomposes extends IfcRelationship {
-    @Attribute
-    @Order(4)
+    @Attribute(order = 4)
     private final IfcObjectDefinition relatingObject;
-    @Attribute
-    @Order(5)
+    @Attribute(order = 5)
     private final Set<IfcObjectDefinition> relatedObjects;
 
     /**

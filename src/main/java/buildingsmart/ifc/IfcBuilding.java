@@ -20,7 +20,6 @@
 package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
-import buildingsmart.io.Order;
 import lombok.NonNull;
 
 /**
@@ -325,14 +324,11 @@ import lombok.NonNull;
  * </p>
  */
 public class IfcBuilding extends IfcSpatialStructureElement {
-    @Attribute
-    @Order(9)
+    @Attribute(order = 9)
     private final IfcLengthMeasure elevationOfRefHeight;
-    @Attribute
-    @Order(10)
+    @Attribute(order = 10)
     private final IfcLengthMeasure elevationOfTerrain;
-    @Attribute
-    @Order(11)
+    @Attribute(order = 11)
     private final IfcPostalAddress buildingAddress;
 
     /**

@@ -21,7 +21,6 @@ package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
 import buildingsmart.io.InverseRelationship;
-import buildingsmart.io.Order;
 import lombok.NonNull;
 
 import java.util.HashSet;
@@ -81,11 +80,9 @@ import java.util.Set;
  * </ol>
  */
 public abstract class IfcSpatialStructureElement extends IfcProduct {
-    @Attribute
-    @Order(7)
+    @Attribute(order = 7)
     private final IfcLabel longName;
-    @Attribute
-    @Order(8)
+    @Attribute(order = 8)
     private final IfcElementCompositionEnum compositionType;
     //private IfcRelReferencedInSpatialStructure[] ReferencesElements;
 

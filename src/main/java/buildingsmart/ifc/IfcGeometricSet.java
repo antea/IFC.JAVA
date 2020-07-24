@@ -20,7 +20,6 @@
 package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
-import buildingsmart.io.Order;
 import lombok.NonNull;
 
 import java.util.Arrays;
@@ -35,8 +34,7 @@ import java.util.Set;
  * solid models (such as swept solids, CSG or Brep).
  */
 public class IfcGeometricSet extends IfcGeometricRepresentationItem {
-    @Attribute
-    @Order(0)
+    @Attribute(order = 0)
     private final Set<IfcGeometricSetSelect> elements;
     //private int dim;
 

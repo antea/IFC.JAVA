@@ -21,7 +21,6 @@ package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
 import buildingsmart.io.IfcEntity;
-import buildingsmart.io.Order;
 
 import java.util.Objects;
 
@@ -30,11 +29,9 @@ import java.util.Objects;
  * are related.
  */
 public class IfcRepresentationContext extends IfcEntity {
-    @Attribute
-    @Order(0)
+    @Attribute(order = 0)
     private final IfcLabel contextIdentifier;
-    @Attribute
-    @Order(1)
+    @Attribute(order = 1)
     private final IfcLabel contextType;
     //private IfcRepresentation[] RepresentationsInContext;
 

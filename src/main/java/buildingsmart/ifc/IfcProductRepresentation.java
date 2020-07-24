@@ -21,7 +21,6 @@ package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
 import buildingsmart.io.IfcEntity;
-import buildingsmart.io.Order;
 import lombok.NonNull;
 
 import java.util.Arrays;
@@ -36,14 +35,11 @@ import java.util.Objects;
  * representations.<br>
  */
 public class IfcProductRepresentation extends IfcEntity {
-    @Attribute
-    @Order(0)
+    @Attribute(order = 0)
     private final IfcLabel name;
-    @Attribute
-    @Order(1)
+    @Attribute(order = 1)
     private final IfcText description;
-    @Attribute
-    @Order(2)
+    @Attribute(order = 2)
     private final List<IfcRepresentation> representations;
 
     /**

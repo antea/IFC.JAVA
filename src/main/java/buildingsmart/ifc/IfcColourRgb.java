@@ -20,7 +20,6 @@
 package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
-import buildingsmart.io.Order;
 import lombok.NonNull;
 
 import java.util.Objects;
@@ -38,14 +37,11 @@ import java.util.Objects;
  */
 public class IfcColourRgb extends IfcColourSpecification
         implements IfcColourOrFactor {
-    @Attribute
-    @Order(1)
+    @Attribute(order = 1)
     private final IfcNormalisedRatioMeasure red;
-    @Attribute
-    @Order(2)
+    @Attribute(order = 2)
     private final IfcNormalisedRatioMeasure green;
-    @Attribute
-    @Order(3)
+    @Attribute(order = 3)
     private final IfcNormalisedRatioMeasure blue;
 
     /**

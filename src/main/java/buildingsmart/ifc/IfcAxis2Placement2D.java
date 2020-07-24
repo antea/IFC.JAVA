@@ -20,7 +20,6 @@
 package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
-import buildingsmart.io.Order;
 import lombok.EqualsAndHashCode;
 import lombok.NonNull;
 import lombok.ToString;
@@ -40,8 +39,7 @@ import lombok.ToString;
 @ToString(callSuper = true, of = {"refDirection"})
 public class IfcAxis2Placement2D extends IfcPlacement
         implements IfcAxis2Placement {
-    @Attribute
-    @Order(1)
+    @Attribute(order = 1)
     private final IfcDirection refDirection;
     //private IfcDirection[] P;
 

@@ -20,7 +20,6 @@
 package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
-import buildingsmart.io.Order;
 import lombok.NonNull;
 
 import java.util.Set;
@@ -43,17 +42,13 @@ import java.util.Set;
  * </ul>
  */
 public class IfcProject extends IfcObject {
-    @Attribute
-    @Order(5)
+    @Attribute(order = 5)
     private final IfcLabel longName;
-    @Attribute
-    @Order(6)
+    @Attribute(order = 6)
     private final IfcLabel phase;
-    @Attribute
-    @Order(7)
+    @Attribute(order = 7)
     private final Set<IfcRepresentationContext> representationContexts;
-    @Attribute
-    @Order(8)
+    @Attribute(order = 8)
     private final IfcUnitAssignment unitsInContext;
 
     /**

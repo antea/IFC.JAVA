@@ -21,7 +21,6 @@ package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
 import buildingsmart.io.IfcEntity;
-import buildingsmart.io.Order;
 import lombok.NonNull;
 
 import java.util.Objects;
@@ -40,11 +39,9 @@ import java.util.Objects;
  * </ol>
  */
 public class IfcMeasureWithUnit extends IfcEntity {
-    @Attribute
-    @Order(0)
+    @Attribute(order = 0)
     private final IfcValue valueComponent;
-    @Attribute
-    @Order(1)
+    @Attribute(order = 1)
     private final IfcUnit unitComponent;
 
     /**

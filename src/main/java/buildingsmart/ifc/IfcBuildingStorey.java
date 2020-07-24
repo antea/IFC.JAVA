@@ -20,7 +20,6 @@
 package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
-import buildingsmart.io.Order;
 import lombok.NonNull;
 
 /**
@@ -309,8 +308,7 @@ import lombok.NonNull;
  * </p>
  */
 public class IfcBuildingStorey extends IfcSpatialStructureElement {
-    @Attribute
-    @Order(9)
+    @Attribute(order = 9)
     private final IfcLengthMeasure elevation;
 
     /**

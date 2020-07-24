@@ -20,7 +20,6 @@
 package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
-import buildingsmart.io.Order;
 import lombok.NonNull;
 
 import java.util.Objects;
@@ -93,11 +92,9 @@ import java.util.Objects;
  * </TABLE>
  */
 public class IfcConversionBasedUnit extends IfcNamedUnit {
-    @Attribute
-    @Order(2)
+    @Attribute(order = 2)
     private final IfcLabel name;
-    @Attribute
-    @Order(3)
+    @Attribute(order = 3)
     private final IfcMeasureWithUnit conversionFactor;
 
     /**

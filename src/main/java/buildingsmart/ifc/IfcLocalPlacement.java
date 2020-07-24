@@ -20,7 +20,6 @@
 package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
-import buildingsmart.io.Order;
 import buildingsmart.util.Functions;
 import lombok.NonNull;
 
@@ -41,11 +40,9 @@ import java.util.Objects;
  * system.</p>
  */
 public class IfcLocalPlacement extends IfcObjectPlacement {
-    @Attribute
-    @Order(0)
+    @Attribute(order = 0)
     private final IfcObjectPlacement placementRelTo;
-    @Attribute
-    @Order(1)
+    @Attribute(order = 1)
     private final IfcAxis2Placement relativePlacement;
 
     /**
