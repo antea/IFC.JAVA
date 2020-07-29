@@ -82,6 +82,10 @@ public class IfcExtrudedAreaSolid extends IfcSweptAreaSolid {
         if (depth == null) {
             throw new IllegalArgumentException("depth cannot be null");
         }
+        if (extrudedDirection.getDim().getValue() != 3) {
+            throw new IllegalArgumentException(
+                    "extrudedDirection must be three-dimensional");
+        }
         if (Functions
                 .ifcDotProduct(new IfcDirection(0, 0, 1), extrudedDirection)
                 .getValue() == 0) {

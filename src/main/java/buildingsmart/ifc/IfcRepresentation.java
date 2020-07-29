@@ -68,19 +68,13 @@ public class IfcRepresentation extends IfcEntity {
      *                                 be specified by implementers agreements.
      * @param items                    Set of geometric representation items
      *                                 that are defined for this representation.
-     * @throws IllegalArgumentException If contextOfItems or items are null; if
-     *                                  the size of items is lower than 1.
+     * @throws NullPointerException     If contextOfItems or items are null.
+     * @throws IllegalArgumentException If the size of items is lower than 1.
      */
     public IfcRepresentation(@NonNull IfcRepresentationContext contextOfItems,
                              IfcLabel representationIdentifier,
                              IfcLabel representationType,
                              @NonNull Set<IfcRepresentationItem> items) {
-        if (contextOfItems == null) {
-            throw new IllegalArgumentException("contextOfItems cannot be null");
-        }
-        if (items == null) {
-            throw new IllegalArgumentException("items cannot be null");
-        }
         if (items.size() < 1) {
             throw new IllegalArgumentException(
                     "size of items must be at least 1");
@@ -110,15 +104,17 @@ public class IfcRepresentation extends IfcEntity {
      *                                 be specified by implementers agreements.
      * @param items                    Set of geometric representation items
      *                                 that are defined for this representation.
-     * @throws IllegalArgumentException If contextOfItems or items are null; if
-     *                                  the size of items is lower than 1.
+     * @throws NullPointerException     If contextOfItems or items are null.
+     * @throws IllegalArgumentException If the size of items is lower than 1.
      */
     public IfcRepresentation(@NonNull IfcRepresentationContext contextOfItems,
                              IfcLabel representationIdentifier,
                              IfcLabel representationType,
                              @NonNull IfcRepresentationItem... items) {
-        this(contextOfItems, representationIdentifier, representationType,
-                new HashSet<>(Arrays.asList(items)));
+        this(contextOfItems,
+             representationIdentifier,
+             representationType,
+             new HashSet<>(Arrays.asList(items)));
     }
 
     /**
@@ -130,8 +126,7 @@ public class IfcRepresentation extends IfcEntity {
      *                          way to share one representation (often of type
      *                          IfcShapeRepresentation) by many products.
      */
-    protected void setRepresentationMap(
-            IfcRepresentationMap representationMap) {
+    protected void setRepresentationMap(IfcRepresentationMap representationMap) {
         this.representationMap = representationMap;
     }
 
@@ -139,8 +134,7 @@ public class IfcRepresentation extends IfcEntity {
      * @param ofProductRepresentation Reference to the product shape, for which
      *                                it is the shape representation.
      */
-    protected void setOfProductRepresentation(
-            IfcProductRepresentation ofProductRepresentation) {
+    protected void setOfProductRepresentation(IfcProductRepresentation ofProductRepresentation) {
         this.ofProductRepresentation = ofProductRepresentation;
     }
 
@@ -153,16 +147,18 @@ public class IfcRepresentation extends IfcEntity {
             return false;
         }
         IfcRepresentation that = (IfcRepresentation) o;
-        return contextOfItems.equals(that.contextOfItems) &&
-                Objects.equals(representationIdentifier,
-                        that.representationIdentifier) &&
+        return contextOfItems.equals(that.contextOfItems) && Objects.equals(
+                representationIdentifier,
+                that.representationIdentifier) &&
                 Objects.equals(representationType, that.representationType) &&
                 items.equals(that.items);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(contextOfItems, representationIdentifier,
-                representationType, items);
+        return Objects.hash(contextOfItems,
+                            representationIdentifier,
+                            representationType,
+                            items);
     }
 }

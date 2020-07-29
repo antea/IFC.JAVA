@@ -19,10 +19,10 @@
 package buildingsmart.util;
 
 import buildingsmart.ifc.*;
-import lombok.NonNull;
 
 import java.util.*;
 import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 import static java.lang.Math.sqrt;
 
@@ -34,10 +34,366 @@ public class Functions {
      */
     protected static final double DELTA = 0.0000000000001;
 
+    private static final Map<IfcUnitEnum, Predicate<IfcDimensionalExponents>>
+            ifcCorrectDimensions = Collections
+            .unmodifiableMap(new HashMap<IfcUnitEnum,
+                    Predicate<IfcDimensionalExponents>>() {{
+                put(IfcUnitEnum.LENGTHUNIT,
+                    dim -> dim.equals(new IfcDimensionalExponents(1,
+                                                                  0,
+                                                                  0,
+                                                                  0,
+                                                                  0,
+                                                                  0,
+                                                                  0)));
+                put(IfcUnitEnum.MASSUNIT,
+                    dim -> dim.equals(new IfcDimensionalExponents(0,
+                                                                  1,
+                                                                  0,
+                                                                  0,
+                                                                  0,
+                                                                  0,
+                                                                  0)));
+                put(IfcUnitEnum.TIMEUNIT,
+                    dim -> dim.equals(new IfcDimensionalExponents(0,
+                                                                  0,
+                                                                  1,
+                                                                  0,
+                                                                  0,
+                                                                  0,
+                                                                  0)));
+                put(IfcUnitEnum.ELECTRICCURRENTUNIT,
+                    dim -> dim.equals(new IfcDimensionalExponents(0,
+                                                                  0,
+                                                                  0,
+                                                                  1,
+                                                                  0,
+                                                                  0,
+                                                                  0)));
+                put(IfcUnitEnum.THERMODYNAMICTEMPERATUREUNIT,
+                    dim -> dim.equals(new IfcDimensionalExponents(0,
+                                                                  0,
+                                                                  0,
+                                                                  0,
+                                                                  1,
+                                                                  0,
+                                                                  0)));
+                put(IfcUnitEnum.AMOUNTOFSUBSTANCEUNIT,
+                    dim -> dim.equals(new IfcDimensionalExponents(0,
+                                                                  0,
+                                                                  0,
+                                                                  0,
+                                                                  0,
+                                                                  1,
+                                                                  0)));
+                put(IfcUnitEnum.LUMINOUSINTENSITYUNIT,
+                    dim -> dim.equals(new IfcDimensionalExponents(0,
+                                                                  0,
+                                                                  0,
+                                                                  0,
+                                                                  0,
+                                                                  0,
+                                                                  1)));
+                put(IfcUnitEnum.PLANEANGLEUNIT,
+                    dim -> dim.equals(new IfcDimensionalExponents(0,
+                                                                  0,
+                                                                  0,
+                                                                  0,
+                                                                  0,
+                                                                  0,
+                                                                  0)));
+                put(IfcUnitEnum.SOLIDANGLEUNIT,
+                    dim -> dim.equals(new IfcDimensionalExponents(0,
+                                                                  0,
+                                                                  0,
+                                                                  0,
+                                                                  0,
+                                                                  0,
+                                                                  0)));
+                put(IfcUnitEnum.AREAUNIT,
+                    dim -> dim.equals(new IfcDimensionalExponents(2,
+                                                                  0,
+                                                                  0,
+                                                                  0,
+                                                                  0,
+                                                                  0,
+                                                                  0)));
+                put(IfcUnitEnum.VOLUMEUNIT,
+                    dim -> dim.equals(new IfcDimensionalExponents(3,
+                                                                  0,
+                                                                  0,
+                                                                  0,
+                                                                  0,
+                                                                  0,
+                                                                  0)));
+                put(IfcUnitEnum.ABSORBEDDOSEUNIT,
+                    dim -> dim.equals(new IfcDimensionalExponents(2,
+                                                                  0,
+                                                                  -2,
+                                                                  0,
+                                                                  0,
+                                                                  0,
+                                                                  0)));
+                put(IfcUnitEnum.RADIOACTIVITYUNIT,
+                    dim -> dim.equals(new IfcDimensionalExponents(0,
+                                                                  0,
+                                                                  -1,
+                                                                  0,
+                                                                  0,
+                                                                  0,
+                                                                  0)));
+                put(IfcUnitEnum.ELECTRICCAPACITANCEUNIT,
+                    dim -> dim.equals(new IfcDimensionalExponents(-2,
+                                                                  1,
+                                                                  4,
+                                                                  1,
+                                                                  0,
+                                                                  0,
+                                                                  0)));
+                put(IfcUnitEnum.DOSEEQUIVALENTUNIT,
+                    dim -> dim.equals(new IfcDimensionalExponents(2,
+                                                                  0,
+                                                                  -2,
+                                                                  0,
+                                                                  0,
+                                                                  0,
+                                                                  0)));
+                put(IfcUnitEnum.ELECTRICCHARGEUNIT,
+                    dim -> dim.equals(new IfcDimensionalExponents(0,
+                                                                  0,
+                                                                  1,
+                                                                  1,
+                                                                  0,
+                                                                  0,
+                                                                  0)));
+                put(IfcUnitEnum.ELECTRICCONDUCTANCEUNIT,
+                    dim -> dim.equals(new IfcDimensionalExponents(-2,
+                                                                  -1,
+                                                                  3,
+                                                                  2,
+                                                                  0,
+                                                                  0,
+                                                                  0)));
+                put(IfcUnitEnum.ELECTRICVOLTAGEUNIT,
+                    dim -> dim.equals(new IfcDimensionalExponents(2,
+                                                                  1,
+                                                                  -3,
+                                                                  -1,
+                                                                  0,
+                                                                  0,
+                                                                  0)));
+                put(IfcUnitEnum.ELECTRICRESISTANCEUNIT,
+                    dim -> dim.equals(new IfcDimensionalExponents(2,
+                                                                  1,
+                                                                  -3,
+                                                                  -2,
+                                                                  0,
+                                                                  0,
+                                                                  0)));
+                put(IfcUnitEnum.ENERGYUNIT,
+                    dim -> dim.equals(new IfcDimensionalExponents(2,
+                                                                  1,
+                                                                  -2,
+                                                                  0,
+                                                                  0,
+                                                                  0,
+                                                                  0)));
+                put(IfcUnitEnum.FORCEUNIT,
+                    dim -> dim.equals(new IfcDimensionalExponents(1,
+                                                                  1,
+                                                                  -2,
+                                                                  0,
+                                                                  0,
+                                                                  0,
+                                                                  0)));
+                put(IfcUnitEnum.FREQUENCYUNIT,
+                    dim -> dim.equals(new IfcDimensionalExponents(0,
+                                                                  0,
+                                                                  -1,
+                                                                  0,
+                                                                  0,
+                                                                  0,
+                                                                  0)));
+                put(IfcUnitEnum.INDUCTANCEUNIT,
+                    dim -> dim.equals(new IfcDimensionalExponents(2,
+                                                                  1,
+                                                                  -2,
+                                                                  -2,
+                                                                  0,
+                                                                  0,
+                                                                  0)));
+                put(IfcUnitEnum.ILLUMINANCEUNIT,
+                    dim -> dim.equals(new IfcDimensionalExponents(-2,
+                                                                  0,
+                                                                  0,
+                                                                  0,
+                                                                  0,
+                                                                  0,
+                                                                  1)));
+                put(IfcUnitEnum.LUMINOUSFLUXUNIT,
+                    dim -> dim.equals(new IfcDimensionalExponents(0,
+                                                                  0,
+                                                                  0,
+                                                                  0,
+                                                                  0,
+                                                                  0,
+                                                                  1)));
+                put(IfcUnitEnum.MAGNETICFLUXUNIT,
+                    dim -> dim.equals(new IfcDimensionalExponents(2,
+                                                                  1,
+                                                                  -2,
+                                                                  -1,
+                                                                  0,
+                                                                  0,
+                                                                  0)));
+                put(IfcUnitEnum.MAGNETICFLUXDENSITYUNIT,
+                    dim -> dim.equals(new IfcDimensionalExponents(0,
+                                                                  1,
+                                                                  -2,
+                                                                  -1,
+                                                                  0,
+                                                                  0,
+                                                                  0)));
+                put(IfcUnitEnum.POWERUNIT,
+                    dim -> dim.equals(new IfcDimensionalExponents(2,
+                                                                  1,
+                                                                  -3,
+                                                                  0,
+                                                                  0,
+                                                                  0,
+                                                                  0)));
+                put(IfcUnitEnum.PRESSUREUNIT,
+                    dim -> dim.equals(new IfcDimensionalExponents(-1,
+                                                                  1,
+                                                                  -2,
+                                                                  0,
+                                                                  0,
+                                                                  0,
+                                                                  0)));
+            }});
+    private static final Map<IfcSIUnitName, IfcDimensionalExponents>
+            ifcDimensionsForSiUnit = Collections
+            .unmodifiableMap(new HashMap<IfcSIUnitName,
+                    IfcDimensionalExponents>() {{
+                put(IfcSIUnitName.METRE,
+                    new IfcDimensionalExponents(1, 0, 0, 0, 0, 0, 0));
+                put(IfcSIUnitName.SQUARE_METRE,
+                    new IfcDimensionalExponents(2, 0, 0, 0, 0, 0, 0));
+                put(IfcSIUnitName.CUBIC_METRE,
+                    new IfcDimensionalExponents(3, 0, 0, 0, 0, 0, 0));
+                put(IfcSIUnitName.GRAM,
+                    new IfcDimensionalExponents(0, 1, 0, 0, 0, 0, 0));
+                put(IfcSIUnitName.SECOND,
+                    new IfcDimensionalExponents(0, 0, 1, 0, 0, 0, 0));
+                put(IfcSIUnitName.AMPERE,
+                    new IfcDimensionalExponents(0, 0, 0, 1, 0, 0, 0));
+                put(IfcSIUnitName.KELVIN,
+                    new IfcDimensionalExponents(0, 0, 0, 0, 1, 0, 0));
+                put(IfcSIUnitName.MOLE,
+                    new IfcDimensionalExponents(0, 0, 0, 0, 0, 1, 0));
+                put(IfcSIUnitName.CANDELA,
+                    new IfcDimensionalExponents(0, 0, 0, 0, 0, 0, 1));
+                put(IfcSIUnitName.RADIAN,
+                    new IfcDimensionalExponents(0, 0, 0, 0, 0, 0, 0));
+                put(IfcSIUnitName.STERADIAN,
+                    new IfcDimensionalExponents(0, 0, 0, 0, 0, 0, 0));
+                put(IfcSIUnitName.HERTZ,
+                    new IfcDimensionalExponents(0, 0, -1, 0, 0, 0, 0));
+                put(IfcSIUnitName.NEWTON,
+                    new IfcDimensionalExponents(1, 1, -2, 0, 0, 0, 0));
+                put(IfcSIUnitName.PASCAL,
+                    new IfcDimensionalExponents(-1, 1, -2, 0, 0, 0, 0));
+                put(IfcSIUnitName.JOULE,
+                    new IfcDimensionalExponents(2, 1, -2, 0, 0, 0, 0));
+                put(IfcSIUnitName.WATT,
+                    new IfcDimensionalExponents(2, 1, -3, 0, 0, 0, 0));
+                put(IfcSIUnitName.COULOMB,
+                    new IfcDimensionalExponents(0, 0, 1, 1, 0, 0, 0));
+                put(IfcSIUnitName.VOLT,
+                    new IfcDimensionalExponents(2, 1, -3, -1, 0, 0, 0));
+                put(IfcSIUnitName.FARAD,
+                    new IfcDimensionalExponents(-2, -1, 4, 1, 0, 0, 0));
+                put(IfcSIUnitName.OHM,
+                    new IfcDimensionalExponents(2, 1, -3, -2, 0, 0, 0));
+                put(IfcSIUnitName.SIEMENS,
+                    new IfcDimensionalExponents(-2, -1, 3, 2, 0, 0, 0));
+                put(IfcSIUnitName.WEBER,
+                    new IfcDimensionalExponents(2, 1, -2, -1, 0, 0, 0));
+                put(IfcSIUnitName.TESLA,
+                    new IfcDimensionalExponents(0, 1, -2, -1, 0, 0, 0));
+                put(IfcSIUnitName.HENRY,
+                    new IfcDimensionalExponents(2, 1, -2, -2, 0, 0, 0));
+                put(IfcSIUnitName.DEGREE_CELSIUS,
+                    new IfcDimensionalExponents(0, 0, 0, 0, 1, 0, 0));
+                put(IfcSIUnitName.LUMEN,
+                    new IfcDimensionalExponents(0, 0, 0, 0, 0, 0, 1));
+                put(IfcSIUnitName.LUX,
+                    new IfcDimensionalExponents(-2, 0, 0, 0, 0, 0, 1));
+                put(IfcSIUnitName.BECQUEREL,
+                    new IfcDimensionalExponents(0, 0, -1, 0, 0, 0, 0));
+                put(IfcSIUnitName.GRAY,
+                    new IfcDimensionalExponents(2, 0, -2, 0, 0, 0, 0));
+                put(IfcSIUnitName.SIEVERT,
+                    new IfcDimensionalExponents(2, 0, -2, 0, 0, 0, 0));
+            }});
+    private static final Map<String, Predicate<IfcRepresentationItem>>
+            ifcShapeRepresentationTypes = Collections
+            .unmodifiableMap(new HashMap<String,
+                    Predicate<IfcRepresentationItem>>() {{
+                put("Curve2D",
+                    item -> item instanceof IfcCurve &&
+                            ((IfcCurve) item).getDim().getValue() == 2);
+                put("Annotation2D",
+                    item -> item instanceof IfcPoint ||
+                            item instanceof IfcCurve ||
+                            item instanceof IfcGeometricCurveSet ||
+                            item instanceof IfcAnnotationFillArea ||
+                            item instanceof IfcDefinedSymbol ||
+                            item instanceof IfcTextLiteral ||
+                            item instanceof IfcDraughtingCallout);
+                put("GeometricSet",
+                    item -> item instanceof IfcGeometricSet ||
+                            item instanceof IfcPoint ||
+                            item instanceof IfcCurve ||
+                            item instanceof IfcSurface);
+                put("GeometricCurveSet", item -> {
+                    if (item instanceof IfcGeometricSet &&
+                            ((IfcGeometricSet) item).getElements().stream()
+                                    .anyMatch(element -> (element instanceof IfcSurface))) {
+                        return false;
+                    }
+                    return item instanceof IfcGeometricSet ||
+                            item instanceof IfcPoint ||
+                            item instanceof IfcCurve;
+                });
+                put("SurfaceModel",
+                    item -> item instanceof IfcShellBasedSurfaceModel ||
+                            item instanceof IfcFaceBasedSurfaceModel ||
+                            item instanceof IfcFacetedBrep ||
+                            item instanceof IfcFacetedBrepWithVoids);
+                put("SolidModel", item -> item instanceof IfcSolidModel);
+                put("SweptSolid", item -> item instanceof IfcSweptAreaSolid);
+                put("CSG", item -> item instanceof IfcBooleanResult);
+                put("Clipping",
+                    item -> item instanceof IfcBooleanClippingResult);
+                put("AdvancedSweptSolid",
+                    item -> item instanceof IfcSurfaceCurveSweptAreaSolid ||
+                            item instanceof IfcSweptDiskSolid);
+                put("Brep",
+                    item -> item instanceof IfcFacetedBrep ||
+                            item instanceof IfcFacetedBrepWithVoids);
+                put("BoundingBox", item -> item instanceof IfcBoundingBox);
+                put("SectionedSpine",
+                    item -> item instanceof IfcSectionedSpine);
+                put("MappedRepresentation",
+                    item -> item instanceof IfcMappedItem);
+            }});
+
     /**
      * String data types in a STEP file can contain characters "'" and "\" only
      * as "\'" and "\\". This method formats the given String so that it can be
      * serialized in a STEP file.
+     *
      * @param toFormat The String to format.
      * @return The formatted string.
      */
@@ -54,10 +410,11 @@ public class Functions {
      * either parallel or anti-parallel, a vector of zero magnitude is returned.
      * If at least one of the arguments is null or not three-dimensional, null
      * is returned.
+     *
      * @see Functions#ifcNormalise(IfcDirection)
      */
     public static IfcVector ifcCrossProduct(IfcDirection arg1,
-            IfcDirection arg2) {
+                                            IfcDirection arg2) {
         if (arg1 == null || arg2 == null) {
             return null;
         }
@@ -92,14 +449,14 @@ public class Functions {
         }
         if (magnitude > 0) {
             result = new IfcVector(new IfcDirection(res),
-                    new IfcLengthMeasure(sqrt(magnitude)));
+                                   new IfcLengthMeasure(sqrt(magnitude)));
         }
         return result;
     }
 
     /**
      * @param direction The IfcDirection of which the components should be
-     * normalized.
+     *                  normalized.
      * @return IfcDirection whose components are normalized to have a sum of
      * squares of 1.0. If the input argument is null or its components are all
      * zero then the output is null.
@@ -133,7 +490,7 @@ public class Functions {
 
     /**
      * @param vector The IfcVector of which the components should be
-     * normalized.
+     *               normalized.
      * @return IfcVector whose components are normalized to have a sum of
      * squares of 1.0. If the input argument is null or its components are all
      * zero then the output is null.
@@ -161,7 +518,7 @@ public class Functions {
                 directionRatios[i] = component / magnitude;
             }
             return new IfcVector(new IfcDirection(directionRatios),
-                    new IfcLengthMeasure(1));
+                                 new IfcLengthMeasure(1));
         }
         return null;
     }
@@ -170,6 +527,7 @@ public class Functions {
      * @param direction The direction on which to perform the check.
      * @return {@code true} if the direction is already normalized (meaning that
      * the sum of the squares of its components is 1), {@code false} otherwise.
+     *
      * @throws NullPointerException If direction is null.
      */
     private static boolean alreadyNormalised(IfcDirection direction) {
@@ -185,6 +543,7 @@ public class Functions {
      * @param vector The vector on which to perform the check.
      * @return {@code true} if the vector is already normalized (meaning that
      * the sum of the squares of its components is 1), {@code false} otherwise.
+     *
      * @throws NullPointerException If vector is null.
      */
     private static boolean alreadyNormalised(IfcVector vector) {
@@ -195,19 +554,19 @@ public class Functions {
     }
 
     /**
-     * @param axis The axis of the IfcAxis2Placement3D for which this
-     * function was called. If this value is not null, then
-     * refDirection must also be not null.
+     * @param axis         The axis of the IfcAxis2Placement3D for which this
+     *                     function was called. If this value is not null, then
+     *                     refDirection must also be not null.
      * @param refDirection The refDirection of the IfcAxis2Placement3D for which
-     * this function was called. If this value is not null,
-     * then axis must also be not null.
+     *                     this function was called. If this value is not null,
+     *                     then axis must also be not null.
      * @return Three normalized orthogonal directions. List[2] is the direction
      * of axis. List[0] is in the direction of the projection of ref_direction
      * onto the plane normal to List[2], List[1] is the cross product of List[2]
      * and List[0]. Default values are supplied if both arguments are null.
      */
     public static List<IfcDirection> ifcBuildAxes(IfcDirection axis,
-            IfcDirection refDirection) {
+                                                  IfcDirection refDirection) {
         IfcDirection normalisedAxis = ifcNormalise(axis);
         IfcDirection d1 = normalisedAxis == null ? new IfcDirection(0, 0, 1) :
                 normalisedAxis;
@@ -221,8 +580,8 @@ public class Functions {
 
     /**
      * @param zAxis The direction onto whose normal plane the direction arg
-     * should be projected.
-     * @param arg The direction to project onto the plane normal to zAxis.
+     *              should be projected.
+     * @param arg   The direction to project onto the plane normal to zAxis.
      * @return A three dimensional direction which is, with fully defined input,
      * the projection of arg onto the plane normal to zAxis. If arg is null, the
      * result is the projection of (1.0,0.0,0.0) onto this plane except that if
@@ -232,7 +591,7 @@ public class Functions {
      * returned.
      */
     private static IfcDirection ifcFirstProjAxis(IfcDirection zAxis,
-            IfcDirection arg) {
+                                                 IfcDirection arg) {
         if (zAxis == null) {
             return null;
         }
@@ -260,13 +619,13 @@ public class Functions {
 
     /**
      * @param scalar The value by which vec should be multiplied.
-     * @param vec The vector to multiply.
+     * @param vec    The vector to multiply.
      * @return The vector that is the scalar multiple of the input vector. The
      * output is an IfcVector of the same units as the input vector. If any of
      * the input arguments is null, returns null.
      */
     private static IfcVector ifcScalarTimesVector(IfcReal scalar,
-            IfcVector vec) {
+                                                  IfcVector vec) {
         if (scalar == null || vec == null) {
             return null;
         }
@@ -287,12 +646,12 @@ public class Functions {
 
     /**
      * @param scalar The value by which dir should be multiplied.
-     * @param dir The vector to multiply.
+     * @param dir    The vector to multiply.
      * @return The vector that is the scalar multiple of the input vector. The
      * output is unitless. If any of the input arguments is null, returns null.
      */
     public static IfcVector ifcScalarTimesVector(IfcReal scalar,
-            IfcDirection dir) {
+                                                 IfcDirection dir) {
         if (scalar == null || dir == null) {
             return null;
         }
@@ -313,19 +672,17 @@ public class Functions {
 
     /**
      * @param arg1 The first argument of the subtraction {@code arg1 - arg2}. If
-     * both input arguments are IfcVectors, they must be expressed
-     * in the same units.
+     *             both input arguments are IfcVectors, they must be expressed
+     *             in the same units.
      * @param arg2 The second argument of the subtraction {@code arg1 - arg2}.
-     * If both input arguments are IfcVectors, they must be
-     * expressed in the same units.
+     *             If both input arguments are IfcVectors, they must be
+     *             expressed in the same units.
      * @return The vector difference of the two input vectors. If both vectors
      * are IfcDirections, a unitless result is produced. A zero difference
      * vector produces a an IfcVector of zero magnitude.
-     * @throws IllegalArgumentException If any of the arguments is null, or if
-     * they have different dimensionality.
      */
     private static IfcVector ifcVectorDifference(IfcVectorOrDirection arg1,
-            IfcVectorOrDirection arg2) {
+                                                 IfcVectorOrDirection arg2) {
         if (arg1 == null || arg2 == null ||
                 !arg1.getDim().equals(arg2.getDim())) {
             return null;
@@ -358,7 +715,7 @@ public class Functions {
         }
         if (mag > 0) {
             return new IfcVector(new IfcDirection(resultDirectionRatios),
-                    new IfcLengthMeasure(sqrt(mag)));
+                                 new IfcLengthMeasure(sqrt(mag)));
         }
         return new IfcVector(vec1, new IfcLengthMeasure(0));
     }
@@ -366,202 +723,54 @@ public class Functions {
     /**
      * Tests whether the dimensional exponents are correct for the given unit
      * type.
+     *
      * @param unit The name of the unit type for which the dimensional exponents
-     * are tested.
-     * @param dim The dimensional exponents to be tested against corresponding
-     * unit type name.
+     *             are tested.
+     * @param dim  The dimensional exponents to be tested against corresponding
+     *             unit type name.
      * @return {@code true} if the dimensional exponents for the given unit type
-     * are correct, {@code false} otherwise. If the given unit type is
-     * USERDEFINED, this method returns {@code null}.
-     * @throws NullPointerException If unit or dim is null.
+     * are correct, {@code false} otherwise. If the given unit type is {@link
+     * IfcUnitEnum#USERDEFINED} or null, this method returns {@code null}.
      */
-    public static Boolean ifcCorrectDimensions(@NonNull IfcUnitEnum unit,
-            @NonNull IfcDimensionalExponents dim) {
-        switch (unit) {
-            case LENGTHUNIT:
-                return dim.equals(new IfcDimensionalExponents(1, 0, 0, 0, 0, 0,
-                        0));
-            case MASSUNIT:
-                return dim.equals(new IfcDimensionalExponents(0, 1, 0, 0, 0, 0,
-                        0));
-            case TIMEUNIT:
-                return dim.equals(new IfcDimensionalExponents(0, 0, 1, 0, 0, 0,
-                        0));
-            case ELECTRICCURRENTUNIT:
-                return dim.equals(new IfcDimensionalExponents(0, 0, 0, 1, 0, 0,
-                        0));
-            case THERMODYNAMICTEMPERATUREUNIT:
-                return dim.equals(new IfcDimensionalExponents(0, 0, 0, 0, 1, 0,
-                        0));
-            case AMOUNTOFSUBSTANCEUNIT:
-                return dim.equals(new IfcDimensionalExponents(0, 0, 0, 0, 0, 1,
-                        0));
-            case LUMINOUSINTENSITYUNIT:
-                return dim.equals(new IfcDimensionalExponents(0, 0, 0, 0, 0, 0,
-                        1));
-            case PLANEANGLEUNIT:
-                return dim.equals(new IfcDimensionalExponents(0, 0, 0, 0, 0, 0,
-                        0));
-            case SOLIDANGLEUNIT:
-                return dim.equals(new IfcDimensionalExponents(0, 0, 0, 0, 0, 0,
-                        0));
-            case AREAUNIT:
-                return dim.equals(new IfcDimensionalExponents(2, 0, 0, 0, 0, 0,
-                        0));
-            case VOLUMEUNIT:
-                return dim.equals(new IfcDimensionalExponents(3, 0, 0, 0, 0, 0,
-                        0));
-            case ABSORBEDDOSEUNIT:
-                return dim.equals(new IfcDimensionalExponents(2, 0, -2, 0, 0, 0,
-                        0));
-            case RADIOACTIVITYUNIT:
-                return dim.equals(new IfcDimensionalExponents(0, 0, -1, 0, 0, 0,
-                        0));
-            case ELECTRICCAPACITANCEUNIT:
-                return dim.equals(new IfcDimensionalExponents(-2, 1, 4, 1, 0, 0,
-                        0));
-            case DOSEEQUIVALENTUNIT:
-                return dim.equals(new IfcDimensionalExponents(2, 0, -2, 0, 0, 0,
-                        0));
-            case ELECTRICCHARGEUNIT:
-                return dim.equals(new IfcDimensionalExponents(0, 0, 1, 1, 0, 0,
-                        0));
-            case ELECTRICCONDUCTANCEUNIT:
-                return dim
-                        .equals(new IfcDimensionalExponents(-2, -1, 3, 2, 0, 0,
-                                0));
-            case ELECTRICVOLTAGEUNIT:
-                return dim
-                        .equals(new IfcDimensionalExponents(2, 1, -3, -1, 0, 0,
-                                0));
-            case ELECTRICRESISTANCEUNIT:
-                return dim
-                        .equals(new IfcDimensionalExponents(2, 1, -3, -2, 0, 0,
-                                0));
-            case ENERGYUNIT:
-                return dim.equals(new IfcDimensionalExponents(2, 1, -2, 0, 0, 0,
-                        0));
-            case FORCEUNIT:
-                return dim.equals(new IfcDimensionalExponents(1, 1, -2, 0, 0, 0,
-                        0));
-            case FREQUENCYUNIT:
-                return dim.equals(new IfcDimensionalExponents(0, 0, -1, 0, 0, 0,
-                        0));
-            case INDUCTANCEUNIT:
-                return dim
-                        .equals(new IfcDimensionalExponents(2, 1, -2, -2, 0, 0,
-                                0));
-            case ILLUMINANCEUNIT:
-                return dim.equals(new IfcDimensionalExponents(-2, 0, 0, 0, 0, 0,
-                        1));
-            case LUMINOUSFLUXUNIT:
-                return dim.equals(new IfcDimensionalExponents(0, 0, 0, 0, 0, 0,
-                        1));
-            case MAGNETICFLUXUNIT:
-                return dim
-                        .equals(new IfcDimensionalExponents(2, 1, -2, -1, 0, 0,
-                                0));
-            case MAGNETICFLUXDENSITYUNIT:
-                return dim
-                        .equals(new IfcDimensionalExponents(0, 1, -2, -1, 0, 0,
-                                0));
-            case POWERUNIT:
-                return dim.equals(new IfcDimensionalExponents(2, 1, -3, 0, 0, 0,
-                        0));
-            case PRESSUREUNIT:
-                return dim
-                        .equals(new IfcDimensionalExponents(-1, 1, -2, 0, 0, 0,
-                                0));
+    public static Boolean ifcCorrectDimensions(IfcUnitEnum unit,
+                                               IfcDimensionalExponents dim) {
+        if (!ifcCorrectDimensions.containsKey(unit)) {
+            return null;
         }
-        return null;
+        try {
+            return ifcCorrectDimensions.get(unit).test(dim);
+        } catch (NullPointerException e) {
+            return false;
+        }
     }
 
     /**
      * @param name The name of the unit for which the dimensional exponents will
-     * be returned. Cannot be null.
+     *             be returned.
      * @return The dimensional exponents of the given SI-unit. If the unit is
-     * unknown (which should not be possible, since this method deals with all
-     * possible values of IfcSIUnitName), dimensional exponents all equal to
-     * zero will be returned.
-     * @throws NullPointerException If name is null.
+     * null, dimensional exponents all equal to zero will be returned.
      */
-    public static IfcDimensionalExponents ifcDimensionsForSiUnit(
-            @NonNull IfcSIUnitName name) {
-        switch (name) {
-            case METRE:
-                return new IfcDimensionalExponents(1, 0, 0, 0, 0, 0, 0);
-            case SQUARE_METRE:
-                return new IfcDimensionalExponents(2, 0, 0, 0, 0, 0, 0);
-            case CUBIC_METRE:
-                return new IfcDimensionalExponents(3, 0, 0, 0, 0, 0, 0);
-            case GRAM:
-                return new IfcDimensionalExponents(0, 1, 0, 0, 0, 0, 0);
-            case SECOND:
-                return new IfcDimensionalExponents(0, 0, 1, 0, 0, 0, 0);
-            case AMPERE:
-                return new IfcDimensionalExponents(0, 0, 0, 1, 0, 0, 0);
-            case KELVIN:
-                return new IfcDimensionalExponents(0, 0, 0, 0, 1, 0, 0);
-            case MOLE:
-                return new IfcDimensionalExponents(0, 0, 0, 0, 0, 1, 0);
-            case CANDELA:
-                return new IfcDimensionalExponents(0, 0, 0, 0, 0, 0, 1);
-            case RADIAN:
-                return new IfcDimensionalExponents(0, 0, 0, 0, 0, 0, 0);
-            case STERADIAN:
-                return new IfcDimensionalExponents(0, 0, 0, 0, 0, 0, 0);
-            case HERTZ:
-                return new IfcDimensionalExponents(0, 0, -1, 0, 0, 0, 0);
-            case NEWTON:
-                return new IfcDimensionalExponents(1, 1, -2, 0, 0, 0, 0);
-            case PASCAL:
-                return new IfcDimensionalExponents(-1, 1, -2, 0, 0, 0, 0);
-            case JOULE:
-                return new IfcDimensionalExponents(2, 1, -2, 0, 0, 0, 0);
-            case WATT:
-                return new IfcDimensionalExponents(2, 1, -3, 0, 0, 0, 0);
-            case COULOMB:
-                return new IfcDimensionalExponents(0, 0, 1, 1, 0, 0, 0);
-            case VOLT:
-                return new IfcDimensionalExponents(2, 1, -3, -1, 0, 0, 0);
-            case FARAD:
-                return new IfcDimensionalExponents(-2, -1, 4, 1, 0, 0, 0);
-            case OHM:
-                return new IfcDimensionalExponents(2, 1, -3, -2, 0, 0, 0);
-            case SIEMENS:
-                return new IfcDimensionalExponents(-2, -1, 3, 2, 0, 0, 0);
-            case WEBER:
-                return new IfcDimensionalExponents(2, 1, -2, -1, 0, 0, 0);
-            case TESLA:
-                return new IfcDimensionalExponents(0, 1, -2, -1, 0, 0, 0);
-            case HENRY:
-                return new IfcDimensionalExponents(2, 1, -2, -2, 0, 0, 0);
-            case DEGREE_CELSIUS:
-                return new IfcDimensionalExponents(0, 0, 0, 0, 1, 0, 0);
-            case LUMEN:
-                return new IfcDimensionalExponents(0, 0, 0, 0, 0, 0, 1);
-            case LUX:
-                return new IfcDimensionalExponents(-2, 0, 0, 0, 0, 0, 1);
-            case BECQUEREL:
-                return new IfcDimensionalExponents(0, 0, -1, 0, 0, 0, 0);
-            case GRAY:
-                return new IfcDimensionalExponents(2, 0, -2, 0, 0, 0, 0);
-            case SIEVERT:
-                return new IfcDimensionalExponents(2, 0, -2, 0, 0, 0, 0);
+    public static IfcDimensionalExponents ifcDimensionsForSiUnit(IfcSIUnitName name) {
+        if (name == null) {
+            return new IfcDimensionalExponents(0, 0, 0, 0, 0, 0, 0);
         }
-        return new IfcDimensionalExponents(0, 0, 0, 0, 0, 0, 0);
+        return ifcDimensionsForSiUnit.get(name);
     }
 
     /**
      * @param units The Set of IfcUnit for which to check if it's an appropriate
-     * parameter for
-     * {@link IfcUnitAssignment#IfcUnitAssignment(Set)}.
+     *              parameter for
+     *              {@link IfcUnitAssignment#IfcUnitAssignment(Set)}.
      * @return {@code true}, if the Set of IfcUnit only includes units with
      * different unitType (for IfcNamedUnit and IfcDerivedUnit), and a maximum
      * of one IfcMonetaryUnit.
-     * @throws NullPointerException If units is null or has size zero.
+     *
+     * @throws IllegalArgumentException If units has size zero.
      */
     public static boolean ifcCorrectUnitAssignment(Set<IfcUnit> units) {
+        if (units == null) {
+            return true;
+        }
         if (units.size() < 1) {
             throw new IllegalArgumentException(
                     "size of units must be at least 1");
@@ -596,24 +805,19 @@ public class Functions {
     /**
      * @param arg1 A direction in either two- or three-dimensional space.
      * @param arg2 A direction in either two- or three-dimensional space.
-     * @return The scalar (or dot) product of the two directions.
-     * @throws IllegalArgumentException If the two directions have different
-     * dimensionality.
-     * @throws NullPointerException If at least one of the arguments is
-     * null.
+     * @return The scalar (or dot) product of the two directions, {@code null}
+     * if at least one argument is {@code null}, or if the arguments have
+     * different dimensionality.
      */
-    public static IfcReal ifcDotProduct(@NonNull IfcDirection arg1,
-            @NonNull IfcDirection arg2) {
-        if (!arg1.getDim().equals(arg2.getDim())) {
-            throw new IllegalArgumentException(
-                    "the two arguments must have the same dimensionality");
+    public static IfcReal ifcDotProduct(IfcDirection arg1, IfcDirection arg2) {
+        if (arg1 == null || arg2 == null ||
+                !arg1.getDim().equals(arg2.getDim())) {
+            return null;
         }
-
         double scalar = 0;
         IfcDirection vec1 = ifcNormalise(arg1);
         IfcDirection vec2 = ifcNormalise(arg2);
         byte dim = arg1.getDim().getValue();
-
         for (byte i = 0; i < dim; i++) {
             scalar += vec1.getDirectionRatios().get(i).getValue() *
                     vec2.getDirectionRatios().get(i).getValue();
@@ -625,198 +829,63 @@ public class Functions {
      * The function checks that a relative placement (i.e. relative to another
      * local placement, and not grid placement) of a 3D local placement has to
      * be relative to a 3D parent placement (and not to a 2D parent placement).
+     *
      * @param relativePlacement The local placement.
-     * @param placementRelTo The parent placement.
+     * @param placementRelTo    The parent placement.
      * @return {@code true} if relativePlacement is bi-dimensional, if it is
-     * three-dimensional and placementRelTo is also three-dimensional, if
-     * placementRelTo is null. {@code null} if placementRelTo is a grid
-     * placement. {@code false} otherwise.
-     * @throws IllegalArgumentException If relativePlacement is {@code null}.
+     * three-dimensional and placementRelTo is also three-dimensional, if at
+     * least one of the arguments is null; {@code null} if placementRelTo is a
+     * grid placement; {@code false} otherwise.
      */
-    public static Boolean ifcCorrectLocalPlacement(
-            IfcAxis2Placement relativePlacement,
-            IfcObjectPlacement placementRelTo) {
-        if (relativePlacement == null) {
-            throw new IllegalArgumentException(
-                    "relativePlacement cannot be null");
+    public static Boolean ifcCorrectLocalPlacement(IfcAxis2Placement relativePlacement,
+                                                   IfcObjectPlacement placementRelTo) {
+        if (relativePlacement == null || placementRelTo == null) {
+            return true;
         }
-        if (placementRelTo != null) {
-            if (placementRelTo instanceof IfcGridPlacement) {
-                return null;
-            }
-            if (placementRelTo instanceof IfcLocalPlacement) {
-                if (relativePlacement instanceof IfcAxis2Placement2D) {
-                    return true;
-                } else { // relativePlacement is an instance of
-                    // IfcAxis2Placement3D
-                    return ((IfcLocalPlacement) placementRelTo)
-                            .getRelativePlacement().getDim().getValue() == 3;
-                }
+        if (placementRelTo instanceof IfcGridPlacement) {
+            return null;
+        }
+        if (placementRelTo instanceof IfcLocalPlacement) {
+            if (relativePlacement instanceof IfcAxis2Placement2D) {
+                return true;
+            } else { // relativePlacement is an instance of IfcAxis2Placement3D
+                return ((IfcLocalPlacement) placementRelTo)
+                        .getRelativePlacement().getDim().getValue() == 3;
             }
         }
-        return true;
+        return null;
     }
-
-    static Map<String, Predicate<IfcRepresentationItem>> map1 =
-            new HashMap<String, Predicate<IfcRepresentationItem>>() {{
-                put("Curve2D", item -> item instanceof IfcCurve &&
-                        ((IfcCurve) item).getDim().getValue() == 2);
-                put("Annotation2D",item->item instanceof IfcPoint || item instanceof IfcCurve ||
-                        item instanceof IfcGeometricCurveSet ||
-                        item instanceof IfcAnnotationFillArea ||
-                        item instanceof IfcDefinedSymbol ||
-                        item instanceof IfcTextLiteral ||
-                        item instanceof IfcDraughtingCallout);
-            }};
 
     /**
      * The function gets the representation type and the assigned set of
      * representation items as input and verifies whether the correct items are
      * assigned according to the representation type given.
+     *
      * @param repType The representation type.
-     * @param items Items associated to repType.
+     * @param items   Items associated to repType.
      * @return {@code true} if the type of the objects contained in items is
      * correct according to the specification of class {@link
-     * buildingsmart.ifc.IfcShapeRepresentation} or if items is empty; {@code
-     * null} if repType is unknown; {@code false} otherwise.
-     * @throws NullPointerException If repType is {@code null}, or if items is
-     * null and repType is known.
+     * buildingsmart.ifc.IfcShapeRepresentation}, or if {@code repType} is
+     * defined in the specification and items is null or empty;</p> {@code null}
+     * if {@code repType} is null or not defined in the specification;</p>
+     * {@code false} otherwise.
      */
     public static Boolean ifcShapeRepresentationTypes(IfcLabel repType,
-            Set<IfcRepresentationItem> items) {
-        return items.stream().anyMatch(i->!map1.get(repType.getValue()).test(i));
-
-        int correctItems = 0;
-        switch (repType.getValue()) {
-            case "Curve2D":
-                for (IfcRepresentationItem item : items) {
-                    if (item instanceof IfcCurve &&
-                            ((IfcCurve) item).getDim().getValue() == 2) {
-                        correctItems++;
-                    }
-                }
-                break;
-            case "Annotation2D":
-                for (IfcRepresentationItem item : items) {
-                    if (item instanceof IfcPoint || item instanceof IfcCurve ||
-                            item instanceof IfcGeometricCurveSet ||
-                            item instanceof IfcAnnotationFillArea ||
-                            item instanceof IfcDefinedSymbol ||
-                            item instanceof IfcTextLiteral ||
-                            item instanceof IfcDraughtingCallout) {
-                        correctItems++;
-                    }
-                }
-                break;
-            case "GeometricSet":
-                for (IfcRepresentationItem item : items) {
-                    if (item instanceof IfcGeometricSet ||
-                            item instanceof IfcPoint ||
-                            item instanceof IfcCurve ||
-                            item instanceof IfcSurface) {
-                        correctItems++;
-                    }
-                }
-                break;
-            case "GeometricCurveSet":
-                for (IfcRepresentationItem item : items) {
-                    if (item instanceof IfcGeometricSet ||
-                            item instanceof IfcPoint ||
-                            item instanceof IfcCurve) {
-                        correctItems++;
-                        if (item instanceof IfcGeometricSet) {
-                            for (IfcGeometricSetSelect element :
-                                    ((IfcGeometricSet) item)
-                                            .getElements()) {
-                                if (element instanceof IfcSurface) {
-                                    return false;
-                                }
-                            }
-                        }
-                    }
-                }
-                break;
-            case "SurfaceModel":
-                for (IfcRepresentationItem item : items) {
-                    if (item instanceof IfcShellBasedSurfaceModel ||
-                            item instanceof IfcFaceBasedSurfaceModel ||
-                            item instanceof IfcFacetedBrep ||
-                            item instanceof IfcFacetedBrepWithVoids) {
-                        correctItems++;
-                    }
-                }
-                break;
-            case "SolidModel":
-                for (IfcRepresentationItem item : items) {
-                    if (item instanceof IfcSolidModel) {
-                        correctItems++;
-                    }
-                }
-                break;
-            case "SweptSolid":
-                for (IfcRepresentationItem item : items) {
-                    if (item instanceof IfcSweptAreaSolid) {
-                        correctItems++;
-                    }
-                }
-                break;
-            case "CSG":
-                for (IfcRepresentationItem item : items) {
-                    if (item instanceof IfcBooleanResult) {
-                        correctItems++;
-                    }
-                }
-                break;
-            case "Clipping":
-                for (IfcRepresentationItem item : items) {
-                    if (item instanceof IfcBooleanClippingResult) {
-                        correctItems++;
-                    }
-                }
-                break;
-            case "AdvancedSweptSolid":
-                for (IfcRepresentationItem item : items) {
-                    if (item instanceof IfcSurfaceCurveSweptAreaSolid ||
-                            item instanceof IfcSweptDiskSolid) {
-                        correctItems++;
-                    }
-                }
-                break;
-            case "Brep":
-                for (IfcRepresentationItem item : items) {
-                    if (item instanceof IfcFacetedBrep ||
-                            item instanceof IfcFacetedBrepWithVoids) {
-                        correctItems++;
-                    }
-                }
-                break;
-            case "BoundingBox":
-                if (items.size() > 1) {
-                    return false;
-                }
-                for (IfcRepresentationItem item : items) {
-                    if (item instanceof IfcBoundingBox) {
-                        correctItems++;
-                    }
-                }
-                break;
-            case "SectionedSpine":
-                for (IfcRepresentationItem item : items) {
-                    if (item instanceof IfcSectionedSpine) {
-                        correctItems++;
-                    }
-                }
-                break;
-            case "MappedRepresentation":
-                for (IfcRepresentationItem item : items) {
-                    if (item instanceof IfcMappedItem) {
-                        correctItems++;
-                    }
-                }
-                break;
-            default:
-                return null;
+                                                      Set<IfcRepresentationItem> items) {
+        if (repType == null ||
+                !ifcShapeRepresentationTypes.containsKey(repType.getValue())) {
+            return null;
         }
-        return correctItems == items.size();
+        Stream<IfcRepresentationItem> itemsStream;
+        try {
+            itemsStream = items.stream();
+        } catch (NullPointerException e) {
+            return true;
+        }
+        if (repType.getValue().equals("BoundingBox") && items.size() > 1) {
+            return false;
+        }
+        return itemsStream.allMatch(item -> ifcShapeRepresentationTypes
+                .get(repType.getValue()).test(item));
     }
 }

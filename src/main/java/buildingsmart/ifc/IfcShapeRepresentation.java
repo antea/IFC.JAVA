@@ -24,7 +24,6 @@ import lombok.NonNull;
 
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -125,29 +124,29 @@ public class IfcShapeRepresentation extends IfcShapeModel {
      *                                 be specified by implementers agreements.
      * @param items                    Set of geometric representation items
      *                                 that are defined for this representation.
-     * @throws IllegalArgumentException If contextOfItems, representationType or
-     *                                  items are null; if the size of items is
-     *                                  lower than 1; if contextOfItems is not
-     *                                  of type
-     *                                  IfcGeometricRepresentationContext;
-     *                                  if items contains objects of type
+     * @throws NullPointerException     If contextOfItems, representationType or
+     *                                  items are null.
+     * @throws IllegalArgumentException If the size of items is lower than 1; if
+     *                                  contextOfItems is not of type
+     *                                  IfcGeometricRepresentationContext; if
+     *                                  items contains objects of type
      *                                  IfcTopologicalRepresentationItem (except
      *                                  for IfcVertexPoint, IfcEdgeCurve,
-     *                                  IfcFaceSurface); if representationType;
-     *                                  if representationType is unknown (not
-     *                                  present in the specification of this
-     *                                  class); if items contains objects of the
-     *                                  wrong type depending on the given
+     *                                  IfcFaceSurface); if representationType
+     *                                  is not present in the specification of
+     *                                  this class; if items contains objects of
+     *                                  the wrong type depending on the given
      *                                  representationType (see the
      *                                  specification of this class).
      */
-    public IfcShapeRepresentation(
-            @NonNull IfcRepresentationContext contextOfItems,
-            IfcLabel representationIdentifier,
-            @NonNull IfcLabel representationType,
-            @NonNull Set<IfcRepresentationItem> items) {
-        super(contextOfItems, representationIdentifier, representationType,
-                items);
+    public IfcShapeRepresentation(@NonNull IfcRepresentationContext contextOfItems,
+                                  IfcLabel representationIdentifier,
+                                  @NonNull IfcLabel representationType,
+                                  @NonNull Set<IfcRepresentationItem> items) {
+        super(contextOfItems,
+              representationIdentifier,
+              representationType,
+              items);
         if (!(contextOfItems instanceof IfcGeometricRepresentationContext)) {
             throw new IllegalArgumentException(
                     "contextOfItems must be of type " +
@@ -165,13 +164,9 @@ public class IfcShapeRepresentation extends IfcShapeModel {
                                 "IfcFaceSurface.");
             }
         }
-        if (representationType == null) {
-            throw new IllegalArgumentException(
-                    "representationType cannot be " + "null");
-        }
-        if (!Objects.equals(Functions
-                        .ifcShapeRepresentationTypes(representationType, items),
-                true)) {
+        if (!Boolean.TRUE.equals(Functions.ifcShapeRepresentationTypes(
+                representationType,
+                items))) {
             throw new IllegalArgumentException(
                     "either items contains objects of the" +
                             " wrong type (according to the given " +
@@ -199,28 +194,28 @@ public class IfcShapeRepresentation extends IfcShapeModel {
      *                                 be specified by implementers agreements.
      * @param items                    Set of geometric representation items
      *                                 that are defined for this representation.
-     * @throws IllegalArgumentException If contextOfItems, representationType or
-     *                                  items are null; if the size of items is
-     *                                  lower than 1; if contextOfItems is not
-     *                                  of type
-     *                                  IfcGeometricRepresentationContext;
-     *                                  if items contains objects of type
+     * @throws NullPointerException     If contextOfItems, representationType or
+     *                                  items are null.
+     * @throws IllegalArgumentException If the size of items is lower than 1; if
+     *                                  contextOfItems is not of type
+     *                                  IfcGeometricRepresentationContext; if
+     *                                  items contains objects of type
      *                                  IfcTopologicalRepresentationItem (except
      *                                  for IfcVertexPoint, IfcEdgeCurve,
-     *                                  IfcFaceSurface); if representationType;
-     *                                  if representationType is unknown (not
-     *                                  present in the specification of this
-     *                                  class); if items contains objects of the
-     *                                  wrong type depending on the given
+     *                                  IfcFaceSurface); if representationType
+     *                                  is not present in the specification of
+     *                                  this class; if items contains objects of
+     *                                  the wrong type depending on the given
      *                                  representationType (see the
      *                                  specification of this class).
      */
-    public IfcShapeRepresentation(
-            @NonNull IfcRepresentationContext contextOfItems,
-            IfcLabel representationIdentifier,
-            @NonNull IfcLabel representationType,
-            @NonNull IfcRepresentationItem... items) {
-        this(contextOfItems, representationIdentifier, representationType,
-                new HashSet<>(Arrays.asList(items)));
+    public IfcShapeRepresentation(@NonNull IfcRepresentationContext contextOfItems,
+                                  IfcLabel representationIdentifier,
+                                  @NonNull IfcLabel representationType,
+                                  @NonNull IfcRepresentationItem... items) {
+        this(contextOfItems,
+             representationIdentifier,
+             representationType,
+             new HashSet<>(Arrays.asList(items)));
     }
 }

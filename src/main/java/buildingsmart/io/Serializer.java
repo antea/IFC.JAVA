@@ -176,7 +176,8 @@ public class Serializer {
      *
      * @param filePath The path to the file to create, or to an already existing
      *                 file.
-     * @throws IllegalArgumentException If {@code filePath} is null or empty.
+     * @throws NullPointerException     If {@code filePath} is null.
+     * @throws IllegalArgumentException If {@code filePath} is empty.
      * @throws SecurityException        If a security manager exists and its
      *                                  <code>{@link java.lang.SecurityManager#checkRead(java.lang.String)}</code>
      *                                  method does not permit verification of
@@ -190,13 +191,13 @@ public class Serializer {
      */
     private static File createFile(@NonNull String filePath) {
         String directoryPath = null;
-        if (filePath != null && filePath.length() > 0) {
+        if (filePath.length() > 0) {
             int endIndex = filePath.lastIndexOf(File.separatorChar);
             if (endIndex != -1) {
                 directoryPath = filePath.substring(0, endIndex);
             }
         } else {
-            throw new IllegalArgumentException("filePath is null or empty");
+            throw new IllegalArgumentException("filePath is empty");
         }
         if (directoryPath != null) {
             //noinspection ResultOfMethodCallIgnored
@@ -219,8 +220,9 @@ public class Serializer {
      * @param project  The {@link IfcProject} to serialize.
      * @param filePath The path to the file to create, or to an already existing
      *                 file.
-     * @throws IllegalArgumentException If {@code header} is null; if {@code
-     *                                  filePath} is null or empty.
+     * @throws NullPointerException     If {@code header} is null; if {@code
+     *                                  filePath} is null.
+     * @throws IllegalArgumentException If {@code filePath} is empty.
      * @throws IOException              If the file exists but is a directory
      *                                  rather than a regular file, does not
      *                                  exist but cannot be created, or cannot
@@ -287,9 +289,6 @@ public class Serializer {
     public void serialize(@NonNull Header header,
                           IfcProject project,
                           @NonNull String filePath) throws IOException {
-        if (header == null) {
-            throw new IllegalArgumentException("header cannot be null");
-        }
         File output = createFile(filePath);
         header.setFileName(output.getName());
 
@@ -380,6 +379,7 @@ public class Serializer {
             return ((IfcDefinedType) obj).serialize();
         }
         if (obj instanceof Collection) {
+            @SuppressWarnings("rawtypes")
             Collection coll = (Collection) obj;
             StringBuilder serializedColl = new StringBuilder("(");
             for (Object element : coll) {

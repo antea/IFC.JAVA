@@ -39,6 +39,7 @@ public class SerializerTest {
      * @param filePath The path to the IFC file of which to retrieve the DATA
      *                 section.
      * @return The DATA section of the IFC file.
+     *
      * @throws IOException       If an I/O error occurs reading from the file or
      *                           a malformed or unmappable byte sequence is
      *                           read.
@@ -76,61 +77,90 @@ public class SerializerTest {
         IfcPersonAndOrganization personAndOrganization =
                 new IfcPersonAndOrganization(person, organization, null);
         IfcApplication application = new IfcApplication(organization,
-                new IfcLabel("0.18 build 4 (GitTag)"), new IfcLabel("FreeCAD"),
-                new IfcIdentifier("118df2cf_ed21_438e_a41"));
+                                                        new IfcLabel(
+                                                                "0.18 build 4" +
+                                                                        " (GitTag)"),
+                                                        new IfcLabel("FreeCAD"),
+                                                        new IfcIdentifier(
+                                                                "118df2cf_ed21_438e_a41"));
         IfcOwnerHistory ownerHistory =
-                new IfcOwnerHistory(personAndOrganization, application, null,
-                        IfcChangeActionEnum.ADDED, null, personAndOrganization,
-                        application, new IfcTimeStamp(1586902585));
+                new IfcOwnerHistory(personAndOrganization,
+                                    application,
+                                    null,
+                                    IfcChangeActionEnum.ADDED,
+                                    null,
+                                    personAndOrganization,
+                                    application,
+                                    new IfcTimeStamp(1586902585));
 
         IfcAxis2Placement3D axis2Placement3D =
                 new IfcAxis2Placement3D(new IfcCartesianPoint(0, 0, 0),
-                        new IfcDirection(0, 0, 1), new IfcDirection(1, 0, 0));
+                                        new IfcDirection(0, 0, 1),
+                                        new IfcDirection(1, 0, 0));
         IfcGeometricRepresentationContext geometricRepresentationContext =
                 new IfcGeometricRepresentationContext(new IfcLabel("Plan"),
-                        new IfcLabel("Model"), new IfcDimensionCount(3),
-                        new IfcReal(1.E-05), axis2Placement3D,
-                        new IfcDirection(0, 1, 0));
+                                                      new IfcLabel("Model"),
+                                                      new IfcDimensionCount(3),
+                                                      new IfcReal(1.E-05),
+                                                      axis2Placement3D,
+                                                      new IfcDirection(0,
+                                                                       1,
+                                                                       0));
 
         IfcDimensionalExponents angleExponents =
                 new IfcDimensionalExponents(0, 0, 0, 0, 0, 0, 0);
-        IfcSIUnit metre = new IfcSIUnit(IfcUnitEnum.LENGTHUNIT, null,
-                IfcSIUnitName.METRE);
-        IfcSIUnit squareMetre = new IfcSIUnit(IfcUnitEnum.AREAUNIT, null,
-                IfcSIUnitName.SQUARE_METRE);
-        IfcSIUnit cubicMetre = new IfcSIUnit(IfcUnitEnum.VOLUMEUNIT, null,
-                IfcSIUnitName.CUBIC_METRE);
-        IfcSIUnit radian = new IfcSIUnit(IfcUnitEnum.PLANEANGLEUNIT, null,
-                IfcSIUnitName.RADIAN);
-        IfcMeasureWithUnit conversionFactor = new IfcMeasureWithUnit(
-                new IfcPlaneAngleMeasure(0.017453292519943295), radian);
-        IfcConversionBasedUnit degree =
-                new IfcConversionBasedUnit(angleExponents,
-                        IfcUnitEnum.PLANEANGLEUNIT, new IfcLabel("DEGREE"),
-                        conversionFactor);
+        IfcSIUnit metre = new IfcSIUnit(IfcUnitEnum.LENGTHUNIT,
+                                        null,
+                                        IfcSIUnitName.METRE);
+        IfcSIUnit squareMetre = new IfcSIUnit(IfcUnitEnum.AREAUNIT,
+                                              null,
+                                              IfcSIUnitName.SQUARE_METRE);
+        IfcSIUnit cubicMetre = new IfcSIUnit(IfcUnitEnum.VOLUMEUNIT,
+                                             null,
+                                             IfcSIUnitName.CUBIC_METRE);
+        IfcSIUnit radian = new IfcSIUnit(IfcUnitEnum.PLANEANGLEUNIT,
+                                         null,
+                                         IfcSIUnitName.RADIAN);
+        IfcMeasureWithUnit conversionFactor =
+                new IfcMeasureWithUnit(new IfcPlaneAngleMeasure(
+                        0.017453292519943295), radian);
+        IfcConversionBasedUnit degree = new IfcConversionBasedUnit(
+                angleExponents,
+                IfcUnitEnum.PLANEANGLEUNIT,
+                new IfcLabel("DEGREE"),
+                conversionFactor);
         IfcUnitAssignment unitAssignment =
                 new IfcUnitAssignment(metre, squareMetre, cubicMetre, degree);
 
         IfcProject ifcProject = IfcProject.Builder.anIfcProject()
                 .globalId(new IfcGloballyUniqueId("51f413ef_7964_4d38_b19"))
                 .ownerHistory(ownerHistory).name(new IfcLabel("Unnamed"))
-                .representationContexts(
-                        Collections.singleton(geometricRepresentationContext))
+                .representationContexts(Collections.singleton(
+                        geometricRepresentationContext))
                 .unitsInContext(unitAssignment).build();
 
         IfcAxis2Placement2D axis2Placement2D =
                 new IfcAxis2Placement2D(new IfcCartesianPoint(0, 0),
-                        new IfcDirection(1, 0));
+                                        new IfcDirection(1, 0));
         IfcCircleProfileDef circle =
-                new IfcCircleProfileDef(IfcProfileTypeEnum.AREA, null,
-                        axis2Placement2D, new IfcPositiveLengthMeasure(0.1));
-        IfcAxis2Placement3D cylinderPlacement = new IfcAxis2Placement3D(
-                new IfcCartesianPoint(-1.4210854715202E-17,
-                        -2.73641172593403E-18, 0), new IfcDirection(0, 0, 1),
-                new IfcDirection(1, 0, 0));
-        IfcExtrudedAreaSolid cylinder =
-                new IfcExtrudedAreaSolid(circle, cylinderPlacement,
-                        new IfcDirection(0, 0, 1), new IfcLengthMeasure(0.1));
+                new IfcCircleProfileDef(IfcProfileTypeEnum.AREA,
+                                        null,
+                                        axis2Placement2D,
+                                        new IfcPositiveLengthMeasure(0.1));
+        IfcAxis2Placement3D cylinderPlacement =
+                new IfcAxis2Placement3D(new IfcCartesianPoint(-1.4210854715202E-17,
+                                                              -2.73641172593403E-18,
+                                                              0),
+                                        new IfcDirection(0, 0, 1),
+                                        new IfcDirection(1, 0, 0));
+        IfcExtrudedAreaSolid cylinder = new IfcExtrudedAreaSolid(circle,
+                                                                 cylinderPlacement,
+                                                                 new IfcDirection(
+                                                                         0,
+                                                                         0,
+                                                                         1),
+                                                                 new IfcLengthMeasure(
+                                                                         0.1));
 
         IfcColourRgb colour = new IfcColourRgb(null, 1, 1, 1);
         IfcSurfaceStyleRendering surfaceStyleRendering =
@@ -138,9 +168,9 @@ public class SerializerTest {
                         .surfaceColour(colour)
                         .reflectanceMethod(IfcReflectanceMethodEnum.FLAT)
                         .build();
-        IfcSurfaceStyle surfaceStyle =
-                new IfcSurfaceStyle(null, IfcSurfaceSide.BOTH,
-                        surfaceStyleRendering);
+        IfcSurfaceStyle surfaceStyle = new IfcSurfaceStyle(null,
+                                                           IfcSurfaceSide.BOTH,
+                                                           surfaceStyleRendering);
         IfcPresentationStyleAssignment presentationStyleAssignment =
                 new IfcPresentationStyleAssignment(surfaceStyle);
         IfcStyledItem styledItem =
@@ -148,10 +178,11 @@ public class SerializerTest {
 
         IfcLocalPlacement wallPlacement =
                 new IfcLocalPlacement(null, axis2Placement3D);
-        IfcShapeRepresentation shapeRepresentation =
-                new IfcShapeRepresentation(geometricRepresentationContext,
-                        new IfcLabel("Body"), new IfcLabel("SweptSolid"),
-                        cylinder);
+        IfcShapeRepresentation shapeRepresentation = new IfcShapeRepresentation(
+                geometricRepresentationContext,
+                new IfcLabel("Body"),
+                new IfcLabel("SweptSolid"),
+                cylinder);
         IfcProductDefinitionShape productDefinitionShape =
                 new IfcProductDefinitionShape(null, null, shapeRepresentation);
         IfcWall wall = IfcWall.Builder.anIfcWall()
@@ -166,8 +197,9 @@ public class SerializerTest {
                 .description(new IfcText(""))
                 .compositionType(IfcElementCompositionEnum.ELEMENT).build();
         IfcRelAggregates projectLink =
-                IfcRelAggregates.Builder.anIfcRelAggregates().globalId(
-                        new IfcGloballyUniqueId("2KdG89VfqHweGDN5zdz5Bw"))
+                IfcRelAggregates.Builder.anIfcRelAggregates()
+                        .globalId(new IfcGloballyUniqueId(
+                                "2KdG89VfqHweGDN5zdz5Bw"))
                         .ownerHistory(ownerHistory)
                         .name(new IfcLabel("ProjectLink"))
                         .description(new IfcText("")).relatingObject(ifcProject)
@@ -179,31 +211,35 @@ public class SerializerTest {
                 .description(new IfcText(""))
                 .compositionType(IfcElementCompositionEnum.ELEMENT).build();
         IfcRelAggregates siteLink =
-                IfcRelAggregates.Builder.anIfcRelAggregates().globalId(
-                        new IfcGloballyUniqueId("2KdHMTVfqHwePlN5zdz5Bw"))
+                IfcRelAggregates.Builder.anIfcRelAggregates()
+                        .globalId(new IfcGloballyUniqueId(
+                                "2KdHMTVfqHwePlN5zdz5Bw"))
                         .ownerHistory(ownerHistory)
                         .name(new IfcLabel("SiteLink"))
                         .description(new IfcText("")).relatingObject(site)
                         .relatedObjects(building).build();
         IfcBuildingStorey buildingStorey =
-                IfcBuildingStorey.Builder.anIfcBuildingStorey().globalId(
-                        new IfcGloballyUniqueId("2KdHMUVfqHwg4XN5zdz5Bw"))
+                IfcBuildingStorey.Builder.anIfcBuildingStorey()
+                        .globalId(new IfcGloballyUniqueId(
+                                "2KdHMUVfqHwg4XN5zdz5Bw"))
                         .ownerHistory(ownerHistory)
                         .name(new IfcLabel("Default Storey"))
                         .description(new IfcText(""))
                         .compositionType(IfcElementCompositionEnum.ELEMENT)
                         .build();
         IfcRelAggregates defaultStoreyLink =
-                IfcRelAggregates.Builder.anIfcRelAggregates().globalId(
-                        new IfcGloballyUniqueId("2KdHMVVfqHwhFMN5zdz5Bw"))
+                IfcRelAggregates.Builder.anIfcRelAggregates()
+                        .globalId(new IfcGloballyUniqueId(
+                                "2KdHMVVfqHwhFMN5zdz5Bw"))
                         .ownerHistory(ownerHistory)
                         .name(new IfcLabel("DefaultStoreyLink"))
                         .description(new IfcText("")).relatingObject(building)
                         .relatedObjects(buildingStorey).build();
         IfcRelContainedInSpatialStructure unassignedObjectsLink =
                 IfcRelContainedInSpatialStructure.Builder
-                        .anIfcRelContainedInSpatialStructure().globalId(
-                        new IfcGloballyUniqueId("2KdIamVfqHwf$aN5zdz5Bw"))
+                        .anIfcRelContainedInSpatialStructure()
+                        .globalId(new IfcGloballyUniqueId(
+                                "2KdIamVfqHwf$aN5zdz5Bw"))
                         .ownerHistory(ownerHistory)
                         .name(new IfcLabel("UnassignedObjectsLink"))
                         .description(new IfcText(""))
@@ -285,7 +321,8 @@ public class SerializerTest {
         Assert.assertEquals(expectedDataSection, writtenDataSection);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @SuppressWarnings("ConstantConditions")
+    @Test(expected = NullPointerException.class)
     public void serialize_nullHeader() throws IOException {
         Serializer serializer = new Serializer();
         serializer.serialize(null, validIfcProject, FILE_PATH);
@@ -299,7 +336,7 @@ public class SerializerTest {
         Assert.assertEquals("DATA;\nENDSEC;\n", writtenDataSection);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void serialize_nullPath() throws IOException {
         Serializer serializer = new Serializer();
         serializer.serialize(new Header(), validIfcProject, null);

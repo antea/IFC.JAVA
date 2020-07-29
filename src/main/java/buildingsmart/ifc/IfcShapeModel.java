@@ -63,8 +63,8 @@ public class IfcShapeModel extends IfcRepresentation {
      *                                 be specified by implementers agreements.
      * @param items                    Set of geometric representation items
      *                                 that are defined for this representation.
-     * @throws IllegalArgumentException If contextOfItems or items are null; if
-     *                                  the size of items is lower than 1.
+     * @throws NullPointerException     If contextOfItems or items are null.
+     * @throws IllegalArgumentException If the size of items is lower than 1.
      */
     public IfcShapeModel(@NonNull IfcRepresentationContext contextOfItems,
                          IfcLabel representationIdentifier,
@@ -93,8 +93,8 @@ public class IfcShapeModel extends IfcRepresentation {
      *                                 be specified by implementers agreements.
      * @param items                    Set of geometric representation items
      *                                 that are defined for this representation.
-     * @throws IllegalArgumentException If contextOfItems or items are null; if
-     *                                  the size of items is lower than 1.
+     * @throws NullPointerException     If contextOfItems or items are null.
+     * @throws IllegalArgumentException If the size of items is lower than 1.
      */
     public IfcShapeModel(@NonNull IfcRepresentationContext contextOfItems,
                          IfcLabel representationIdentifier,

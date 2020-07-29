@@ -53,8 +53,8 @@ public abstract class IfcNamedUnit extends IfcEntity implements IfcUnit {
         if (unitType == null) {
             throw new IllegalArgumentException("unitType cannot be null");
         }
-        if (Objects.equals(Functions.ifcCorrectDimensions(unitType, dimensions),
-                false)) {
+        if (Boolean.FALSE
+                .equals(Functions.ifcCorrectDimensions(unitType, dimensions))) {
             throw new IllegalArgumentException(
                     "given dimensions for this unitType are wrong");
         }

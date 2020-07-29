@@ -68,10 +68,9 @@ public class IfcLocalPlacement extends IfcObjectPlacement {
             throw new IllegalArgumentException(
                     "relativePlacement cannot be null");
         }
-        if (!Objects.equals(Functions
-                        .ifcCorrectLocalPlacement(relativePlacement,
-                                placementRelTo),
-                true)) {
+        if (!Boolean.TRUE.equals(Functions.ifcCorrectLocalPlacement(
+                relativePlacement,
+                placementRelTo))) {
             throw new IllegalArgumentException(
                     "if relativePlacement is 3D, so must be placementRelTo; " +
                             "placementRelTo cannot be an IfcGridPlacement");
