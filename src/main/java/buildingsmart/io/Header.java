@@ -43,8 +43,7 @@ public class Header {
     private List<String> organization;
     private String authorization;
 
-    public Header() {
-    }
+    public Header() {}
 
     /**
      * Checks whether the given String is longer than 256 characters.

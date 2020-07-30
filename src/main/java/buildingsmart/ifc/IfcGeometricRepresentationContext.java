@@ -20,9 +20,9 @@
 package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
+import lombok.EqualsAndHashCode;
 import lombok.NonNull;
-
-import java.util.Objects;
+import lombok.ToString;
 
 /**
  * The IfcGeometricRepresentationContext defines the context that applies to
@@ -34,6 +34,8 @@ import java.util.Objects;
  * attribute. The TrueNorth attribute can be given, if the y axis of the
  * WorldCoordinateSystem does not point to the global northing.
  */
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 public class IfcGeometricRepresentationContext
         extends IfcRepresentationContext {
     @Attribute(2)
@@ -44,7 +46,6 @@ public class IfcGeometricRepresentationContext
     private final IfcAxis2Placement worldCoordinateSystem;
     @Attribute(5)
     private final IfcDirection trueNorth;
-    //private IfcGeometricRepresentationSubContext[] HasSubContexts;
 
     /**
      * @param contextIdentifier        The optional identifier of the
@@ -88,53 +89,19 @@ public class IfcGeometricRepresentationContext
      *                                 given, it defaults to the positive
      *                                 direction of the y-axis of the
      *                                 WorldCoordinateSystem.
-     * @throws IllegalArgumentException If coordinateSpaceDimension or
-     *                                  worldCoordinateSystem are null.
+     * @throws NullPointerException If coordinateSpaceDimension or
+     *                              worldCoordinateSystem are null.
      */
     public IfcGeometricRepresentationContext(IfcLabel contextIdentifier,
-                                             IfcLabel contextType, @NonNull
-                                                     IfcDimensionCount coordinateSpaceDimension,
-                                             IfcReal precision, @NonNull
-                                                     IfcAxis2Placement worldCoordinateSystem,
+                                             IfcLabel contextType,
+                                             @NonNull IfcDimensionCount coordinateSpaceDimension,
+                                             IfcReal precision,
+                                             @NonNull IfcAxis2Placement worldCoordinateSystem,
                                              IfcDirection trueNorth) {
         super(contextIdentifier, contextType);
-        if (coordinateSpaceDimension == null) {
-            throw new IllegalArgumentException(
-                    "coordinateSpaceDimension cannot be null");
-        }
-        if (worldCoordinateSystem == null) {
-            throw new IllegalArgumentException(
-                    "worldCoordinateSystem cannot be null");
-        }
         this.coordinateSpaceDimension = coordinateSpaceDimension;
         this.precision = precision;
         this.worldCoordinateSystem = worldCoordinateSystem;
         this.trueNorth = trueNorth;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        if (!super.equals(o)) {
-            return false;
-        }
-        IfcGeometricRepresentationContext that =
-                (IfcGeometricRepresentationContext) o;
-        return coordinateSpaceDimension.equals(that.coordinateSpaceDimension) &&
-                Objects.equals(precision, that.precision) &&
-                worldCoordinateSystem.equals(that.worldCoordinateSystem) &&
-                Objects.equals(trueNorth, that.trueNorth);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects
-                .hash(super.hashCode(), coordinateSpaceDimension, precision,
-                        worldCoordinateSystem, trueNorth);
     }
 }

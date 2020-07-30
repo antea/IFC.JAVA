@@ -19,6 +19,8 @@
 
 package buildingsmart.ifc;
 
+import lombok.ToString;
+
 /**
  * An geometric representation item is a representation item that has the
  * additional meaning of having geometric position or orientation or both.
@@ -47,5 +49,6 @@ package buildingsmart.ifc;
  * references poly loops (IfcPolyLoop). Through additional intervening
  * entities poly loops reference cartesian_point's (IfcCartesianPoint).
  */
+@ToString(callSuper = true)
 public abstract class IfcGeometricRepresentationItem extends IfcRepresentationItem {
 }

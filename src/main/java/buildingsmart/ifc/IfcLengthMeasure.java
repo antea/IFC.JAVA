@@ -20,15 +20,19 @@
 package buildingsmart.ifc;
 
 import buildingsmart.io.IfcDefinedType;
-
-import java.util.Objects;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.ToString;
 
 /**
  * A length measure is the value of a distance.
  * <p>
  * Usually measured in millimeters (mm).
  */
+@EqualsAndHashCode
+@ToString
 public class IfcLengthMeasure implements IfcDefinedType, IfcMeasureValue {
+    @Getter
     private final double value;
 
     /**
@@ -38,32 +42,11 @@ public class IfcLengthMeasure implements IfcDefinedType, IfcMeasureValue {
         this.value = value;
     }
 
-    public double getValue() {
-        return value;
-    }
-
     /**
      * @return The representation of the type in an IFC STEP file.
      */
     @Override
     public String serialize() {
         return Double.toString(value);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        IfcLengthMeasure ifcLengthMeasure1 = (IfcLengthMeasure) o;
-        return Double.compare(ifcLengthMeasure1.value, value) == 0;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(value);
     }
 }

@@ -19,9 +19,14 @@
 
 package buildingsmart.ifc;
 
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
 /**
  * Dimensionless measure to express ratio values ranging from 0.0 to 1.0.
  */
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 public class IfcNormalisedRatioMeasure extends IfcRatioMeasure
         implements IfcColourOrFactor {
 

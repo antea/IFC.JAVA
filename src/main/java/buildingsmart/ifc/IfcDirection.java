@@ -21,28 +21,35 @@ package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
 import buildingsmart.util.Functions;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NonNull;
+import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * This entity defines a general direction vector in two or three dimensional
  * space. The actual magnitudes of the components have no effect upon the
  * direction being defined, only the ratios X:Y:Z or X:Y are significant.
  */
+@EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
+@ToString(callSuper = true)
 public class IfcDirection extends IfcGeometricRepresentationItem
         implements IfcVectorOrDirection {
+    @Getter
     @Attribute(0)
     private final List<IfcReal> directionRatios;
     /**
-     * This attribute is not part of the IFC specification, its only purpose is
+     * This field is not part of the IFC specification, its only purpose is
      * being used in equals() and hashCode() to avoid writing multiple
-     * IfcDirection in the output IFC file when different objects actually
-     * represent the same direction.
+     * IfcDirection in the output IFC file when different IfcDirection objects
+     * actually represent the same direction.
      */
+    @EqualsAndHashCode.Include
     private final List<IfcReal> normalisedDirectionRatios;
+    @Getter
     private final IfcDimensionCount dim; // derived attribute
 
     /**
@@ -52,14 +59,11 @@ public class IfcDirection extends IfcGeometricRepresentationItem
      *                        and of Z axis (DirectionRatios[3]). The size of
      *                        this list must be either 2 or 3, and it cannot be
      *                        null.
+     * @throws NullPointerException     If directionRatios is null.
      * @throws IllegalArgumentException If the size of directionRatios is not 2
-     *                                  or 3, or if directionRatios is null.
+     *                                  or 3.
      */
     public IfcDirection(@NonNull List<IfcReal> directionRatios) {
-        if (directionRatios == null) {
-            throw new IllegalArgumentException(
-                    "directionRatios cannot be null");
-        }
         if (directionRatios.size() < 2 || directionRatios.size() > 3) {
             throw new IllegalArgumentException(
                     "size of directionRatios must be 2 or 3");
@@ -77,14 +81,11 @@ public class IfcDirection extends IfcGeometricRepresentationItem
      *                        and of Z axis (DirectionRatios[3]). The size of
      *                        this array must be either 2 or 3, and it cannot be
      *                        null.
+     * @throws NullPointerException     If directionRatios is null.
      * @throws IllegalArgumentException If the size of directionRatios is not 2
-     *                                  or 3, or if directionRatios is null.
+     *                                  or 3.
      */
     public IfcDirection(@NonNull double... directionRatios) {
-        if (directionRatios == null) {
-            throw new IllegalArgumentException(
-                    "directionRatios cannot be null");
-        }
         if (directionRatios.length < 2 || directionRatios.length > 3) {
             throw new IllegalArgumentException(
                     "size of directionRatios must be 2 or 3");
@@ -99,42 +100,5 @@ public class IfcDirection extends IfcGeometricRepresentationItem
         IfcDirection normalised = Functions.ifcNormalise(this);
         this.normalisedDirectionRatios =
                 normalised == null ? null : normalised.directionRatios;
-    }
-
-    /**
-     * @return The space dimensionality of this class, defined by the number of
-     * real in the list of DirectionRatios.
-     */
-    @Override
-    public IfcDimensionCount getDim() {
-        return this.dim;
-    }
-
-    /**
-     * @return The components of the direction in the direction of X axis
-     * (DirectionRatios[1]), of Y axis (DirectionRatios[2]), and of Z axis
-     * (DirectionRatios[3])
-     */
-    @Override
-    public List<IfcReal> getDirectionRatios() {
-        return directionRatios;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        IfcDirection that = (IfcDirection) o;
-        return Objects.equals(normalisedDirectionRatios,
-                that.normalisedDirectionRatios);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(normalisedDirectionRatios);
     }
 }

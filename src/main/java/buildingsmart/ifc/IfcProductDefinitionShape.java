@@ -19,7 +19,9 @@
 
 package buildingsmart.ifc;
 
+import lombok.EqualsAndHashCode;
 import lombok.NonNull;
+import lombok.ToString;
 
 import java.util.Arrays;
 import java.util.List;
@@ -29,9 +31,9 @@ import java.util.List;
  * about an <i>IfcProduct</i>. It allows for multiple geometric shape
  * representations of the same product.
  */
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 public class IfcProductDefinitionShape extends IfcProductRepresentation {
-    //private IfcProduct[] ShapeOfProduct;
-    //private IfcShapeAspect[] HasShapeAspects;
 
     /**
      * @param name            The word or group of words by which the product
@@ -44,12 +46,13 @@ public class IfcProductDefinitionShape extends IfcProductRepresentation {
      *                        representations). Each member defines a valid
      *                        representation of a particular type within a
      *                        particular representation context.
-     * @throws IllegalArgumentException If representations is null, or if its
-     *                                  size is lower than 1, or if it contains
-     *                                  objects that are not of type
-     *                                  IfcShapeModel.
+     * @throws NullPointerException     If representations is null.
+     * @throws IllegalArgumentException If representations' size is lower than
+     *                                  1, or if it contains objects that are
+     *                                  not of type IfcShapeModel.
      */
-    public IfcProductDefinitionShape(IfcLabel name, IfcText description,
+    public IfcProductDefinitionShape(IfcLabel name,
+                                     IfcText description,
                                      @NonNull List<IfcRepresentation> representations) {
         super(name, description, representations);
         for (IfcRepresentation repr : representations) {
@@ -80,12 +83,13 @@ public class IfcProductDefinitionShape extends IfcProductRepresentation {
      *                        representations). Each member defines a valid
      *                        representation of a particular type within a
      *                        particular representation context.
-     * @throws IllegalArgumentException If representations is null, or if its
-     *                                  size is lower than 1, or if it contains
-     *                                  objects that are not of type
-     *                                  IfcShapeModel.
+     * @throws NullPointerException     If representations is null.
+     * @throws IllegalArgumentException If representations' size is lower than
+     *                                  1, or if it contains objects that are
+     *                                  not of type IfcShapeModel.
      */
-    public IfcProductDefinitionShape(IfcLabel name, IfcText description,
+    public IfcProductDefinitionShape(IfcLabel name,
+                                     IfcText description,
                                      @NonNull IfcRepresentation... representations) {
         this(name, description, Arrays.asList(representations));
     }

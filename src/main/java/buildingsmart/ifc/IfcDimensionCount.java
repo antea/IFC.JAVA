@@ -20,19 +20,24 @@
 package buildingsmart.ifc;
 
 import buildingsmart.io.IfcDefinedType;
-
-import java.util.Objects;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.ToString;
 
 /**
  * A dimension count is a positive integer used to define the coordinate space
  * dimensionality.
  */
+@EqualsAndHashCode
+@ToString
 public class IfcDimensionCount implements IfcDefinedType {
+    @Getter
     private final byte value;
 
     /**
      * @param value The positive integer used to define the coordinate space
-     *              dimensionality. Must be either 1, 2 or 3.
+     *              dimensionality.
+     * @throws IllegalArgumentException If value is not 1, 2 or 3.
      */
     public IfcDimensionCount(byte value) {
         if (value <= 0 || value > 3) {
@@ -44,7 +49,8 @@ public class IfcDimensionCount implements IfcDefinedType {
 
     /**
      * @param value The positive integer used to define the coordinate space
-     *              dimensionality. Must be either 1, 2 or 3.
+     *              dimensionality.
+     * @throws IllegalArgumentException If value is not 1, 2 or 3.
      */
     public IfcDimensionCount(int value) {
         if (value <= 0 || value > 3) {
@@ -54,32 +60,11 @@ public class IfcDimensionCount implements IfcDefinedType {
         this.value = (byte) value;
     }
 
-    public byte getValue() {
-        return value;
-    }
-
     /**
      * @return The representation of the type in an IFC STEP file.
      */
     @Override
     public String serialize() {
         return Integer.toString(value);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        IfcDimensionCount that = (IfcDimensionCount) o;
-        return value == that.value;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(value);
     }
 }

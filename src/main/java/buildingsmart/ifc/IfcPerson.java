@@ -21,13 +21,17 @@ package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
 import buildingsmart.io.IfcEntity;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import java.util.List;
-import java.util.Objects;
 
 /**
  * An individual human being.
  */
+@EqualsAndHashCode(callSuper = false)
+@ToString
 public class IfcPerson extends IfcEntity {
     @Attribute(0)
     private final IfcIdentifier id;
@@ -45,7 +49,6 @@ public class IfcPerson extends IfcEntity {
     private final List<IfcActorRole> roles;
     @Attribute(7)
     private final List<IfcAddress> addresses;
-    //private IfcPersonAndOrganization[] engagedIn;
 
     /**
      * @param id           Identification of the person.
@@ -68,9 +71,14 @@ public class IfcPerson extends IfcEntity {
      *                                  null, or if one of the parameters of
      *                                  type List has size equal to zero.
      */
-    public IfcPerson(IfcIdentifier id, IfcLabel familyName, IfcLabel givenName,
-                     List<IfcLabel> middleNames, List<IfcLabel> prefixTitles,
-                     List<IfcLabel> suffixTitles, List<IfcActorRole> roles,
+    @Builder
+    public IfcPerson(IfcIdentifier id,
+                     IfcLabel familyName,
+                     IfcLabel givenName,
+                     List<IfcLabel> middleNames,
+                     List<IfcLabel> prefixTitles,
+                     List<IfcLabel> suffixTitles,
+                     List<IfcActorRole> roles,
                      List<IfcAddress> addresses) {
         if (familyName == null && givenName == null) {
             throw new IllegalArgumentException(
@@ -108,94 +116,5 @@ public class IfcPerson extends IfcEntity {
         this.suffixTitles = suffixTitles;
         this.roles = roles;
         this.addresses = addresses;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        IfcPerson ifcPerson = (IfcPerson) o;
-        return Objects.equals(id, ifcPerson.id) &&
-                Objects.equals(familyName, ifcPerson.familyName) &&
-                Objects.equals(givenName, ifcPerson.givenName) &&
-                Objects.equals(middleNames, ifcPerson.middleNames) &&
-                Objects.equals(prefixTitles, ifcPerson.prefixTitles) &&
-                Objects.equals(suffixTitles, ifcPerson.suffixTitles) &&
-                Objects.equals(roles, ifcPerson.roles) &&
-                Objects.equals(addresses, ifcPerson.addresses);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects
-                .hash(id, familyName, givenName, middleNames, prefixTitles,
-                        suffixTitles, roles, addresses);
-    }
-
-    public static final class Builder {
-        private IfcIdentifier id;
-        private IfcLabel familyName;
-        private IfcLabel givenName;
-        private List<IfcLabel> middleNames;
-        private List<IfcLabel> prefixTitles;
-        private List<IfcLabel> suffixTitles;
-        private List<IfcActorRole> roles;
-        private List<IfcAddress> addresses;
-
-        private Builder() {
-        }
-
-        public static Builder anIfcPerson() {
-            return new Builder();
-        }
-
-        public Builder id(IfcIdentifier id) {
-            this.id = id;
-            return this;
-        }
-
-        public Builder familyName(IfcLabel familyName) {
-            this.familyName = familyName;
-            return this;
-        }
-
-        public Builder givenName(IfcLabel givenName) {
-            this.givenName = givenName;
-            return this;
-        }
-
-        public Builder middleNames(List<IfcLabel> middleNames) {
-            this.middleNames = middleNames;
-            return this;
-        }
-
-        public Builder prefixTitles(List<IfcLabel> prefixTitles) {
-            this.prefixTitles = prefixTitles;
-            return this;
-        }
-
-        public Builder suffixTitles(List<IfcLabel> suffixTitles) {
-            this.suffixTitles = suffixTitles;
-            return this;
-        }
-
-        public Builder roles(List<IfcActorRole> roles) {
-            this.roles = roles;
-            return this;
-        }
-
-        public Builder addresses(List<IfcAddress> addresses) {
-            this.addresses = addresses;
-            return this;
-        }
-
-        public IfcPerson build() {
-            return new IfcPerson(id, familyName, givenName, middleNames,
-                    prefixTitles, suffixTitles, roles, addresses);
-        }
     }
 }

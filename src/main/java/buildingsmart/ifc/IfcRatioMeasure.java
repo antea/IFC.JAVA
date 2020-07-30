@@ -20,8 +20,9 @@
 package buildingsmart.ifc;
 
 import buildingsmart.io.IfcDefinedType;
-
-import java.util.Objects;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 /**
  * A ratio measure is the value of the relation between two physical quantities
@@ -33,12 +34,11 @@ import java.util.Objects;
  * </FONT>
  * </BLOCKQUOTE>
  */
+@AllArgsConstructor
+@EqualsAndHashCode
+@ToString
 public class IfcRatioMeasure implements IfcDefinedType, IfcMeasureValue {
-    double value;
-
-    public IfcRatioMeasure(double value) {
-        this.value = value;
-    }
+    private final double value;
 
     /**
      * @return The representation of the type in an IFC STEP file.
@@ -46,22 +46,5 @@ public class IfcRatioMeasure implements IfcDefinedType, IfcMeasureValue {
     @Override
     public String serialize() {
         return Double.toString(value);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        IfcRatioMeasure that = (IfcRatioMeasure) o;
-        return Double.compare(that.value, value) == 0;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(value);
     }
 }

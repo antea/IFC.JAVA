@@ -34,11 +34,9 @@ public class IfcSpatialStructureElementTest {
     public static void setUp() {
         IfcApplication.clearUniqueConstraint();
         IfcPerson person =
-                IfcPerson.Builder.anIfcPerson().givenName(new IfcLabel(""))
-                        .build();
+                IfcPerson.builder().givenName(new IfcLabel("")).build();
         IfcOrganization organization =
-                IfcOrganization.Builder.anIfcOrganization()
-                        .name(new IfcLabel("")).build();
+                IfcOrganization.builder().name(new IfcLabel("")).build();
         IfcPersonAndOrganization personAndOrganization =
                 new IfcPersonAndOrganization(person, organization, null);
         IfcApplication application =
@@ -56,6 +54,7 @@ public class IfcSpatialStructureElementTest {
                 new ConcreteIfcSpatialStructureElement(ownerHistory, null, null,
                         null, null, null, null,
                         IfcElementCompositionEnum.ELEMENT);
+        //noinspection ConstantConditions
         spatialStructureElement.addToContainsElements(null);
     }
 

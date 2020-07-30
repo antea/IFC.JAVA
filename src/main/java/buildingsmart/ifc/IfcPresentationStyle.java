@@ -21,8 +21,8 @@ package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
 import buildingsmart.io.IfcEntity;
-
-import java.util.Objects;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 /**
  * An abstract generalization of style table for presentation information
@@ -34,6 +34,8 @@ import java.util.Objects;
  * <i>IfcPresentationStyleAssignment</i> through an intermediate
  * <i>IfcStyledItem</i> or one of its subtypes.</p>
  */
+@EqualsAndHashCode(callSuper = false)
+@ToString
 public abstract class IfcPresentationStyle extends IfcEntity {
     @Attribute(0)
     private final IfcLabel name;
@@ -43,22 +45,5 @@ public abstract class IfcPresentationStyle extends IfcEntity {
      */
     public IfcPresentationStyle(IfcLabel name) {
         this.name = name;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        IfcPresentationStyle that = (IfcPresentationStyle) o;
-        return Objects.equals(name, that.name);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(name);
     }
 }

@@ -20,18 +20,18 @@
 package buildingsmart.ifc;
 
 import buildingsmart.io.IfcEntity;
-
-import java.util.Objects;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 /**
  * An abstract entity type for various kinds of postal and telecom addresses.
  */
+@EqualsAndHashCode(callSuper = false)
+@ToString
 public class IfcAddress extends IfcEntity {
     private final IfcAddressTypeEnum purpose;
     private final IfcText description;
     private final IfcLabel userDefinedPurpose;
-    //private IfcPerson[] OfPerson;
-    //private IfcOrganization[] OfOrganization;
 
     /**
      * @param purpose            Identifies the logical location of the
@@ -47,39 +47,23 @@ public class IfcAddress extends IfcEntity {
      * @throws IllegalArgumentException If there's an invalid combination of
      *                                  purpose and userDefinedPurpose.
      */
-    public IfcAddress(IfcAddressTypeEnum purpose, IfcText description,
+    public IfcAddress(IfcAddressTypeEnum purpose,
+                      IfcText description,
                       IfcLabel userDefinedPurpose) {
         if (purpose == IfcAddressTypeEnum.USERDEFINED &&
                 userDefinedPurpose == null) {
-            throw new IllegalArgumentException("if purpose is set to " +
-                    "USERDEFINED, then userDefinedPurpose cannot be null");
+            throw new IllegalArgumentException(
+                    "if purpose is set to " + "USERDEFINED, then " +
+                            "userDefinedPurpose " + "cannot be null");
         }
         if (purpose != IfcAddressTypeEnum.USERDEFINED &&
                 userDefinedPurpose != null) {
-            throw new IllegalArgumentException("userDefinedPurpose should be " +
-                    "set only when purpose is set to USERDEFINED");
+            throw new IllegalArgumentException(
+                    "userDefinedPurpose should be " + "set only when purpose" +
+                            " is set to " + "USERDEFINED");
         }
         this.purpose = purpose;
         this.description = description;
         this.userDefinedPurpose = userDefinedPurpose;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        IfcAddress that = (IfcAddress) o;
-        return purpose == that.purpose &&
-                Objects.equals(description, that.description) &&
-                Objects.equals(userDefinedPurpose, that.userDefinedPurpose);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(purpose, description, userDefinedPurpose);
     }
 }

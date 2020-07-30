@@ -20,9 +20,9 @@
 package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
+import lombok.EqualsAndHashCode;
 import lombok.NonNull;
-
-import java.util.Objects;
+import lombok.ToString;
 
 /**
  * The parameterized profile definition defines a 2D position coordinate system
@@ -37,6 +37,8 @@ import java.util.Objects;
  * that becomes the origin [0.,0.,0.] of the extruded or rotated surface or
  * solid.
  */
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 public abstract class IfcParameterizedProfileDef extends IfcProfileDef {
     @Attribute(2)
     private final IfcAxis2Placement2D position;
@@ -51,35 +53,13 @@ public abstract class IfcParameterizedProfileDef extends IfcProfileDef {
      *                    profile table.
      * @param position    Position coordinate system of the parameterized
      *                    profile definition.
-     * @throws IllegalArgumentException If profileType or position are null.
+     * @throws NullPointerException If profileType or position are null.
      */
     public IfcParameterizedProfileDef(@NonNull IfcProfileTypeEnum profileType,
                                       IfcLabel profileName,
                                       @NonNull IfcAxis2Placement2D position) {
         super(profileType, profileName);
-        if (position == null) {
-            throw new IllegalArgumentException("position cannot be null");
-        }
         this.position = position;
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        if (!super.equals(o)) {
-            return false;
-        }
-        IfcParameterizedProfileDef that = (IfcParameterizedProfileDef) o;
-        return position.equals(that.position);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), position);
-    }
 }
+

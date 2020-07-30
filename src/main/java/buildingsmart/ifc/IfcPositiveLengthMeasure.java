@@ -19,9 +19,12 @@
 
 package buildingsmart.ifc;
 
+import lombok.EqualsAndHashCode;
+
 /**
  * A positive length measure is a length measure that is greater than zero.
  */
+@EqualsAndHashCode(callSuper = true)
 public class IfcPositiveLengthMeasure extends IfcLengthMeasure {
 
     /**
@@ -31,7 +34,8 @@ public class IfcPositiveLengthMeasure extends IfcLengthMeasure {
     public IfcPositiveLengthMeasure(double value) {
         super(value);
         if (value <= 0) {
-            throw new IllegalArgumentException("value must be bigger than zero");
+            throw new IllegalArgumentException(
+                    "value must be bigger than " + "zero");
         }
     }
 }

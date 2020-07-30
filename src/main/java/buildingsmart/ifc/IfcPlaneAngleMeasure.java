@@ -20,8 +20,9 @@
 package buildingsmart.ifc;
 
 import buildingsmart.io.IfcDefinedType;
-
-import java.util.Objects;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 /**
  * A plane angle measure is the value of an angle in a plane.
@@ -30,41 +31,23 @@ import java.util.Objects;
  * grad unit may be declared as a conversion based unit based on radian unit.
  * <p>
  * <small>NOTE: IfcPlaneAngleMeasure is used where angles need to be described
- * to an
- * accuracy of less than one degree and expressed as decimal parts of an angle.
- * It is widely used for angular measurement except for situations where
+ * to an accuracy of less than one degree and expressed as decimal parts of an
+ * angle. It is widely used for angular measurement except for situations where
  * accuracy needs to be defined using arc measurement; for which purpose the
  * IfcCompoundPlaneAngleMeasure is provided.</small>
  */
+@AllArgsConstructor
+@EqualsAndHashCode
+@ToString
 public class IfcPlaneAngleMeasure implements IfcDefinedType, IfcMeasureValue {
     private final double value;
-
-    public IfcPlaneAngleMeasure(double value) {
-        this.value = value;
-    }
 
     /**
      * @return The representation of the type in an IFC STEP file.
      */
     @Override
     public String serialize() {
+        //TODO: fix serialization of select types
         return "IFCPLANEANGLEMEASURE(" + value + ")";
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        IfcPlaneAngleMeasure that = (IfcPlaneAngleMeasure) o;
-        return Double.compare(that.value, value) == 0;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(value);
     }
 }

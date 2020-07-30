@@ -21,6 +21,7 @@ package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
 import lombok.NonNull;
+import lombok.ToString;
 
 /**
  * Any object, or any aid to define, organize and annotate an object, that
@@ -61,12 +62,12 @@ import lombok.NonNull;
  * <i>PredefinedType</i>
  * is set to <font size="-1">USERDEFINED</font>.</p>
  */
+@ToString(callSuper = true)
 public abstract class IfcProduct extends IfcObject {
     @Attribute(5)
     private final IfcObjectPlacement objectPlacement;
     @Attribute(6)
     private final IfcProductRepresentation representation;
-    //private IfcRelAssignsToProduct[] referencedBy;
 
     /**
      * Creates a new IfcProduct, using the provided globalId.
@@ -108,21 +109,24 @@ public abstract class IfcProduct extends IfcObject {
      *                        representations of the shape property of the
      *                        object within the same object coordinate system,
      *                        defined by the object placement.
-     * @throws IllegalArgumentException If globalId or ownerHistory are null; if
-     *                                  globalId was used in another instance of
-     *                                  this class; if representation is not
+     * @throws NullPointerException     If globalId or ownerHistory are null.
+     * @throws IllegalArgumentException If globalId was used in another instance
+     *                                  of this class; if representation is not
      *                                  null and objectPlacement is, while
      *                                  representation is an instance of
      *                                  IfcProductDefinitionShape.
      */
     public IfcProduct(@NonNull IfcGloballyUniqueId globalId,
-                      @NonNull IfcOwnerHistory ownerHistory, IfcLabel name,
-                      IfcText description, IfcLabel objectType,
+                      @NonNull IfcOwnerHistory ownerHistory,
+                      IfcLabel name,
+                      IfcText description,
+                      IfcLabel objectType,
                       IfcObjectPlacement objectPlacement,
                       IfcProductRepresentation representation) {
         super(globalId, ownerHistory, name, description, objectType);
         if (!(representation != null && objectPlacement != null ||
-                representation != null && !(representation instanceof IfcProductDefinitionShape) ||
+                representation != null &&
+                        !(representation instanceof IfcProductDefinitionShape) ||
                 representation == null)) {
             throw new IllegalArgumentException(
                     "If representation is not null, then objectPlacement must" +
@@ -134,8 +138,7 @@ public abstract class IfcProduct extends IfcObject {
     }
 
     /**
-     * Creates a new IfcProduct and generates a pseudo random
-     * globalId.
+     * Creates a new IfcProduct and generates a pseudo random globalId.
      *
      * @param ownerHistory    Assignment of the information about the current
      *                        ownership of that object, including owning actor,
@@ -172,17 +175,24 @@ public abstract class IfcProduct extends IfcObject {
      *                        representations of the shape property of the
      *                        object within the same object coordinate system,
      *                        defined by the object placement.
-     * @throws IllegalArgumentException If ownerHistory is null; if
-     *                                  representation is not null and
+     * @throws NullPointerException     If ownerHistory is null.
+     * @throws IllegalArgumentException If representation is not null and
      *                                  objectPlacement is, while representation
      *                                  is an instance of
      *                                  IfcProductDefinitionShape.
      */
-    public IfcProduct(@NonNull IfcOwnerHistory ownerHistory, IfcLabel name,
-                      IfcText description, IfcLabel objectType,
+    public IfcProduct(@NonNull IfcOwnerHistory ownerHistory,
+                      IfcLabel name,
+                      IfcText description,
+                      IfcLabel objectType,
                       IfcObjectPlacement objectPlacement,
                       IfcProductRepresentation representation) {
-        this(new IfcGloballyUniqueId(), ownerHistory, name, description,
-                objectType, objectPlacement, representation);
+        this(new IfcGloballyUniqueId(),
+             ownerHistory,
+             name,
+             description,
+             objectType,
+             objectPlacement,
+             representation);
     }
 }

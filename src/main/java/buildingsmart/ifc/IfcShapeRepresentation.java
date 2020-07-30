@@ -20,7 +20,9 @@
 package buildingsmart.ifc;
 
 import buildingsmart.util.Functions;
+import lombok.EqualsAndHashCode;
 import lombok.NonNull;
+import lombok.ToString;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -104,6 +106,8 @@ import java.util.Set;
  * mapped item has a representation type declaring the type of its
  * representation items.</td> </tr> </tbody>
  */
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 public class IfcShapeRepresentation extends IfcShapeModel {
     /**
      * @param contextOfItems           Definition of the representation context

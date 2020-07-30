@@ -33,11 +33,9 @@ public class IfcObjectDefinitionTest {
     public static void setUp() {
         IfcApplication.clearUniqueConstraint();
         IfcPerson person =
-                IfcPerson.Builder.anIfcPerson().givenName(new IfcLabel(""))
-                        .build();
+                IfcPerson.builder().givenName(new IfcLabel("")).build();
         IfcOrganization organization =
-                IfcOrganization.Builder.anIfcOrganization()
-                        .name(new IfcLabel("")).build();
+                IfcOrganization.builder().name(new IfcLabel("")).build();
         IfcPersonAndOrganization personAndOrganization =
                 new IfcPersonAndOrganization(person, organization, null);
         IfcApplication application =
@@ -53,6 +51,7 @@ public class IfcObjectDefinitionTest {
     public void addToIsDecomposedBy_null() {
         ConcreteIfcObjectDefinition objDef =
                 new ConcreteIfcObjectDefinition(ownerHistory, null, null);
+        //noinspection ConstantConditions
         objDef.addToIsDecomposedBy(null);
     }
 
@@ -98,6 +97,7 @@ public class IfcObjectDefinitionTest {
     public void setDecomposes_null() {
         ConcreteIfcObjectDefinition objDef =
                 new ConcreteIfcObjectDefinition(ownerHistory, null, null);
+        //noinspection ConstantConditions
         objDef.setDecomposes(null);
     }
 
@@ -140,6 +140,7 @@ public class IfcObjectDefinitionTest {
     public void addToHasAssociations_null() {
         ConcreteIfcObjectDefinition objDef =
                 new ConcreteIfcObjectDefinition(ownerHistory, null, null);
+        //noinspection ConstantConditions
         objDef.addToHasAssociations(null);
     }
 

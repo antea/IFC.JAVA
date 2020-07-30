@@ -21,9 +21,9 @@ package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
 import buildingsmart.io.IfcEntity;
+import lombok.EqualsAndHashCode;
 import lombok.NonNull;
-
-import java.util.Objects;
+import lombok.ToString;
 
 /**
  * A measure with unit is the specification of a physical quantity as defined in
@@ -38,6 +38,8 @@ import java.util.Objects;
  * conversion rate and its base.</li>
  * </ol>
  */
+@EqualsAndHashCode(callSuper = false)
+@ToString
 public class IfcMeasureWithUnit extends IfcEntity {
     @Attribute(0)
     private final IfcValue valueComponent;
@@ -49,34 +51,12 @@ public class IfcMeasureWithUnit extends IfcEntity {
      *                       in the specified units.
      * @param unitComponent  The unit in which the physical quantity is
      *                       expressed.
+     * @throws NullPointerException If valueComponent or unitComponent are
+     *                              null.
      */
     public IfcMeasureWithUnit(@NonNull IfcValue valueComponent,
                               @NonNull IfcUnit unitComponent) {
-        if (valueComponent == null) {
-            throw new IllegalArgumentException("valueComponent cannot be null");
-        }
-        if (unitComponent == null) {
-            throw new IllegalArgumentException("unitComponent cannot be null");
-        }
         this.valueComponent = valueComponent;
         this.unitComponent = unitComponent;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        IfcMeasureWithUnit that = (IfcMeasureWithUnit) o;
-        return valueComponent.equals(that.valueComponent) &&
-                unitComponent.equals(that.unitComponent);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(valueComponent, unitComponent);
     }
 }

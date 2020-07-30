@@ -20,11 +20,12 @@
 package buildingsmart.ifc;
 
 import buildingsmart.io.IfcDefinedType;
+import lombok.EqualsAndHashCode;
 import lombok.NonNull;
+import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * A compound measure of plane angle in degrees, minutes, seconds, and
@@ -43,6 +44,8 @@ import java.util.Objects;
  * fourth integer measure is the number of millionth-seconds in the range {1 000
  * 000; -1 000 000}</li></p>
  */
+@EqualsAndHashCode
+@ToString
 public class IfcCompoundPlaneAngleMeasure
         implements IfcDefinedType, IfcDerivedMeasureValue {
     private final List<IfcInteger> value;
@@ -54,16 +57,13 @@ public class IfcCompoundPlaneAngleMeasure
      *              integer measure is the number of seconds in the range {60;
      *              -60}; The optional fourth integer measure is the number of
      *              millionth-seconds in the range {1 000 000; -1 000 000}.
-     * @throws IllegalArgumentException If value is null, or its size is not 3
-     *                                  nor 4, if the elements of value are not
-     *                                  within the bounds described above, if
-     *                                  the elements of value do not have the
-     *                                  same sign.
+     * @throws NullPointerException     If value is null.
+     * @throws IllegalArgumentException If value's size is not 3 nor 4, if the
+     *                                  elements of value are not within the
+     *                                  bounds described above, if the elements
+     *                                  of value do not have the same sign.
      */
     public IfcCompoundPlaneAngleMeasure(@NonNull List<IfcInteger> value) {
-        if (value == null) {
-            throw new IllegalArgumentException("value cannot be null");
-        }
         if (value.size() != 3 && value.size() != 4) {
             throw new IllegalArgumentException("size of value must be 3 or 4");
         }
@@ -94,19 +94,16 @@ public class IfcCompoundPlaneAngleMeasure
      *              integer measure is the number of seconds in the range {60;
      *              -60}; The optional fourth integer measure is the number of
      *              millionth-seconds in the range {1 000 000; -1 000 000}.
-     * @throws IllegalArgumentException If value is null, or its size is not 3
-     *                                  nor 4, if the elements of value are not
-     *                                  within the bounds described above, if
-     *                                  the elements of value do not have the
-     *                                  same sign.
+     * @throws NullPointerException     If value is null.
+     * @throws IllegalArgumentException If value's size is not 3 nor 4, if the
+     *                                  elements of value are not within the
+     *                                  bounds described above, if the elements
+     *                                  of value do not have the same sign.
      */
     public IfcCompoundPlaneAngleMeasure(@NonNull int... value) {
-        if (value == null) {
-            throw new IllegalArgumentException("value cannot be null");
-        }
         if (value.length != 3 && value.length != 4) {
             throw new IllegalArgumentException(
-                    "length of value must be 3 or 4");
+                    "length of value must be 3 or " + "4");
         }
         ArrayList<IfcInteger> integers = new ArrayList<>(value.length);
         for (int val : value) {
@@ -135,23 +132,6 @@ public class IfcCompoundPlaneAngleMeasure
                             " or negative)");
         }
         this.value = integers;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        IfcCompoundPlaneAngleMeasure that = (IfcCompoundPlaneAngleMeasure) o;
-        return value.equals(that.value);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(value);
     }
 
     /**

@@ -22,17 +22,20 @@ package buildingsmart.ifc;
 import buildingsmart.io.Attribute;
 import buildingsmart.io.IfcEntity;
 import buildingsmart.io.InverseRelationship;
+import lombok.EqualsAndHashCode;
 import lombok.NonNull;
+import lombok.ToString;
 
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 /**
  * A representation is one or more representation items that are related in a
  * specified representation context as the representation of some concept.
  */
+@EqualsAndHashCode(callSuper = false)
+@ToString
 public class IfcRepresentation extends IfcEntity {
     @Attribute(0)
     private final IfcRepresentationContext contextOfItems;
@@ -43,9 +46,10 @@ public class IfcRepresentation extends IfcEntity {
     @Attribute(3)
     private final Set<IfcRepresentationItem> items;
 
+    @EqualsAndHashCode.Exclude
     @InverseRelationship
     protected IfcRepresentationMap representationMap;
-    //private IfcPresentationLayerAssignment[] layerAssignments;
+    @EqualsAndHashCode.Exclude
     @InverseRelationship
     protected IfcProductRepresentation ofProductRepresentation;
 
@@ -136,29 +140,5 @@ public class IfcRepresentation extends IfcEntity {
      */
     protected void setOfProductRepresentation(IfcProductRepresentation ofProductRepresentation) {
         this.ofProductRepresentation = ofProductRepresentation;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        IfcRepresentation that = (IfcRepresentation) o;
-        return contextOfItems.equals(that.contextOfItems) && Objects.equals(
-                representationIdentifier,
-                that.representationIdentifier) &&
-                Objects.equals(representationType, that.representationType) &&
-                items.equals(that.items);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(contextOfItems,
-                            representationIdentifier,
-                            representationType,
-                            items);
     }
 }

@@ -20,7 +20,9 @@
 package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
+import lombok.Builder;
 import lombok.NonNull;
+import lombok.ToString;
 
 /**
  * The building storey has an elevation and typically represents a (nearly)
@@ -307,6 +309,7 @@ import lombok.NonNull;
  *   is exposed independently from its constituting elements.
  * </p>
  */
+@ToString(callSuper = true)
 public class IfcBuildingStorey extends IfcSpatialStructureElement {
     @Attribute(9)
     private final IfcLengthMeasure elevation;
@@ -365,25 +368,35 @@ public class IfcBuildingStorey extends IfcSpatialStructureElement {
      *                        building. The 0.00 level is given by the absolute
      *                        above sea level height by the ElevationOfRefHeight
      *                        attribute given at IfcBuilding.
-     * @throws IllegalArgumentException If globalId or ownerHistory are null; if
-     *                                  globalId was used in another instance of
-     *                                  this class; if representation is not
+     * @throws NullPointerException     If globalId, ownerHistory or
+     *                                  compositionType are null.
+     * @throws IllegalArgumentException If globalId was used in another instance
+     *                                  of this class; if representation is not
      *                                  null and objectPlacement is, while
      *                                  representation is an instance of
      *                                  IfcProductDefinitionShape; if
      *                                  compositionType is null.
      */
+    @Builder
     public IfcBuildingStorey(@NonNull IfcGloballyUniqueId globalId,
                              @NonNull IfcOwnerHistory ownerHistory,
-                             IfcLabel name, IfcText description,
+                             IfcLabel name,
+                             IfcText description,
                              IfcLabel objectType,
                              IfcObjectPlacement objectPlacement,
                              IfcProductRepresentation representation,
                              IfcLabel longName,
                              @NonNull IfcElementCompositionEnum compositionType,
                              IfcLengthMeasure elevation) {
-        super(globalId, ownerHistory, name, description, objectType,
-                objectPlacement, representation, longName, compositionType);
+        super(globalId,
+              ownerHistory,
+              name,
+              description,
+              objectType,
+              objectPlacement,
+              representation,
+              longName,
+              compositionType);
         this.elevation = elevation;
     }
 
@@ -439,100 +452,32 @@ public class IfcBuildingStorey extends IfcSpatialStructureElement {
      *                        building. The 0.00 level is given by the absolute
      *                        above sea level height by the ElevationOfRefHeight
      *                        attribute given at IfcBuilding.
-     * @throws IllegalArgumentException If ownerHistory is null; if
-     *                                  representation is not null and
+     * @throws NullPointerException     If ownerHistory or compositionType are
+     *                                  null.
+     * @throws IllegalArgumentException If representation is not null and
      *                                  objectPlacement is, while representation
      *                                  is an instance of
      *                                  IfcProductDefinitionShape;
      *                                  if compositionType is null.
      */
     public IfcBuildingStorey(@NonNull IfcOwnerHistory ownerHistory,
-                             IfcLabel name, IfcText description,
+                             IfcLabel name,
+                             IfcText description,
                              IfcLabel objectType,
                              IfcObjectPlacement objectPlacement,
                              IfcProductRepresentation representation,
                              IfcLabel longName,
                              @NonNull IfcElementCompositionEnum compositionType,
                              IfcLengthMeasure elevation) {
-        this(new IfcGloballyUniqueId(), ownerHistory, name, description,
-                objectType, objectPlacement, representation, longName,
-                compositionType, elevation);
-    }
-
-    public static final class Builder {
-        private IfcLengthMeasure elevation;
-        private IfcLabel longName;
-        private IfcElementCompositionEnum compositionType;
-        private IfcObjectPlacement objectPlacement;
-        private IfcProductRepresentation representation;
-        private IfcLabel objectType;
-        private IfcGloballyUniqueId globalId;
-        private IfcOwnerHistory ownerHistory;
-        private IfcLabel name;
-        private IfcText description;
-
-        private Builder() {
-        }
-
-        public static Builder anIfcBuildingStorey() {
-            return new Builder();
-        }
-
-        public Builder elevation(IfcLengthMeasure elevation) {
-            this.elevation = elevation;
-            return this;
-        }
-
-        public Builder longName(IfcLabel longName) {
-            this.longName = longName;
-            return this;
-        }
-
-        public Builder compositionType(
-                IfcElementCompositionEnum compositionType) {
-            this.compositionType = compositionType;
-            return this;
-        }
-
-        public Builder objectPlacement(IfcObjectPlacement objectPlacement) {
-            this.objectPlacement = objectPlacement;
-            return this;
-        }
-
-        public Builder representation(IfcProductRepresentation representation) {
-            this.representation = representation;
-            return this;
-        }
-
-        public Builder objectType(IfcLabel objectType) {
-            this.objectType = objectType;
-            return this;
-        }
-
-        public Builder globalId(IfcGloballyUniqueId globalId) {
-            this.globalId = globalId;
-            return this;
-        }
-
-        public Builder ownerHistory(IfcOwnerHistory ownerHistory) {
-            this.ownerHistory = ownerHistory;
-            return this;
-        }
-
-        public Builder name(IfcLabel name) {
-            this.name = name;
-            return this;
-        }
-
-        public Builder description(IfcText description) {
-            this.description = description;
-            return this;
-        }
-
-        public IfcBuildingStorey build() {
-            return new IfcBuildingStorey(globalId, ownerHistory, name,
-                    description, objectType, objectPlacement, representation,
-                    longName, compositionType, elevation);
-        }
+        this(new IfcGloballyUniqueId(),
+             ownerHistory,
+             name,
+             description,
+             objectType,
+             objectPlacement,
+             representation,
+             longName,
+             compositionType,
+             elevation);
     }
 }

@@ -21,9 +21,10 @@ package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
 import buildingsmart.util.Functions;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NonNull;
-
-import java.util.Objects;
+import lombok.ToString;
 
 /**
  * The <i>IfcLocalPlacement</i> defines the relative placement of a product in
@@ -39,9 +40,12 @@ import java.util.Objects;
  * the <i>IfcProduct</i> is placed absolutely within the world coordinate
  * system.</p>
  */
+@EqualsAndHashCode(callSuper = false)
+@ToString
 public class IfcLocalPlacement extends IfcObjectPlacement {
     @Attribute(0)
     private final IfcObjectPlacement placementRelTo;
+    @Getter
     @Attribute(1)
     private final IfcAxis2Placement relativePlacement;
 
@@ -56,18 +60,14 @@ public class IfcLocalPlacement extends IfcObjectPlacement {
      *                          system into the relating. The placement can be
      *                          either 2D or 3D, depending on the dimension
      *                          count of the coordinate system.
-     * @throws IllegalArgumentException If relativePlacement is null; if
-     *                                  relativePlacement is 3D and
+     * @throws NullPointerException     If relativePlacement is null.
+     * @throws IllegalArgumentException If relativePlacement is 3D and
      *                                  placementRelTo is not and is not null;
      *                                  if placementRelTo is of type
      *                                  IfcGridPlacement.
      */
     public IfcLocalPlacement(IfcObjectPlacement placementRelTo,
                              @NonNull IfcAxis2Placement relativePlacement) {
-        if (relativePlacement == null) {
-            throw new IllegalArgumentException(
-                    "relativePlacement cannot be null");
-        }
         if (!Boolean.TRUE.equals(Functions.ifcCorrectLocalPlacement(
                 relativePlacement,
                 placementRelTo))) {
@@ -77,27 +77,5 @@ public class IfcLocalPlacement extends IfcObjectPlacement {
         }
         this.placementRelTo = placementRelTo;
         this.relativePlacement = relativePlacement;
-    }
-
-    public IfcAxis2Placement getRelativePlacement() {
-        return relativePlacement;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        IfcLocalPlacement that = (IfcLocalPlacement) o;
-        return Objects.equals(placementRelTo, that.placementRelTo) &&
-                relativePlacement.equals(that.relativePlacement);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(placementRelTo, relativePlacement);
     }
 }

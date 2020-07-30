@@ -28,7 +28,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Collections;
 import java.util.List;
 
 public class SerializerTest {
@@ -69,11 +68,9 @@ public class SerializerTest {
     @BeforeClass
     public static void setUp() {
         IfcPerson person =
-                IfcPerson.Builder.anIfcPerson().givenName(new IfcLabel(""))
-                        .build();
+                IfcPerson.builder().givenName(new IfcLabel("")).build();
         IfcOrganization organization =
-                IfcOrganization.Builder.anIfcOrganization()
-                        .name(new IfcLabel("")).build();
+                IfcOrganization.builder().name(new IfcLabel("")).build();
         IfcPersonAndOrganization personAndOrganization =
                 new IfcPersonAndOrganization(person, organization, null);
         IfcApplication application = new IfcApplication(organization,
@@ -132,11 +129,10 @@ public class SerializerTest {
         IfcUnitAssignment unitAssignment =
                 new IfcUnitAssignment(metre, squareMetre, cubicMetre, degree);
 
-        IfcProject ifcProject = IfcProject.Builder.anIfcProject()
+        IfcProject ifcProject = IfcProject.builder()
                 .globalId(new IfcGloballyUniqueId("51f413ef_7964_4d38_b19"))
                 .ownerHistory(ownerHistory).name(new IfcLabel("Unnamed"))
-                .representationContexts(Collections.singleton(
-                        geometricRepresentationContext))
+                .representationContext(geometricRepresentationContext)
                 .unitsInContext(unitAssignment).build();
 
         IfcAxis2Placement2D axis2Placement2D =
@@ -164,8 +160,7 @@ public class SerializerTest {
 
         IfcColourRgb colour = new IfcColourRgb(null, 1, 1, 1);
         IfcSurfaceStyleRendering surfaceStyleRendering =
-                IfcSurfaceStyleRendering.Builder.anIfcSurfaceStyleRendering()
-                        .surfaceColour(colour)
+                IfcSurfaceStyleRendering.builder().surfaceColour(colour)
                         .reflectanceMethod(IfcReflectanceMethodEnum.FLAT)
                         .build();
         IfcSurfaceStyle surfaceStyle = new IfcSurfaceStyle(null,
@@ -185,65 +180,51 @@ public class SerializerTest {
                 cylinder);
         IfcProductDefinitionShape productDefinitionShape =
                 new IfcProductDefinitionShape(null, null, shapeRepresentation);
-        IfcWall wall = IfcWall.Builder.anIfcWall()
+        IfcWall wall = IfcWall.builder()
                 .globalId(new IfcGloballyUniqueId("2KcxKeVfqHwhb6N5zdz5Bw"))
                 .ownerHistory(ownerHistory).name(new IfcLabel("Wall"))
                 .description(new IfcText("")).objectPlacement(wallPlacement)
                 .representation(productDefinitionShape).build();
 
-        IfcSite site = IfcSite.Builder.anIfcSite()
+        IfcSite site = IfcSite.builder()
                 .globalId(new IfcGloballyUniqueId("2KdG88VfqHwfDCN5zdz5Bw"))
                 .ownerHistory(ownerHistory).name(new IfcLabel("Default Site"))
                 .description(new IfcText(""))
                 .compositionType(IfcElementCompositionEnum.ELEMENT).build();
-        IfcRelAggregates projectLink =
-                IfcRelAggregates.Builder.anIfcRelAggregates()
-                        .globalId(new IfcGloballyUniqueId(
-                                "2KdG89VfqHweGDN5zdz5Bw"))
-                        .ownerHistory(ownerHistory)
-                        .name(new IfcLabel("ProjectLink"))
-                        .description(new IfcText("")).relatingObject(ifcProject)
-                        .relatedObjects(site).build();
-        IfcBuilding building = IfcBuilding.Builder.anIfcBuilding()
+        IfcRelAggregates projectLink = IfcRelAggregates.builder()
+                .globalId(new IfcGloballyUniqueId("2KdG89VfqHweGDN5zdz5Bw"))
+                .ownerHistory(ownerHistory).name(new IfcLabel("ProjectLink"))
+                .description(new IfcText("")).relatingObject(ifcProject)
+                .relatedObject(site).build();
+        IfcBuilding building = IfcBuilding.builder()
                 .globalId(new IfcGloballyUniqueId("2KdHMSVfqHwfiJN5zdz5Bw"))
                 .ownerHistory(ownerHistory)
                 .name(new IfcLabel("Default Building"))
                 .description(new IfcText(""))
                 .compositionType(IfcElementCompositionEnum.ELEMENT).build();
-        IfcRelAggregates siteLink =
-                IfcRelAggregates.Builder.anIfcRelAggregates()
-                        .globalId(new IfcGloballyUniqueId(
-                                "2KdHMTVfqHwePlN5zdz5Bw"))
-                        .ownerHistory(ownerHistory)
-                        .name(new IfcLabel("SiteLink"))
-                        .description(new IfcText("")).relatingObject(site)
-                        .relatedObjects(building).build();
-        IfcBuildingStorey buildingStorey =
-                IfcBuildingStorey.Builder.anIfcBuildingStorey()
-                        .globalId(new IfcGloballyUniqueId(
-                                "2KdHMUVfqHwg4XN5zdz5Bw"))
-                        .ownerHistory(ownerHistory)
-                        .name(new IfcLabel("Default Storey"))
-                        .description(new IfcText(""))
-                        .compositionType(IfcElementCompositionEnum.ELEMENT)
-                        .build();
-        IfcRelAggregates defaultStoreyLink =
-                IfcRelAggregates.Builder.anIfcRelAggregates()
-                        .globalId(new IfcGloballyUniqueId(
-                                "2KdHMVVfqHwhFMN5zdz5Bw"))
-                        .ownerHistory(ownerHistory)
-                        .name(new IfcLabel("DefaultStoreyLink"))
-                        .description(new IfcText("")).relatingObject(building)
-                        .relatedObjects(buildingStorey).build();
+        IfcRelAggregates siteLink = IfcRelAggregates.builder()
+                .globalId(new IfcGloballyUniqueId("2KdHMTVfqHwePlN5zdz5Bw"))
+                .ownerHistory(ownerHistory).name(new IfcLabel("SiteLink"))
+                .description(new IfcText("")).relatingObject(site)
+                .relatedObject(building).build();
+        IfcBuildingStorey buildingStorey = IfcBuildingStorey.builder()
+                .globalId(new IfcGloballyUniqueId("2KdHMUVfqHwg4XN5zdz5Bw"))
+                .ownerHistory(ownerHistory).name(new IfcLabel("Default Storey"))
+                .description(new IfcText(""))
+                .compositionType(IfcElementCompositionEnum.ELEMENT).build();
+        IfcRelAggregates defaultStoreyLink = IfcRelAggregates.builder()
+                .globalId(new IfcGloballyUniqueId("2KdHMVVfqHwhFMN5zdz5Bw"))
+                .ownerHistory(ownerHistory)
+                .name(new IfcLabel("DefaultStoreyLink"))
+                .description(new IfcText("")).relatingObject(building)
+                .relatedObject(buildingStorey).build();
         IfcRelContainedInSpatialStructure unassignedObjectsLink =
-                IfcRelContainedInSpatialStructure.Builder
-                        .anIfcRelContainedInSpatialStructure()
-                        .globalId(new IfcGloballyUniqueId(
-                                "2KdIamVfqHwf$aN5zdz5Bw"))
-                        .ownerHistory(ownerHistory)
+                IfcRelContainedInSpatialStructure.
+                        builder().globalId(new IfcGloballyUniqueId(
+                        "2KdIamVfqHwf$aN5zdz5Bw")).ownerHistory(ownerHistory)
                         .name(new IfcLabel("UnassignedObjectsLink"))
                         .description(new IfcText(""))
-                        .relatingStructure(buildingStorey).relatedElements(wall)
+                        .relatingStructure(buildingStorey).relatedElement(wall)
                         .build();
         validIfcProject = ifcProject;
     }

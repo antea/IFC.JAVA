@@ -21,15 +21,18 @@ package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
 import buildingsmart.io.IfcEntity;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.NonNull;
-
-import java.util.Objects;
+import lombok.ToString;
 
 /**
  * IfcOwnerHistory defines all history and identification related information .
  * In order to provide fast access it is directly attached to all independent
  * objects, relationships and properties.
  */
+@EqualsAndHashCode(callSuper = false)
+@ToString
 public class IfcOwnerHistory extends IfcEntity {
     @Attribute(0)
     private final IfcPersonAndOrganization owningUser;
@@ -75,9 +78,10 @@ public class IfcOwnerHistory extends IfcEntity {
      * @param lastModifyingApplication Application used to carry out the last
      *                                 modification.
      * @param creationDate             Time and date of creation.
-     * @throws IllegalArgumentException If owningUser, owningApplication,
-     *                                  changeAction or creationDate are null.
+     * @throws NullPointerException If owningUser, owningApplication,
+     *                              changeAction or creationDate are null.
      */
+    @Builder
     public IfcOwnerHistory(@NonNull IfcPersonAndOrganization owningUser,
                            @NonNull IfcApplication owningApplication,
                            IfcStateEnum state,
@@ -86,19 +90,6 @@ public class IfcOwnerHistory extends IfcEntity {
                            IfcPersonAndOrganization lastModifyingUser,
                            IfcApplication lastModifyingApplication,
                            @NonNull IfcTimeStamp creationDate) {
-        if (owningUser == null) {
-            throw new IllegalArgumentException("owningUser cannot be null");
-        }
-        if (owningApplication == null) {
-            throw new IllegalArgumentException(
-                    "owningApplication cannot be null");
-        }
-        if (changeAction == null) {
-            throw new IllegalArgumentException("changeAction cannot be null");
-        }
-        if (creationDate == null) {
-            throw new IllegalArgumentException("creationDate cannot be null");
-        }
         this.owningUser = owningUser;
         this.owningApplication = owningApplication;
         this.state = state;
@@ -107,97 +98,5 @@ public class IfcOwnerHistory extends IfcEntity {
         this.lastModifyingUser = lastModifyingUser;
         this.lastModifyingApplication = lastModifyingApplication;
         this.creationDate = creationDate;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        IfcOwnerHistory that = (IfcOwnerHistory) o;
-        return owningUser.equals(that.owningUser) &&
-                owningApplication.equals(that.owningApplication) &&
-                state == that.state && changeAction == that.changeAction &&
-                Objects.equals(lastModifiedDate, that.lastModifiedDate) &&
-                Objects.equals(lastModifyingUser, that.lastModifyingUser) &&
-                Objects.equals(lastModifyingApplication,
-                        that.lastModifyingApplication) &&
-                creationDate.equals(that.creationDate);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(owningUser, owningApplication, state, changeAction,
-                lastModifiedDate, lastModifyingUser, lastModifyingApplication,
-                creationDate);
-    }
-
-    public static final class Builder {
-        private IfcPersonAndOrganization owningUser;
-        private IfcApplication owningApplication;
-        private IfcStateEnum state;
-        private IfcChangeActionEnum changeAction;
-        private IfcTimeStamp lastModifiedDate;
-        private IfcPersonAndOrganization lastModifyingUser;
-        private IfcApplication lastModifyingApplication;
-        private IfcTimeStamp creationDate;
-
-        private Builder() {
-        }
-
-        public static Builder anIfcOwnerHistory() {
-            return new Builder();
-        }
-
-        public Builder owningUser(IfcPersonAndOrganization owningUser) {
-            this.owningUser = owningUser;
-            return this;
-        }
-
-        public Builder owningApplication(IfcApplication owningApplication) {
-            this.owningApplication = owningApplication;
-            return this;
-        }
-
-        public Builder state(IfcStateEnum state) {
-            this.state = state;
-            return this;
-        }
-
-        public Builder changeAction(IfcChangeActionEnum changeAction) {
-            this.changeAction = changeAction;
-            return this;
-        }
-
-        public Builder lastModifiedDate(IfcTimeStamp lastModifiedDate) {
-            this.lastModifiedDate = lastModifiedDate;
-            return this;
-        }
-
-        public Builder lastModifyingUser(
-                IfcPersonAndOrganization lastModifyingUser) {
-            this.lastModifyingUser = lastModifyingUser;
-            return this;
-        }
-
-        public Builder lastModifyingApplication(
-                IfcApplication lastModifyingApplication) {
-            this.lastModifyingApplication = lastModifyingApplication;
-            return this;
-        }
-
-        public Builder creationDate(IfcTimeStamp creationDate) {
-            this.creationDate = creationDate;
-            return this;
-        }
-
-        public IfcOwnerHistory build() {
-            return new IfcOwnerHistory(owningUser, owningApplication, state,
-                    changeAction, lastModifiedDate, lastModifyingUser,
-                    lastModifyingApplication, creationDate);
-        }
     }
 }

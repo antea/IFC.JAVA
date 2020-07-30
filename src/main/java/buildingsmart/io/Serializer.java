@@ -19,7 +19,9 @@
 package buildingsmart.io;
 
 import buildingsmart.ifc.IfcProject;
+import lombok.EqualsAndHashCode;
 import lombok.NonNull;
+import lombok.ToString;
 
 import java.io.*;
 import java.lang.annotation.Annotation;
@@ -27,6 +29,8 @@ import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
+@EqualsAndHashCode
+@ToString
 public class Serializer {
 
     private final Map<IfcEntity, Long> serializedEntitiesToIds;

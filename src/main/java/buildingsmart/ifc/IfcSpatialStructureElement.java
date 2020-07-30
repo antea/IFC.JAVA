@@ -22,6 +22,7 @@ package buildingsmart.ifc;
 import buildingsmart.io.Attribute;
 import buildingsmart.io.InverseRelationship;
 import lombok.NonNull;
+import lombok.ToString;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -79,14 +80,13 @@ import java.util.Set;
  *   </li>
  * </ol>
  */
+@ToString(callSuper = true)
 public abstract class IfcSpatialStructureElement extends IfcProduct {
     @Attribute(7)
     private final IfcLabel longName;
     @Attribute(8)
     private final IfcElementCompositionEnum compositionType;
-    //private IfcRelReferencedInSpatialStructure[] ReferencesElements;
 
-    //private IfcRelServicesBuildings[] ServicedBySystems;
     @InverseRelationship
     private Set<IfcRelContainedInSpatialStructure> containsElements;
 
@@ -139,9 +139,10 @@ public abstract class IfcSpatialStructureElement extends IfcProduct {
      *                        (complex) or a part (part). The interpretation is
      *                        given separately for each subtype of spatial
      *                        structure element.
-     * @throws IllegalArgumentException If globalId or ownerHistory are null; if
-     *                                  globalId was used in another instance of
-     *                                  this class; if representation is not
+     * @throws NullPointerException     If globalId, ownerHistory or
+     *                                  compositionType are null.
+     * @throws IllegalArgumentException If globalId was used in another instance
+     *                                  of this class; if representation is not
      *                                  null and objectPlacement is, while
      *                                  representation is an instance of
      *                                  IfcProductDefinitionShape; if
@@ -149,18 +150,20 @@ public abstract class IfcSpatialStructureElement extends IfcProduct {
      */
     public IfcSpatialStructureElement(@NonNull IfcGloballyUniqueId globalId,
                                       @NonNull IfcOwnerHistory ownerHistory,
-                                      IfcLabel name, IfcText description,
+                                      IfcLabel name,
+                                      IfcText description,
                                       IfcLabel objectType,
                                       IfcObjectPlacement objectPlacement,
                                       IfcProductRepresentation representation,
-                                      IfcLabel longName, @NonNull
-                                              IfcElementCompositionEnum compositionType) {
-        super(globalId, ownerHistory, name, description, objectType,
-                objectPlacement, representation);
-        if (compositionType == null) {
-            throw new IllegalArgumentException(
-                    "compositionType cannot be null");
-        }
+                                      IfcLabel longName,
+                                      @NonNull IfcElementCompositionEnum compositionType) {
+        super(globalId,
+              ownerHistory,
+              name,
+              description,
+              objectType,
+              objectPlacement,
+              representation);
         this.longName = longName;
         this.compositionType = compositionType;
     }
@@ -213,23 +216,31 @@ public abstract class IfcSpatialStructureElement extends IfcProduct {
      *                        (complex) or a part (part). The interpretation is
      *                        given separately for each subtype of spatial
      *                        structure element.
-     * @throws IllegalArgumentException If ownerHistory is null; if
-     *                                  representation is not null and
+     * @throws NullPointerException     If ownerHistory or compositionType are
+     *                                  null.
+     * @throws IllegalArgumentException If representation is not null and
      *                                  objectPlacement is, while representation
      *                                  is an instance of
      *                                  IfcProductDefinitionShape;
      *                                  if compositionType is null.
      */
     public IfcSpatialStructureElement(@NonNull IfcOwnerHistory ownerHistory,
-                                      IfcLabel name, IfcText description,
+                                      IfcLabel name,
+                                      IfcText description,
                                       IfcLabel objectType,
                                       IfcObjectPlacement objectPlacement,
                                       IfcProductRepresentation representation,
-                                      IfcLabel longName, @NonNull
-                                              IfcElementCompositionEnum compositionType) {
-        this(new IfcGloballyUniqueId(), ownerHistory, name, description,
-                objectType, objectPlacement, representation, longName,
-                compositionType);
+                                      IfcLabel longName,
+                                      @NonNull IfcElementCompositionEnum compositionType) {
+        this(new IfcGloballyUniqueId(),
+             ownerHistory,
+             name,
+             description,
+             objectType,
+             objectPlacement,
+             representation,
+             longName,
+             compositionType);
     }
 
     @Override
@@ -286,6 +297,7 @@ public abstract class IfcSpatialStructureElement extends IfcProduct {
      * @return A copy of containsElements. Operations performed on this Set
      * don't have any effect on containsElements. This is done to prevent adding
      * illegal IfcRelContainedInSpatialStructure to the Set.
+     *
      * @see #addToContainsElements(IfcRelContainedInSpatialStructure)
      */
     public Set<IfcRelContainedInSpatialStructure> getContainsElements() {
@@ -300,8 +312,7 @@ public abstract class IfcSpatialStructureElement extends IfcProduct {
      *                                  in the relationship.
      * @throws NullPointerException     If relationship is null.
      */
-    protected void addToContainsElements(
-            @NonNull IfcRelContainedInSpatialStructure relationship) {
+    protected void addToContainsElements(@NonNull IfcRelContainedInSpatialStructure relationship) {
         if (!relationship.getRelatingStructure().equals(this)) {
             throw new IllegalArgumentException(
                     "any IfcRelContainedInSpatialStructure part of " +

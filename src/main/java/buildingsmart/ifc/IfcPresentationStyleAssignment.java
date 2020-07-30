@@ -21,17 +21,20 @@ package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
 import buildingsmart.io.IfcEntity;
+import lombok.EqualsAndHashCode;
 import lombok.NonNull;
+import lombok.ToString;
 
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 /**
  * The presentation style assignment is a set of styles which are assigned to
  * styled items for the purpose of presenting these styled items.
  */
+@EqualsAndHashCode(callSuper = false)
+@ToString
 public class IfcPresentationStyleAssignment extends IfcEntity {
     @Attribute(0)
     private final Set<IfcPresentationStyleSelect> styles;
@@ -39,14 +42,10 @@ public class IfcPresentationStyleAssignment extends IfcEntity {
     /**
      * @param styles A set of presentation styles that are assigned to styled
      *               items.
-     * @throws IllegalArgumentException If styles is null, or its size is lower
-     *                                  than 1.
+     * @throws NullPointerException     If styles is null.
+     * @throws IllegalArgumentException If styles' size is lower than 1.
      */
-    public IfcPresentationStyleAssignment(
-            @NonNull Set<IfcPresentationStyleSelect> styles) {
-        if (styles == null) {
-            throw new IllegalArgumentException("styles cannot be null");
-        }
+    public IfcPresentationStyleAssignment(@NonNull Set<IfcPresentationStyleSelect> styles) {
         if (styles.size() < 1) {
             throw new IllegalArgumentException(
                     "size of syles must be at least 1");
@@ -57,39 +56,14 @@ public class IfcPresentationStyleAssignment extends IfcEntity {
     /**
      * @param styles A set of presentation styles that are assigned to styled
      *               items.
-     * @throws IllegalArgumentException If styles is null, or the size of the
-     *                                  Set containing the unique elements of
-     *                                  styles has size lower than 1.
+     * @throws NullPointerException     If styles is null.
+     * @throws IllegalArgumentException If the size of styles is lower than 1.
      */
-    public IfcPresentationStyleAssignment(
-            @NonNull IfcPresentationStyleSelect... styles) {
-        if (styles == null) {
-            throw new IllegalArgumentException("styles cannot be null");
-        }
-        Set<IfcPresentationStyleSelect> stylesSet =
-                new HashSet<>(Arrays.asList(styles));
-        if (stylesSet.size() < 1) {
+    public IfcPresentationStyleAssignment(@NonNull IfcPresentationStyleSelect... styles) {
+        if (styles.length < 1) {
             throw new IllegalArgumentException(
                     "size of syles must be at least 1");
         }
-        this.styles = stylesSet;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        IfcPresentationStyleAssignment that =
-                (IfcPresentationStyleAssignment) o;
-        return styles.equals(that.styles);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(styles);
+        this.styles = new HashSet<>(Arrays.asList(styles));
     }
 }

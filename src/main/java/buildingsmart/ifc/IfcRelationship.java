@@ -20,6 +20,7 @@
 package buildingsmart.ifc;
 
 import lombok.NonNull;
+import lombok.ToString;
 
 /**
  * The abstract generalization of all objectified relationships in IFC.
@@ -40,6 +41,7 @@ import lombok.NonNull;
  * the relationship shall be an aggregate SET 1:N</LI>
  * </UL>
  */
+@ToString(callSuper = true)
 public abstract class IfcRelationship extends IfcRoot {
     /**
      * Creates a new IfcRelationship, using the provided globalId.
@@ -57,12 +59,13 @@ public abstract class IfcRelationship extends IfcRoot {
      *                     would be enforced by a where rule.
      * @param description  Optional description, provided for exchanging
      *                     informative comments.
-     * @throws IllegalArgumentException If globalId or ownerHistory are null, or
-     *                                  if globalId was used in another instance
+     * @throws NullPointerException     If globalId or ownerHistory are null.
+     * @throws IllegalArgumentException If globalId was used in another instance
      *                                  of this class or its superclass.
      */
     public IfcRelationship(@NonNull IfcGloballyUniqueId globalId,
-                           @NonNull IfcOwnerHistory ownerHistory, IfcLabel name,
+                           @NonNull IfcOwnerHistory ownerHistory,
+                           IfcLabel name,
                            IfcText description) {
         super(globalId, ownerHistory, name, description);
     }
@@ -81,9 +84,10 @@ public abstract class IfcRelationship extends IfcRoot {
      *                     would be enforced by a where rule.
      * @param description  Optional description, provided for exchanging
      *                     informative comments.
-     * @throws IllegalArgumentException If ownerHistory is null.
+     * @throws NullPointerException If ownerHistory is null.
      */
-    public IfcRelationship(@NonNull IfcOwnerHistory ownerHistory, IfcLabel name,
+    public IfcRelationship(@NonNull IfcOwnerHistory ownerHistory,
+                           IfcLabel name,
                            IfcText description) {
         super(ownerHistory, name, description);
     }

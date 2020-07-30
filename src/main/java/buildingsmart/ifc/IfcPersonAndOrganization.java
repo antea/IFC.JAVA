@@ -21,14 +21,17 @@ package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
 import buildingsmart.io.IfcEntity;
+import lombok.EqualsAndHashCode;
 import lombok.NonNull;
+import lombok.ToString;
 
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Identification of a person within an organization.
  */
+@EqualsAndHashCode(callSuper = false)
+@ToString
 public class IfcPersonAndOrganization extends IfcEntity {
     @Attribute(0)
     private final IfcPerson thePerson;
@@ -42,20 +45,14 @@ public class IfcPersonAndOrganization extends IfcEntity {
      * @param theOrganization The organization to which the person is related.
      * @param roles           Roles played by the person within the context of
      *                        an organization.
-     * @throws IllegalArgumentException if thePerson or theOrganization is null,
-     *                                  if roles is not null and has size lower
+     * @throws NullPointerException     If thePerson or theOrganization is
+     *                                  null.
+     * @throws IllegalArgumentException If roles is not null and has size lower
      *                                  than 1.
      */
     public IfcPersonAndOrganization(@NonNull IfcPerson thePerson,
                                     @NonNull IfcOrganization theOrganization,
                                     List<IfcActorRole> roles) {
-        if (thePerson == null) {
-            throw new IllegalArgumentException("thePerson cannot be null");
-        }
-        if (theOrganization == null) {
-            throw new IllegalArgumentException(
-                    "theOrganization cannot be null");
-        }
         if (roles != null && roles.size() < 1) {
             throw new IllegalArgumentException(
                     "role must be null or its size must be at least one");
@@ -63,24 +60,5 @@ public class IfcPersonAndOrganization extends IfcEntity {
         this.thePerson = thePerson;
         this.theOrganization = theOrganization;
         this.roles = roles;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        IfcPersonAndOrganization that = (IfcPersonAndOrganization) o;
-        return thePerson.equals(that.thePerson) &&
-                theOrganization.equals(that.theOrganization) &&
-                Objects.equals(roles, that.roles);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(thePerson, theOrganization, roles);
     }
 }

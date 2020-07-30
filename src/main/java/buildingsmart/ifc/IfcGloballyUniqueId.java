@@ -18,9 +18,9 @@
 package buildingsmart.ifc;
 
 import buildingsmart.io.IfcDefinedType;
+import lombok.EqualsAndHashCode;
 import lombok.NonNull;
 
-import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -68,30 +68,86 @@ import java.util.UUID;
  * <p>The resulting string is a fixed 22 character length string to be
  * exchanged within the IFC exchange file structure.
  */
+@EqualsAndHashCode
 public class IfcGloballyUniqueId implements IfcDefinedType {
     protected static final int LENGTH = 22;
     private static final String ALLOWED_CHARS_REGEX = "^[0-9A-Za-z_$]*$";
-    private static final char[] CONVERSION_TABLE =
-            new char[]{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A',
-                    'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
-                    'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y',
-                    'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k',
-                    'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w',
-                    'x', 'y', 'z', '_', '$'};
+    private static final char[] CONVERSION_TABLE = new char[]{'0',
+                                                              '1',
+                                                              '2',
+                                                              '3',
+                                                              '4',
+                                                              '5',
+                                                              '6',
+                                                              '7',
+                                                              '8',
+                                                              '9',
+                                                              'A',
+                                                              'B',
+                                                              'C',
+                                                              'D',
+                                                              'E',
+                                                              'F',
+                                                              'G',
+                                                              'H',
+                                                              'I',
+                                                              'J',
+                                                              'K',
+                                                              'L',
+                                                              'M',
+                                                              'N',
+                                                              'O',
+                                                              'P',
+                                                              'Q',
+                                                              'R',
+                                                              'S',
+                                                              'T',
+                                                              'U',
+                                                              'V',
+                                                              'W',
+                                                              'X',
+                                                              'Y',
+                                                              'Z',
+                                                              'a',
+                                                              'b',
+                                                              'c',
+                                                              'd',
+                                                              'e',
+                                                              'f',
+                                                              'g',
+                                                              'h',
+                                                              'i',
+                                                              'j',
+                                                              'k',
+                                                              'l',
+                                                              'm',
+                                                              'n',
+                                                              'o',
+                                                              'p',
+                                                              'q',
+                                                              'r',
+                                                              's',
+                                                              't',
+                                                              'u',
+                                                              'v',
+                                                              'w',
+                                                              'x',
+                                                              'y',
+                                                              'z',
+                                                              '_',
+                                                              '$'};
     private final String value;
 
     /**
      * @param value The String representation of the GUID, obtained by mapping
      *              the 128-bit identifier to a 22-characters String.
-     * @throws IllegalArgumentException If value is null, is not 22 characters
-     *                                  long or contains characters not included
-     *                                  in the following string: {@code
+     * @throws NullPointerException     If value is null.
+     * @throws IllegalArgumentException If value is not 22 characters long or
+     *                                  contains characters not included in the
+     *                                  following string: {@code
      *                                  "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_$"}
      */
     public IfcGloballyUniqueId(@NonNull String value) {
-        if (value == null) {
-            throw new IllegalArgumentException("value cannot be null");
-        }
         if (value.length() != LENGTH) {
             throw new IllegalArgumentException(
                     "value must be 22 characters long");
@@ -230,23 +286,6 @@ public class IfcGloballyUniqueId implements IfcDefinedType {
     @Override
     public String serialize() {
         return "'" + value + "'";
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        IfcGloballyUniqueId that = (IfcGloballyUniqueId) o;
-        return value.equals(that.value);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(value);
     }
 
     /**

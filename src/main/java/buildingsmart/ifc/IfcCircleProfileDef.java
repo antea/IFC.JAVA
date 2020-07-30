@@ -20,9 +20,9 @@
 package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
+import lombok.EqualsAndHashCode;
 import lombok.NonNull;
-
-import java.util.Objects;
+import lombok.ToString;
 
 /**
  * The IfcCircleProfileDef defines a circle as the profile definition used by
@@ -30,6 +30,8 @@ import java.util.Objects;
  * Radius attribute and placed within the 2D position coordinate system,
  * established by the Position attribute.
  */
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 public class IfcCircleProfileDef extends IfcParameterizedProfileDef {
     @Attribute(3)
     private final IfcPositiveLengthMeasure radius;
@@ -45,37 +47,14 @@ public class IfcCircleProfileDef extends IfcParameterizedProfileDef {
      * @param position    Position coordinate system of the parameterized
      *                    profile definition.
      * @param radius      The radius of the circle.
-     * @throws IllegalArgumentException If profileType,position or radius are
-     *                                  null.
+     * @throws NullPointerException If profileType, position or radius are
+     *                              null.
      */
     public IfcCircleProfileDef(@NonNull IfcProfileTypeEnum profileType,
                                IfcLabel profileName,
                                @NonNull IfcAxis2Placement2D position,
                                @NonNull IfcPositiveLengthMeasure radius) {
         super(profileType, profileName, position);
-        if (radius == null) {
-            throw new IllegalArgumentException("radius cannot be null");
-        }
         this.radius = radius;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        if (!super.equals(o)) {
-            return false;
-        }
-        IfcCircleProfileDef that = (IfcCircleProfileDef) o;
-        return radius.equals(that.radius);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), radius);
     }
 }

@@ -20,11 +20,12 @@
 package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
+import lombok.EqualsAndHashCode;
 import lombok.NonNull;
+import lombok.ToString;
 
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -40,6 +41,8 @@ import java.util.Set;
  * to as material definition in rendering applications .</FONT></BLOCKQUOTE>
  * <BLOCKQUOTE>
  */
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 public class IfcSurfaceStyle extends IfcPresentationStyle
         implements IfcPresentationStyleSelect {
     @Attribute(1)
@@ -52,21 +55,16 @@ public class IfcSurfaceStyle extends IfcPresentationStyle
      * @param side   An indication of which side of the surface to apply the
      *               style.
      * @param styles A collection of different surface styles.
-     * @throws IllegalArgumentException If side or syles is null; if the size of
-     *                                  styles is lower than 1 or bigger than 5;
-     *                                  if styles contains more than one
-     *                                  instance of each type that implements
-     *                                  IfcSurfaceStyleElementSelect.
+     * @throws NullPointerException     If side or syles is null.
+     * @throws IllegalArgumentException If the size of styles is lower than 1 or
+     *                                  bigger than 5; if styles contains more
+     *                                  than one instance of each type that
+     *                                  implements IfcSurfaceStyleElementSelect.
      */
-    public IfcSurfaceStyle(IfcLabel name, @NonNull IfcSurfaceSide side,
+    public IfcSurfaceStyle(IfcLabel name,
+                           @NonNull IfcSurfaceSide side,
                            @NonNull Set<IfcSurfaceStyleElementSelect> styles) {
         super(name);
-        if (side == null) {
-            throw new IllegalArgumentException("side cannot be null");
-        }
-        if (styles == null) {
-            throw new IllegalArgumentException("styles cannot be null");
-        }
         if (styles.size() < 1 || styles.size() > 5) {
             throw new IllegalArgumentException(
                     "size of styles cannot be lower than 1 nor bigger than 5");
@@ -109,34 +107,15 @@ public class IfcSurfaceStyle extends IfcPresentationStyle
      * @param side   An indication of which side of the surface to apply the
      *               style.
      * @param styles A collection of different surface styles.
-     * @throws IllegalArgumentException If side or syles is null; if the size of
-     *                                  styles is lower than 1 or bigger than 5;
-     *                                  if styles contains more than one
-     *                                  instance of each type that implements
-     *                                  IfcSurfaceStyleElementSelect.
+     * @throws NullPointerException     If side or syles is null.
+     * @throws IllegalArgumentException If the size of styles is lower than 1 or
+     *                                  bigger than 5; if styles contains more
+     *                                  than one instance of each type that
+     *                                  implements IfcSurfaceStyleElementSelect.
      */
-    public IfcSurfaceStyle(IfcLabel name, @NonNull IfcSurfaceSide side,
+    public IfcSurfaceStyle(IfcLabel name,
+                           @NonNull IfcSurfaceSide side,
                            @NonNull IfcSurfaceStyleElementSelect... styles) {
         this(name, side, new HashSet<>(Arrays.asList(styles)));
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        if (!super.equals(o)) {
-            return false;
-        }
-        IfcSurfaceStyle that = (IfcSurfaceStyle) o;
-        return side == that.side && styles.equals(that.styles);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), side, styles);
     }
 }

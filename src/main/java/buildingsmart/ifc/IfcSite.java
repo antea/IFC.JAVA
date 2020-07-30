@@ -20,7 +20,9 @@
 package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
+import lombok.Builder;
 import lombok.NonNull;
+import lombok.ToString;
 
 /**
  * A defined area of land, possibly covered with water, on which the project
@@ -286,6 +288,7 @@ import lombok.NonNull;
  *   </li>
  * </ul>
  */
+@ToString(callSuper = true)
 public class IfcSite extends IfcSpatialStructureElement {
     @Attribute(9)
     private final IfcCompoundPlaneAngleMeasure refLatitude;
@@ -373,26 +376,39 @@ public class IfcSite extends IfcSpatialStructureElement {
      * @param landTitleNumber The land title number (designation of the site
      *                        within a regional system).
      * @param siteAddress     Address given to the site for postal purposes.
-     * @throws IllegalArgumentException If globalId or ownerHistory are null; if
-     *                                  globalId was used in another instance of
-     *                                  this class; if representation is not
+     * @throws NullPointerException     If globalId, ownerHistory or
+     *                                  compositionType are null.
+     * @throws IllegalArgumentException If globalId was used in another instance
+     *                                  of this class; if representation is not
      *                                  null and objectPlacement is, while
      *                                  representation is an instance of
      *                                  IfcProductDefinitionShape; if
      *                                  compositionType is null.
      */
+    @Builder
     public IfcSite(@NonNull IfcGloballyUniqueId globalId,
-                   @NonNull IfcOwnerHistory ownerHistory, IfcLabel name,
-                   IfcText description, IfcLabel objectType,
+                   @NonNull IfcOwnerHistory ownerHistory,
+                   IfcLabel name,
+                   IfcText description,
+                   IfcLabel objectType,
                    IfcObjectPlacement objectPlacement,
-                   IfcProductRepresentation representation, IfcLabel longName,
+                   IfcProductRepresentation representation,
+                   IfcLabel longName,
                    @NonNull IfcElementCompositionEnum compositionType,
                    IfcCompoundPlaneAngleMeasure refLatitude,
                    IfcCompoundPlaneAngleMeasure refLongitude,
-                   IfcLengthMeasure refElevation, IfcLabel landTitleNumber,
+                   IfcLengthMeasure refElevation,
+                   IfcLabel landTitleNumber,
                    IfcPostalAddress siteAddress) {
-        super(globalId, ownerHistory, name, description, objectType,
-                objectPlacement, representation, longName, compositionType);
+        super(globalId,
+              ownerHistory,
+              name,
+              description,
+              objectType,
+              objectPlacement,
+              representation,
+              longName,
+              compositionType);
         this.refLatitude = refLatitude;
         this.refLongitude = refLongitude;
         this.refElevation = refElevation;
@@ -473,127 +489,40 @@ public class IfcSite extends IfcSpatialStructureElement {
      * @param landTitleNumber The land title number (designation of the site
      *                        within a regional system).
      * @param siteAddress     Address given to the site for postal purposes.
-     * @throws IllegalArgumentException If ownerHistory is null; if
-     *                                  representation is not null and
+     * @throws NullPointerException     If ownerHistory or compositionType are
+     *                                  null.
+     * @throws IllegalArgumentException If representation is not null and
      *                                  objectPlacement is, while representation
      *                                  is an instance of
      *                                  IfcProductDefinitionShape;
      *                                  if compositionType is null.
      */
-    public IfcSite(@NonNull IfcOwnerHistory ownerHistory, IfcLabel name,
-                   IfcText description, IfcLabel objectType,
+    public IfcSite(@NonNull IfcOwnerHistory ownerHistory,
+                   IfcLabel name,
+                   IfcText description,
+                   IfcLabel objectType,
                    IfcObjectPlacement objectPlacement,
-                   IfcProductRepresentation representation, IfcLabel longName,
+                   IfcProductRepresentation representation,
+                   IfcLabel longName,
                    @NonNull IfcElementCompositionEnum compositionType,
                    IfcCompoundPlaneAngleMeasure refLatitude,
                    IfcCompoundPlaneAngleMeasure refLongitude,
-                   IfcLengthMeasure refElevation, IfcLabel landTitleNumber,
+                   IfcLengthMeasure refElevation,
+                   IfcLabel landTitleNumber,
                    IfcPostalAddress siteAddress) {
-        this(new IfcGloballyUniqueId(), ownerHistory, name, description,
-                objectType, objectPlacement, representation, longName,
-                compositionType, refLatitude, refLongitude, refElevation,
-                landTitleNumber, siteAddress);
-    }
-
-    public static final class Builder {
-        private IfcCompoundPlaneAngleMeasure refLatitude;
-        private IfcCompoundPlaneAngleMeasure refLongitude;
-        private IfcLengthMeasure refElevation;
-        private IfcLabel landTitleNumber;
-        private IfcPostalAddress siteAddress;
-        private IfcLabel longName;
-        private IfcElementCompositionEnum compositionType;
-        private IfcObjectPlacement objectPlacement;
-        private IfcProductRepresentation representation;
-        private IfcLabel objectType;
-        private IfcGloballyUniqueId globalId;
-        private IfcOwnerHistory ownerHistory;
-        private IfcLabel name;
-        private IfcText description;
-
-        private Builder() {
-        }
-
-        public static Builder anIfcSite() {
-            return new Builder();
-        }
-
-        public Builder refLatitude(IfcCompoundPlaneAngleMeasure refLatitude) {
-            this.refLatitude = refLatitude;
-            return this;
-        }
-
-        public Builder refLongitude(IfcCompoundPlaneAngleMeasure refLongitude) {
-            this.refLongitude = refLongitude;
-            return this;
-        }
-
-        public Builder refElevation(IfcLengthMeasure refElevation) {
-            this.refElevation = refElevation;
-            return this;
-        }
-
-        public Builder landTitleNumber(IfcLabel landTitleNumber) {
-            this.landTitleNumber = landTitleNumber;
-            return this;
-        }
-
-        public Builder siteAddress(IfcPostalAddress siteAddress) {
-            this.siteAddress = siteAddress;
-            return this;
-        }
-
-        public Builder longName(IfcLabel longName) {
-            this.longName = longName;
-            return this;
-        }
-
-        public Builder compositionType(
-                IfcElementCompositionEnum compositionType) {
-            this.compositionType = compositionType;
-            return this;
-        }
-
-        public Builder objectPlacement(IfcObjectPlacement objectPlacement) {
-            this.objectPlacement = objectPlacement;
-            return this;
-        }
-
-        public Builder representation(IfcProductRepresentation representation) {
-            this.representation = representation;
-            return this;
-        }
-
-        public Builder objectType(IfcLabel objectType) {
-            this.objectType = objectType;
-            return this;
-        }
-
-        public Builder globalId(IfcGloballyUniqueId globalId) {
-            this.globalId = globalId;
-            return this;
-        }
-
-        public Builder ownerHistory(IfcOwnerHistory ownerHistory) {
-            this.ownerHistory = ownerHistory;
-            return this;
-        }
-
-        public Builder name(IfcLabel name) {
-            this.name = name;
-            return this;
-        }
-
-        public Builder description(IfcText description) {
-            this.description = description;
-            return this;
-        }
-
-        public IfcSite build() {
-            return new IfcSite(globalId, ownerHistory, name, description,
-                    objectType, objectPlacement, representation, longName,
-                    compositionType, refLatitude, refLongitude, refElevation,
-                    landTitleNumber, siteAddress);
-        }
+        this(new IfcGloballyUniqueId(),
+             ownerHistory,
+             name,
+             description,
+             objectType,
+             objectPlacement,
+             representation,
+             longName,
+             compositionType,
+             refLatitude,
+             refLongitude,
+             refElevation,
+             landTitleNumber,
+             siteAddress);
     }
 }

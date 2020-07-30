@@ -25,9 +25,9 @@ import java.lang.annotation.Target;
 
 /**
  * To be used on subclasses to have attributes from superclasses ignored in the
- * subclass' serialization. Indicates that certain {@link Attribute}s from a
- * superclass will have to be serialized as asterisks in the subclass, because
- * they have become derived attributes.
+ * serialization. Indicates that certain {@link Attribute}s from a superclass
+ * will have to be serialized as asterisks in the subclass, because they have
+ * become derived attributes.
  * </p>
  * One example of an attribute becoming a derived attribute in a subclass can be
  * found in {@link buildingsmart.ifc.IfcNamedUnit}: in its subclass {@link

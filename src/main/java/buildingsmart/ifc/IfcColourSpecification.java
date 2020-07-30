@@ -21,13 +21,15 @@ package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
 import buildingsmart.io.IfcEntity;
-
-import java.util.Objects;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 /**
  * The colour specification entity contains a direct colour definition. Colour
  * component values refer directly to a specific colour space.
  */
+@EqualsAndHashCode(callSuper = false)
+@ToString
 public abstract class IfcColourSpecification extends IfcEntity {
     @Attribute(0)
     private final IfcLabel name;
@@ -38,22 +40,5 @@ public abstract class IfcColourSpecification extends IfcEntity {
      */
     public IfcColourSpecification(IfcLabel name) {
         this.name = name;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        IfcColourSpecification that = (IfcColourSpecification) o;
-        return Objects.equals(name, that.name);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(name);
     }
 }

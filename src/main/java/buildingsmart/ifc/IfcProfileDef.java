@@ -21,9 +21,10 @@ package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
 import buildingsmart.io.IfcEntity;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NonNull;
-
-import java.util.Objects;
+import lombok.ToString;
 
 /**
  * The <i>IfcProfileDef</i> is the supertype of all definitions of standard and
@@ -91,7 +92,10 @@ import java.util.Objects;
  * can be used to designate a standard profile type as e.g. given in
  * profile tables for steel profiles.</p>
  */
+@EqualsAndHashCode(callSuper = false)
+@ToString
 public abstract class IfcProfileDef extends IfcEntity {
+    @Getter
     @Attribute(0)
     private final IfcProfileTypeEnum profileType;
     @Attribute(1)
@@ -105,36 +109,11 @@ public abstract class IfcProfileDef extends IfcEntity {
      *                    profile should be referenced by a swept area solid.
      * @param profileName Name of the profile type according to some standard
      *                    profile table.
-     * @throws IllegalArgumentException If profileType is null.
+     * @throws NullPointerException If profileType is null.
      */
     public IfcProfileDef(@NonNull IfcProfileTypeEnum profileType,
                          IfcLabel profileName) {
-        if (profileType == null) {
-            throw new IllegalArgumentException("profileType cannot be null");
-        }
         this.profileType = profileType;
         this.profileName = profileName;
-    }
-
-    public IfcProfileTypeEnum getProfileType() {
-        return profileType;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        IfcProfileDef that = (IfcProfileDef) o;
-        return profileType == that.profileType &&
-                Objects.equals(profileName, that.profileName);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(profileType, profileName);
     }
 }

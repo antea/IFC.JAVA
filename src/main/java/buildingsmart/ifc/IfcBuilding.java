@@ -20,7 +20,9 @@
 package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
+import lombok.Builder;
 import lombok.NonNull;
+import lombok.ToString;
 
 /**
  * A building represents a structure that provides shelter for its occupants or
@@ -323,6 +325,7 @@ import lombok.NonNull;
  *   exposed independently from its constituting elements.
  * </p>
  */
+@ToString(callSuper = true)
 public class IfcBuilding extends IfcSpatialStructureElement {
     @Attribute(9)
     private final IfcLengthMeasure elevationOfRefHeight;
@@ -394,17 +397,21 @@ public class IfcBuilding extends IfcSpatialStructureElement {
      *                             in elevation above sea level.
      * @param buildingAddress      Address given to the building for postal
      *                             purposes.
-     * @throws IllegalArgumentException If globalId or ownerHistory are null; if
-     *                                  globalId was used in another instance of
-     *                                  this class; if representation is not
+     * @throws NullPointerException     If globalId, ownerHistory or
+     *                                  compositionType are null.
+     * @throws IllegalArgumentException If globalId was used in another instance
+     *                                  of this class; if representation is not
      *                                  null and objectPlacement is, while
      *                                  representation is an instance of
      *                                  IfcProductDefinitionShape; if
      *                                  compositionType is null.
      */
+    @Builder
     public IfcBuilding(@NonNull IfcGloballyUniqueId globalId,
-                       @NonNull IfcOwnerHistory ownerHistory, IfcLabel name,
-                       IfcText description, IfcLabel objectType,
+                       @NonNull IfcOwnerHistory ownerHistory,
+                       IfcLabel name,
+                       IfcText description,
+                       IfcLabel objectType,
                        IfcObjectPlacement objectPlacement,
                        IfcProductRepresentation representation,
                        IfcLabel longName,
@@ -412,8 +419,15 @@ public class IfcBuilding extends IfcSpatialStructureElement {
                        IfcLengthMeasure elevationOfRefHeight,
                        IfcLengthMeasure elevationOfTerrain,
                        IfcPostalAddress buildingAddress) {
-        super(globalId, ownerHistory, name, description, objectType,
-                objectPlacement, representation, longName, compositionType);
+        super(globalId,
+              ownerHistory,
+              name,
+              description,
+              objectType,
+              objectPlacement,
+              representation,
+              longName,
+              compositionType);
         this.elevationOfRefHeight = elevationOfRefHeight;
         this.elevationOfTerrain = elevationOfTerrain;
         this.buildingAddress = buildingAddress;
@@ -480,15 +494,18 @@ public class IfcBuilding extends IfcSpatialStructureElement {
      *                             in elevation above sea level.
      * @param buildingAddress      Address given to the building for postal
      *                             purposes.
-     * @throws IllegalArgumentException If ownerHistory is null; if
-     *                                  representation is not null and
+     * @throws NullPointerException     If ownerHistory or compositionType are
+     *                                  null.
+     * @throws IllegalArgumentException If representation is not null and
      *                                  objectPlacement is, while representation
      *                                  is an instance of
      *                                  IfcProductDefinitionShape;
      *                                  if compositionType is null.
      */
-    public IfcBuilding(@NonNull IfcOwnerHistory ownerHistory, IfcLabel name,
-                       IfcText description, IfcLabel objectType,
+    public IfcBuilding(@NonNull IfcOwnerHistory ownerHistory,
+                       IfcLabel name,
+                       IfcText description,
+                       IfcLabel objectType,
                        IfcObjectPlacement objectPlacement,
                        IfcProductRepresentation representation,
                        IfcLabel longName,
@@ -496,100 +513,17 @@ public class IfcBuilding extends IfcSpatialStructureElement {
                        IfcLengthMeasure elevationOfRefHeight,
                        IfcLengthMeasure elevationOfTerrain,
                        IfcPostalAddress buildingAddress) {
-        this(new IfcGloballyUniqueId(), ownerHistory, name, description,
-                objectType, objectPlacement, representation, longName,
-                compositionType, elevationOfRefHeight, elevationOfTerrain,
-                buildingAddress);
-    }
-
-    public static final class Builder {
-        private IfcLengthMeasure elevationOfRefHeight;
-        private IfcLengthMeasure elevationOfTerrain;
-        private IfcPostalAddress buildingAddress;
-        private IfcLabel longName;
-        private IfcElementCompositionEnum compositionType;
-        private IfcObjectPlacement objectPlacement;
-        private IfcProductRepresentation representation;
-        private IfcLabel objectType;
-        private IfcGloballyUniqueId globalId;
-        private IfcOwnerHistory ownerHistory;
-        private IfcLabel name;
-        private IfcText description;
-
-        private Builder() {
-        }
-
-        public static Builder anIfcBuilding() {
-            return new Builder();
-        }
-
-        public Builder elevationOfRefHeight(
-                IfcLengthMeasure elevationOfRefHeight) {
-            this.elevationOfRefHeight = elevationOfRefHeight;
-            return this;
-        }
-
-        public Builder elevationOfTerrain(IfcLengthMeasure elevationOfTerrain) {
-            this.elevationOfTerrain = elevationOfTerrain;
-            return this;
-        }
-
-        public Builder buildingAddress(IfcPostalAddress buildingAddress) {
-            this.buildingAddress = buildingAddress;
-            return this;
-        }
-
-        public Builder longName(IfcLabel longName) {
-            this.longName = longName;
-            return this;
-        }
-
-        public Builder compositionType(
-                IfcElementCompositionEnum compositionType) {
-            this.compositionType = compositionType;
-            return this;
-        }
-
-        public Builder objectPlacement(IfcObjectPlacement objectPlacement) {
-            this.objectPlacement = objectPlacement;
-            return this;
-        }
-
-        public Builder representation(IfcProductRepresentation representation) {
-            this.representation = representation;
-            return this;
-        }
-
-        public Builder objectType(IfcLabel objectType) {
-            this.objectType = objectType;
-            return this;
-        }
-
-        public Builder globalId(IfcGloballyUniqueId globalId) {
-            this.globalId = globalId;
-            return this;
-        }
-
-        public Builder ownerHistory(IfcOwnerHistory ownerHistory) {
-            this.ownerHistory = ownerHistory;
-            return this;
-        }
-
-        public Builder name(IfcLabel name) {
-            this.name = name;
-            return this;
-        }
-
-        public Builder description(IfcText description) {
-            this.description = description;
-            return this;
-        }
-
-        public IfcBuilding build() {
-            return new IfcBuilding(globalId, ownerHistory, name, description,
-                    objectType, objectPlacement, representation, longName,
-                    compositionType, elevationOfRefHeight, elevationOfTerrain,
-                    buildingAddress);
-        }
+        this(new IfcGloballyUniqueId(),
+             ownerHistory,
+             name,
+             description,
+             objectType,
+             objectPlacement,
+             representation,
+             longName,
+             compositionType,
+             elevationOfRefHeight,
+             elevationOfTerrain,
+             buildingAddress);
     }
 }

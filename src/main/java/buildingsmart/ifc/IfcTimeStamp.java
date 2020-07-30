@@ -20,22 +20,25 @@
 package buildingsmart.ifc;
 
 import buildingsmart.io.IfcDefinedType;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import java.util.Calendar;
-import java.util.Objects;
 import java.util.TimeZone;
 
 /**
  * An indication of date and time by measuring the number of seconds which have
  * elapsed since the beginning of the year 1970.
  */
+@EqualsAndHashCode
+@ToString
 public class IfcTimeStamp implements IfcDefinedType, IfcDerivedMeasureValue {
     private final long value;
 
     /**
-     * @param value An indication of date and time by measuring the
-     *                     number of seconds which have elapsed since the
-     *                     beginning of the year 1970.
+     * @param value An indication of date and time by measuring the number of
+     *              seconds which have elapsed since the beginning of the year
+     *              1970.
      */
     public IfcTimeStamp(long value) {
         this.value = value;
@@ -56,22 +59,5 @@ public class IfcTimeStamp implements IfcDefinedType, IfcDerivedMeasureValue {
     @Override
     public String serialize() {
         return Long.toString(value);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        IfcTimeStamp that = (IfcTimeStamp) o;
-        return value == that.value;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(value);
     }
 }

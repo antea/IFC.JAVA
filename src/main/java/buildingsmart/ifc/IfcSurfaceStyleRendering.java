@@ -20,9 +20,10 @@
 package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.NonNull;
-
-import java.util.Objects;
+import lombok.ToString;
 
 /**
  * <I>IfcSurfaceStyleRendering</I> holds the
@@ -92,6 +93,8 @@ import java.util.Objects;
  * refracted.</FONT></LI>
  * </UL></BLOCKQUOTE>
  */
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 public class IfcSurfaceStyleRendering extends IfcSurfaceStyleShading {
     @Attribute(1)
     private final IfcNormalisedRatioMeasure transparency;
@@ -203,9 +206,10 @@ public class IfcSurfaceStyleRendering extends IfcSurfaceStyleShading {
      * @param reflectanceMethod         Identifies the predefined types of
      *                                  reflectance method from which the method
      *                                  required may be set.
-     * @throws IllegalArgumentException If surfaceColour or reflectanceMethod
-     *                                  are null.
+     * @throws NullPointerException If surfaceColour or reflectanceMethod are
+     *                              null.
      */
+    @Builder
     public IfcSurfaceStyleRendering(@NonNull IfcColourRgb surfaceColour,
                                     IfcNormalisedRatioMeasure transparency,
                                     IfcColourOrFactor diffuseColour,
@@ -214,13 +218,8 @@ public class IfcSurfaceStyleRendering extends IfcSurfaceStyleShading {
                                     IfcColourOrFactor reflectionColour,
                                     IfcColourOrFactor specularColour,
                                     IfcSpecularHighlightSelect specularHighlight,
-                                    @NonNull
-                                            IfcReflectanceMethodEnum reflectanceMethod) {
+                                    @NonNull IfcReflectanceMethodEnum reflectanceMethod) {
         super(surfaceColour);
-        if (reflectanceMethod == null) {
-            throw new IllegalArgumentException(
-                    "reflectanceMethod cannot be null");
-        }
         this.transparency = transparency;
         this.diffuseColour = diffuseColour;
         this.transmissionColour = transmissionColour;
@@ -229,110 +228,5 @@ public class IfcSurfaceStyleRendering extends IfcSurfaceStyleShading {
         this.specularColour = specularColour;
         this.specularHighlight = specularHighlight;
         this.reflectanceMethod = reflectanceMethod;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        if (!super.equals(o)) {
-            return false;
-        }
-        IfcSurfaceStyleRendering that = (IfcSurfaceStyleRendering) o;
-        return Objects.equals(transparency, that.transparency) &&
-                Objects.equals(diffuseColour, that.diffuseColour) &&
-                Objects.equals(transmissionColour, that.transmissionColour) &&
-                Objects.equals(diffuseTransmissionColour,
-                        that.diffuseTransmissionColour) &&
-                Objects.equals(reflectionColour, that.reflectionColour) &&
-                Objects.equals(specularColour, that.specularColour) &&
-                Objects.equals(specularHighlight, that.specularHighlight) &&
-                reflectanceMethod == that.reflectanceMethod;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), transparency, diffuseColour,
-                transmissionColour, diffuseTransmissionColour, reflectionColour,
-                specularColour, specularHighlight, reflectanceMethod);
-    }
-
-    public static final class Builder {
-        private IfcNormalisedRatioMeasure transparency;
-        private IfcColourOrFactor diffuseColour;
-        private IfcColourOrFactor transmissionColour;
-        private IfcColourOrFactor diffuseTransmissionColour;
-        private IfcColourOrFactor reflectionColour;
-        private IfcColourOrFactor specularColour;
-        private IfcSpecularHighlightSelect specularHighlight;
-        private IfcReflectanceMethodEnum reflectanceMethod;
-        private IfcColourRgb surfaceColour;
-
-        private Builder() {
-        }
-
-        public static Builder anIfcSurfaceStyleRendering() {
-            return new Builder();
-        }
-
-        public Builder transparency(IfcNormalisedRatioMeasure transparency) {
-            this.transparency = transparency;
-            return this;
-        }
-
-        public Builder diffuseColour(IfcColourOrFactor diffuseColour) {
-            this.diffuseColour = diffuseColour;
-            return this;
-        }
-
-        public Builder transmissionColour(
-                IfcColourOrFactor transmissionColour) {
-            this.transmissionColour = transmissionColour;
-            return this;
-        }
-
-        public Builder diffuseTransmissionColour(
-                IfcColourOrFactor diffuseTransmissionColour) {
-            this.diffuseTransmissionColour = diffuseTransmissionColour;
-            return this;
-        }
-
-        public Builder reflectionColour(IfcColourOrFactor reflectionColour) {
-            this.reflectionColour = reflectionColour;
-            return this;
-        }
-
-        public Builder specularColour(IfcColourOrFactor specularColour) {
-            this.specularColour = specularColour;
-            return this;
-        }
-
-        public Builder specularHighlight(
-                IfcSpecularHighlightSelect specularHighlight) {
-            this.specularHighlight = specularHighlight;
-            return this;
-        }
-
-        public Builder reflectanceMethod(
-                IfcReflectanceMethodEnum reflectanceMethod) {
-            this.reflectanceMethod = reflectanceMethod;
-            return this;
-        }
-
-        public Builder surfaceColour(IfcColourRgb surfaceColour) {
-            this.surfaceColour = surfaceColour;
-            return this;
-        }
-
-        public IfcSurfaceStyleRendering build() {
-            return new IfcSurfaceStyleRendering(surfaceColour, transparency,
-                    diffuseColour, transmissionColour,
-                    diffuseTransmissionColour, reflectionColour, specularColour,
-                    specularHighlight, reflectanceMethod);
-        }
     }
 }

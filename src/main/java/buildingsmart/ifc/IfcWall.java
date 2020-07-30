@@ -19,7 +19,9 @@
 
 package buildingsmart.ifc;
 
+import lombok.Builder;
 import lombok.NonNull;
+import lombok.ToString;
 
 /**
  * The wall represents a vertical construction that bounds or subdivides spaces.
@@ -279,6 +281,7 @@ import lombok.NonNull;
  * level of the subtypes of <i>IfcWall</i> and at the
  * <i>IfcRelConnectsPathElements</i>.</p>
  */
+@ToString(callSuper = true)
 public class IfcWall extends IfcBuildingElement {
     /**
      * Creates a new IfcWall, using the provided globalId.
@@ -325,20 +328,30 @@ public class IfcWall extends IfcBuildingElement {
      *                        instance of a product, e.g. the serial number, or
      *                        the position number. It is the identifier at the
      *                        occurrence level.
-     * @throws IllegalArgumentException If globalId or ownerHistory are null; if
-     *                                  globalId was used in another instance of
-     *                                  this class; if representation is not
+     * @throws NullPointerException     If globalId or ownerHistory are null.
+     * @throws IllegalArgumentException If globalId was used in another instance
+     *                                  of this class; if representation is not
      *                                  null and objectPlacement is, while
      *                                  representation is an instance of
      *                                  IfcProductDefinitionShape.
      */
+    @Builder
     public IfcWall(@NonNull IfcGloballyUniqueId globalId,
-                   @NonNull IfcOwnerHistory ownerHistory, IfcLabel name,
-                   IfcText description, IfcLabel objectType,
+                   @NonNull IfcOwnerHistory ownerHistory,
+                   IfcLabel name,
+                   IfcText description,
+                   IfcLabel objectType,
                    IfcObjectPlacement objectPlacement,
-                   IfcProductRepresentation representation, IfcIdentifier tag) {
-        super(globalId, ownerHistory, name, description, objectType,
-                objectPlacement, representation, tag);
+                   IfcProductRepresentation representation,
+                   IfcIdentifier tag) {
+        super(globalId,
+              ownerHistory,
+              name,
+              description,
+              objectType,
+              objectPlacement,
+              representation,
+              tag);
     }
 
     /**
@@ -384,18 +397,27 @@ public class IfcWall extends IfcBuildingElement {
      *                        instance of a product, e.g. the serial number, or
      *                        the position number. It is the identifier at the
      *                        occurrence level.
-     * @throws IllegalArgumentException If ownerHistory is null; if
-     *                                  representation is not null and
+     * @throws NullPointerException     If ownerHistory is null.
+     * @throws IllegalArgumentException If representation is not null and
      *                                  objectPlacement is, while representation
      *                                  is an instance of
      *                                  IfcProductDefinitionShape.
      */
-    public IfcWall(@NonNull IfcOwnerHistory ownerHistory, IfcLabel name,
-                   IfcText description, IfcLabel objectType,
+    public IfcWall(@NonNull IfcOwnerHistory ownerHistory,
+                   IfcLabel name,
+                   IfcText description,
+                   IfcLabel objectType,
                    IfcObjectPlacement objectPlacement,
-                   IfcProductRepresentation representation, IfcIdentifier tag) {
-        this(new IfcGloballyUniqueId(), ownerHistory, name, description,
-                objectType, objectPlacement, representation, tag);
+                   IfcProductRepresentation representation,
+                   IfcIdentifier tag) {
+        this(new IfcGloballyUniqueId(),
+             ownerHistory,
+             name,
+             description,
+             objectType,
+             objectPlacement,
+             representation,
+             tag);
     }
 
     /**
@@ -409,7 +431,7 @@ public class IfcWall extends IfcBuildingElement {
      * @throws NullPointerException     If relationship is null.
      */
     @Override
-    protected void addToHasAssociations(IfcRelAssociates relationship) {
+    protected void addToHasAssociations(@NonNull IfcRelAssociates relationship) {
         if (relationship instanceof IfcRelAssociatesMaterial) {
             for (IfcRelAssociates rel : this.hasAssociations) {
                 if (rel instanceof IfcRelAssociatesMaterial) {
@@ -421,68 +443,5 @@ public class IfcWall extends IfcBuildingElement {
             }
         }
         super.addToHasAssociations(relationship);
-    }
-
-    public static final class Builder {
-        private IfcIdentifier tag;
-        private IfcObjectPlacement objectPlacement;
-        private IfcProductRepresentation representation;
-        private IfcLabel objectType;
-        private IfcGloballyUniqueId globalId;
-        private IfcOwnerHistory ownerHistory;
-        private IfcLabel name;
-        private IfcText description;
-
-        private Builder() {
-        }
-
-        public static Builder anIfcWall() {
-            return new Builder();
-        }
-
-        public Builder tag(IfcIdentifier tag) {
-            this.tag = tag;
-            return this;
-        }
-
-        public Builder objectPlacement(IfcObjectPlacement objectPlacement) {
-            this.objectPlacement = objectPlacement;
-            return this;
-        }
-
-        public Builder representation(IfcProductRepresentation representation) {
-            this.representation = representation;
-            return this;
-        }
-
-        public Builder objectType(IfcLabel objectType) {
-            this.objectType = objectType;
-            return this;
-        }
-
-        public Builder globalId(IfcGloballyUniqueId globalId) {
-            this.globalId = globalId;
-            return this;
-        }
-
-        public Builder ownerHistory(IfcOwnerHistory ownerHistory) {
-            this.ownerHistory = ownerHistory;
-            return this;
-        }
-
-        public Builder name(IfcLabel name) {
-            this.name = name;
-            return this;
-        }
-
-        public Builder description(IfcText description) {
-            this.description = description;
-            return this;
-        }
-
-        public IfcWall build() {
-            return new IfcWall(globalId, ownerHistory, name, description,
-                    objectType, objectPlacement, representation, tag);
-        }
     }
 }

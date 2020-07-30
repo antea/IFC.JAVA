@@ -21,9 +21,9 @@ package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
 import buildingsmart.io.IfcEntity;
+import lombok.EqualsAndHashCode;
 import lombok.NonNull;
-
-import java.util.Objects;
+import lombok.ToString;
 
 /**
  * The entity IfcSurfaceStyleShading allows for colour information used for
@@ -31,6 +31,8 @@ import java.util.Objects;
  * techniques. The surface colour is used for colouring or simple shading of the
  * assigned surfaces.
  */
+@EqualsAndHashCode(callSuper = false)
+@ToString
 public class IfcSurfaceStyleShading extends IfcEntity
         implements IfcSurfaceStyleElementSelect {
     @Attribute(0)
@@ -40,29 +42,9 @@ public class IfcSurfaceStyleShading extends IfcEntity
      * @param surfaceColour The colour used to render the surface. The surface
      *                      colour for visualisation is defined by specifying
      *                      the intensity of red, green and blue.
-     * @throws IllegalArgumentException If surfaceColour is null.
+     * @throws NullPointerException If surfaceColour is null.
      */
     public IfcSurfaceStyleShading(@NonNull IfcColourRgb surfaceColour) {
-        if (surfaceColour == null) {
-            throw new IllegalArgumentException("surfaceColour cannot be null");
-        }
         this.surfaceColour = surfaceColour;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        IfcSurfaceStyleShading that = (IfcSurfaceStyleShading) o;
-        return surfaceColour.equals(that.surfaceColour);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(surfaceColour);
     }
 }

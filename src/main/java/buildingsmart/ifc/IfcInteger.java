@@ -20,22 +20,20 @@
 package buildingsmart.ifc;
 
 import buildingsmart.io.IfcDefinedType;
-
-import java.util.Objects;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.ToString;
 
 /**
  * A defined type of simple data type Integer.
  */
+@AllArgsConstructor
+@EqualsAndHashCode
+@ToString
 public class IfcInteger implements IfcDefinedType, IfcSimpleValue {
+    @Getter
     private final long value;
-
-    public IfcInteger(long value) {
-        this.value = value;
-    }
-
-    public long getValue() {
-        return value;
-    }
 
     /**
      * @return The representation of the type in an IFC STEP file.
@@ -43,22 +41,5 @@ public class IfcInteger implements IfcDefinedType, IfcSimpleValue {
     @Override
     public String serialize() {
         return Long.toString(value);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        IfcInteger that = (IfcInteger) o;
-        return value == that.value;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(value);
     }
 }

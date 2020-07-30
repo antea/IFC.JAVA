@@ -20,6 +20,7 @@
 package buildingsmart.ifc;
 
 import lombok.NonNull;
+import lombok.ToString;
 
 /**
  * A connectivity relationship (IfcRelConnects) that connects objects under some
@@ -27,6 +28,7 @@ import lombok.NonNull;
  * subtypes of the relationship define the applicable object types for the
  * connectivity relationship and the semantics of the particular connectivity.
  */
+@ToString(callSuper = true)
 public class IfcRelConnects extends IfcRelationship {
     /**
      * Creates a new IfcRelConnects, using the provided globalId.
@@ -44,12 +46,13 @@ public class IfcRelConnects extends IfcRelationship {
      *                     would be enforced by a where rule.
      * @param description  Optional description, provided for exchanging
      *                     informative comments.
-     * @throws IllegalArgumentException If globalId or ownerHistory are null, or
-     *                                  if globalId was used in another instance
+     * @throws NullPointerException     If globalId or ownerHistory are null.
+     * @throws IllegalArgumentException If globalId was used in another instance
      *                                  of this class or its superclass.
      */
     public IfcRelConnects(@NonNull IfcGloballyUniqueId globalId,
-                          @NonNull IfcOwnerHistory ownerHistory, IfcLabel name,
+                          @NonNull IfcOwnerHistory ownerHistory,
+                          IfcLabel name,
                           IfcText description) {
         super(globalId, ownerHistory, name, description);
     }
@@ -68,9 +71,10 @@ public class IfcRelConnects extends IfcRelationship {
      *                     would be enforced by a where rule.
      * @param description  Optional description, provided for exchanging
      *                     informative comments.
-     * @throws IllegalArgumentException If ownerHistory is null.
+     * @throws NullPointerException If ownerHistory is null.
      */
-    public IfcRelConnects(@NonNull IfcOwnerHistory ownerHistory, IfcLabel name,
+    public IfcRelConnects(@NonNull IfcOwnerHistory ownerHistory,
+                          IfcLabel name,
                           IfcText description) {
         this(new IfcGloballyUniqueId(), ownerHistory, name, description);
     }

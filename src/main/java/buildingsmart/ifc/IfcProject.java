@@ -20,7 +20,10 @@
 package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
+import lombok.Builder;
 import lombok.NonNull;
+import lombok.Singular;
+import lombok.ToString;
 
 import java.util.Set;
 
@@ -41,6 +44,7 @@ import java.util.Set;
  * world coordinate system</li>
  * </ul>
  */
+@ToString(callSuper = true)
 public class IfcProject extends IfcObject {
     @Attribute(5)
     private final IfcLabel longName;
@@ -92,29 +96,26 @@ public class IfcProject extends IfcObject {
      *                               precision factor.
      * @param unitsInContext         Units globally assigned to measure types
      *                               used within the context of this project.
-     * @throws IllegalArgumentException If globalId, ownerHistory, name,
+     * @throws NullPointerException     If globalId, ownerHistory, name,
      *                                  representationContexts or unitsInContext
-     *                                  are null, if globalId was used in
-     *                                  another instance of this class, if
-     *                                  representationContexts contains one or
-     *                                  more objects of type
+     *                                  are null.
+     * @throws IllegalArgumentException If globalId was used in another instance
+     *                                  of this class, if representationContexts
+     *                                  contains one or more objects of type
      *                                  IfcGeometricRepresentationSubContexts.
      */
+    @Builder
     public IfcProject(@NonNull IfcGloballyUniqueId globalId,
                       @NonNull IfcOwnerHistory ownerHistory,
-                      @NonNull IfcLabel name, IfcText description,
-                      IfcLabel objectType, IfcLabel longName, IfcLabel phase,
-                      @NonNull
+                      @NonNull IfcLabel name,
+                      IfcText description,
+                      IfcLabel objectType,
+                      IfcLabel longName,
+                      IfcLabel phase,
+                      @NonNull @Singular
                               Set<IfcRepresentationContext> representationContexts,
                       @NonNull IfcUnitAssignment unitsInContext) {
         super(globalId, ownerHistory, name, description, objectType);
-        if (representationContexts == null) {
-            throw new IllegalArgumentException(
-                    "representationContexts cannot be null");
-        }
-        if (unitsInContext == null) {
-            throw new IllegalArgumentException("unitsInContext cannot be null");
-        }
         if (representationContexts.size() < 1) {
             throw new IllegalArgumentException(
                     "size of representationContexts must be at least 1");
@@ -172,22 +173,30 @@ public class IfcProject extends IfcObject {
      *                               precision factor.
      * @param unitsInContext         Units globally assigned to measure types
      *                               used within the context of this project.
-     * @throws IllegalArgumentException If ownerHistory, name,
+     * @throws NullPointerException     If ownerHistory, name,
      * representationContexts
-     *                                  or unitsInContext are null, if globalId,
-     *                                  if representationContexts contains one
-     *                                  or more objects of type
+     *                                  or unitsInContext are null.
+     * @throws IllegalArgumentException If globalId, if representationContexts
+     *                                  contains one or more objects of type
      *                                  IfcGeometricRepresentationSubContexts.
      */
     public IfcProject(@NonNull IfcOwnerHistory ownerHistory,
-                      @NonNull IfcLabel name, IfcText description,
-                      IfcLabel objectType, IfcLabel longName, IfcLabel phase,
-                      @NonNull
-                              Set<IfcRepresentationContext> representationContexts,
+                      @NonNull IfcLabel name,
+                      IfcText description,
+                      IfcLabel objectType,
+                      IfcLabel longName,
+                      IfcLabel phase,
+                      @NonNull Set<IfcRepresentationContext> representationContexts,
                       @NonNull IfcUnitAssignment unitsInContext) {
-        this(new IfcGloballyUniqueId(), ownerHistory, name, description,
-                objectType, longName, phase, representationContexts,
-                unitsInContext);
+        this(new IfcGloballyUniqueId(),
+             ownerHistory,
+             name,
+             description,
+             objectType,
+             longName,
+             phase,
+             representationContexts,
+             unitsInContext);
     }
 
     /**
@@ -241,80 +250,5 @@ public class IfcProject extends IfcObject {
         throw new IllegalStateException(
                 "IfcProject cannot decompose any other " +
                         "IfcObjectDefinition");
-    }
-
-    public static final class Builder {
-        private IfcLabel longName;
-        private IfcLabel phase;
-        private Set<IfcRepresentationContext> representationContexts;
-        private IfcUnitAssignment unitsInContext;
-        private IfcLabel objectType;
-        private IfcGloballyUniqueId globalId;
-        private IfcOwnerHistory ownerHistory;
-        private IfcLabel name;
-        private IfcText description;
-
-        private Builder() {
-        }
-
-        public static Builder anIfcProject() {
-            return new Builder();
-        }
-
-        public Builder longName(IfcLabel longName) {
-            this.longName = longName;
-            return this;
-        }
-
-        public Builder phase(IfcLabel phase) {
-            this.phase = phase;
-            return this;
-        }
-
-        public Builder representationContexts(
-                Set<IfcRepresentationContext> representationContexts) {
-            this.representationContexts = representationContexts;
-            return this;
-        }
-
-        public Builder unitsInContext(IfcUnitAssignment unitsInContext) {
-            this.unitsInContext = unitsInContext;
-            return this;
-        }
-
-        public Builder objectType(IfcLabel objectType) {
-            this.objectType = objectType;
-            return this;
-        }
-
-        public Builder globalId(IfcGloballyUniqueId globalId) {
-            this.globalId = globalId;
-            return this;
-        }
-
-        public Builder ownerHistory(IfcOwnerHistory ownerHistory) {
-            this.ownerHistory = ownerHistory;
-            return this;
-        }
-
-        public Builder name(IfcLabel name) {
-            this.name = name;
-            return this;
-        }
-
-        public Builder description(IfcText description) {
-            this.description = description;
-            return this;
-        }
-
-        public IfcProject build() {
-            return globalId == null ?
-                    new IfcProject(ownerHistory, name, description, objectType,
-                            longName, phase, representationContexts,
-                            unitsInContext) :
-                    new IfcProject(globalId, ownerHistory, name, description,
-                            objectType, longName, phase, representationContexts,
-                            unitsInContext);
-        }
     }
 }

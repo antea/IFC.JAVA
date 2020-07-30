@@ -21,6 +21,7 @@ package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
 import lombok.NonNull;
+import lombok.ToString;
 
 /**
  * An <i>IfcObject</i> is the generalization of any semantically treated thing
@@ -70,10 +71,10 @@ import lombok.NonNull;
  * depend on the specific properties).</li>
  * </ul>
  */
+@ToString(callSuper = true)
 public abstract class IfcObject extends IfcObjectDefinition {
     @Attribute(4)
     private final IfcLabel objectType;
-    //private IfcRelDefines[] IsDefinedBy;
 
     /**
      * Creates a new IfcObject, using the provided globalId.
@@ -96,13 +97,15 @@ public abstract class IfcObject extends IfcObjectDefinition {
      *                     level of instantiable subtypes. In particular it
      *                     holds the user defined type, if the enumeration of
      *                     the attribute PredefinedType is set to USERDEFINED.
-     * @throws IllegalArgumentException If globalId or ownerHistory are null, or
-     *                                  if globalId was used in another instance
+     * @throws NullPointerException     If globalId or ownerHistory are null.
+     * @throws IllegalArgumentException If globalId was used in another instance
      *                                  of this class.
      */
     public IfcObject(@NonNull IfcGloballyUniqueId globalId,
-                     @NonNull IfcOwnerHistory ownerHistory, IfcLabel name,
-                     IfcText description, IfcLabel objectType) {
+                     @NonNull IfcOwnerHistory ownerHistory,
+                     IfcLabel name,
+                     IfcText description,
+                     IfcLabel objectType) {
         super(globalId, ownerHistory, name, description);
         this.objectType = objectType;
     }
@@ -126,11 +129,16 @@ public abstract class IfcObject extends IfcObjectDefinition {
      *                     level of instantiable subtypes. In particular it
      *                     holds the user defined type, if the enumeration of
      *                     the attribute PredefinedType is set to USERDEFINED.
-     * @throws IllegalArgumentException If ownerHistory is null.
+     * @throws NullPointerException If ownerHistory is null.
      */
-    public IfcObject(@NonNull IfcOwnerHistory ownerHistory, IfcLabel name,
-                     IfcText description, IfcLabel objectType) {
-        this(new IfcGloballyUniqueId(), ownerHistory, name, description,
-                objectType);
+    public IfcObject(@NonNull IfcOwnerHistory ownerHistory,
+                     IfcLabel name,
+                     IfcText description,
+                     IfcLabel objectType) {
+        this(new IfcGloballyUniqueId(),
+             ownerHistory,
+             name,
+             description,
+             objectType);
     }
 }

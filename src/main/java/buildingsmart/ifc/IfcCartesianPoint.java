@@ -20,20 +20,24 @@
 package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
+import lombok.EqualsAndHashCode;
 import lombok.NonNull;
+import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * A point defined by its coordinates in a two or three dimensional rectangular
  * Cartesian coordinate system, or in a two dimensional parameter space. The
  * entity is defined in a two or three dimensional space.
  */
+@EqualsAndHashCode(callSuper = false)
+@ToString(callSuper = true)
 public class IfcCartesianPoint extends IfcPoint {
     @Attribute(0)
     private final List<IfcLengthMeasure> coordinates;
+    @EqualsAndHashCode.Exclude
     private final IfcDimensionCount dim; // derived attribute
 
     /**
@@ -43,14 +47,11 @@ public class IfcCartesianPoint extends IfcPoint {
      *                    Coordinates[1] is the X coordinate, Coordinates[2] is
      *                    the Y coordinate, and Coordinates[3] is the Z
      *                    coordinate.
+     * @throws NullPointerException     If coordinates is null.
      * @throws IllegalArgumentException If the size of coordinates is lower than
-     *                                  2 or bigger than 3, or if coordinates is
-     *                                  null.
+     *                                  2 or bigger than 3.
      */
     public IfcCartesianPoint(@NonNull List<IfcLengthMeasure> coordinates) {
-        if (coordinates == null) {
-            throw new IllegalArgumentException("coordinates cannot be null");
-        }
         if (coordinates.size() < 2 || coordinates.size() > 3) {
             throw new IllegalArgumentException(
                     "size of coordinates must be 2 or 3");
@@ -66,14 +67,11 @@ public class IfcCartesianPoint extends IfcPoint {
      *                    Coordinates[1] is the X coordinate, Coordinates[2] is
      *                    the Y coordinate, and Coordinates[3] is the Z
      *                    coordinate.
+     * @throws NullPointerException     If coordinates is null.
      * @throws IllegalArgumentException If the size of coordinates is lower than
-     *                                  2 or bigger than 3, or if coordinates is
-     *                                  null.
+     *                                  2 or bigger than 3.
      */
     public IfcCartesianPoint(@NonNull double... coordinates) {
-        if (coordinates == null) {
-            throw new IllegalArgumentException("coordinates cannot be null");
-        }
         if (coordinates.length < 2 || coordinates.length > 3) {
             throw new IllegalArgumentException(
                     "size of coordinates must be 2 or 3");
@@ -93,22 +91,5 @@ public class IfcCartesianPoint extends IfcPoint {
      */
     public IfcDimensionCount getDim() {
         return dim;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        IfcCartesianPoint that = (IfcCartesianPoint) o;
-        return coordinates.equals(that.coordinates);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(coordinates);
     }
 }

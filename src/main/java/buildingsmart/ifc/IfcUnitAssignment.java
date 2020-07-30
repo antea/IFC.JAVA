@@ -22,10 +22,11 @@ package buildingsmart.ifc;
 import buildingsmart.io.Attribute;
 import buildingsmart.io.IfcEntity;
 import buildingsmart.util.Functions;
+import lombok.EqualsAndHashCode;
 import lombok.NonNull;
+import lombok.ToString;
 
 import java.util.Arrays;
-import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 
@@ -41,22 +42,22 @@ import java.util.concurrent.CopyOnWriteArraySet;
  * a requirement for them to make use of units which do not fall within the
  * project unit assignment.</small>
  */
+@EqualsAndHashCode(callSuper = false)
+@ToString
 public class IfcUnitAssignment extends IfcEntity {
     @Attribute(0)
     private final Set<IfcUnit> units;
 
     /**
      * @param units Units to be included within a unit assignment.
-     * @throws IllegalArgumentException If units is null, has size equal to
-     *                                  zero, doesn't only include units with a
-     *                                  different unitType (for IfcNamedUnit and
+     * @throws NullPointerException     If units is null.
+     * @throws IllegalArgumentException If units has size equal to zero, doesn't
+     *                                  only include units with a different
+     *                                  unitType (for IfcNamedUnit and
      *                                  IfcDerivedUnit), or includes more than
      *                                  one IfcMonetaryUnit.
      */
     public IfcUnitAssignment(@NonNull Set<IfcUnit> units) {
-        if (units == null) {
-            throw new IllegalArgumentException("units cannot be null");
-        }
         if (units.size() < 1) {
             throw new IllegalArgumentException(
                     "size of units must be at least 1");
@@ -73,30 +74,14 @@ public class IfcUnitAssignment extends IfcEntity {
 
     /**
      * @param units Units to be included within a unit assignment.
-     * @throws IllegalArgumentException If units is null, has size equal to
-     *                                  zero, doesn't only include units with a
-     *                                  different unitType (for IfcNamedUnit and
+     * @throws NullPointerException     If units is null.
+     * @throws IllegalArgumentException If units has size equal to zero, doesn't
+     *                                  only include units with a different
+     *                                  unitType (for IfcNamedUnit and
      *                                  IfcDerivedUnit), or includes more than
      *                                  one IfcMonetaryUnit.
      */
     public IfcUnitAssignment(@NonNull IfcUnit... units) {
         this(new CopyOnWriteArraySet<>(Arrays.asList(units)));
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        IfcUnitAssignment that = (IfcUnitAssignment) o;
-        return units.equals(that.units);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(units);
     }
 }

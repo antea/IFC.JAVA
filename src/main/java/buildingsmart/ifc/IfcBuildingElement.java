@@ -20,6 +20,7 @@
 package buildingsmart.ifc;
 
 import lombok.NonNull;
+import lombok.ToString;
 
 /**
  * The building element comprises all elements that are primarily part of the
@@ -424,6 +425,7 @@ import lombok.NonNull;
  *     <i>IfcRepresentationMap</i>.
  *   </p>
  */
+@ToString(callSuper = true)
 public abstract class IfcBuildingElement extends IfcElement {
     /**
      * Creates a new IfcBuildingElement, using the provided globalId.
@@ -470,22 +472,29 @@ public abstract class IfcBuildingElement extends IfcElement {
      *                        instance of a product, e.g. the serial number, or
      *                        the position number. It is the identifier at the
      *                        occurrence level.
-     * @throws IllegalArgumentException If globalId or ownerHistory are null; if
-     *                                  globalId was used in another instance of
-     *                                  this class; if representation is not
+     * @throws NullPointerException     If globalId or ownerHistory are null.
+     * @throws IllegalArgumentException If globalId was used in another instance
+     *                                  of this class; if representation is not
      *                                  null and objectPlacement is, while
      *                                  representation is an instance of
      *                                  IfcProductDefinitionShape.
      */
     public IfcBuildingElement(@NonNull IfcGloballyUniqueId globalId,
                               @NonNull IfcOwnerHistory ownerHistory,
-                              IfcLabel name, IfcText description,
+                              IfcLabel name,
+                              IfcText description,
                               IfcLabel objectType,
                               IfcObjectPlacement objectPlacement,
                               IfcProductRepresentation representation,
                               IfcIdentifier tag) {
-        super(globalId, ownerHistory, name, description, objectType,
-                objectPlacement, representation, tag);
+        super(globalId,
+              ownerHistory,
+              name,
+              description,
+              objectType,
+              objectPlacement,
+              representation,
+              tag);
     }
 
     /**
@@ -531,19 +540,25 @@ public abstract class IfcBuildingElement extends IfcElement {
      *                        instance of a product, e.g. the serial number, or
      *                        the position number. It is the identifier at the
      *                        occurrence level.
-     * @throws IllegalArgumentException If ownerHistory is null; if
-     *                                  representation is not null and
+     * @throws NullPointerException     If ownerHistory is null.
+     * @throws IllegalArgumentException If representation is not null and
      *                                  objectPlacement is, while representation
      *                                  is an instance of
      *                                  IfcProductDefinitionShape.
      */
     public IfcBuildingElement(@NonNull IfcOwnerHistory ownerHistory,
-                              IfcLabel name, IfcText description,
+                              IfcLabel name,
+                              IfcText description,
                               IfcLabel objectType,
                               IfcObjectPlacement objectPlacement,
                               IfcProductRepresentation representation,
                               IfcIdentifier tag) {
-        super(ownerHistory, name, description, objectType, objectPlacement,
-                representation, tag);
+        super(ownerHistory,
+              name,
+              description,
+              objectType,
+              objectPlacement,
+              representation,
+              tag);
     }
 }

@@ -20,30 +20,28 @@
 package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
+import lombok.EqualsAndHashCode;
 import lombok.NonNull;
-
-import java.util.Objects;
+import lombok.ToString;
 
 /**
  * A placement entity defines the local environment for the definition of a
  * geometry item. It locates the item to be defined and, in the case of the axis
  * placement subtypes, gives its orientation.
  */
+@EqualsAndHashCode(callSuper = false)
+@ToString(callSuper = true)
 public abstract class IfcPlacement extends IfcGeometricRepresentationItem {
     @Attribute(0)
     private final IfcCartesianPoint location;
-    //private int Dim;
 
     /**
      * @param location The geometric position of a reference point, such as the
      *                 center of a circle, of the item to be located. Cannot be
      *                 null
-     * @throws IllegalArgumentException If location is null.
+     * @throws NullPointerException If location is null.
      */
     public IfcPlacement(@NonNull IfcCartesianPoint location) {
-        if (location == null) {
-            throw new IllegalArgumentException("location can't be null");
-        }
         this.location = location;
     }
 
@@ -55,9 +53,9 @@ public abstract class IfcPlacement extends IfcGeometricRepresentationItem {
      *                    Coordinates[1] is the X coordinate, Coordinates[2] is
      *                    the Y coordinate, and Coordinates[3] is the Z
      *                    coordinate.
+     * @throws NullPointerException     If coordinates is null.
      * @throws IllegalArgumentException If the size of coordinates is lower than
-     *                                  2 or bigger than 3, or if coordinates is
-     *                                  null.
+     *                                  2 or bigger than 3.
      */
     public IfcPlacement(@NonNull double... coordinates) {
         this.location = new IfcCartesianPoint(coordinates);
@@ -69,22 +67,5 @@ public abstract class IfcPlacement extends IfcGeometricRepresentationItem {
      */
     public IfcDimensionCount getDim() {
         return location.getDim();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        IfcPlacement that = (IfcPlacement) o;
-        return location.equals(that.location);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(location);
     }
 }

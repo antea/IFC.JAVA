@@ -21,6 +21,7 @@ package buildingsmart.ifc;
 
 import buildingsmart.io.InverseRelationship;
 import lombok.NonNull;
+import lombok.ToString;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -58,8 +59,8 @@ import java.util.Set;
  * relation. There is an implied dependency established.</li>
  * </ul>
  */
+@ToString(callSuper = true)
 public abstract class IfcObjectDefinition extends IfcRoot {
-    //private Set<IfcRelAssigns> hasAssignments;
     /**
      * Reference to the relationship objects, that associates external
      * references or other resource definitions to the object.. Examples are the
@@ -98,13 +99,14 @@ public abstract class IfcObjectDefinition extends IfcRoot {
      *                     would be enforced by a where rule.
      * @param description  Optional description, provided for exchanging
      *                     informative comments.
-     * @throws IllegalArgumentException If globalId or ownerHistory are null, or
-     *                                  if globalId was used in another instance
+     * @throws NullPointerException     If globalId or ownerHistory are null.
+     * @throws IllegalArgumentException If globalId was used in another instance
      *                                  of this class.
      */
     public IfcObjectDefinition(@NonNull IfcGloballyUniqueId globalId,
                                @NonNull IfcOwnerHistory ownerHistory,
-                               IfcLabel name, IfcText description) {
+                               IfcLabel name,
+                               IfcText description) {
         super(globalId, ownerHistory, name, description);
     }
 
@@ -123,10 +125,11 @@ public abstract class IfcObjectDefinition extends IfcRoot {
      *                     would be enforced by a where rule.
      * @param description  Optional description, provided for exchanging
      *                     informative comments.
-     * @throws IllegalArgumentException If ownerHistory is null.
+     * @throws NullPointerException If ownerHistory is null.
      */
     public IfcObjectDefinition(@NonNull IfcOwnerHistory ownerHistory,
-                               IfcLabel name, IfcText description) {
+                               IfcLabel name,
+                               IfcText description) {
         super(ownerHistory, name, description);
     }
 
@@ -134,9 +137,10 @@ public abstract class IfcObjectDefinition extends IfcRoot {
      * @return A copy of isDecomposedBy. Operations performed on this Set don't
      * have any effect on isDecomposedBy. This is done to prevent adding illegal
      * IfcRelDecomposes to the Set.
+     *
      * @see #addToIsDecomposedBy(IfcRelDecomposes)
      */
-    public Set<IfcRelDecomposes> getIsDecomposedBy() {
+    protected Set<IfcRelDecomposes> getIsDecomposedBy() {
         return isDecomposedBy == null ? new HashSet<>(0) :
                 new HashSet<>(isDecomposedBy);
     }
@@ -188,6 +192,7 @@ public abstract class IfcObjectDefinition extends IfcRoot {
      * @return A copy of hasAssociations. Operations performed on this Set don't
      * have any effect on hasAssociations. This is done to prevent adding
      * illegal IfcRelDecomposes to the Set.
+     *
      * @see #addToHasAssociations(IfcRelAssociates)
      */
     protected Set<IfcRelAssociates> getHasAssociations() {

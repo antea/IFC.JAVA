@@ -19,12 +19,16 @@
 
 package buildingsmart.ifc;
 
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
 import java.util.List;
-import java.util.Objects;
 
 /**
  * The address for delivery of paper based mail.
  */
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 public class IfcPostalAddress extends IfcAddress {
     private final IfcLabel internalLocation;
     private final List<IfcLabel> addressLines;
@@ -76,10 +80,15 @@ public class IfcPostalAddress extends IfcAddress {
      *                                  region and country are all null; if
      *                                  addressLines has size lower than 1.
      */
-    public IfcPostalAddress(IfcAddressTypeEnum purpose, IfcText description,
-                            IfcLabel userDefinedPurpose, IfcLabel internalLocation,
-                            List<IfcLabel> addressLines, IfcLabel postalBox,
-                            IfcLabel town, IfcLabel region, IfcLabel postalCode,
+    public IfcPostalAddress(IfcAddressTypeEnum purpose,
+                            IfcText description,
+                            IfcLabel userDefinedPurpose,
+                            IfcLabel internalLocation,
+                            List<IfcLabel> addressLines,
+                            IfcLabel postalBox,
+                            IfcLabel town,
+                            IfcLabel region,
+                            IfcLabel postalCode,
                             IfcLabel country) {
         super(purpose, description, userDefinedPurpose);
         if (internalLocation == null && addressLines == null &&
@@ -100,29 +109,5 @@ public class IfcPostalAddress extends IfcAddress {
         this.region = region;
         this.postalCode = postalCode;
         this.country = country;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        if (!super.equals(o)) {
-            return false;
-        }
-        IfcPostalAddress that = (IfcPostalAddress) o;
-        return Objects.equals(internalLocation, that.internalLocation) &&
-                Objects.equals(addressLines, that.addressLines) && Objects.equals(postalBox, that.postalBox) &&
-                Objects.equals(town, that.town) && Objects.equals(region, that.region) &&
-                Objects.equals(postalCode, that.postalCode) && Objects.equals(country, that.country);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), internalLocation, addressLines,
-                postalBox, town, region, postalCode, country);
     }
 }

@@ -21,10 +21,11 @@ package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
 import buildingsmart.io.IfcEntity;
+import lombok.EqualsAndHashCode;
 import lombok.NonNull;
+import lombok.ToString;
 
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -40,9 +41,12 @@ import java.util.Set;
  * information to the entity. In addition it may provide for a name and a
  * description about the concepts.
  */
+@EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
+@ToString
 public abstract class IfcRoot extends IfcEntity {
     private static final Set<IfcGloballyUniqueId> uniqueGlobalIds =
             new HashSet<>();
+    @EqualsAndHashCode.Include
     @Attribute(0)
     private final IfcGloballyUniqueId globalId;
     @Attribute(1)
@@ -68,19 +72,14 @@ public abstract class IfcRoot extends IfcEntity {
      *                     would be enforced by a where rule.
      * @param description  Optional description, provided for exchanging
      *                     informative comments.
-     * @throws IllegalArgumentException If globalId or ownerHistory are null, or
-     *                                  if globalId was used in another instance
+     * @throws NullPointerException     If globalId or ownerHistory are null.
+     * @throws IllegalArgumentException If globalId was used in another instance
      *                                  of this class.
      */
     public IfcRoot(@NonNull IfcGloballyUniqueId globalId,
-                   @NonNull IfcOwnerHistory ownerHistory, IfcLabel name,
+                   @NonNull IfcOwnerHistory ownerHistory,
+                   IfcLabel name,
                    IfcText description) {
-        if (globalId == null) {
-            throw new IllegalArgumentException("globalId cannot be null");
-        }
-        if (ownerHistory == null) {
-            throw new IllegalArgumentException("ownerHistory cannot be null");
-        }
         if (uniqueGlobalIds.contains(globalId)) {
             throw new IllegalArgumentException(
                     "globalId must be unique, and this one was used in " +
@@ -107,9 +106,10 @@ public abstract class IfcRoot extends IfcEntity {
      *                     would be enforced by a where rule.
      * @param description  Optional description, provided for exchanging
      *                     informative comments.
-     * @throws IllegalArgumentException If ownerHistory is null.
+     * @throws NullPointerException If ownerHistory is null.
      */
-    public IfcRoot(@NonNull IfcOwnerHistory ownerHistory, IfcLabel name,
+    public IfcRoot(@NonNull IfcOwnerHistory ownerHistory,
+                   IfcLabel name,
                    IfcText description) {
         this(new IfcGloballyUniqueId(), ownerHistory, name, description);
     }
@@ -123,22 +123,5 @@ public abstract class IfcRoot extends IfcEntity {
      */
     public static void clearUniqueConstraint() {
         uniqueGlobalIds.clear();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        IfcRoot ifcRoot = (IfcRoot) o;
-        return globalId.equals(ifcRoot.globalId);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(globalId);
     }
 }

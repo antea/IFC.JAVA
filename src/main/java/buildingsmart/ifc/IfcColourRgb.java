@@ -20,9 +20,9 @@
 package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
+import lombok.EqualsAndHashCode;
 import lombok.NonNull;
-
-import java.util.Objects;
+import lombok.ToString;
 
 /**
  * A colour rgb as a subtype of colour specifications is defined by three colour
@@ -35,6 +35,8 @@ import java.util.Objects;
  * values.</small></p>
  * </blockquote>
  */
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 public class IfcColourRgb extends IfcColourSpecification
         implements IfcColourOrFactor {
     @Attribute(1)
@@ -65,17 +67,14 @@ public class IfcColourRgb extends IfcColourSpecification
      *              range of 0. .1, and not within the range of 0..255 as
      *              otherwise usual.
      *              </small></blockquote>
-     * @throws IllegalArgumentException If at least one of the red, green and
-     *                                  blue parameters is null.
+     * @throws NullPointerException If at least one of the red, green and blue
+     *                              parameters is null.
      */
-    public IfcColourRgb(IfcLabel name, @NonNull IfcNormalisedRatioMeasure red,
+    public IfcColourRgb(IfcLabel name,
+                        @NonNull IfcNormalisedRatioMeasure red,
                         @NonNull IfcNormalisedRatioMeasure green,
                         @NonNull IfcNormalisedRatioMeasure blue) {
         super(name);
-        if (red == null || green == null || blue == null) {
-            throw new IllegalArgumentException(
-                    "arguments red, green and blue cannot be null");
-        }
         this.red = red;
         this.green = green;
         this.blue = blue;
@@ -102,35 +101,14 @@ public class IfcColourRgb extends IfcColourSpecification
      *              range of 0. .1, and not within the range of 0..255 as
      *              otherwise usual.
      *              </small></blockquote>
-     * @throws IllegalArgumentException If at least one of the values of the
-     *                                  red, green and blue parameters is
-     *                                  negative or bigger than 1.
+     * @throws NullPointerException If at least one of the values of the red,
+     *                              green and blue parameters is negative or
+     *                              bigger than 1.
      */
     public IfcColourRgb(IfcLabel name, double red, double green, double blue) {
         super(name);
         this.red = new IfcNormalisedRatioMeasure(red);
         this.green = new IfcNormalisedRatioMeasure(green);
         this.blue = new IfcNormalisedRatioMeasure(blue);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        if (!super.equals(o)) {
-            return false;
-        }
-        IfcColourRgb that = (IfcColourRgb) o;
-        return red.equals(that.red) && green.equals(that.green) &&
-                blue.equals(that.blue);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), red, green, blue);
     }
 }

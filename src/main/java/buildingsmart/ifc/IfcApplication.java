@@ -22,10 +22,11 @@ package buildingsmart.ifc;
 import buildingsmart.io.Attribute;
 import buildingsmart.io.IfcEntity;
 import buildingsmart.util.Pair;
+import lombok.EqualsAndHashCode;
 import lombok.NonNull;
+import lombok.ToString;
 
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -34,6 +35,8 @@ import java.util.Set;
  * IfcApplication utilizes a short identifying name as provided by the
  * application developer.
  */
+@EqualsAndHashCode(callSuper = false)
+@ToString
 public class IfcApplication extends IfcEntity {
     private static final Set<Pair<IfcLabel, IfcLabel>>
             uniqueAppFullNameAndVersions = new HashSet<>();
@@ -61,8 +64,8 @@ public class IfcApplication extends IfcEntity {
      *                              Cannot be null.
      * @param applicationIdentifier Short identifying name for the application.
      *                              Cannot be null.
-     * @throws IllegalArgumentException If any of the parameters is null, or if
-     *                                  any instances of this class already
+     * @throws NullPointerException     If any of the parameters are null.
+     * @throws IllegalArgumentException If any instances of this class already
      *                                  exist where applicationIdentifier is the
      *                                  same as the one passed as parameter, or
      *                                  where the combination of fields
@@ -73,11 +76,6 @@ public class IfcApplication extends IfcEntity {
                           @NonNull IfcLabel version,
                           @NonNull IfcLabel applicationFullName,
                           @NonNull IfcIdentifier applicationIdentifier) {
-        if (applicationDeveloper == null || version == null ||
-                applicationFullName == null || applicationIdentifier == null) {
-            throw new IllegalArgumentException(
-                    "parameters of this constructor cannot be null");
-        }
         if (uniqueAppIdentifiers.contains(applicationIdentifier)) {
             throw new IllegalArgumentException(
                     "applicationIdentifier must be unique, and this one was " +
@@ -109,26 +107,5 @@ public class IfcApplication extends IfcEntity {
     public static void clearUniqueConstraint() {
         uniqueAppFullNameAndVersions.clear();
         uniqueAppIdentifiers.clear();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        IfcApplication that = (IfcApplication) o;
-        return applicationDeveloper.equals(that.applicationDeveloper) &&
-                version.equals(that.version) &&
-                applicationFullName.equals(that.applicationFullName) &&
-                applicationIdentifier.equals(that.applicationIdentifier);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(applicationDeveloper, version, applicationFullName,
-                applicationIdentifier);
     }
 }

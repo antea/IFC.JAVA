@@ -35,26 +35,28 @@ import lombok.ToString;
  * direction defines the placement X axis direction, the placement Y axis is
  * derived from this.
  */
-@EqualsAndHashCode(of = {"refDirection"}, callSuper = true)
-@ToString(callSuper = true, of = {"refDirection"})
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 public class IfcAxis2Placement2D extends IfcPlacement
         implements IfcAxis2Placement {
     @Attribute(1)
     private final IfcDirection refDirection;
     //private IfcDirection[] P;
+    //TODO: compute p and use it in equals and hashcode
 
     /**
-     * @param location The geometric position of a reference point, such as
-     * the center of a circle, of the item to be located.
-     * Cannot be null
+     * @param location     The geometric position of a reference point, such as
+     *                     the center of a circle, of the item to be located.
+     *                     Cannot be null
      * @param refDirection The direction used to determine the direction of the
-     * local X Axis.
-     * @throws IllegalArgumentException If location is null or it is not
-     * bidimensional, if refDirection is not
-     * null and not bidimensional.
+     *                     local X Axis.
+     * @throws NullPointerException     If location is null.
+     * @throws IllegalArgumentException If location is not bidimensional, if
+     *                                  refDirection is not null and not
+     *                                  bidimensional.
      */
     public IfcAxis2Placement2D(@NonNull IfcCartesianPoint location,
-            IfcDirection refDirection) {
+                               IfcDirection refDirection) {
         super(location);
         if (refDirection != null && refDirection.getDim().getValue() != 2) {
             throw new IllegalArgumentException(
@@ -62,7 +64,7 @@ public class IfcAxis2Placement2D extends IfcPlacement
         }
         if (location.getDim().getValue() != 2) {
             throw new IllegalArgumentException(
-                    "location must be bidimensional");
+                    "location must be " + "bidimensional");
         }
         this.refDirection = refDirection;
     }

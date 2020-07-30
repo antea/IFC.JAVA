@@ -21,11 +21,12 @@ package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
 import buildingsmart.io.IfcEntity;
+import lombok.EqualsAndHashCode;
 import lombok.NonNull;
+import lombok.ToString;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * The <i>IfcProductRepresentation</i> defines a representation of a product,
@@ -34,6 +35,8 @@ import java.util.Objects;
  * representation can be shared among various products using mapped
  * representations.<br>
  */
+@EqualsAndHashCode(callSuper = false)
+@ToString
 public class IfcProductRepresentation extends IfcEntity {
     @Attribute(0)
     private final IfcLabel name;
@@ -53,15 +56,13 @@ public class IfcProductRepresentation extends IfcEntity {
      *                        representations). Each member defines a valid
      *                        representation of a particular type within a
      *                        particular representation context.
-     * @throws IllegalArgumentException If representations is null, or if its
-     *                                  size is lower than 1.
+     * @throws NullPointerException     If representations is null.
+     * @throws IllegalArgumentException If representations' size is lower than
+     *                                  1.
      */
-    public IfcProductRepresentation(IfcLabel name, IfcText description, @NonNull
-            List<IfcRepresentation> representations) {
-        if (representations == null) {
-            throw new IllegalArgumentException(
-                    "representations cannot be null");
-        }
+    public IfcProductRepresentation(IfcLabel name,
+                                    IfcText description,
+                                    @NonNull List<IfcRepresentation> representations) {
         if (representations.size() < 1) {
             throw new IllegalArgumentException(
                     "size of representations must be at least 1");
@@ -85,15 +86,13 @@ public class IfcProductRepresentation extends IfcEntity {
      *                        representations). Each member defines a valid
      *                        representation of a particular type within a
      *                        particular representation context.
-     * @throws IllegalArgumentException If representations is null, or if its
-     *                                  size is lower than 1.
+     * @throws NullPointerException     If representations is null.
+     * @throws IllegalArgumentException If representations' size is lower than
+     *                                  1.
      */
-    public IfcProductRepresentation(IfcLabel name, IfcText description, @NonNull
-            IfcRepresentation... representations) {
-        if (representations == null) {
-            throw new IllegalArgumentException(
-                    "representations cannot be " + "null");
-        }
+    public IfcProductRepresentation(IfcLabel name,
+                                    IfcText description,
+                                    @NonNull IfcRepresentation... representations) {
         if (representations.length < 1) {
             throw new IllegalArgumentException(
                     "size of representations must be at least 1");
@@ -101,24 +100,5 @@ public class IfcProductRepresentation extends IfcEntity {
         this.name = name;
         this.description = description;
         this.representations = Arrays.asList(representations);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        IfcProductRepresentation that = (IfcProductRepresentation) o;
-        return Objects.equals(name, that.name) &&
-                Objects.equals(description, that.description) &&
-                representations.equals(that.representations);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(name, description, representations);
     }
 }

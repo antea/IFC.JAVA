@@ -21,43 +21,25 @@ package buildingsmart.ifc;
 
 import buildingsmart.io.IfcDefinedType;
 import buildingsmart.util.Functions;
+import lombok.EqualsAndHashCode;
 import lombok.NonNull;
-
-import java.util.Objects;
+import lombok.ToString;
 
 /**
  * A text is an alphanumeric string of characters which is intended to be read
  * and understood by a human being. It is for information purposes only.
  */
+@EqualsAndHashCode
+@ToString
 public class IfcText implements IfcDefinedType, IfcSimpleValue {
     private final String value;
 
     /**
      * @param value Cannot be null.
-     * @throws IllegalArgumentException if value is null.
+     * @throws NullPointerException If value is null.
      */
     public IfcText(@NonNull final String value) {
-        if (value == null) {
-            throw new IllegalArgumentException("ifcText cannot be null");
-        }
         this.value = value;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        IfcText ifcText1 = (IfcText) o;
-        return value.equals(ifcText1.value);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(value);
     }
 
     @Override

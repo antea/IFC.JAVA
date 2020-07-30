@@ -20,9 +20,9 @@
 package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
+import lombok.EqualsAndHashCode;
 import lombok.NonNull;
-
-import java.util.Objects;
+import lombok.ToString;
 
 /**
  * The swept area solid entity collects the entities which are defined
@@ -32,6 +32,8 @@ import java.util.Objects;
  * for the case of a revolved area solid with angle equal to 2 p (or 360
  * degrees).
  */
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 public abstract class IfcSweptAreaSolid extends IfcSolidModel {
     @Attribute(0)
     private final IfcProfileDef sweptArea;
@@ -44,42 +46,16 @@ public abstract class IfcSweptAreaSolid extends IfcSolidModel {
      *                  position coordinate system. Its profileType must be
      *                  AREA.
      * @param position  Position coordinate system for the swept area.
-     * @throws IllegalArgumentException If sweptArea or position are null, and
-     *                                  if sweptArea.profileType is not AREA.
+     * @throws NullPointerException     If sweptArea or position are null.
+     * @throws IllegalArgumentException If sweptArea.profileType is not AREA.
      */
     public IfcSweptAreaSolid(@NonNull IfcProfileDef sweptArea,
                              @NonNull IfcAxis2Placement3D position) {
-        if (sweptArea == null) {
-            throw new IllegalArgumentException("sweptArea cannot be null");
-        }
-        if (position == null) {
-            throw new IllegalArgumentException("position cannot be null");
-        }
         if (sweptArea.getProfileType() != IfcProfileTypeEnum.AREA) {
             throw new IllegalArgumentException(
                     "profileType of sweptArea must be AREA");
         }
         this.sweptArea = sweptArea;
         this.position = position;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        if (!super.equals(o)) {
-            return false;
-        }
-        IfcSweptAreaSolid that = (IfcSweptAreaSolid) o;
-        return sweptArea.equals(that.sweptArea) && position.equals(that.position);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), sweptArea, position);
     }
 }

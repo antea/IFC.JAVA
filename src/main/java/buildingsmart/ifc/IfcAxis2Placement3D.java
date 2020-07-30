@@ -21,10 +21,11 @@ package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
 import buildingsmart.util.Functions;
+import lombok.EqualsAndHashCode;
 import lombok.NonNull;
+import lombok.ToString;
 
 import java.util.List;
-import java.util.Objects;
 
 /**
  * The location and orientation in three dimensional space of three mutually
@@ -37,6 +38,8 @@ import java.util.Objects;
  * The axis is the placement Z axis direction and the ref_direction is an
  * approximation to the placement X axis direction.
  */
+@EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
+@ToString(callSuper = true)
 public class IfcAxis2Placement3D extends IfcPlacement
         implements IfcAxis2Placement {
     @Attribute(1)
@@ -47,6 +50,7 @@ public class IfcAxis2Placement3D extends IfcPlacement
      * The normalized directions of the placement X Axis (P[0]) and the
      * placement Y Axis (P[1]) and the placement Z Axis (P[2]).
      */
+    @EqualsAndHashCode.Include
     private final List<IfcDirection> p;
 
     /**
@@ -58,6 +62,7 @@ public class IfcAxis2Placement3D extends IfcPlacement
      *                     maintain orthogonality to the Axis direction. If Axis
      *                     and/or RefDirection is omitted, these directions are
      *                     taken from the geometric coordinate system.
+     * @throws NullPointerException     If location is null.
      * @throws IllegalArgumentException If any of the following conditions is
      *                                  not met:
      *                                  <bl>
@@ -78,7 +83,8 @@ public class IfcAxis2Placement3D extends IfcPlacement
      *                                  </bl>
      */
     public IfcAxis2Placement3D(@NonNull IfcCartesianPoint location,
-                               IfcDirection axis, IfcDirection refDirection) {
+                               IfcDirection axis,
+                               IfcDirection refDirection) {
         super(location);
         if (super.getDim().getValue() != 3) {
             throw new IllegalArgumentException(
@@ -110,25 +116,5 @@ public class IfcAxis2Placement3D extends IfcPlacement
         this.axis = axis;
         this.refDirection = refDirection;
         p = Functions.ifcBuildAxes(axis, refDirection);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        if (!super.equals(o)) {
-            return false;
-        }
-        IfcAxis2Placement3D that = (IfcAxis2Placement3D) o;
-        return Objects.equals(p, that.p);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), p);
     }
 }

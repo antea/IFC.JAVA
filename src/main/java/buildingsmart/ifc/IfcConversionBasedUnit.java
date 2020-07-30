@@ -20,9 +20,9 @@
 package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
+import lombok.EqualsAndHashCode;
 import lombok.NonNull;
-
-import java.util.Objects;
+import lombok.ToString;
 
 /**
  * A conversion based unit is a unit that is defined based on a measure with
@@ -91,6 +91,8 @@ import java.util.Objects;
  * </TR>
  * </TABLE>
  */
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 public class IfcConversionBasedUnit extends IfcNamedUnit {
     @Attribute(2)
     private final IfcLabel name;
@@ -105,46 +107,18 @@ public class IfcConversionBasedUnit extends IfcNamedUnit {
      *                         conversion based unit is referred to.
      * @param conversionFactor The physical quantity from which the converted
      *                         unit is derived.
-     * @throws IllegalArgumentException If any of the parameters are {@code
-     *                                  null}, or if dimensions is wrong for the
-     *                                  given unitType.
+     * @throws NullPointerException     If any of the parameters are null.
+     * @throws IllegalArgumentException If dimensions is wrong for the given
+     *                                  unitType.
      * @see buildingsmart.util.Functions#ifcCorrectDimensions(IfcUnitEnum,
      * IfcDimensionalExponents)
      */
     public IfcConversionBasedUnit(@NonNull IfcDimensionalExponents dimensions,
                                   @NonNull IfcUnitEnum unitType,
-                                  @NonNull IfcLabel name, @NonNull
-                                          IfcMeasureWithUnit conversionFactor) {
+                                  @NonNull IfcLabel name,
+                                  @NonNull IfcMeasureWithUnit conversionFactor) {
         super(dimensions, unitType);
-        if (name == null) {
-            throw new IllegalArgumentException("name cannot be null");
-        }
-        if (conversionFactor == null) {
-            throw new IllegalArgumentException(
-                    "conversionFactor cannot be null");
-        }
         this.name = name;
         this.conversionFactor = conversionFactor;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        if (!super.equals(o)) {
-            return false;
-        }
-        IfcConversionBasedUnit that = (IfcConversionBasedUnit) o;
-        return name.equals(that.name) &&
-                conversionFactor.equals(that.conversionFactor);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), name, conversionFactor);
     }
 }

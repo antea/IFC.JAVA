@@ -22,17 +22,21 @@ package buildingsmart.ifc;
 import buildingsmart.io.Attribute;
 import buildingsmart.io.IfcEntity;
 import buildingsmart.util.Functions;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NonNull;
-
-import java.util.Objects;
+import lombok.ToString;
 
 /**
  * A named unit is a unit quantity associated with the word, or group of words,
  * by which the unit is identified.
  */
+@EqualsAndHashCode(callSuper = false)
+@ToString
 public abstract class IfcNamedUnit extends IfcEntity implements IfcUnit {
     @Attribute(0)
     private final IfcDimensionalExponents dimensions;
+    @Getter
     @Attribute(1)
     private final IfcUnitEnum unitType;
 
@@ -40,19 +44,14 @@ public abstract class IfcNamedUnit extends IfcEntity implements IfcUnit {
      * @param dimensions The dimensional exponents of the SI base units by which
      *                   the named unit is defined.
      * @param unitType   The type of the unit.
-     * @throws IllegalArgumentException If any of the parameters are {@code
-     *                                  null}, or if dimensions is wrong for the
-     *                                  given unitType.
+     * @throws NullPointerException     If any of the parameters are {@code
+     *                                  null}.
+     * @throws IllegalArgumentException If dimensions is wrong for the given
+     *                                  unitType.
      * @see Functions#ifcCorrectDimensions(IfcUnitEnum, IfcDimensionalExponents)
      */
     public IfcNamedUnit(@NonNull IfcDimensionalExponents dimensions,
                         @NonNull IfcUnitEnum unitType) {
-        if (dimensions == null) {
-            throw new IllegalArgumentException("dimensions cannot be null");
-        }
-        if (unitType == null) {
-            throw new IllegalArgumentException("unitType cannot be null");
-        }
         if (Boolean.FALSE
                 .equals(Functions.ifcCorrectDimensions(unitType, dimensions))) {
             throw new IllegalArgumentException(
@@ -60,26 +59,5 @@ public abstract class IfcNamedUnit extends IfcEntity implements IfcUnit {
         }
         this.dimensions = dimensions;
         this.unitType = unitType;
-    }
-
-    public IfcUnitEnum getUnitType() {
-        return unitType;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        IfcNamedUnit that = (IfcNamedUnit) o;
-        return dimensions.equals(that.dimensions) && unitType == that.unitType;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(dimensions, unitType);
     }
 }

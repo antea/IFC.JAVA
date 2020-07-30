@@ -21,19 +21,20 @@ package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
 import buildingsmart.io.IfcEntity;
-
-import java.util.Objects;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 /**
  * A representation context is a context in which a set of representation items
  * are related.
  */
+@EqualsAndHashCode(callSuper = false)
+@ToString
 public class IfcRepresentationContext extends IfcEntity {
     @Attribute(0)
     private final IfcLabel contextIdentifier;
     @Attribute(1)
     private final IfcLabel contextType;
-    //private IfcRepresentation[] RepresentationsInContext;
 
     /**
      * @param contextIdentifier The optional identifier of the representation
@@ -46,23 +47,5 @@ public class IfcRepresentationContext extends IfcEntity {
                                     IfcLabel contextType) {
         this.contextIdentifier = contextIdentifier;
         this.contextType = contextType;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        IfcRepresentationContext that = (IfcRepresentationContext) o;
-        return Objects.equals(contextIdentifier, that.contextIdentifier) &&
-                Objects.equals(contextType, that.contextType);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(contextIdentifier, contextType);
     }
 }

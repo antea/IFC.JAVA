@@ -19,6 +19,7 @@
 
 package buildingsmart.ifc;
 
+import lombok.Getter;
 import lombok.NonNull;
 
 import java.util.List;
@@ -30,7 +31,9 @@ import java.util.Objects;
  */
 public class IfcVector extends IfcGeometricRepresentationItem
         implements IfcVectorOrDirection {
+    @Getter
     private final IfcDirection orientation;
+    @Getter
     private final IfcLengthMeasure magnitude;
     //private int dim;
 
@@ -39,31 +42,17 @@ public class IfcVector extends IfcGeometricRepresentationItem
      * @param magnitude   The magnitude of the vector. All vectors of Magnitude
      *                    0.0 are regarded as equal in value regardless of the
      *                    orientation attribute. Cannot be null.
-     * @throws IllegalArgumentException If orientation or magnitude are null, or
-     *                                  if magnitude is not positive or zero.
+     * @throws NullPointerException     If orientation or magnitude are null.
+     * @throws IllegalArgumentException If magnitude is not positive or zero.
      */
     public IfcVector(@NonNull IfcDirection orientation,
                      @NonNull IfcLengthMeasure magnitude) {
-        if (orientation == null) {
-            throw new IllegalArgumentException("orientation cannot be null");
-        }
-        if (magnitude == null) {
-            throw new IllegalArgumentException("magnitude cannot be null");
-        }
         if (magnitude.getValue() < 0) {
             throw new IllegalArgumentException(
                     "magnitude must be equal or higher than zero");
         }
         this.orientation = orientation;
         this.magnitude = magnitude;
-    }
-
-    public IfcDirection getOrientation() {
-        return orientation;
-    }
-
-    public IfcLengthMeasure getMagnitude() {
-        return magnitude;
     }
 
     /**
@@ -94,14 +83,17 @@ public class IfcVector extends IfcGeometricRepresentationItem
             return false;
         }
         IfcVector ifcVector = (IfcVector) o;
-        return (orientation.equals(ifcVector.orientation) &&
-                magnitude.equals(ifcVector.magnitude)) ||
-                (magnitude.getValue() == 0 &&
-                        ifcVector.magnitude.getValue() == 0);
+        return (magnitude.getValue() == 0 &&
+                ifcVector.magnitude.getValue() == 0) ||
+                (orientation.equals(ifcVector.orientation) &&
+                        magnitude.equals(ifcVector.magnitude));
     }
 
     @Override
     public int hashCode() {
+        if (magnitude.getValue() == 0) {
+            return Objects.hash(magnitude);
+        }
         return Objects.hash(orientation, magnitude);
     }
 }

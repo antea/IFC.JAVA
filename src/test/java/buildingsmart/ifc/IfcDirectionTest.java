@@ -51,8 +51,9 @@ public class IfcDirectionTest {
         assertEquals(expectedIfcDirection, ifcDirection);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public void nullConstructor() {
+        @SuppressWarnings("ConstantConditions")
         IfcDirection ifcDirection = new IfcDirection((List<IfcReal>) null);
     }
 

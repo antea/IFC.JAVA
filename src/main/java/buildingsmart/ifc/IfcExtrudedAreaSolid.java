@@ -21,9 +21,9 @@ package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
 import buildingsmart.util.Functions;
+import lombok.EqualsAndHashCode;
 import lombok.NonNull;
-
-import java.util.Objects;
+import lombok.ToString;
 
 /**
  * The extruded area solid (<I>IfcExtrudedAreaSolid</I>) is defined by sweeping
@@ -46,6 +46,8 @@ import java.util.Objects;
  * are not longer restricted to be perpendicular to the extruded surface of the
  * profile.</P>
  */
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 public class IfcExtrudedAreaSolid extends IfcSweptAreaSolid {
     @Attribute(2)
     private final IfcDirection extrudedDirection;
@@ -62,10 +64,10 @@ public class IfcExtrudedAreaSolid extends IfcSweptAreaSolid {
      *                          swept. It shall not be perpendicular to the
      *                          local z-axis.
      * @param depth             The distance the surface is to be swept.
-     * @throws IllegalArgumentException If sweptArea, position,
+     * @throws NullPointerException     If sweptArea, position,
      * extrudedDirection
-     *                                  or depth are null; if sweptArea
-     *                                  .profileType is not AREA; if
+     *                                  or depth are null.
+     * @throws IllegalArgumentException If sweptArea.profileType is not AREA; if
      *                                  extrudedDirection is perpendicular to
      *                                  the local z-axis or it is not
      *                                  three-dimensional.
@@ -75,13 +77,6 @@ public class IfcExtrudedAreaSolid extends IfcSweptAreaSolid {
                                 @NonNull IfcDirection extrudedDirection,
                                 @NonNull IfcLengthMeasure depth) {
         super(sweptArea, position);
-        if (extrudedDirection == null) {
-            throw new IllegalArgumentException(
-                    "extrudedDirection cannot be null");
-        }
-        if (depth == null) {
-            throw new IllegalArgumentException("depth cannot be null");
-        }
         if (extrudedDirection.getDim().getValue() != 3) {
             throw new IllegalArgumentException(
                     "extrudedDirection must be three-dimensional");
@@ -95,26 +90,5 @@ public class IfcExtrudedAreaSolid extends IfcSweptAreaSolid {
         }
         this.extrudedDirection = extrudedDirection;
         this.depth = depth;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        if (!super.equals(o)) {
-            return false;
-        }
-        IfcExtrudedAreaSolid that = (IfcExtrudedAreaSolid) o;
-        return extrudedDirection.equals(that.extrudedDirection) &&
-                depth.equals(that.depth);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), extrudedDirection, depth);
     }
 }

@@ -20,7 +20,9 @@
 package buildingsmart.ifc;
 
 import buildingsmart.io.InverseRelationship;
+import lombok.EqualsAndHashCode;
 import lombok.NonNull;
+import lombok.ToString;
 
 import java.util.Set;
 
@@ -40,6 +42,8 @@ import java.util.Set;
  * or a shape representation (geometric and/or topologogical) &nbsp;of a
  * component of a product shape (via <i>IfcShapeAspect</i>).<br>
  */
+@EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
+@ToString(callSuper = true)
 public class IfcShapeModel extends IfcRepresentation {
     @InverseRelationship
     private IfcShapeAspect ofShapeAspect;
@@ -70,8 +74,10 @@ public class IfcShapeModel extends IfcRepresentation {
                          IfcLabel representationIdentifier,
                          IfcLabel representationType,
                          @NonNull Set<IfcRepresentationItem> items) {
-        super(contextOfItems, representationIdentifier, representationType,
-                items);
+        super(contextOfItems,
+              representationIdentifier,
+              representationType,
+              items);
     }
 
     /**
@@ -100,8 +106,10 @@ public class IfcShapeModel extends IfcRepresentation {
                          IfcLabel representationIdentifier,
                          IfcLabel representationType,
                          @NonNull IfcRepresentationItem... items) {
-        super(contextOfItems, representationIdentifier, representationType,
-                items);
+        super(contextOfItems,
+              representationIdentifier,
+              representationType,
+              items);
     }
 
     /**
@@ -159,8 +167,7 @@ public class IfcShapeModel extends IfcRepresentation {
      *                               IfcShapeAspect).
      */
     @Override
-    public void setOfProductRepresentation(
-            IfcProductRepresentation ofProductRepresentation) {
+    public void setOfProductRepresentation(IfcProductRepresentation ofProductRepresentation) {
         if ((this.ofShapeAspect != null || this.representationMap != null) &&
                 ofProductRepresentation != null) {
             throw new IllegalStateException(

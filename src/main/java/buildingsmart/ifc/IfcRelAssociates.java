@@ -81,28 +81,28 @@ public class IfcRelAssociates extends IfcRelationship {
      *                       informative comments.
      * @param relatedObjects Objects or Types, to which the external references
      *                       or information is associated.
-     * @throws IllegalArgumentException If globalId, ownerHistory or
-     *                                  relatedObjects is null, if globalId was
-     *                                  used in another instance of this class
-     *                                  or its superclass, if relatedObjects has
-     *                                  size lower than 1, if relatedObjects
-     *                                  contains objects that are not of type
-     *                                  IfcObjectDefinition nor
+     * @throws NullPointerException     If globalId, ownerHistory or
+     *                                  relatedObjects is null.
+     * @throws IllegalArgumentException If globalId was used in another instance
+     *                                  of this class or its superclass, if
+     *                                  relatedObjects has size lower than 1, if
+     *                                  relatedObjects contains objects that are
+     *                                  not of type IfcObjectDefinition nor
      *                                  IfcPropertyDefinition.
      */
     public IfcRelAssociates(@NonNull IfcGloballyUniqueId globalId,
-                            @NonNull IfcOwnerHistory ownerHistory, IfcLabel name, IfcText description,
+                            @NonNull IfcOwnerHistory ownerHistory,
+                            IfcLabel name,
+                            IfcText description,
                             @NonNull Set<IfcRoot> relatedObjects) {
         super(globalId, ownerHistory, name, description);
-        if (relatedObjects == null) {
-            throw new IllegalArgumentException("relatedObjects cannot be null");
-        }
         if (relatedObjects.size() < 1) {
             throw new IllegalArgumentException(
                     "size of relatedObjects must be at least 1");
         }
         for (IfcRoot obj : relatedObjects) {
-            if (!(obj instanceof IfcObjectDefinition || obj instanceof IfcPropertyDefinition)) {
+            if (!(obj instanceof IfcObjectDefinition ||
+                    obj instanceof IfcPropertyDefinition)) {
                 throw new IllegalArgumentException(
                         "relatedObjects must only contain objects of type " +
                                 "IfcObjectDefinition and " +
@@ -136,16 +136,21 @@ public class IfcRelAssociates extends IfcRelationship {
      *                       informative comments.
      * @param relatedObjects Objects or Types, to which the external references
      *                       or information is associated.
-     * @throws IllegalArgumentException If globalId or relatedObjects is null,
-     *                                  if relatedObjects has size lower than 1,
+     * @throws NullPointerException     If globalId or relatedObjects is null.
+     * @throws IllegalArgumentException If relatedObjects has size lower than 1,
      *                                  if relatedObjects contains objects that
      *                                  are not of type IfcObjectDefinition nor
      *                                  IfcPropertyDefinition.
      */
-    public IfcRelAssociates(@NonNull IfcOwnerHistory ownerHistory, IfcLabel name, IfcText description,
+    public IfcRelAssociates(@NonNull IfcOwnerHistory ownerHistory,
+                            IfcLabel name,
+                            IfcText description,
                             @NonNull Set<IfcRoot> relatedObjects) {
-        this(new IfcGloballyUniqueId(), ownerHistory, name, description,
-                relatedObjects);
+        this(new IfcGloballyUniqueId(),
+             ownerHistory,
+             name,
+             description,
+             relatedObjects);
     }
 
     /**
@@ -169,19 +174,25 @@ public class IfcRelAssociates extends IfcRelationship {
      *                       informative comments.
      * @param relatedObjects Objects or Types, to which the external references
      *                       or information is associated.
-     * @throws IllegalArgumentException If globalId, ownerHistory or
-     *                                  relatedObjects is null, if globalId was
-     *                                  used in another instance of this class
-     *                                  or its superclass, if relatedObjects has
-     *                                  size lower than 1, if relatedObjects
-     *                                  contains objects that are not of type
-     *                                  IfcObjectDefinition nor
+     * @throws NullPointerException     If globalId, ownerHistory or
+     *                                  relatedObjects is null.
+     * @throws IllegalArgumentException If globalId was used in another instance
+     *                                  of this class or its superclass, if
+     *                                  relatedObjects has size lower than 1, if
+     *                                  relatedObjects contains objects that are
+     *                                  not of type IfcObjectDefinition nor
      *                                  IfcPropertyDefinition.
      */
     public IfcRelAssociates(@NonNull IfcGloballyUniqueId globalId,
-                            @NonNull IfcOwnerHistory ownerHistory, IfcLabel name, IfcText description,
+                            @NonNull IfcOwnerHistory ownerHistory,
+                            IfcLabel name,
+                            IfcText description,
                             @NonNull IfcRoot... relatedObjects) {
-        this(globalId, ownerHistory, name, description, new HashSet<>(Arrays.asList(relatedObjects)));
+        this(globalId,
+             ownerHistory,
+             name,
+             description,
+             new HashSet<>(Arrays.asList(relatedObjects)));
     }
 
     /**
@@ -203,16 +214,21 @@ public class IfcRelAssociates extends IfcRelationship {
      *                       informative comments.
      * @param relatedObjects Objects or Types, to which the external references
      *                       or information is associated.
-     * @throws IllegalArgumentException If globalId or relatedObjects is null,
-     *                                  if relatedObjects has size lower than 1,
+     * @throws NullPointerException     If globalId or relatedObjects is null.
+     * @throws IllegalArgumentException If relatedObjects has size lower than 1,
      *                                  if relatedObjects contains objects that
      *                                  are not of type IfcObjectDefinition nor
      *                                  IfcPropertyDefinition.
      */
-    public IfcRelAssociates(@NonNull IfcOwnerHistory ownerHistory, IfcLabel name, IfcText description,
+    public IfcRelAssociates(@NonNull IfcOwnerHistory ownerHistory,
+                            IfcLabel name,
+                            IfcText description,
                             @NonNull IfcRoot... relatedObjects) {
-        this(new IfcGloballyUniqueId(), ownerHistory, name, description,
-                relatedObjects);
+        this(new IfcGloballyUniqueId(),
+             ownerHistory,
+             name,
+             description,
+             relatedObjects);
     }
 
     /**

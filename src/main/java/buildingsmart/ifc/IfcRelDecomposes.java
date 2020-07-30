@@ -21,6 +21,7 @@ package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
 import lombok.NonNull;
+import lombok.ToString;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -51,6 +52,7 @@ import java.util.Set;
  * manner, i.e. a decomposed element can be part in another decomposition .
  * Cyclic references have to be prevented at application level.</P>
  */
+@ToString(callSuper = true)
 public class IfcRelDecomposes extends IfcRelationship {
     @Attribute(4)
     private final IfcObjectDefinition relatingObject;
@@ -79,27 +81,21 @@ public class IfcRelDecomposes extends IfcRelationship {
      * @param relatingObject The object that represents the nest or
      *                       aggregation.
      * @param relatedObjects The objects being nested or aggregated.
-     * @throws IllegalArgumentException If globalId, ownerHistory,
+     * @throws NullPointerException     If globalId, ownerHistory,
      * relatingObject
-     *                                  or relatedObjects are null, if globalId
-     *                                  was used in another instance of this
-     *                                  class or its superclass, if the size of
-     *                                  relatedObjects is zero, if
-     *                                  relatedObjects
-     *                                  contains relatingObject.
+     *                                  or relatedObjects are null.
+     * @throws IllegalArgumentException If globalId was used in another instance
+     *                                  of this class or its superclass, if the
+     *                                  size of relatedObjects is zero, if
+     *                                  relatedObjects contains relatingObject.
      */
     public IfcRelDecomposes(@NonNull IfcGloballyUniqueId globalId,
                             @NonNull IfcOwnerHistory ownerHistory,
-                            IfcLabel name, IfcText description,
+                            IfcLabel name,
+                            IfcText description,
                             @NonNull IfcObjectDefinition relatingObject,
                             @NonNull Set<IfcObjectDefinition> relatedObjects) {
         super(globalId, ownerHistory, name, description);
-        if (relatingObject == null) {
-            throw new IllegalArgumentException("relatingObject cannot be null");
-        }
-        if (relatedObjects == null) {
-            throw new IllegalArgumentException("relatedObjects cannot be null");
-        }
         if (relatedObjects.size() < 1) {
             throw new IllegalArgumentException(
                     "size of relatedObjects must be at least one");
@@ -137,18 +133,23 @@ public class IfcRelDecomposes extends IfcRelationship {
      * @param relatingObject The object that represents the nest or
      *                       aggregation.
      * @param relatedObjects The objects being nested or aggregated.
-     * @throws IllegalArgumentException If ownerHistory, relatingObject or
-     *                                  relatedObjects are null, if the size of
-     *                                  relatedObjects is zero, if
-     *                                  relatedObjects
-     *                                  contains relatingObject.
+     * @throws NullPointerException     If ownerHistory, relatingObject or
+     *                                  relatedObjects are null.
+     * @throws IllegalArgumentException If the size of relatedObjects is zero,
+     *                                  if relatedObjects contains
+     *                                  relatingObject.
      */
     public IfcRelDecomposes(@NonNull IfcOwnerHistory ownerHistory,
-                            IfcLabel name, IfcText description,
+                            IfcLabel name,
+                            IfcText description,
                             @NonNull IfcObjectDefinition relatingObject,
                             @NonNull Set<IfcObjectDefinition> relatedObjects) {
-        this(new IfcGloballyUniqueId(), ownerHistory, name, description,
-                relatingObject, relatedObjects);
+        this(new IfcGloballyUniqueId(),
+             ownerHistory,
+             name,
+             description,
+             relatingObject,
+             relatedObjects);
     }
 
     /**
@@ -173,22 +174,26 @@ public class IfcRelDecomposes extends IfcRelationship {
      * @param relatingObject The object that represents the nest or
      *                       aggregation.
      * @param relatedObjects The objects being nested or aggregated.
-     * @throws IllegalArgumentException If globalId, ownerHistory,
+     * @throws NullPointerException     If globalId, ownerHistory,
      * relatingObject
-     *                                  or relatedObjects are null, if globalId
-     *                                  was used in another instance of this
-     *                                  class or its superclass, if the size of
-     *                                  relatedObjects is zero, if
-     *                                  relatedObjects
-     *                                  contains relatingObject.
+     *                                  or relatedObjects are null.
+     * @throws IllegalArgumentException If globalId was used in another instance
+     *                                  of this class or its superclass, if the
+     *                                  size of relatedObjects is zero, if
+     *                                  relatedObjects contains relatingObject.
      */
     public IfcRelDecomposes(@NonNull IfcGloballyUniqueId globalId,
                             @NonNull IfcOwnerHistory ownerHistory,
-                            IfcLabel name, IfcText description,
+                            IfcLabel name,
+                            IfcText description,
                             @NonNull IfcObjectDefinition relatingObject,
                             @NonNull IfcObjectDefinition... relatedObjects) {
-        this(globalId, ownerHistory, name, description, relatingObject,
-                new HashSet<>(Arrays.asList(relatedObjects)));
+        this(globalId,
+             ownerHistory,
+             name,
+             description,
+             relatingObject,
+             new HashSet<>(Arrays.asList(relatedObjects)));
     }
 
     /**
@@ -211,18 +216,23 @@ public class IfcRelDecomposes extends IfcRelationship {
      * @param relatingObject The object that represents the nest or
      *                       aggregation.
      * @param relatedObjects The objects being nested or aggregated.
-     * @throws IllegalArgumentException If ownerHistory, relatingObject or
-     *                                  relatedObjects are null, if the size of
-     *                                  relatedObjects is zero, if
-     *                                  relatedObjects
-     *                                  contains relatingObject.
+     * @throws NullPointerException     If ownerHistory, relatingObject or
+     *                                  relatedObjects are null.
+     * @throws IllegalArgumentException If the size of relatedObjects is zero,
+     *                                  if relatedObjects contains
+     *                                  relatingObject.
      */
     public IfcRelDecomposes(@NonNull IfcOwnerHistory ownerHistory,
-                            IfcLabel name, IfcText description,
+                            IfcLabel name,
+                            IfcText description,
                             @NonNull IfcObjectDefinition relatingObject,
                             @NonNull IfcObjectDefinition... relatedObjects) {
-        this(new IfcGloballyUniqueId(), ownerHistory, name, description,
-                relatingObject, new HashSet<>(Arrays.asList(relatedObjects)));
+        this(new IfcGloballyUniqueId(),
+             ownerHistory,
+             name,
+             description,
+             relatingObject,
+             new HashSet<>(Arrays.asList(relatedObjects)));
     }
 
     protected IfcObjectDefinition getRelatingObject() {

@@ -20,7 +20,10 @@
 package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
+import lombok.Builder;
 import lombok.NonNull;
+import lombok.Singular;
+import lombok.ToString;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -83,6 +86,7 @@ import java.util.Set;
  *   </p>
  * </blockquote>
  */
+@ToString(callSuper = true)
 public class IfcRelContainedInSpatialStructure extends IfcRelConnects {
     @Attribute(4)
     private final Set<IfcProduct> relatedElements;
@@ -114,29 +118,24 @@ public class IfcRelContainedInSpatialStructure extends IfcRelConnects {
      *                          element is contained. Any element can only be
      *                          contained within one element of the project
      *                          spatial structure.
-     * @throws IllegalArgumentException If globalId, ownerHistory,
+     * @throws NullPointerException     If globalId, ownerHistory,
      * relatedElements
-     *                                  or relatingStructure are null; if
-     *                                  globalId was used in another instance of
-     *                                  this class or its superclass; if the
+     *                                  or relatingStructure are null.
+     * @throws IllegalArgumentException If globalId was used in another instance
+     *                                  of this class or its superclass; if the
      *                                  size of relatedElements is lower than 1;
      *                                  if relatedElements contains objects of
      *                                  type IfcSpatialStructureElement.
      */
-    public IfcRelContainedInSpatialStructure(
-            @NonNull IfcGloballyUniqueId globalId,
-            @NonNull IfcOwnerHistory ownerHistory, IfcLabel name,
-            IfcText description, @NonNull Set<IfcProduct> relatedElements,
-            @NonNull IfcSpatialStructureElement relatingStructure) {
+    @Builder
+    public IfcRelContainedInSpatialStructure(@NonNull IfcGloballyUniqueId globalId,
+                                             @NonNull IfcOwnerHistory ownerHistory,
+                                             IfcLabel name,
+                                             IfcText description,
+                                             @NonNull @Singular
+                                                     Set<IfcProduct> relatedElements,
+                                             @NonNull IfcSpatialStructureElement relatingStructure) {
         super(globalId, ownerHistory, name, description);
-        if (relatedElements == null) {
-            throw new IllegalArgumentException(
-                    "relatedElements cannot be null");
-        }
-        if (relatingStructure == null) {
-            throw new IllegalArgumentException(
-                    "relatingStructure cannot be null");
-        }
         if (relatedElements.size() < 1) {
             throw new IllegalArgumentException(
                     "size of relatedElements must be at least 1");
@@ -177,18 +176,24 @@ public class IfcRelContainedInSpatialStructure extends IfcRelConnects {
      *                          element is contained. Any element can only be
      *                          contained within one element of the project
      *                          spatial structure.
-     * @throws IllegalArgumentException If ownerHistory, relatedElements or
-     *                                  relatingStructure is null; if the size
-     *                                  of relatedElements is lower than 1; if
-     *                                  relatedElements contains objects of type
+     * @throws NullPointerException     If ownerHistory, relatedElements or
+     *                                  relatingStructure is null.
+     * @throws IllegalArgumentException If the size of relatedElements is lower
+     *                                  than 1; if relatedElements contains
+     *                                  objects of type
      *                                  IfcSpatialStructureElement.
      */
-    public IfcRelContainedInSpatialStructure(
-            @NonNull IfcOwnerHistory ownerHistory, IfcLabel name,
-            IfcText description, @NonNull Set<IfcProduct> relatedElements,
-            @NonNull IfcSpatialStructureElement relatingStructure) {
-        this(new IfcGloballyUniqueId(), ownerHistory, name, description,
-                relatedElements, relatingStructure);
+    public IfcRelContainedInSpatialStructure(@NonNull IfcOwnerHistory ownerHistory,
+                                             IfcLabel name,
+                                             IfcText description,
+                                             @NonNull Set<IfcProduct> relatedElements,
+                                             @NonNull IfcSpatialStructureElement relatingStructure) {
+        this(new IfcGloballyUniqueId(),
+             ownerHistory,
+             name,
+             description,
+             relatedElements,
+             relatingStructure);
     }
 
     /**
@@ -216,24 +221,27 @@ public class IfcRelContainedInSpatialStructure extends IfcRelConnects {
      *                          spatial structure.
      * @param relatedElements   Set of products, which are contained within this
      *                          level of the spatial structure hierarchy.
-     * @throws IllegalArgumentException If globalId, ownerHistory,
+     * @throws NullPointerException     If globalId, ownerHistory,
      * relatedElements
-     *                                  or relatingStructure are null; if
-     *                                  globalId was used in another instance of
-     *                                  this class or its superclass; if the
+     *                                  or relatingStructure are null.
+     * @throws IllegalArgumentException If globalId was used in another instance
+     *                                  of this class or its superclass; if the
      *                                  size of relatedElements is lower than 1;
      *                                  if relatedElements contains objects of
      *                                  type IfcSpatialStructureElement.
      */
-    public IfcRelContainedInSpatialStructure(
-            @NonNull IfcGloballyUniqueId globalId,
-            @NonNull IfcOwnerHistory ownerHistory, IfcLabel name,
-            IfcText description,
-            @NonNull IfcSpatialStructureElement relatingStructure,
-            @NonNull IfcProduct... relatedElements) {
-        this(globalId, ownerHistory, name, description,
-                new HashSet<>(Arrays.asList(relatedElements)),
-                relatingStructure);
+    public IfcRelContainedInSpatialStructure(@NonNull IfcGloballyUniqueId globalId,
+                                             @NonNull IfcOwnerHistory ownerHistory,
+                                             IfcLabel name,
+                                             IfcText description,
+                                             @NonNull IfcSpatialStructureElement relatingStructure,
+                                             @NonNull IfcProduct... relatedElements) {
+        this(globalId,
+             ownerHistory,
+             name,
+             description,
+             new HashSet<>(Arrays.asList(relatedElements)),
+             relatingStructure);
     }
 
     /**
@@ -259,20 +267,23 @@ public class IfcRelContainedInSpatialStructure extends IfcRelConnects {
      *                          spatial structure.
      * @param relatedElements   Set of products, which are contained within this
      *                          level of the spatial structure hierarchy.
-     * @throws IllegalArgumentException If ownerHistory, relatedElements or
-     *                                  relatingStructure is null; if the size
-     *                                  of relatedElements is lower than 1; if
-     *                                  relatedElements contains objects of type
+     * @throws NullPointerException     If ownerHistory, relatedElements or
+     *                                  relatingStructure is null.
+     * @throws IllegalArgumentException If the size of relatedElements is lower
+     *                                  than 1; if relatedElements contains
+     *                                  objects of type
      *                                  IfcSpatialStructureElement.
      */
-    public IfcRelContainedInSpatialStructure(
-            @NonNull IfcOwnerHistory ownerHistory, IfcLabel name,
-            IfcText description,
-            @NonNull IfcSpatialStructureElement relatingStructure,
-            @NonNull IfcProduct... relatedElements) {
-        this(ownerHistory, name, description,
-                new HashSet<>(Arrays.asList(relatedElements)),
-                relatingStructure);
+    public IfcRelContainedInSpatialStructure(@NonNull IfcOwnerHistory ownerHistory,
+                                             IfcLabel name,
+                                             IfcText description,
+                                             @NonNull IfcSpatialStructureElement relatingStructure,
+                                             @NonNull IfcProduct... relatedElements) {
+        this(ownerHistory,
+             name,
+             description,
+             new HashSet<>(Arrays.asList(relatedElements)),
+             relatingStructure);
     }
 
     /**
@@ -287,63 +298,5 @@ public class IfcRelContainedInSpatialStructure extends IfcRelConnects {
 
     protected IfcSpatialStructureElement getRelatingStructure() {
         return relatingStructure;
-    }
-
-    public static final class Builder {
-        private Set<IfcProduct> relatedElements;
-        private IfcSpatialStructureElement relatingStructure;
-        private IfcGloballyUniqueId globalId;
-        private IfcOwnerHistory ownerHistory;
-        private IfcLabel name;
-        private IfcText description;
-
-        private Builder() {
-        }
-
-        public static Builder anIfcRelContainedInSpatialStructure() {
-            return new Builder();
-        }
-
-        public Builder relatedElements(Set<IfcProduct> relatedElements) {
-            this.relatedElements = relatedElements;
-            return this;
-        }
-
-        public Builder relatedElements(IfcProduct... relatedElements) {
-            this.relatedElements =
-                    new HashSet<>(Arrays.asList(relatedElements));
-            return this;
-        }
-
-        public Builder relatingStructure(
-                IfcSpatialStructureElement relatingStructure) {
-            this.relatingStructure = relatingStructure;
-            return this;
-        }
-
-        public Builder globalId(IfcGloballyUniqueId globalId) {
-            this.globalId = globalId;
-            return this;
-        }
-
-        public Builder ownerHistory(IfcOwnerHistory ownerHistory) {
-            this.ownerHistory = ownerHistory;
-            return this;
-        }
-
-        public Builder name(IfcLabel name) {
-            this.name = name;
-            return this;
-        }
-
-        public Builder description(IfcText description) {
-            this.description = description;
-            return this;
-        }
-
-        public IfcRelContainedInSpatialStructure build() {
-            return new IfcRelContainedInSpatialStructure(globalId, ownerHistory,
-                    name, description, relatedElements, relatingStructure);
-        }
     }
 }

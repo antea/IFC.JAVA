@@ -21,21 +21,23 @@ package buildingsmart.ifc;
 
 import buildingsmart.io.IfcDefinedType;
 import buildingsmart.util.Functions;
+import lombok.EqualsAndHashCode;
 import lombok.NonNull;
-
-import java.util.Objects;
+import lombok.ToString;
 
 /**
  * An identifier is an alphanumeric string which allows an individual thing to
  * be identified. It may not provide natural-language meaning.
  */
+@EqualsAndHashCode
+@ToString
 public class IfcIdentifier implements IfcDefinedType, IfcSimpleValue {
     private final String value;
 
     /**
      * @param value Restricted to max. 255 characters, cannot be null.
-     * @throws IllegalArgumentException If ifcIdentifier is null or longer than
-     *                                  255 characters.
+     * @throws NullPointerException     If value is null.
+     * @throws IllegalArgumentException If value is longer than 255 characters.
      */
     public IfcIdentifier(@NonNull String value) {
         if (value == null) {
@@ -46,23 +48,6 @@ public class IfcIdentifier implements IfcDefinedType, IfcSimpleValue {
                     "ifcIdentifier cannot be " + "longer than 255 characters");
         }
         this.value = value;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        IfcIdentifier that = (IfcIdentifier) o;
-        return value.equals(that.value);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(value);
     }
 
     @Override

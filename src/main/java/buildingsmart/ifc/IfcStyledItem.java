@@ -20,10 +20,11 @@
 package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
+import lombok.EqualsAndHashCode;
 import lombok.NonNull;
+import lombok.ToString;
 
 import java.util.Collections;
-import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -34,6 +35,8 @@ import java.util.Set;
  * assigning presentation information to <i>IfcMaterial</i> being assigned as
  * other representation for a product.</p>
  */
+@EqualsAndHashCode(callSuper = false)
+@ToString
 public class IfcStyledItem extends IfcRepresentationItem {
     @Attribute(0)
     private final IfcRepresentationItem item;
@@ -52,15 +55,13 @@ public class IfcStyledItem extends IfcRepresentationItem {
      *               style assignment shall be assigned.
      * @param name   The word, or group of words, by which the styled item is
      *               referred to.
-     * @throws IllegalArgumentException If styles is null or if its size is not
-     *                                  1; if item is of type IfcStyledItem.
+     * @throws NullPointerException     If styles is null.
+     * @throws IllegalArgumentException If styles' size is not 1; if item is of
+     *                                  type IfcStyledItem.
      */
     public IfcStyledItem(IfcRepresentationItem item,
                          @NonNull Set<IfcPresentationStyleAssignment> styles,
                          IfcLabel name) {
-        if (styles == null) {
-            throw new IllegalArgumentException("styles cannot be null");
-        }
         if (styles.size() != 1) {
             throw new IllegalArgumentException("size of styles must be 1");
         }
@@ -84,30 +85,12 @@ public class IfcStyledItem extends IfcRepresentationItem {
      *               style assignment shall be assigned.
      * @param name   The word, or group of words, by which the styled item is
      *               referred to.
-     * @throws IllegalArgumentException If styles is null; if item is of type
-     *                                  IfcStyledItem.
+     * @throws NullPointerException     If styles is null.
+     * @throws IllegalArgumentException If item is of type IfcStyledItem.
      */
     public IfcStyledItem(IfcRepresentationItem item,
                          @NonNull IfcPresentationStyleAssignment styles,
                          IfcLabel name) {
         this(item, Collections.singleton(styles), name);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        IfcStyledItem that = (IfcStyledItem) o;
-        return Objects.equals(item, that.item) && styles.equals(that.styles) &&
-                Objects.equals(name, that.name);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(item, styles, name);
     }
 }

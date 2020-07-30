@@ -20,23 +20,21 @@
 package buildingsmart.ifc;
 
 import buildingsmart.io.IfcDefinedType;
-
-import java.util.Objects;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.ToString;
 
 /**
  * A defined type of simple data type REAL. In principle, the domain of IfcReal
  * (being a Real) is all rational, irrational and scientific real numbers.
  */
+@AllArgsConstructor
+@EqualsAndHashCode
+@ToString
 public class IfcReal implements IfcDefinedType, IfcSimpleValue {
+    @Getter
     private final double value;
-
-    public IfcReal(double value) {
-        this.value = value;
-    }
-
-    public double getValue() {
-        return value;
-    }
 
     /**
      * @return The representation of the type in an IFC STEP file.
@@ -44,22 +42,5 @@ public class IfcReal implements IfcDefinedType, IfcSimpleValue {
     @Override
     public String serialize() {
         return Double.toString(value);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        IfcReal ifcReal1 = (IfcReal) o;
-        return Double.compare(ifcReal1.value, value) == 0;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(value);
     }
 }

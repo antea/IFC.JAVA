@@ -21,6 +21,7 @@ package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
 import lombok.NonNull;
+import lombok.ToString;
 
 /**
  * Generalization of all components that make up an AEC product. Those elements
@@ -89,23 +90,10 @@ import lombok.NonNull;
  * <i>IfcElement</i>.
  * </p>
  */
+@ToString(callSuper = true)
 public abstract class IfcElement extends IfcProduct {
     @Attribute(7)
     private final IfcIdentifier tag;
-    /*
-    private IfcRelConnectsStructuralElement[] HasStructuralMember;
-    private IfcRelFillsElement[] FillsVoids;
-    private IfcRelConnectsElements[] ConnectedTo;
-    private IfcRelCoversBldgElements[] HasCoverings;
-    private IfcRelProjectsElement[] HasProjections;
-    private IfcRelReferencedInSpatialStructure[] ReferencedInStructures;
-    private IfcRelConnectsPortToElement[] HasPorts;
-    private IfcRelVoidsElement[] HasOpenings;
-    private IfcRelConnectsWithRealizingElements[] IsConnectionRealization;
-    private IfcRelSpaceBoundary[] ProvidesBoundaries;
-    private IfcRelConnectsElements[] ConnectedFrom;
-    private IfcRelContainedInSpatialStructure[] ContainedInStructure;
-     */
 
     /**
      * Creates a new IfcElement, using the provided globalId.
@@ -152,21 +140,28 @@ public abstract class IfcElement extends IfcProduct {
      *                        instance of a product, e.g. the serial number, or
      *                        the position number. It is the identifier at the
      *                        occurrence level.
-     * @throws IllegalArgumentException If globalId or ownerHistory are null; if
-     *                                  globalId was used in another instance of
-     *                                  this class; if representation is not
+     * @throws NullPointerException     If globalId or ownerHistory are null.
+     * @throws IllegalArgumentException If globalId was used in another instance
+     *                                  of this class; if representation is not
      *                                  null and objectPlacement is, while
      *                                  representation is an instance of
      *                                  IfcProductDefinitionShape.
      */
     public IfcElement(@NonNull IfcGloballyUniqueId globalId,
-                      @NonNull IfcOwnerHistory ownerHistory, IfcLabel name,
-                      IfcText description, IfcLabel objectType,
+                      @NonNull IfcOwnerHistory ownerHistory,
+                      IfcLabel name,
+                      IfcText description,
+                      IfcLabel objectType,
                       IfcObjectPlacement objectPlacement,
                       IfcProductRepresentation representation,
                       IfcIdentifier tag) {
-        super(globalId, ownerHistory, name, description, objectType,
-                objectPlacement, representation);
+        super(globalId,
+              ownerHistory,
+              name,
+              description,
+              objectType,
+              objectPlacement,
+              representation);
         this.tag = tag;
     }
 
@@ -213,18 +208,26 @@ public abstract class IfcElement extends IfcProduct {
      *                        instance of a product, e.g. the serial number, or
      *                        the position number. It is the identifier at the
      *                        occurrence level.
-     * @throws IllegalArgumentException If ownerHistory is null; if
-     *                                  representation is not null and
+     * @throws NullPointerException     If ownerHistory is null.
+     * @throws IllegalArgumentException If representation is not null and
      *                                  objectPlacement is, while representation
      *                                  is an instance of
      *                                  IfcProductDefinitionShape.
      */
-    public IfcElement(@NonNull IfcOwnerHistory ownerHistory, IfcLabel name,
-                      IfcText description, IfcLabel objectType,
+    public IfcElement(@NonNull IfcOwnerHistory ownerHistory,
+                      IfcLabel name,
+                      IfcText description,
+                      IfcLabel objectType,
                       IfcObjectPlacement objectPlacement,
                       IfcProductRepresentation representation,
                       IfcIdentifier tag) {
-        this(new IfcGloballyUniqueId(), ownerHistory, name, description,
-                objectType, objectPlacement, representation, tag);
+        this(new IfcGloballyUniqueId(),
+             ownerHistory,
+             name,
+             description,
+             objectType,
+             objectPlacement,
+             representation,
+             tag);
     }
 }

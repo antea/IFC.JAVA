@@ -21,14 +21,18 @@ package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
 import buildingsmart.io.IfcEntity;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.NonNull;
+import lombok.ToString;
 
 import java.util.List;
-import java.util.Objects;
 
 /**
  * A named and structured grouping with a corporate identity.
  */
+@EqualsAndHashCode(callSuper = false)
+@ToString
 public class IfcOrganization extends IfcEntity {
     @Attribute(0)
     private final IfcIdentifier id;
@@ -40,9 +44,6 @@ public class IfcOrganization extends IfcEntity {
     private final List<IfcActorRole> roles;
     @Attribute(4)
     private final List<IfcAddress> addresses;
-    //private IfcOrganizationRelationship[] IsRelatedBy;
-    //private IfcOrganizationRelationship[] Relates;
-    //private IfcPersonAndOrganization[] Engages;
 
     /**
      * @param id          Identification of the organization.
@@ -51,15 +52,16 @@ public class IfcOrganization extends IfcEntity {
      * @param description Text that relates the nature of the organization.
      * @param roles       Roles played by the organization.
      * @param addresses   Postal and telecom addresses of an organization.
+     * @throws NullPointerException     If name is null.
      * @throws IllegalArgumentException If name is null, or roles or addresses'
      *                                  size is zero.
      */
-    public IfcOrganization(IfcIdentifier id, @NonNull IfcLabel name,
-                           IfcText description, List<IfcActorRole> roles,
+    @Builder
+    public IfcOrganization(IfcIdentifier id,
+                           @NonNull IfcLabel name,
+                           IfcText description,
+                           List<IfcActorRole> roles,
                            List<IfcAddress> addresses) {
-        if (name == null) {
-            throw new IllegalArgumentException("name cannot be null");
-        }
         if (roles != null && roles.size() < 1) {
             throw new IllegalArgumentException(
                     "roles must be null or its size must be at least one");
@@ -73,69 +75,5 @@ public class IfcOrganization extends IfcEntity {
         this.description = description;
         this.roles = roles;
         this.addresses = addresses;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        IfcOrganization that = (IfcOrganization) o;
-        return Objects.equals(id, that.id) && name.equals(that.name) &&
-                Objects.equals(description, that.description) &&
-                Objects.equals(roles, that.roles) &&
-                Objects.equals(addresses, that.addresses);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name, description, roles, addresses);
-    }
-
-    public static final class Builder {
-        private IfcIdentifier id;
-        private IfcLabel name;
-        private IfcText description;
-        private List<IfcActorRole> roles;
-        private List<IfcAddress> addresses;
-
-        private Builder() {
-        }
-
-        public static Builder anIfcOrganization() {
-            return new Builder();
-        }
-
-        public Builder id(IfcIdentifier id) {
-            this.id = id;
-            return this;
-        }
-
-        public Builder name(IfcLabel name) {
-            this.name = name;
-            return this;
-        }
-
-        public Builder description(IfcText description) {
-            this.description = description;
-            return this;
-        }
-
-        public Builder roles(List<IfcActorRole> roles) {
-            this.roles = roles;
-            return this;
-        }
-
-        public Builder addresses(List<IfcAddress> addresses) {
-            this.addresses = addresses;
-            return this;
-        }
-
-        public IfcOrganization build() {
-            return new IfcOrganization(id, name, description, roles, addresses);
-        }
     }
 }
