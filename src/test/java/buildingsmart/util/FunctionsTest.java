@@ -581,4 +581,21 @@ public class FunctionsTest {
         assertFalse(Functions.ifcShapeRepresentationTypes(new IfcLabel(
                 "GeometricCurveSet"), items));
     }
+
+    @Test
+    public void ifcBuild2Axes_nullDirection() {
+        List<IfcDirection> expected =
+                Arrays.asList(new IfcDirection(1, 0), new IfcDirection(0, 1));
+        List<IfcDirection> result = Functions.ifcBuild2Axes(null);
+        assertEquals(expected, result);
+    }
+
+    @Test
+    public void ifcBuild2Axes() {
+        List<IfcDirection> result =
+                Functions.ifcBuild2Axes(new IfcDirection(1, 2));
+        assertEquals(0,
+                     ifcDotProduct(result.get(0), result.get(1)).getValue(),
+                     DELTA);
+    }
 }

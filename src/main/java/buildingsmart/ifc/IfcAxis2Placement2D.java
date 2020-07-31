@@ -20,9 +20,12 @@
 package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
+import buildingsmart.util.Functions;
 import lombok.EqualsAndHashCode;
 import lombok.NonNull;
 import lombok.ToString;
+
+import java.util.List;
 
 /**
  * The location and orientation in two dimensional space of two mutually
@@ -35,14 +38,19 @@ import lombok.ToString;
  * direction defines the placement X axis direction, the placement Y axis is
  * derived from this.
  */
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
 @ToString(callSuper = true)
 public class IfcAxis2Placement2D extends IfcPlacement
         implements IfcAxis2Placement {
     @Attribute(1)
     private final IfcDirection refDirection;
-    //private IfcDirection[] P;
-    //TODO: compute p and use it in equals and hashcode
+    /**
+     * p[0]: The normalized direction of the placement X Axis. This is (1.0,0.0)
+     * if RefDirection is omitted. p[1]: The normalized direction of the
+     * placement Y Axis. This is a derived attribute and is orthogonal to p[0].
+     */
+    @EqualsAndHashCode.Include
+    private final List<IfcDirection> p;
 
     /**
      * @param location     The geometric position of a reference point, such as
@@ -67,5 +75,6 @@ public class IfcAxis2Placement2D extends IfcPlacement
                     "location must be " + "bidimensional");
         }
         this.refDirection = refDirection;
+        p = Functions.ifcBuild2Axes(refDirection);
     }
 }

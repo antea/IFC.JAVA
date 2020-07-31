@@ -36,7 +36,7 @@ public class IfcNormalisedRatioMeasure extends IfcRatioMeasure
      */
     public IfcNormalisedRatioMeasure(double value) {
         super(value);
-        if (value < 0 || value > 1) {
+        if (getValue() < 0 || getValue() > 1) {
             throw new IllegalArgumentException(
                     "value must be non-negative, and less than or equal to 1");
         }

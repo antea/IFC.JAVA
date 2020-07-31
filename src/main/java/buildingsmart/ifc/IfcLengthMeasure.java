@@ -39,7 +39,11 @@ public class IfcLengthMeasure implements IfcDefinedType, IfcMeasureValue {
      * @param value The value of the distance.
      */
     public IfcLengthMeasure(double value) {
-        this.value = value;
+        if (value == -0d) {
+            this.value = 0d;
+        } else {
+            this.value = value;
+        }
     }
 
     /**

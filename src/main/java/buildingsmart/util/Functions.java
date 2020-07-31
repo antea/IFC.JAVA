@@ -888,4 +888,32 @@ public class Functions {
         return itemsStream.allMatch(item -> ifcShapeRepresentationTypes
                 .get(repType.getValue()).test(item));
     }
+
+    /**
+     * @param refDirection The direction for which to find a perpendicular
+     *                     direction. It must be two-dimensional.
+     * @return This function returns two orthogonal directions. The first is in
+     * the direction of refDirection and the second is perpendicular to the
+     * first. A default value of (1.0,0.0) is supplied for refDirection if the
+     * input data is incomplete.
+     */
+    public static List<IfcDirection> ifcBuild2Axes(IfcDirection refDirection) {
+        IfcDirection d = ifcNormalise(refDirection);
+        d = d != null ? d : new IfcDirection(1, 0);
+        return Arrays.asList(d, ifcOrthogonalComplement(d));
+    }
+
+    /**
+     * @param vec The direction for which to find a perpendicular direction. It
+     *            must be two-dimensional
+     * @return A direction perpendicular to the input direction, {@code null} if
+     * the input direction is null or not two-dimensional.
+     */
+    private static IfcDirection ifcOrthogonalComplement(IfcDirection vec) {
+        if (vec == null || vec.getDim().getValue() != 2) {
+            return null;
+        }
+        return new IfcDirection(-vec.getDirectionRatios().get(1).getValue(),
+                                vec.getDirectionRatios().get(0).getValue());
+    }
 }

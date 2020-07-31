@@ -20,7 +20,6 @@
 package buildingsmart.ifc;
 
 import buildingsmart.io.IfcDefinedType;
-import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
@@ -36,11 +35,18 @@ import lombok.ToString;
  * accuracy needs to be defined using arc measurement; for which purpose the
  * IfcCompoundPlaneAngleMeasure is provided.</small>
  */
-@AllArgsConstructor
 @EqualsAndHashCode
 @ToString
 public class IfcPlaneAngleMeasure implements IfcDefinedType, IfcMeasureValue {
     private final double value;
+
+    public IfcPlaneAngleMeasure(double value) {
+        if (value == -0d) {
+            this.value = 0d;
+        } else {
+            this.value = value;
+        }
+    }
 
     /**
      * @return The representation of the type in an IFC STEP file.

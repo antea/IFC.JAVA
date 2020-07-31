@@ -20,7 +20,6 @@
 package buildingsmart.ifc;
 
 import buildingsmart.io.IfcDefinedType;
-import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -29,12 +28,19 @@ import lombok.ToString;
  * A defined type of simple data type REAL. In principle, the domain of IfcReal
  * (being a Real) is all rational, irrational and scientific real numbers.
  */
-@AllArgsConstructor
 @EqualsAndHashCode
 @ToString
 public class IfcReal implements IfcDefinedType, IfcSimpleValue {
     @Getter
     private final double value;
+
+    public IfcReal(double value) {
+        if (value == -0d) {
+            this.value = 0d;
+        } else {
+            this.value = value;
+        }
+    }
 
     /**
      * @return The representation of the type in an IFC STEP file.

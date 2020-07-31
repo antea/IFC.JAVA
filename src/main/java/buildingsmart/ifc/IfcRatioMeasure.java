@@ -20,8 +20,9 @@
 package buildingsmart.ifc;
 
 import buildingsmart.io.IfcDefinedType;
-import lombok.AllArgsConstructor;
+import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.ToString;
 
 /**
@@ -34,11 +35,19 @@ import lombok.ToString;
  * </FONT>
  * </BLOCKQUOTE>
  */
-@AllArgsConstructor
 @EqualsAndHashCode
 @ToString
 public class IfcRatioMeasure implements IfcDefinedType, IfcMeasureValue {
+    @Getter(value = AccessLevel.PROTECTED)
     private final double value;
+
+    public IfcRatioMeasure(double value) {
+        if (value == -0d) {
+            this.value = 0d;
+        } else {
+            this.value = value;
+        }
+    }
 
     /**
      * @return The representation of the type in an IFC STEP file.
