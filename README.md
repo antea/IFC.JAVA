@@ -11,12 +11,9 @@ Some notes on the implementation:
 + classes having constructors with lots of parameters that can be null contain
 Builders, you'll probably want to use those;
 + interface `IfcDefinedType` is not part of the IFC specification, its only
-purpose is to be implemented by types which can be serialized directly (called
-Defined Types in the IFC specification);
+purpose is to be implemented by Defined Types;
 + abstract class `IfcEntity` is not part of the IFC specification, its only
-purpose is to be extended by IFC Entities, which cannot be serialized
-directly because they have attributes, which reference other entities or
-Defined Types;
+purpose is to be extended by IFC Entities;
 + attributes which are derived or part of inverse relationships are mostly
 ignored (commented) at the moment, because they're not needed for the
 serialization of the entities they belong to. However, in some cases they're

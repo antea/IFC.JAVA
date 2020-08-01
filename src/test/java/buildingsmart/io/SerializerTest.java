@@ -49,8 +49,8 @@ public class SerializerTest {
      *                           file.
      */
     private static String getDataSection(String filePath) throws IOException {
-        List<String> lines =
-                Files.readAllLines(Paths.get(filePath), StandardCharsets.UTF_8);
+        List<String> lines = Files.readAllLines(Paths.get(filePath),
+                                                StandardCharsets.US_ASCII);
         StringBuilder dataSection = new StringBuilder();
         for (int i = 6; i < lines.size() - 1; i++) {
             // DATA section starts at line 6 (if the first one is line 0) and

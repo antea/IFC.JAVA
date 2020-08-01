@@ -19,9 +19,13 @@
 package buildingsmart.util;
 
 import buildingsmart.ifc.*;
+import sun.nio.cs.UTF_32;
 
+import java.nio.ByteBuffer;
 import java.util.*;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import static java.lang.Math.sqrt;
@@ -390,15 +394,46 @@ public class Functions {
             }});
 
     /**
-     * String data types in a STEP file can contain characters "'" and "\" only
-     * as "\'" and "\\". This method formats the given String so that it can be
-     * serialized in a STEP file.
+     * This method formats the given String so that it can be serialized in an
+     * ASCII STEP file. Characters "'" and "\" will be converted to their
+     * representations "\'" and "\\". Characters from the Unicode table "C0
+     * Controls and Basic Latin" (= ASCII characters) won't change, with the
+     * exception of C0 controls and code point 0x007F. All other characters will
+     * be substituted with the representation defined in ISO 10303-11.
      *
-     * @param toFormat The String to format.
-     * @return The formatted string.
+     * @param unformatted The String to format.
+     * @return The formatted String.
      */
-    public static String formatForStepFile(String toFormat) {
-        return toFormat.replaceAll("\\\\", "\\\\").replaceAll("'", "\\'");
+    public static String formatForStepFile(String unformatted) {
+        String escaped = unformatted.replace("\\", "\\\\").replace("'", "\\'");
+        ByteBuffer utf32Bytes = ByteBuffer.wrap(escaped.getBytes(new UTF_32()));
+        return IntStream.range(0, utf32Bytes.capacity() / Integer.BYTES)
+                .map(i -> utf32Bytes.getInt(i * Integer.BYTES))
+                .mapToObj(codePoint -> {
+                    if (codePoint >= 0x20 && codePoint < 0x7F) {
+                        /* the comparison will return false if codePoint has
+                        1 as its most significant bit, so we don't need to
+                        use the unsigned comparison here */
+                        return String.valueOf((char) codePoint);
+                    } else if (isLessThanUnsigned(codePoint, 0x100)) {
+                        return "\\X\\" + String.format("%02X", codePoint);
+                    } else if (isLessThanUnsigned(codePoint, 0x10000)) {
+                        return "\\X2\\" + String.format("%04X", codePoint) +
+                                "\\X0\\";
+                    }
+                    return "\\X4\\" + String.format("%08X", codePoint) +
+                            "\\X0\\";
+                }).collect(Collectors.joining());
+    }
+
+    /**
+     * @param x The first integer to compare.
+     * @param y The second integer to compare.
+     * @return {@code true} if x is smaller than y when comparing the two
+     * integers as if they were unsigned, {@code} false otherwise.
+     */
+    public static boolean isLessThanUnsigned(int x, int y) {
+        return (x < y) ^ ((x < 0) != (y < 0));
     }
 
     /**

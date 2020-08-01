@@ -598,4 +598,43 @@ public class FunctionsTest {
                      ifcDotProduct(result.get(0), result.get(1)).getValue(),
                      DELTA);
     }
+
+    @Test
+    public void formatForStepFile() {
+        String[] unformatted = {"aèa\\",
+                                "'''",
+                                "a\\'b",
+                                "ż",
+                                "\nasdf\n",
+                                "",
+                                "\u24B7\u24C7\u24B6\u24C5",
+                                "🌙"};
+        String[] expected = {"a\\X\\E8a\\\\",
+                             "\\'\\'\\'",
+                             "a\\\\\\'b",
+                             "\\X2\\017C\\X0\\",
+                             "\\X\\0Aasdf\\X\\0A",
+                             "",
+                             "\\X2\\24B7\\X0\\\\X2\\24C7\\X0\\\\X2\\24B6\\X0" +
+                                     "\\\\X2\\24C5" + "\\X0\\",
+                             "\\X4\\0001F319\\X0\\"};
+        String[] formatted =
+                Arrays.stream(unformatted).map(Functions::formatForStepFile)
+                        .toArray(String[]::new);
+        assertArrayEquals(expected, formatted);
+    }
+
+    @Test
+    public void isLessThanUnsigned() {
+        int negative = -2147483645; // 0x80000003
+        int positive = 3;
+        assertTrue(Functions.isLessThanUnsigned(positive, negative));
+        assertFalse(Functions.isLessThanUnsigned(negative, positive));
+        assertFalse(Functions.isLessThanUnsigned(positive, positive));
+        assertFalse(Functions.isLessThanUnsigned(negative, negative));
+        int biggerPositive = 9;
+        assertTrue(Functions.isLessThanUnsigned(positive, biggerPositive));
+        int biggerNegative = -9; // 0xFFFFFFF7
+        assertTrue(Functions.isLessThanUnsigned(negative, biggerNegative));
+    }
 }

@@ -298,7 +298,7 @@ public class Serializer {
 
         fileWriter =
                 new BufferedWriter(new OutputStreamWriter(new FileOutputStream(
-                        output), StandardCharsets.UTF_8));
+                        output), StandardCharsets.US_ASCII));
 
         fileWriter.write("ISO-10303-21;\n" + header.serialize() + "DATA;\n");
         serialize(project);
