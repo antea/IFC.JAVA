@@ -54,6 +54,6 @@ public class IfcPlaneAngleMeasure implements IfcDefinedType, IfcMeasureValue {
     @Override
     public String serialize() {
         //TODO: fix serialization of select types
-        return "IFCPLANEANGLEMEASURE(" + value + ")";
+        return Double.toString(value);
     }
 }

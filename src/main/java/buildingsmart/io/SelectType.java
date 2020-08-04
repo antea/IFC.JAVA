@@ -18,21 +18,15 @@
 
 package buildingsmart.io;
 
-import java.lang.annotation.*;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * To be used on subclasses to have attributes from superclasses ignored in the
- * serialization. Indicates that certain {@link Attribute}s from a superclass
- * will have to be serialized as asterisks in the subclass, because they have
- * become derived attributes.
- * </p>
- * One example of an attribute becoming a derived attribute in a subclass can be
- * found in {@link buildingsmart.ifc.IfcNamedUnit}: in its subclass {@link
- * buildingsmart.ifc.IfcSIUnit}, {@code dimensions} is a derived attribute.
+ * Indicates that the annotated interface represents a Select Type from the IFC
+ * specification.
  */
-@Inherited
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface DerivedAttributes {
-    String[] value();
-}
+public @interface SelectType {}

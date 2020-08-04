@@ -19,6 +19,7 @@
 package buildingsmart.util;
 
 import buildingsmart.ifc.*;
+import lombok.NonNull;
 import sun.nio.cs.UTF_32;
 
 import java.nio.ByteBuffer;
@@ -403,8 +404,10 @@ public class Functions {
      *
      * @param unformatted The String to format.
      * @return The formatted String.
+     *
+     * @throws NullPointerException If unformatted is null.
      */
-    public static String formatForStepFile(String unformatted) {
+    public static String formatForStepFile(@NonNull String unformatted) {
         String escaped = unformatted.replace("\\", "\\\\").replace("'", "\\'");
         ByteBuffer utf32Bytes = ByteBuffer.wrap(escaped.getBytes(new UTF_32()));
         return IntStream.range(0, utf32Bytes.capacity() / Integer.BYTES)
@@ -415,9 +418,11 @@ public class Functions {
                         1 as its most significant bit, so we don't need to
                         use the unsigned comparison here */
                         return String.valueOf((char) codePoint);
-                    } else if (isLessThanUnsigned(codePoint, 0x100)) {
+                    }
+                    if (isLessThanUnsigned(codePoint, 0x100)) {
                         return "\\X\\" + String.format("%02X", codePoint);
-                    } else if (isLessThanUnsigned(codePoint, 0x10000)) {
+                    }
+                    if (isLessThanUnsigned(codePoint, 0x10000)) {
                         return "\\X2\\" + String.format("%04X", codePoint) +
                                 "\\X0\\";
                     }

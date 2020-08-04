@@ -599,6 +599,12 @@ public class FunctionsTest {
                      DELTA);
     }
 
+    @Test(expected = NullPointerException.class)
+    @SuppressWarnings("ConstantConditions")
+    public void formatForStepFile_nullString() {
+        Functions.formatForStepFile(null);
+    }
+
     @Test
     public void formatForStepFile() {
         String[] unformatted = {"aèa\\",
