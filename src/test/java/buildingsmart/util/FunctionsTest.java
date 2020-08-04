@@ -629,18 +629,4 @@ public class FunctionsTest {
                         .toArray(String[]::new);
         assertArrayEquals(expected, formatted);
     }
-
-    @Test
-    public void isLessThanUnsigned() {
-        int negative = -2147483645; // 0x80000003
-        int positive = 3;
-        assertTrue(Functions.isLessThanUnsigned(positive, negative));
-        assertFalse(Functions.isLessThanUnsigned(negative, positive));
-        assertFalse(Functions.isLessThanUnsigned(positive, positive));
-        assertFalse(Functions.isLessThanUnsigned(negative, negative));
-        int biggerPositive = 9;
-        assertTrue(Functions.isLessThanUnsigned(positive, biggerPositive));
-        int biggerNegative = -9; // 0xFFFFFFF7
-        assertTrue(Functions.isLessThanUnsigned(negative, biggerNegative));
-    }
 }

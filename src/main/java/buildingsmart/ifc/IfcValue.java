@@ -19,11 +19,8 @@
 
 package buildingsmart.ifc;
 
-import buildingsmart.io.SelectType;
-
 /**
  * A select type for selecting between more specialised select types
  * IfcSimpleValue, IfcMeasureValue and IfcDerivedMeasureValue.
  */
-@SelectType
 public interface IfcValue {}

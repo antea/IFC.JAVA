@@ -419,26 +419,16 @@ public class Functions {
                         use the unsigned comparison here */
                         return String.valueOf((char) codePoint);
                     }
-                    if (isLessThanUnsigned(codePoint, 0x100)) {
+                    if (Integer.compareUnsigned(codePoint, 0x100) < 0) {
                         return "\\X\\" + String.format("%02X", codePoint);
                     }
-                    if (isLessThanUnsigned(codePoint, 0x10000)) {
+                    if (Integer.compareUnsigned(codePoint, 0x10000) < 0) {
                         return "\\X2\\" + String.format("%04X", codePoint) +
                                 "\\X0\\";
                     }
                     return "\\X4\\" + String.format("%08X", codePoint) +
                             "\\X0\\";
                 }).collect(Collectors.joining());
-    }
-
-    /**
-     * @param x The first integer to compare.
-     * @param y The second integer to compare.
-     * @return {@code true} if x is smaller than y when comparing the two
-     * integers as if they were unsigned, {@code} false otherwise.
-     */
-    public static boolean isLessThanUnsigned(int x, int y) {
-        return (x < y) ^ ((x < 0) != (y < 0));
     }
 
     /**

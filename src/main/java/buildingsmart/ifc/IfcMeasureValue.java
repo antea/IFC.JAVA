@@ -19,10 +19,7 @@
 
 package buildingsmart.ifc;
 
-import buildingsmart.io.SelectType;
-
 /**
  * A measure value is a value as defined in ISO 10303-31-0 (clause 2).
  */
-@SelectType
 public interface IfcMeasureValue extends IfcValue {}

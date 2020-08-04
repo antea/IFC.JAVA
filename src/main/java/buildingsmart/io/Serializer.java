@@ -21,16 +21,16 @@ package buildingsmart.io;
 import buildingsmart.ifc.IfcProject;
 import lombok.EqualsAndHashCode;
 import lombok.NonNull;
-import lombok.ToString;
+import lombok.SneakyThrows;
 
 import java.io.*;
 import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @EqualsAndHashCode
-@ToString
 public class Serializer {
 
     private final Map<IfcEntity, Long> serializedEntitiesToIds;
@@ -43,11 +43,10 @@ public class Serializer {
     }
 
     /**
-     * @param entity The entity for which to return the array containing its
-     *               inverse relationships.
-     * @return The attributes of {@code entity} representing an inverse
-     * relationship. If there are no inverse relationships, the returned array
-     * will have length == 0.
+     * @param entity The entity for which to return its inverse relationships.
+     * @return A Stream containing the values of the fields of {@code entity}
+     * representing an inverse relationship. If there are no inverse
+     * relationships, the returned Stream will be empty.
      *
      * @throws NullPointerException If {@code entity} is null.
      * @throws SecurityException    If a security manager, <i>s</i>, is present
@@ -79,7 +78,7 @@ public class Serializer {
      *                                </li>
      *                              </ul>
      */
-    private static Object[] getInvRels(@NonNull IfcEntity entity) {
+    private static Stream<Object> getInvRels(@NonNull IfcEntity entity) {
         return getAllFields(entity.getClass()).stream().filter(field -> field
                 .isAnnotationPresent(InverseRelationship.class)).map(field -> {
             field.setAccessible(true);
@@ -91,7 +90,7 @@ public class Serializer {
                 e.printStackTrace();
             }
             return invRel;
-        }).toArray();
+        });
     }
 
     /**
@@ -99,23 +98,24 @@ public class Serializer {
      * @return The unsorted fields of the given type and all its superclasses.
      * If there are none, the returned List will be empty.
      *
-     * @throws SecurityException If a security manager, <i>s</i>, is present and
-     *                           any of the following conditions is met:
-     *                           <ul>
-     *                           <li> invocation of
-     *                           {@link SecurityManager#checkPermission
-     *                           s.checkPermission} method with
-     *                           {@code RuntimePermission
-     *                           ("accessDeclaredMembers")}
-     *                           denies access to the declared fields within
-     *                           {@code type}
-     *                           <li> invocation of
-     *                           {@link SecurityManager#checkPackageAccess
-     *                           s.checkPackageAccess()} denies access to the
-     *                           package of {@code type}
-     *                           </ul>
+     * @throws NullPointerException If type is null.
+     * @throws SecurityException    If a security manager, <i>s</i>, is present
+     *                              and any of the following conditions is met:
+     *                              <ul>
+     *                              <li> invocation of
+     *                              {@link SecurityManager#checkPermission
+     *                              s.checkPermission} method with
+     *                              {@code RuntimePermission
+     *                              ("accessDeclaredMembers")}
+     *                              denies access to the declared fields within
+     *                              {@code type}
+     *                              <li> invocation of
+     *                              {@link SecurityManager#checkPackageAccess
+     *                              s.checkPackageAccess()} denies access to the
+     *                              package of {@code type}
+     *                              </ul>
      */
-    private static List<Field> getAllFields(Class<?> type) {
+    private static List<Field> getAllFields(@NonNull Class<?> type) {
         List<Field> fields = new LinkedList<>();
         do {
             fields.addAll(Arrays.asList(type.getDeclaredFields()));
@@ -128,8 +128,8 @@ public class Serializer {
     /**
      * @param entity An IfcEntity object.
      * @return The serialization of the entity in an IFC STEP file. This method
-     * will also write to file any of the entities referenced in {@code
-     * entity}'s attributes.
+     * will also call {@link Serializer#serialize(Object)} for each attribute of
+     * {@code entity}.
      *
      * @throws NullPointerException If {@code entity} is null.
      * @throws IOException          If an I/O error occurs.
@@ -162,15 +162,14 @@ public class Serializer {
      *                                </li>
      *                              </ul>
      */
-    private String serializeEntity(@NonNull IfcEntity entity)
-            throws IOException {
+    @SuppressWarnings("JavaDoc")
+    private String serializeEntity(@NonNull IfcEntity entity) {
         DerivedAttributes derivedAttributes =
                 entity.getClass().getAnnotation(DerivedAttributes.class);
         Set<String> derivedAttributesNames =
                 derivedAttributes == null ? new HashSet<>(0) :
                         new HashSet<>(Arrays.asList(derivedAttributes.value()));
-        final IOException[] exceptionCaughtInStream = new IOException[1];
-        String result = getAllFields(entity.getClass()).stream()
+        return getAllFields(entity.getClass()).stream()
                 .filter(field -> field.isAnnotationPresent(Attribute.class))
                 .sorted((field1, field2) -> {
                     int order1 = field1.getAnnotation(Attribute.class).value();
@@ -183,10 +182,9 @@ public class Serializer {
                     field.setAccessible(true);
                     try {
                         Object attribute = field.get(entity);
-                        if (field.getType()
-                                .isAnnotationPresent(SelectType.class) &&
+                        if (field.getType().isInterface() &&
                                 (attribute instanceof IfcDefinedType ||
-                                        attribute.getClass().isEnum())) {
+                                        attribute instanceof Enum)) {
                             return attribute.getClass().getSimpleName()
                                     .toUpperCase() + "(" +
                                     serialize(attribute) + ")";
@@ -196,103 +194,12 @@ public class Serializer {
                         // this should never happen, since field was set as
                         // accessible
                         e.printStackTrace();
-                    } catch (IOException e) {
-                        exceptionCaughtInStream[0] = e;
-                        //TODO: find a way to throw this and terminate
-                        // operations on this stream immediately?
                     }
                     return "";
                 }).collect(Collectors.joining(",",
                                               entity.getClass().getSimpleName()
                                                       .toUpperCase() + "(",
                                               ");\n"));
-        if (exceptionCaughtInStream[0] != null) {
-            throw exceptionCaughtInStream[0];
-        }
-        return result;
-    }
-
-    /**
-     * @param entity An IfcEntity object.
-     * @return The serialization of the entity in an IFC STEP file. This method
-     * will also write to file any of the entities referenced in {@code
-     * entity}'s attributes.
-     *
-     * @throws NullPointerException If {@code entity} is null.
-     * @throws IOException          If an I/O error occurs.
-     * @throws SecurityException    If a security manager, <i>s</i>, is present
-     *                              and any of the following conditions is met:
-     *                              <ul>
-     *                                <li>
-     *                                  invocation of
-     *                                  {@link SecurityManager
-     *                                  #checkPermission(Permission)}
-     *                                  method with {@code
-     *                                  RuntimePermission
-     *                                  ("accessDeclaredMembers")} denies
-     *                                  access to the declared fields
-     *                                  within{@code entity.getClass()}
-     *                                </li>
-     *                                <li>
-     *                                  invocation of
-     *                                  {@link SecurityManager
-     *                                  #checkPackageAccess(String)} denies
-     *                                  access to the package of
-     *                                  {@code entity.getClass()}
-     *                                </li>
-     *                                <li>
-     *                                  access to private Fields of
-     *                                  {@code entity} by calling
-     *                                  {@link Field#setAccessible(boolean)} is
-     *                                  not permitted based on the security
-     *                                  policy currently in effect.
-     *                                </li>
-     *                              </ul>
-     */
-    private String serializeEntity_old(@NonNull IfcEntity entity)
-            throws IOException {
-        List<Field> fields = getAllFields(entity.getClass());
-        fields.removeIf(field -> !field.isAnnotationPresent(Attribute.class));
-        fields.sort((field1, field2) -> {
-            int order1 = field1.getAnnotation(Attribute.class).value();
-            int order2 = field2.getAnnotation(Attribute.class).value();
-            return order1 - order2;
-        });
-        DerivedAttributes derivedAttributes =
-                entity.getClass().getAnnotation(DerivedAttributes.class);
-        Set<String> derivedAttributesNames =
-                derivedAttributes == null ? new HashSet<>(0) :
-                        new HashSet<>(Arrays.asList(derivedAttributes.value()));
-        StringBuilder entityString = new StringBuilder(
-                entity.getClass().getSimpleName().toUpperCase() + "(");
-        for (Field field : fields) {
-            if (derivedAttributesNames.contains(field.getName())) {
-                // field is a derived attribute in entity, so it will be
-                // serialized as an asterisk
-                entityString.append("*,");
-            } else {
-                field.setAccessible(true);
-                try {
-                    Object attribute = field.get(entity);
-                    if (field.getType().isAnnotationPresent(SelectType.class) &&
-                            (attribute instanceof IfcDefinedType ||
-                                    attribute.getClass().isEnum())) {
-                        entityString.append(attribute.getClass().getSimpleName()
-                                                    .toUpperCase()).append("(")
-                                .append(serialize(attribute)).append(")");
-                    } else {
-                        entityString.append(serialize(attribute));
-                    }
-                    entityString.append(",");
-                } catch (IllegalAccessException e) {
-                    // this should never happen, since field was set as
-                    // accessible
-                    e.printStackTrace();
-                }
-            }
-        }
-        return entityString.deleteCharAt(entityString.length() - 1)
-                .append(");\n").toString();
     }
 
     /**
@@ -352,7 +259,8 @@ public class Serializer {
      *                                  rather than a regular file, does not
      *                                  exist but cannot be created, or cannot
      *                                  be opened for any other reason; if an
-     *                                  I/O error occurs.
+     *                                  I/O error occurs during serialization of
+     *                                  {@code project}.
      * @throws SecurityException        If a security manager exists and its
      *                                  <code>{@link java.lang.SecurityManager#checkRead(java.lang.String)}</code>
      *                                  method does not permit verification of
@@ -479,7 +387,9 @@ public class Serializer {
      *                             </li>
      *                           </ul>
      */
-    private String serialize(Object obj) throws IOException {
+    @SuppressWarnings("JavaDoc")
+    @SneakyThrows
+    private String serialize(Object obj) {
         if (obj == null) {
             return "$";
         }
@@ -487,17 +397,10 @@ public class Serializer {
             return ((IfcDefinedType) obj).serialize();
         }
         if (obj instanceof Collection) {
-            @SuppressWarnings("rawtypes")
-            Collection coll = (Collection) obj;
-            StringBuilder serializedColl = new StringBuilder("(");
-            for (Object element : coll) {
-                //TODO: use a Stream instead
-                serializedColl.append(serialize(element)).append(",");
-            }
-            serializedColl.deleteCharAt(serializedColl.length() - 1);
-            // removing the last comma
-            serializedColl.append(")");
-            return serializedColl.toString();
+            @SuppressWarnings({"unchecked", "rawtypes"})
+            Stream<String> stream =
+                    ((Collection) obj).stream().map(this::serialize);
+            return stream.collect(Collectors.joining(",", "(", ")"));
         }
         IfcEntity entity = (IfcEntity) obj;
         // if obj is neither an IfcDefinedType nor a Collection (List or
@@ -520,14 +423,7 @@ public class Serializer {
         fileWriter.write(serializedEntityString);
         serializedEntitiesToIds.put(entity, idCounter);
 
-        for (Object invRel : getInvRels(entity)) {
-            serialize(invRel);
-            // the return value of serialize() is ignored, because the only
-            // thing that matters is that the entities in invRels are
-            // serialized in dataSection. For example, if entity is IfcProject
-            // we want the entities referenced in isDecomposedBy to be
-            // serialized in dataSection.
-        }
+        getInvRels(entity).forEach(this::serialize);
 
         return "#" + serializedEntitiesToIds.get(entity);
     }
