@@ -19,7 +19,7 @@
 
 package buildingsmart.ifc;
 
-import buildingsmart.io.IfcDefinedType;
+import buildingsmart.io.DefinedType;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
@@ -32,7 +32,7 @@ import java.util.TimeZone;
  */
 @EqualsAndHashCode
 @ToString
-public class IfcTimeStamp implements IfcDefinedType, IfcDerivedMeasureValue {
+public class IfcTimeStamp implements DefinedType, IfcDerivedMeasureValue {
     private final long value;
 
     /**

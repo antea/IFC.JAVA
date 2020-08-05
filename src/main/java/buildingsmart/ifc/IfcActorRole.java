@@ -19,7 +19,7 @@
 
 package buildingsmart.ifc;
 
-import buildingsmart.io.IfcEntity;
+import buildingsmart.io.Entity;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NonNull;
@@ -31,7 +31,7 @@ import lombok.ToString;
  */
 @EqualsAndHashCode(callSuper = false)
 @ToString
-public class IfcActorRole extends IfcEntity {
+public class IfcActorRole extends Entity {
     private final IfcRoleEnum role;
     private final IfcLabel userDefinedRole;
     @Getter

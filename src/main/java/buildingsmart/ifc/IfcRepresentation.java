@@ -20,7 +20,7 @@
 package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
-import buildingsmart.io.IfcEntity;
+import buildingsmart.io.Entity;
 import buildingsmart.io.InverseRelationship;
 import lombok.EqualsAndHashCode;
 import lombok.NonNull;
@@ -36,7 +36,7 @@ import java.util.Set;
  */
 @EqualsAndHashCode(callSuper = false)
 @ToString
-public class IfcRepresentation extends IfcEntity {
+public class IfcRepresentation extends Entity {
     @Attribute(0)
     private final IfcRepresentationContext contextOfItems;
     @Attribute(1)
@@ -47,9 +47,11 @@ public class IfcRepresentation extends IfcEntity {
     private final Set<IfcRepresentationItem> items;
 
     @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     @InverseRelationship
     protected IfcRepresentationMap representationMap;
     @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     @InverseRelationship
     protected IfcProductRepresentation ofProductRepresentation;
 

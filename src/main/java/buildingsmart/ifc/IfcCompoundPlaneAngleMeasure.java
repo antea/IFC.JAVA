@@ -19,7 +19,7 @@
 
 package buildingsmart.ifc;
 
-import buildingsmart.io.IfcDefinedType;
+import buildingsmart.io.DefinedType;
 import lombok.EqualsAndHashCode;
 import lombok.NonNull;
 import lombok.ToString;
@@ -47,7 +47,7 @@ import java.util.List;
 @EqualsAndHashCode
 @ToString
 public class IfcCompoundPlaneAngleMeasure
-        implements IfcDefinedType, IfcDerivedMeasureValue {
+        implements DefinedType, IfcDerivedMeasureValue {
     private final List<IfcInteger> value;
 
     /**

@@ -59,7 +59,7 @@ import java.util.Set;
  * relation. There is an implied dependency established.</li>
  * </ul>
  */
-@ToString(callSuper = true)
+@ToString(callSuper = true, onlyExplicitlyIncluded = true)
 public abstract class IfcObjectDefinition extends IfcRoot {
     /**
      * Reference to the relationship objects, that associates external

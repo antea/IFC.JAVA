@@ -19,7 +19,7 @@
 
 package buildingsmart.ifc;
 
-import buildingsmart.io.IfcDefinedType;
+import buildingsmart.io.DefinedType;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -31,7 +31,7 @@ import lombok.ToString;
  */
 @EqualsAndHashCode
 @ToString
-public class IfcLengthMeasure implements IfcDefinedType, IfcMeasureValue {
+public class IfcLengthMeasure implements DefinedType, IfcMeasureValue {
     @Getter
     private final double value;
 

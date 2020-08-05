@@ -19,12 +19,12 @@
 
 package buildingsmart.ifc;
 
-import buildingsmart.io.IfcDefinedType;
+import buildingsmart.io.DefinedType;
 
 /**
  * Identifies the logical location of the address.
  */
-public enum IfcAddressTypeEnum implements IfcDefinedType {
+public enum IfcAddressTypeEnum implements DefinedType {
     OFFICE, SITE, HOME, DISTRIBUTIONPOINT, USERDEFINED;
 
     /**

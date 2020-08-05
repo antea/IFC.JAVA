@@ -22,6 +22,7 @@ import buildingsmart.ifc.IfcProject;
 import lombok.EqualsAndHashCode;
 import lombok.NonNull;
 import lombok.SneakyThrows;
+import lombok.ToString;
 
 import java.io.*;
 import java.lang.reflect.Field;
@@ -31,9 +32,10 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @EqualsAndHashCode
+@ToString
 public class Serializer {
 
-    private final Map<IfcEntity, Long> serializedEntitiesToIds;
+    private final Map<Entity, Long> serializedEntitiesToIds;
     private Writer fileWriter;
     private long idCounter;
 
@@ -78,7 +80,7 @@ public class Serializer {
      *                                </li>
      *                              </ul>
      */
-    private static Stream<Object> getInvRels(@NonNull IfcEntity entity) {
+    private static Stream<Object> getInvRels(@NonNull Entity entity) {
         return getAllFields(entity.getClass()).stream().filter(field -> field
                 .isAnnotationPresent(InverseRelationship.class)).map(field -> {
             field.setAccessible(true);
@@ -126,7 +128,7 @@ public class Serializer {
     }
 
     /**
-     * @param entity An IfcEntity object.
+     * @param entity An Entity object.
      * @return The serialization of the entity in an IFC STEP file. This method
      * will also call {@link Serializer#serialize(Object)} for each attribute of
      * {@code entity}.
@@ -163,7 +165,7 @@ public class Serializer {
      *                              </ul>
      */
     @SuppressWarnings("JavaDoc")
-    private String serializeEntity(@NonNull IfcEntity entity) {
+    private String serializeEntity(@NonNull Entity entity) {
         DerivedAttributes derivedAttributes =
                 entity.getClass().getAnnotation(DerivedAttributes.class);
         Set<String> derivedAttributesNames =
@@ -183,7 +185,7 @@ public class Serializer {
                     try {
                         Object attribute = field.get(entity);
                         if (field.getType().isInterface() &&
-                                (attribute instanceof IfcDefinedType ||
+                                (attribute instanceof DefinedType ||
                                         attribute instanceof Enum)) {
                             return attribute.getClass().getSimpleName()
                                     .toUpperCase() + "(" +
@@ -274,9 +276,9 @@ public class Serializer {
      *                                  to.
      * @throws SecurityException        Let {@code obj} be any node of the tree
      *                                  having {@code project} as its root,
-     *                                  where parent nodes are IfcEntity types
-     *                                  and children are the {@link Attribute}s
-     *                                  and {@link InverseRelationship}s of the
+     *                                  where parent nodes are Entity types and
+     *                                  children are the {@link Attribute}s and
+     *                                  {@link InverseRelationship}s of the
      *                                  parent node. This exception is thrown if
      *                                  a security manager,
      *                                  <i>s</i>, is present and any of the
@@ -333,7 +335,7 @@ public class Serializer {
      * <ul>
      *     <li> if it's {@code null}, the String {@code "$"} will be
      *     returned;</li>
-     *     <li>if it is an instance of IfcDefinedType, the serialization of
+     *     <li>if it is an instance of DefinedType, the serialization of
      *     the Type according to the STEP file specification will be
      *     returned;</li>
      *     <li>if it is a List or a Set, each contained object will be
@@ -341,7 +343,7 @@ public class Serializer {
      *     String containing the parentheses and everything between them
      *     will
      *     be returned;</li>
-     *     <li>if it is an instance of IfcEntity:</li>
+     *     <li>if it is an instance of Entity:</li>
      *          <li>if the entity was already serialized, a String
      *          containing
      *          a hash mark and the Id of the entity in the IFC file will be
@@ -358,7 +360,7 @@ public class Serializer {
      *
      * @throws IOException       If an I/O error occurs.
      * @throws SecurityException If obj is an instance of a class that extends
-     *                           IfcEntity, a security manager,
+     *                           Entity, a security manager,
      *                           <i>s</i>, is present and any of the
      *                           following conditions is met:
      *                           <ul>
@@ -393,8 +395,8 @@ public class Serializer {
         if (obj == null) {
             return "$";
         }
-        if (obj instanceof IfcDefinedType) {
-            return ((IfcDefinedType) obj).serialize();
+        if (obj instanceof DefinedType) {
+            return ((DefinedType) obj).serialize();
         }
         if (obj instanceof Collection) {
             @SuppressWarnings({"unchecked", "rawtypes"})
@@ -402,9 +404,9 @@ public class Serializer {
                     ((Collection) obj).stream().map(this::serialize);
             return stream.collect(Collectors.joining(",", "(", ")"));
         }
-        IfcEntity entity = (IfcEntity) obj;
-        // if obj is neither an IfcDefinedType nor a Collection (List or
-        // Set), then it must be an IfcEntity
+        Entity entity = (Entity) obj;
+        // if obj is neither an DefinedType nor a Collection (List or
+        // Set), then it must be an Entity
         Long entityId = serializedEntitiesToIds.get(entity);
         if (entityId != null) {
             return "#" + entityId;

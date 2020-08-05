@@ -19,7 +19,7 @@
 
 package buildingsmart.ifc;
 
-import buildingsmart.io.IfcEntity;
+import buildingsmart.io.Entity;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
@@ -28,7 +28,7 @@ import lombok.ToString;
  */
 @EqualsAndHashCode(callSuper = false)
 @ToString
-public class IfcAddress extends IfcEntity {
+public class IfcAddress extends Entity {
     private final IfcAddressTypeEnum purpose;
     private final IfcText description;
     private final IfcLabel userDefinedPurpose;

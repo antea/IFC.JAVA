@@ -20,7 +20,7 @@
 package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
-import buildingsmart.io.IfcEntity;
+import buildingsmart.io.Entity;
 import buildingsmart.util.Pair;
 import lombok.EqualsAndHashCode;
 import lombok.NonNull;
@@ -37,7 +37,7 @@ import java.util.Set;
  */
 @EqualsAndHashCode(callSuper = false)
 @ToString
-public class IfcApplication extends IfcEntity {
+public class IfcApplication extends Entity {
     private static final Set<Pair<IfcLabel, IfcLabel>>
             uniqueAppFullNameAndVersions = new HashSet<>();
     private static final Set<IfcIdentifier> uniqueAppIdentifiers =

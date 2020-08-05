@@ -19,9 +19,9 @@
 
 package buildingsmart.ifc;
 
-import buildingsmart.io.IfcDefinedType;
+import buildingsmart.io.DefinedType;
 
-public enum IfcStateEnum implements IfcDefinedType {
+public enum IfcStateEnum implements DefinedType {
     READWRITE, READONLY, LOCKED, READWRITELOCKED, READONLYLOCKED;
 
     @Override

@@ -20,7 +20,7 @@
 package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
-import buildingsmart.io.IfcEntity;
+import buildingsmart.io.Entity;
 import lombok.EqualsAndHashCode;
 import lombok.NonNull;
 import lombok.ToString;
@@ -32,7 +32,7 @@ import java.util.List;
  */
 @EqualsAndHashCode(callSuper = false)
 @ToString
-public class IfcPersonAndOrganization extends IfcEntity {
+public class IfcPersonAndOrganization extends Entity {
     @Attribute(0)
     private final IfcPerson thePerson;
     @Attribute(1)

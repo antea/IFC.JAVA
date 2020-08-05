@@ -19,9 +19,8 @@
 
 package buildingsmart.ifc;
 
-import buildingsmart.io.IfcEntity;
+import buildingsmart.io.Entity;
 import buildingsmart.io.InverseRelationship;
-import lombok.ToString;
 
 /**
  * A representation item is an element of product data that participates in one
@@ -30,9 +29,7 @@ import lombok.ToString;
  * another representation item when it is referenced by that representation
  * item.
  */
-@ToString
-public abstract class IfcRepresentationItem extends IfcEntity {
-    //private IfcPresentationLayerAssignment[] LayerAssignments;
+public abstract class IfcRepresentationItem extends Entity {
     @InverseRelationship
     private IfcStyledItem styledByItem;
 

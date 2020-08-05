@@ -23,13 +23,12 @@ package buildingsmart.io;
  * part of the IFC specification, its only purpose is to distinguish IFC
  * entities from IFC defined types and enumerations.
  * </p>
- * Subclasses of this class must have fields of type {@link IfcEntity} (or
+ * Subclasses of this class must have fields of type {@link Entity} (or
  * Collections thereof) annotated with either {@link Attribute} or {@link
- * InverseRelationship}. Fields of type {@link IfcDefinedType} must be annotated
+ * InverseRelationship}. Fields of type {@link DefinedType} must be annotated
  * with {@link Attribute}.
  */
-public abstract class IfcEntity {
-
+public abstract class Entity {
     /**
      * Must not include fields annotated with {@link InverseRelationship} in the
      * comparison, or you might get infinite recursion when comparing objects.

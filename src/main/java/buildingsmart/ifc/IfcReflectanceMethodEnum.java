@@ -19,14 +19,22 @@
 
 package buildingsmart.ifc;
 
-import buildingsmart.io.IfcDefinedType;
+import buildingsmart.io.DefinedType;
 
 /**
  * The IfcReflectanceMethodEnum defines the range of different reflectance
  * methods available.
  */
-public enum IfcReflectanceMethodEnum implements IfcDefinedType {
-    BLINN, FLAT, GLASS, MATT, METAL, MIRROR, PHONG, PLASTIC, STRAUSS,
+public enum IfcReflectanceMethodEnum implements DefinedType {
+    BLINN,
+    FLAT,
+    GLASS,
+    MATT,
+    METAL,
+    MIRROR,
+    PHONG,
+    PLASTIC,
+    STRAUSS,
     NOTDEFINED;
 
     /**

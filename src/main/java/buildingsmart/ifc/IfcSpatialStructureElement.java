@@ -87,6 +87,7 @@ public abstract class IfcSpatialStructureElement extends IfcProduct {
     @Attribute(8)
     private final IfcElementCompositionEnum compositionType;
 
+    @ToString.Exclude
     @InverseRelationship
     private Set<IfcRelContainedInSpatialStructure> containsElements;
 

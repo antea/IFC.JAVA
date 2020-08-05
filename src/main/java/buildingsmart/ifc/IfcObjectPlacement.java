@@ -19,7 +19,7 @@
 
 package buildingsmart.ifc;
 
-import buildingsmart.io.IfcEntity;
+import buildingsmart.io.Entity;
 
 /**
  * Abstract supertype for the special types defining the object coordinate
@@ -46,7 +46,7 @@ import buildingsmart.io.IfcEntity;
  * shall share the same instance of <i>IfcObjectPlacement</i>.&nbsp;</li>
  * </ol>
  */
-public abstract class IfcObjectPlacement extends IfcEntity {
+public abstract class IfcObjectPlacement extends Entity {
     //private IfcProduct[] PlacesObject;
     //private IfcLocalPlacement[] ReferencedByPlacements;
 }

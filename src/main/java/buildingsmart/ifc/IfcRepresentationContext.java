@@ -20,7 +20,7 @@
 package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
-import buildingsmart.io.IfcEntity;
+import buildingsmart.io.Entity;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
@@ -30,7 +30,7 @@ import lombok.ToString;
  */
 @EqualsAndHashCode(callSuper = false)
 @ToString
-public class IfcRepresentationContext extends IfcEntity {
+public class IfcRepresentationContext extends Entity {
     @Attribute(0)
     private final IfcLabel contextIdentifier;
     @Attribute(1)

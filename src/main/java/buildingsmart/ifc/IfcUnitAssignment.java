@@ -20,7 +20,7 @@
 package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
-import buildingsmart.io.IfcEntity;
+import buildingsmart.io.Entity;
 import buildingsmart.util.Functions;
 import lombok.EqualsAndHashCode;
 import lombok.NonNull;
@@ -44,7 +44,7 @@ import java.util.concurrent.CopyOnWriteArraySet;
  */
 @EqualsAndHashCode(callSuper = false)
 @ToString
-public class IfcUnitAssignment extends IfcEntity {
+public class IfcUnitAssignment extends Entity {
     @Attribute(0)
     private final Set<IfcUnit> units;
 

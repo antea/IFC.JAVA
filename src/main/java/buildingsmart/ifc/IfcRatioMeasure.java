@@ -19,7 +19,7 @@
 
 package buildingsmart.ifc;
 
-import buildingsmart.io.IfcDefinedType;
+import buildingsmart.io.DefinedType;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -37,7 +37,7 @@ import lombok.ToString;
  */
 @EqualsAndHashCode
 @ToString
-public class IfcRatioMeasure implements IfcDefinedType, IfcMeasureValue {
+public class IfcRatioMeasure implements DefinedType, IfcMeasureValue {
     @Getter(value = AccessLevel.PROTECTED)
     private final double value;
 

@@ -17,9 +17,10 @@
 
 package buildingsmart.ifc;
 
-import buildingsmart.io.IfcDefinedType;
+import buildingsmart.io.DefinedType;
 import lombok.EqualsAndHashCode;
 import lombok.NonNull;
+import lombok.ToString;
 
 import java.util.UUID;
 
@@ -69,7 +70,8 @@ import java.util.UUID;
  * exchanged within the IFC exchange file structure.
  */
 @EqualsAndHashCode
-public class IfcGloballyUniqueId implements IfcDefinedType {
+@ToString
+public class IfcGloballyUniqueId implements DefinedType {
     protected static final int LENGTH = 22;
     private static final String ALLOWED_CHARS_REGEX = "^[0-9A-Za-z_$]*$";
     private static final char[] CONVERSION_TABLE = new char[]{'0',

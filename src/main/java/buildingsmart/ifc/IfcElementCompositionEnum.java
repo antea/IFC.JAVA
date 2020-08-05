@@ -19,7 +19,7 @@
 
 package buildingsmart.ifc;
 
-import buildingsmart.io.IfcDefinedType;
+import buildingsmart.io.DefinedType;
 
 /**
  * Enumeration that provides an indication, whether the spatial structure
@@ -34,7 +34,7 @@ import buildingsmart.io.IfcDefinedType;
  *   </li>
  * </ul>
  */
-public enum IfcElementCompositionEnum implements IfcDefinedType {
+public enum IfcElementCompositionEnum implements DefinedType {
     COMPLEX, ELEMENT, PARTIAL;
 
     /**

@@ -38,6 +38,7 @@ public class IfcCartesianPoint extends IfcPoint {
     @Attribute(0)
     private final List<IfcLengthMeasure> coordinates;
     @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private final IfcDimensionCount dim; // derived attribute
 
     /**

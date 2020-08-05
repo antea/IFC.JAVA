@@ -20,7 +20,7 @@
 package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
-import buildingsmart.io.IfcEntity;
+import buildingsmart.io.Entity;
 import lombok.EqualsAndHashCode;
 import lombok.NonNull;
 import lombok.ToString;
@@ -33,7 +33,7 @@ import lombok.ToString;
  */
 @EqualsAndHashCode(callSuper = false)
 @ToString
-public class IfcSurfaceStyleShading extends IfcEntity
+public class IfcSurfaceStyleShading extends Entity
         implements IfcSurfaceStyleElementSelect {
     @Attribute(0)
     private final IfcColourRgb surfaceColour;

@@ -20,7 +20,7 @@
 package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
-import buildingsmart.io.IfcEntity;
+import buildingsmart.io.Entity;
 import lombok.EqualsAndHashCode;
 import lombok.NonNull;
 import lombok.ToString;
@@ -43,7 +43,7 @@ import java.util.Set;
  */
 @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
 @ToString
-public abstract class IfcRoot extends IfcEntity {
+public abstract class IfcRoot extends Entity {
     private static final Set<IfcGloballyUniqueId> uniqueGlobalIds =
             new HashSet<>();
     @EqualsAndHashCode.Include

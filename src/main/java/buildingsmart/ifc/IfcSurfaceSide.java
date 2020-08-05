@@ -19,13 +19,13 @@
 
 package buildingsmart.ifc;
 
-import buildingsmart.io.IfcDefinedType;
+import buildingsmart.io.DefinedType;
 
 /**
  * Denotion of whether negative, positive or both sides of a surface are being
  * referenced.
  */
-public enum IfcSurfaceSide implements IfcDefinedType {
+public enum IfcSurfaceSide implements DefinedType {
     POSITIVE, NEGATIVE, BOTH;
 
     /**

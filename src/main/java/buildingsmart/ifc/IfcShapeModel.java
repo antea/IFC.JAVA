@@ -43,7 +43,7 @@ import java.util.Set;
  * component of a product shape (via <i>IfcShapeAspect</i>).<br>
  */
 @EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
-@ToString(callSuper = true)
+@ToString(callSuper = true, onlyExplicitlyIncluded = true)
 public class IfcShapeModel extends IfcRepresentation {
     @InverseRelationship
     private IfcShapeAspect ofShapeAspect;

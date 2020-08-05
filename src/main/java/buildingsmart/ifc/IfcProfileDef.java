@@ -20,7 +20,7 @@
 package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
-import buildingsmart.io.IfcEntity;
+import buildingsmart.io.Entity;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NonNull;
@@ -94,7 +94,7 @@ import lombok.ToString;
  */
 @EqualsAndHashCode(callSuper = false)
 @ToString
-public abstract class IfcProfileDef extends IfcEntity {
+public abstract class IfcProfileDef extends Entity {
     @Getter
     @Attribute(0)
     private final IfcProfileTypeEnum profileType;

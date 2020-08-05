@@ -19,9 +19,9 @@
 
 package buildingsmart.ifc;
 
-import buildingsmart.io.IfcDefinedType;
+import buildingsmart.io.DefinedType;
 
-public enum IfcChangeActionEnum implements IfcDefinedType {
+public enum IfcChangeActionEnum implements DefinedType {
     NOCHANGE, MODIFIED, ADDED, DELETED, MODIFIEDADDED, MODIFIEDDELETED;
 
     /**
