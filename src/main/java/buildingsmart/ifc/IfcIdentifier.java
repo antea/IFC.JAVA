@@ -37,12 +37,12 @@ public class IfcIdentifier implements DefinedType, IfcSimpleValue {
     /**
      * @param value Restricted to max. 255 characters, cannot be null.
      * @throws NullPointerException     If value is null.
-     * @throws IllegalArgumentException If value is longer than 255 characters.
+     * @throws IllegalArgumentException If value is longer than 255 characters
+     *                                  after being formatted.
+     * @see Functions#formatForStepFile(String)
      */
     public IfcIdentifier(@NonNull String value) {
-        if (value == null) {
-            throw new IllegalArgumentException("ifcIdentifier cannot be null");
-        }
+        value = Functions.formatForStepFile(value);
         if (value.length() > 255) {
             throw new IllegalArgumentException(
                     "ifcIdentifier cannot be " + "longer than 255 characters");
@@ -52,6 +52,6 @@ public class IfcIdentifier implements DefinedType, IfcSimpleValue {
 
     @Override
     public String serialize() {
-        return "'" + Functions.formatForStepFile(value) + "'";
+        return "'" + value + "'";
     }
 }

@@ -19,21 +19,26 @@
 package buildingsmart.io;
 
 import buildingsmart.util.Functions;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Represents the HEADER section of an IFC STEP file.
  */
+@EqualsAndHashCode
+@ToString
 public class Header {
     protected static final String IMPLEMENTATION_LEVEL =
-            Functions.formatForStepFile("2;1");
-    protected static final String PROGRAM_NAME_AND_VERSION =
-            Functions.formatForStepFile("IFC.JAVA 0.1");
+            checkMaxLengthAndFormat("2;1");
+    protected static final String PREPROCESSOR_VERSION =
+            checkMaxLengthAndFormat("IFC.JAVA 0.1");
     protected static final String FILE_SCHEMA =
             Functions.formatForStepFile("IFC2X3");
     private List<String> description;
@@ -41,38 +46,43 @@ public class Header {
     private String timeStamp;
     private List<String> author;
     private List<String> organization;
+    private String originatingSystem;
     private String authorization;
 
     public Header() {}
 
     /**
-     * Checks whether the given String is longer than 256 characters.
+     * @param str The String to check.
+     * @return The String formatted for serialization in an IFC STEP file.
      *
-     * @param str The string to check.
-     * @throws IllegalArgumentException If {@code str} is longer than 256
-     *                                  characters.
+     * @throws IllegalArgumentException If the formatted {@code str} is longer
+     *                                  than 256 characters after being
+     *                                  formatted.
+     * @see Functions#formatForStepFile(String)
      */
-    private static void checkMaxLength(String str) {
+    private static String checkMaxLengthAndFormat(String str) {
+        str = Functions.formatForStepFile(str);
         if (str.length() > 256) {
             throw new IllegalArgumentException(
                     "maximum length of the string is 256 characters");
         }
+        return str;
     }
 
     /**
-     * Checks whether any String in the given List is longer than 256
-     * characters, and formats all Strings in the list for serialization in a
-     * STEP file.
+     * Formats all Strings in the list for serialization in a STEP file and
+     * checks whether any String in the given List is longer than 256 characters
+     * (after formatting).
      *
      * @param strings The list of Strings to check and format.
      * @throws IllegalArgumentException If any of the Strings in the list is
-     *                                  longer than 256 characters.
+     *                                  longer than 256 characters after being
+     *                                  formatted.
+     * @see Functions#formatForStepFile(String)
      */
     private static void checkMaxLengthAndFormat(List<String> strings) {
         for (int i = 0; i < strings.size(); i++) {
-            checkMaxLength(strings.get(i));
-            String formatted = Functions.formatForStepFile(strings.get(i));
-            strings.set(i, formatted);
+            strings.set(i, checkMaxLengthAndFormat(strings.get(i)));
         }
     }
 
@@ -81,24 +91,16 @@ public class Header {
      * @return The serialization of the given List of Strings in a STEP file.
      */
     private static String serializeList(List<String> list) {
-        StringBuilder result = new StringBuilder();
-        result.append("(");
-        if (list != null && list.size() >= 1) {
-            for (String str : list) {
-                result.append("'").append(str).append("'").append(",");
-            }
-            result.deleteCharAt(result.length() - 1);
-        } else {
-            result.append("''");
-        }
-        result.append(")");
-        return result.toString();
+        return list == null ? "('')" :
+                list.stream().collect(Collectors.joining("','", "('", "')"));
     }
 
     /**
      * @param description Information about the exchanged content.
      * @throws IllegalArgumentException If any of the Strings in the list is
-     *                                  longer than 256 characters.
+     *                                  longer than 256 characters after being
+     *                                  formatted.
+     * @see Functions#formatForStepFile(String)
      */
     public Header setDescription(List<String> description) {
         checkMaxLengthAndFormat(description);
@@ -109,22 +111,23 @@ public class Header {
     /**
      * @param description Information about the exchanged content.
      * @throws IllegalArgumentException If any of the Strings in the list is
-     *                                  longer than 256 characters.
+     *                                  longer than 256 characters after being
+     *                                  formatted.
+     * @see Functions#formatForStepFile(String)
      */
     public Header setDescription(String... description) {
         return this.setDescription(Arrays.asList(description));
     }
 
     /**
-     * @param fileName The name of the file in which this Header will be
-     *                 serialized.
-     * @throws IllegalArgumentException If {@code str} is longer than 256
-     *                                  characters.
+     * @param fileName Local path and name of the file in which this Header will
+     *                 be serialized.
+     * @throws IllegalArgumentException If {@code fileName} is longer than 256
+     *                                  characters after being formatted.
+     * @see Functions#formatForStepFile(String)
      */
     public Header setFileName(String fileName) {
-        checkMaxLength(fileName);
-        Functions.formatForStepFile(fileName);
-        this.fileName = fileName;
+        this.fileName = checkMaxLengthAndFormat(fileName);
         return this;
     }
 
@@ -140,7 +143,9 @@ public class Header {
     /**
      * @param author Name and email address of the author of the file.
      * @throws IllegalArgumentException If any of the Strings in the list is
-     *                                  longer than 256 characters.
+     *                                  longer than 256 characters after being
+     *                                  formatted.
+     * @see Functions#formatForStepFile(String)
      */
     public Header setAuthor(List<String> author) {
         checkMaxLengthAndFormat(author);
@@ -151,7 +156,9 @@ public class Header {
     /**
      * @param author Name and email address of the author of the file.
      * @throws IllegalArgumentException If any of the Strings in the list is
-     *                                  longer than 256 characters.
+     *                                  longer than 256 characters after being
+     *                                  formatted.
+     * @see Functions#formatForStepFile(String)
      */
     public Header setAuthor(String... author) {
         return this.setAuthor(Arrays.asList(author));
@@ -161,7 +168,9 @@ public class Header {
      * @param organization Name of the organization to which the author belongs
      *                     to.
      * @throws IllegalArgumentException If any of the Strings in the list is
-     *                                  longer than 256 characters.
+     *                                  longer than 256 characters after being
+     *                                  formatted.
+     * @see Functions#formatForStepFile(String)
      */
     public Header setOrganization(List<String> organization) {
         checkMaxLengthAndFormat(organization);
@@ -173,22 +182,35 @@ public class Header {
      * @param organization Name of the organization to which the author belongs
      *                     to.
      * @throws IllegalArgumentException If any of the Strings in the list is
-     *                                  longer than 256 characters.
+     *                                  longer than 256 characters after being
+     *                                  formatted.
+     * @see Functions#formatForStepFile(String)
      */
     public Header setOrganization(String... organization) {
         return this.setOrganization(Arrays.asList(organization));
     }
 
     /**
+     * @param originatingSystem Name of the application using this library.
+     * @throws IllegalArgumentException If {@code originatingSystem} is longer
+     *                                  than 256 characters after being
+     *                                  formatted.
+     * @see Functions#formatForStepFile(String)
+     */
+    public Header setOriginatingSystem(String originatingSystem) {
+        this.originatingSystem = checkMaxLengthAndFormat(originatingSystem);
+        return this;
+    }
+
+    /**
      * @param authorization Name and email address of the person who authorized
      *                      the creation of this file.
-     * @throws IllegalArgumentException If {@code str} is longer than 256
-     *                                  characters.
+     * @throws IllegalArgumentException If {@code authorization} is longer than
+     *                                  256 characters after being formatted.
+     * @see Functions#formatForStepFile(String)
      */
     public Header setAuthorization(String authorization) {
-        checkMaxLength(authorization);
-        Functions.formatForStepFile(authorization);
-        this.authorization = authorization;
+        this.authorization = checkMaxLengthAndFormat(authorization);
         return this;
     }
 
@@ -207,18 +229,16 @@ public class Header {
         if (authorization == null) {
             authorization = "";
         }
+        if (originatingSystem == null) {
+            originatingSystem = "";
+        }
 
         return "HEADER;\n" + "FILE_DESCRIPTION(" + serializeList(description) +
                 ",'" + IMPLEMENTATION_LEVEL + "');\n" + "FILE_NAME('" +
                 fileName + "','" + timeStamp + "'," + serializeList(author) +
                 "," + serializeList(organization) + ",'" +
-                PROGRAM_NAME_AND_VERSION + "','" +
-                Functions.formatForStepFile(System.getProperty("os.name")) +
-                " " +
-                Functions.formatForStepFile(System.getProperty("os.version")) +
-                " " +
-                Functions.formatForStepFile(System.getProperty("os.arch")) +
-                "','" + authorization + "');\n" + "FILE_SCHEMA(('" +
-                FILE_SCHEMA + "'));\n" + "ENDSEC;\n";
+                PREPROCESSOR_VERSION + "','" + originatingSystem + "','" +
+                authorization + "');\n" + "FILE_SCHEMA(('" + FILE_SCHEMA +
+                "'));\n" + "ENDSEC;\n";
     }
 }

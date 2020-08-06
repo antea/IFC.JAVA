@@ -274,6 +274,10 @@ public class Serializer {
      *                                  directories and all necessary parent
      *                                  directories to be created or written
      *                                  to.
+     * @throws SecurityException        If a required system property value
+     *                                  cannot be accessed while resolving the
+     *                                  canonical path of the file created in
+     *                                  filePath.
      * @throws SecurityException        Let {@code obj} be any node of the tree
      *                                  having {@code project} as its root,
      *                                  where parent nodes are Entity types and
@@ -315,7 +319,7 @@ public class Serializer {
                           IfcProject project,
                           @NonNull String filePath) throws IOException {
         File output = createFile(filePath);
-        header.setFileName(output.getName());
+        header.setFileName(output.getCanonicalPath());
 
         fileWriter =
                 new BufferedWriter(new OutputStreamWriter(new FileOutputStream(

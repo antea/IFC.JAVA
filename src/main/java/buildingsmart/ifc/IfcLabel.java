@@ -38,12 +38,15 @@ public class IfcLabel implements DefinedType, IfcSimpleValue {
     /**
      * @param value Restricted to max. 255 characters, cannot be null.
      * @throws NullPointerException     If value is null.
-     * @throws IllegalArgumentException If value is longer than 255 characters.
+     * @throws IllegalArgumentException If value is longer than 255 characters
+     *                                  after being formatted.
+     * @see Functions#formatForStepFile(String)
      */
     public IfcLabel(@NonNull String value) {
+        value = Functions.formatForStepFile(value);
         if (value.length() > 255) {
             throw new IllegalArgumentException(
-                    "ifcLabel cannot be longer " + "than 255 characters");
+                    "ifcLabel cannot be longer than 255 characters");
         }
         this.value = value;
     }
@@ -54,6 +57,6 @@ public class IfcLabel implements DefinedType, IfcSimpleValue {
 
     @Override
     public String serialize() {
-        return "'" + Functions.formatForStepFile(value) + "'";
+        return "'" + value + "'";
     }
 }

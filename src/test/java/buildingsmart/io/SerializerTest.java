@@ -296,7 +296,10 @@ public class SerializerTest {
                         "'ProjectLink','',#20,(#21));\n" + "ENDSEC;\n";
         Serializer serializer = new Serializer();
 
-        serializer.serialize(new Header(), validIfcProject, FILE_PATH);
+        serializer.serialize(new Header().setDescription(
+                "ViewDefinition[CoordinationView]"),
+                             validIfcProject,
+                             FILE_PATH);
 
         String writtenDataSection = getDataSection(FILE_PATH);
         Assert.assertEquals(expectedDataSection, writtenDataSection);

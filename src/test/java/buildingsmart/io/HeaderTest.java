@@ -18,7 +18,6 @@
 
 package buildingsmart.io;
 
-import buildingsmart.util.Functions;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -30,14 +29,8 @@ public class HeaderTest {
                 "FILE_DESCRIPTION(('ViewDefinition [CoordinationView]'),'" +
                 Header.IMPLEMENTATION_LEVEL + "');\n" +
                 "FILE_NAME('freecad-cylinder.ifc','2020-04-14T22:16:25',('')," +
-                "(''),'" + Header.PROGRAM_NAME_AND_VERSION + "','" +
-                Functions.formatForStepFile(System.getProperty("os.name")) +
-                " " +
-                Functions.formatForStepFile(System.getProperty("os.version")) +
-                " " +
-                Functions.formatForStepFile(System.getProperty("os.arch")) +
-                "','');\n" + "FILE_SCHEMA(('" + Header.FILE_SCHEMA + "'));\n" +
-                "ENDSEC;\n";
+                "(''),'" + Header.PREPROCESSOR_VERSION + "','" + "','');\n" +
+                "FILE_SCHEMA(('" + Header.FILE_SCHEMA + "'));\n" + "ENDSEC;\n";
 
         Header header =
                 new Header().setDescription("ViewDefinition [CoordinationView]")

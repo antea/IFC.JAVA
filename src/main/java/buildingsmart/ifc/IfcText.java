@@ -39,11 +39,11 @@ public class IfcText implements DefinedType, IfcSimpleValue {
      * @throws NullPointerException If value is null.
      */
     public IfcText(@NonNull final String value) {
-        this.value = value;
+        this.value = Functions.formatForStepFile(value);
     }
 
     @Override
     public String serialize() {
-        return "'" + Functions.formatForStepFile(value) + "'";
+        return "'" + value + "'";
     }
 }
