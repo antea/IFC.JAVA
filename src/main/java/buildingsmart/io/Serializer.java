@@ -223,7 +223,7 @@ public class Serializer {
      *                                  directory and all necessary parent
      *                                  directories to be created
      */
-    private static File createFile(@NonNull String filePath) {
+    public static File createFile(@NonNull String filePath) {
         String directoryPath = null;
         if (filePath.length() > 0) {
             int endIndex = filePath.lastIndexOf(File.separatorChar);
@@ -250,7 +250,7 @@ public class Serializer {
      *
      * @param header   The {@link Header} of the IFC file to create. Even if it
      *                 has already been set, its fileName will be set to the
-     *                 file name provided in filePath.
+     *                 canonical path of the file referenced in filePath.
      * @param project  The {@link IfcProject} to serialize.
      * @param filePath The path to the file to create, or to an already existing
      *                 file.
@@ -318,13 +318,73 @@ public class Serializer {
     public void serialize(@NonNull Header header,
                           IfcProject project,
                           @NonNull String filePath) throws IOException {
-        File output = createFile(filePath);
-        header.setFileName(output.getCanonicalPath());
+        serialize(header, project, createFile(filePath));
+    }
 
+    /**
+     * Creates an IFC STEP file in the given output {@link File}. Note that if
+     * this operation fails it may have succeeded in writing some of the content
+     * of the file.
+     *
+     * @param header  The {@link Header} of the IFC file to create. Even if it
+     *                has already been set, its fileName will be set to the
+     *                canonical path of {@code output}.
+     * @param project The {@link IfcProject} to serialize.
+     * @param output  The file in which to serialize the project.
+     * @throws NullPointerException If {@code header} is null; if {@code output}
+     *                              is null.
+     * @throws IOException          If the file exists but is a directory rather
+     *                              than a regular file, does not exist but
+     *                              cannot be created, or cannot be opened for
+     *                              any other reason; if an I/O error occurs
+     *                              during serialization of {@code project}.
+     * @throws SecurityException    If a required system property value cannot
+     *                              be accessed while resolving the canonical
+     *                              path of {@code output}.
+     * @throws SecurityException    Let {@code obj} be any node of the tree
+     *                              having {@code project} as its root, where
+     *                              parent nodes are Entity types and children
+     *                              are the {@link Attribute}s and {@link
+     *                              InverseRelationship}s of the parent node.
+     *                              This exception is thrown if a security
+     *                              manager,
+     *                              <i>s</i>, is present and any of the
+     *                              following conditions is met:
+     *                              <ul>
+     *                                <li>
+     *                                  invocation of
+     *                                  {@link SecurityManager
+     *                                  #checkPermission(Permission)}
+     *                                  method with {@code
+     *                                  RuntimePermission
+     *                                  ("accessDeclaredMembers")} denies
+     *                                  access to the declared fields
+     *                                  within{@code obj.getClass()}
+     *                                </li>
+     *                                <li>
+     *                                  invocation of
+     *                                  {@link SecurityManager
+     *                                  #checkPackageAccess(String)} denies
+     *                                  access to the package of
+     *                                  {@code obj.getClass()}
+     *                                </li>
+     *                                <li>
+     *                                   access to private Fields of
+     *                                   {@code obj} by calling
+     *                                  {@link Field#setAccessible(boolean)}
+     *                                   is not permitted based on the
+     *                                   security policy currently in
+     *                                   effect.
+     *                                </li>
+     *                              </ul>
+     */
+    public void serialize(@NonNull Header header,
+                          IfcProject project,
+                          @NonNull File output) throws IOException {
+        header.setFileName(output.getCanonicalPath());
         fileWriter =
                 new BufferedWriter(new OutputStreamWriter(new FileOutputStream(
                         output), StandardCharsets.US_ASCII));
-
         fileWriter.write("ISO-10303-21;\n" + header.serialize() + "DATA;\n");
         serialize(project);
         fileWriter.write("ENDSEC;\n" + "END-ISO-10303-21;\n");
