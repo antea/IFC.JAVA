@@ -404,9 +404,9 @@ public class Serializer {
         }
         if (obj instanceof Collection) {
             @SuppressWarnings({"unchecked", "rawtypes"})
-            Stream<String> stream =
+            Stream<String> elements =
                     ((Collection) obj).stream().map(this::serialize);
-            return stream.collect(Collectors.joining(",", "(", ")"));
+            return elements.collect(Collectors.joining(",", "(", ")"));
         }
         Entity entity = (Entity) obj;
         // if obj is neither an DefinedType nor a Collection (List or
@@ -420,9 +420,9 @@ public class Serializer {
         entityId = serializedEntitiesToIds.get(entity);
         if (entityId != null) {
             return "#" + entityId;
-            // the current entity has already been serialized while we were
-            // serializing our attributes, because one of our attributes
-            // contained a reference to obj in its inverse relationships
+            // entity has been serialized while we were serializing
+            // our attributes, because one of our attributes contained
+            // a reference to entity in its inverse relationships
         }
         String serializedEntityString =
                 "#" + ++idCounter + "=" + serializedEntity;
