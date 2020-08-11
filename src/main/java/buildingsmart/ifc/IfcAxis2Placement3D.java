@@ -22,9 +22,11 @@ package buildingsmart.ifc;
 import buildingsmart.io.Attribute;
 import buildingsmart.util.Functions;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NonNull;
 import lombok.ToString;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -42,16 +44,20 @@ import java.util.List;
 @ToString(callSuper = true)
 public class IfcAxis2Placement3D extends IfcPlacement
         implements IfcAxis2Placement {
+    @Getter
     @Attribute(1)
     private final IfcDirection axis;
+    @Getter
     @Attribute(2)
     private final IfcDirection refDirection;
     /**
      * The normalized directions of the placement X Axis (P[0]) and the
-     * placement Y Axis (P[1]) and the placement Z Axis (P[2]).
+     * placement Y Axis (P[1]) and the placement Z Axis (P[2]). The list is
+     * unmodifiable.
      */
+    @Getter
     @EqualsAndHashCode.Include
-    private final List<IfcDirection> p;
+    private final List<IfcDirection> p; // derived attribute
 
     /**
      * @param location     The location of the three mutually perpendicular
@@ -115,6 +121,7 @@ public class IfcAxis2Placement3D extends IfcPlacement
         }
         this.axis = axis;
         this.refDirection = refDirection;
-        p = Functions.ifcBuildAxes(axis, refDirection);
+        p = Collections
+                .unmodifiableList(Functions.ifcBuildAxes(axis, refDirection));
     }
 }

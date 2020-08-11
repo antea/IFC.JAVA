@@ -21,10 +21,12 @@ package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NonNull;
 import lombok.ToString;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -35,6 +37,7 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = false)
 @ToString(callSuper = true)
 public class IfcCartesianPoint extends IfcPoint {
+    @Getter
     @Attribute(0)
     private final List<IfcLengthMeasure> coordinates;
     @EqualsAndHashCode.Exclude
@@ -57,7 +60,7 @@ public class IfcCartesianPoint extends IfcPoint {
             throw new IllegalArgumentException(
                     "size of coordinates must be 2 or 3");
         }
-        this.coordinates = coordinates;
+        this.coordinates = Collections.unmodifiableList(coordinates);
         this.dim = new IfcDimensionCount((byte) coordinates.size());
     }
 
@@ -82,7 +85,7 @@ public class IfcCartesianPoint extends IfcPoint {
         for (double coordinate : coordinates) {
             coordinatesList.add(new IfcLengthMeasure(coordinate));
         }
-        this.coordinates = coordinatesList;
+        this.coordinates = Collections.unmodifiableList(coordinatesList);
         this.dim = new IfcDimensionCount((byte) coordinatesList.size());
     }
 

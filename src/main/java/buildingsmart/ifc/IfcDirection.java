@@ -27,6 +27,7 @@ import lombok.NonNull;
 import lombok.ToString;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -68,10 +69,10 @@ public class IfcDirection extends IfcGeometricRepresentationItem
             throw new IllegalArgumentException(
                     "size of directionRatios must be 2 or 3");
         }
-        this.directionRatios = directionRatios;
+        this.directionRatios = Collections.unmodifiableList(directionRatios);
         this.dim = new IfcDimensionCount(directionRatios.size());
-        this.normalisedDirectionRatios =
-                Functions.ifcNormalise(this).directionRatios;
+        this.normalisedDirectionRatios = Collections
+                .unmodifiableList(Functions.ifcNormalise(this).directionRatios);
     }
 
     /**
@@ -95,9 +96,10 @@ public class IfcDirection extends IfcGeometricRepresentationItem
         for (double dirRatio : directionRatios) {
             directionRatiosList.add(new IfcReal(dirRatio));
         }
-        this.directionRatios = directionRatiosList;
+        this.directionRatios =
+                Collections.unmodifiableList(directionRatiosList);
         this.dim = new IfcDimensionCount(directionRatiosList.size());
-        IfcDirection normalised = Functions.ifcNormalise(this);
+        IfcDirection normalised = (Functions.ifcNormalise(this));
         this.normalisedDirectionRatios =
                 normalised == null ? null : normalised.directionRatios;
     }

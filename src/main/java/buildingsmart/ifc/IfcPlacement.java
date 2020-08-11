@@ -21,6 +21,7 @@ package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NonNull;
 import lombok.ToString;
 
@@ -32,6 +33,7 @@ import lombok.ToString;
 @EqualsAndHashCode(callSuper = false)
 @ToString(callSuper = true)
 public abstract class IfcPlacement extends IfcGeometricRepresentationItem {
+    @Getter
     @Attribute(0)
     private final IfcCartesianPoint location;
 
