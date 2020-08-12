@@ -19,6 +19,22 @@
 
 package buildingsmart.ifc;
 
-public enum IfcObjectTypeEnum {
-    PRODUCT, PROCESS, CONTROL, RESOURCE, ACTOR, GROUP, PROJECT, NOTDEFINED,
+import buildingsmart.io.DefinedType;
+
+/**
+ * This enumeration defines the applicable object categories (i.e. the subtypes
+ * at the 2<SUP>nd</SUP> level of the IFC inheritance tree) . Attached to an
+ * object, it indicates to which subtype of
+ * <I>IfcObject</I> the entity referencing it would otherwise comply with.
+ */
+public enum IfcObjectTypeEnum implements DefinedType {
+    PRODUCT, PROCESS, CONTROL, RESOURCE, ACTOR, GROUP, PROJECT, NOTDEFINED;
+
+    /**
+     * @return The representation of the Defined Type in an IFC STEP file.
+     */
+    @Override
+    public String serialize() {
+        return "." + name() + ".";
+    }
 }

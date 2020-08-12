@@ -19,8 +19,8 @@
 
 package buildingsmart.ifc;
 
+import buildingsmart.io.Attribute;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
 import lombok.NonNull;
 import lombok.ToString;
 
@@ -49,11 +49,12 @@ import lombok.ToString;
 @ToString(callSuper = true)
 public class IfcBooleanResult extends IfcGeometricRepresentationItem
         implements IfcCsgSelect, IfcBooleanOperand {
+    @Attribute(0)
     private final IfcBooleanOperator operator;
+    @Attribute(1)
     private final IfcBooleanOperand firstOperand;
+    @Attribute(2)
     private final IfcBooleanOperand secondOperand;
-    @Getter
-    private final IfcDimensionCount dim;
 
     /**
      * @param operator      The Boolean operator used in the operation to create
@@ -76,6 +77,9 @@ public class IfcBooleanResult extends IfcGeometricRepresentationItem
         this.operator = operator;
         this.firstOperand = firstOperand;
         this.secondOperand = secondOperand;
-        this.dim = firstOperand.getDim();
+    }
+
+    public IfcDimensionCount getDim() {
+        return firstOperand.getDim();
     }
 }

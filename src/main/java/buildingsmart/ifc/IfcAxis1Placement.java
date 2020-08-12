@@ -19,7 +19,47 @@
 
 package buildingsmart.ifc;
 
-public abstract class IfcAxis1Placement extends IfcPlacement {
-    private IfcDirection Axis;
-    private IfcDirection Z;
+import buildingsmart.io.Attribute;
+import buildingsmart.util.Functions;
+import lombok.*;
+
+/**
+ * The direction and location in three dimensional space of a single axis. An
+ * axis1_placement is defined in terms of a locating point (inherited from
+ * placement supertype) and an axis direction: this is either the direction of
+ * axis or defaults to (0.0,0.0,1.0). The actual direction for the axis
+ * placement is given by the derived attribute z (Z).
+ */
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
+public class IfcAxis1Placement extends IfcPlacement {
+    @Attribute(1)
+    private final IfcDirection axis;
+    @Getter(AccessLevel.PROTECTED)
+    private final IfcDirection z;
+
+    /**
+     * @param location The geometric position of a reference point, such as the
+     *                 center of a circle, of the item to be located. Cannot be
+     *                 null
+     * @param axis     The direction of the local Z axis. Defaults to
+     *                 (0.0,0.0,1.0) if not given.
+     * @throws NullPointerException     If location is null.
+     * @throws IllegalArgumentException If location or axis is not
+     * three-dimensional.
+     */
+    public IfcAxis1Placement(@NonNull IfcCartesianPoint location,
+                             IfcDirection axis) {
+        super(location);
+        if (location.getDim().getValue() != 3) {
+            throw new IllegalArgumentException(
+                    "dimension of location must be" + " 3");
+        }
+        if (axis != null && axis.getDim().getValue() != 3) {
+            throw new IllegalArgumentException("dimension of axis must be 3");
+        }
+        this.axis = axis;
+        this.z = axis == null ? new IfcDirection(0, 0, 1) :
+                Functions.ifcNormalise(axis);
+    }
 }

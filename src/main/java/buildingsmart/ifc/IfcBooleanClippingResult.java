@@ -19,5 +19,23 @@
 
 package buildingsmart.ifc;
 
+import lombok.NonNull;
+
 public abstract class IfcBooleanClippingResult extends IfcBooleanResult {
+    /**
+     * @param operator      The Boolean operator used in the operation to create
+     *                      the result.
+     * @param firstOperand  The first operand to be operated upon by the Boolean
+     *                      operation.
+     * @param secondOperand The second operand specified for the operation.
+     * @throws NullPointerException     If any of the arguments is null.
+     * @throws IllegalArgumentException If the dimensionality of {@code
+     *                                  firstOperand} is not the same as {@code
+     *                                  secondOperand}.
+     */
+    public IfcBooleanClippingResult(@NonNull IfcBooleanOperator operator,
+                                    @NonNull IfcBooleanOperand firstOperand,
+                                    @NonNull IfcBooleanOperand secondOperand) {
+        super(operator, firstOperand, secondOperand);
+    }
 }
