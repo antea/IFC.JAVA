@@ -19,9 +19,63 @@
 
 package buildingsmart.ifc;
 
-public abstract class IfcBooleanResult extends IfcGeometricRepresentationItem {
-    private IfcBooleanOperator Operator;
-    private IfcBooleanOperand FirstOperand;
-    private IfcBooleanOperand SecondOperand;
-    private int Dim;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.ToString;
+
+/**
+ * A Boolean result is the result of a regularized operation on two solids to
+ * create a new solid. Valid operations are regularized union, regularized
+ * intersection, and regularized difference. For purpose of Boolean operations,
+ * a solid is considered to be a regularized set of points. The final Boolean
+ * result depends upon the operation and the two operands. In the case of the
+ * difference operator the order of the operands is also significant. The
+ * operator can be either union, intersection or difference. The effect of these
+ * operators is described below: </P>
+ * <UL>
+ * <LI>Union on two solids is the new solid that is the regularization of
+ * the set of all points that are in either the first operand or the second
+ * operand or in both. </LI>
+ * <LI>Intersection on two solids is the new solid that is the
+ * regularization of the set of all points that are in both the first operand
+ * and the second operand. </LI>
+ * <LI>The result of the difference operation on two solids is the
+ * regularization of the set of all points which are in the first operand, but
+ * not in the second operand. </LI>
+ * </UL>
+ */
+@EqualsAndHashCode(callSuper = false)
+@ToString(callSuper = true)
+public class IfcBooleanResult extends IfcGeometricRepresentationItem
+        implements IfcCsgSelect, IfcBooleanOperand {
+    private final IfcBooleanOperator operator;
+    private final IfcBooleanOperand firstOperand;
+    private final IfcBooleanOperand secondOperand;
+    @Getter
+    private final IfcDimensionCount dim;
+
+    /**
+     * @param operator      The Boolean operator used in the operation to create
+     *                      the result.
+     * @param firstOperand  The first operand to be operated upon by the Boolean
+     *                      operation.
+     * @param secondOperand The second operand specified for the operation.
+     * @throws NullPointerException     If any of the arguments is null.
+     * @throws IllegalArgumentException If the dimensionality of {@code
+     *                                  firstOperand} is not the same as {@code
+     *                                  secondOperand}.
+     */
+    public IfcBooleanResult(@NonNull IfcBooleanOperator operator,
+                            @NonNull IfcBooleanOperand firstOperand,
+                            @NonNull IfcBooleanOperand secondOperand) {
+        if (!firstOperand.getDim().equals(secondOperand.getDim())) {
+            throw new IllegalArgumentException(
+                    "dimensionality of the two operands must be the same");
+        }
+        this.operator = operator;
+        this.firstOperand = firstOperand;
+        this.secondOperand = secondOperand;
+        this.dim = firstOperand.getDim();
+    }
 }

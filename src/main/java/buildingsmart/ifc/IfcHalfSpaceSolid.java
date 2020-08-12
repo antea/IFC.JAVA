@@ -19,8 +19,12 @@
 
 package buildingsmart.ifc;
 
-public abstract class IfcHalfSpaceSolid extends IfcGeometricRepresentationItem {
-    private IfcSurface BaseSurface;
-    private boolean AgreementFlag;
-    private int Dim;
+import lombok.Getter;
+
+public abstract class IfcHalfSpaceSolid extends IfcGeometricRepresentationItem
+        implements IfcBooleanOperand {
+    private IfcSurface baseSurface;
+    private boolean agreementFlag;
+    @Getter
+    private IfcDimensionCount dim;
 }

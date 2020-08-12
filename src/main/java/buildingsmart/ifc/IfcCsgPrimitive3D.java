@@ -19,7 +19,11 @@
 
 package buildingsmart.ifc;
 
-public abstract class IfcCsgPrimitive3D extends IfcGeometricRepresentationItem {
-    private IfcAxis2Placement3D Position;
-    private int Dim;
+import lombok.Getter;
+
+public abstract class IfcCsgPrimitive3D extends IfcGeometricRepresentationItem
+        implements IfcCsgSelect, IfcBooleanOperand {
+    private IfcAxis2Placement3D position;
+    @Getter
+    private IfcDimensionCount dim;
 }

@@ -19,5 +19,9 @@
 
 package buildingsmart.ifc;
 
-public interface IfcCsgSelect {
-}
+/**
+ * This type identifies the types of entity which may be selected as the root of
+ * a CSG tree including a single CSG primitive as a special case (currently not
+ * in IFC).
+ */
+public interface IfcCsgSelect {}

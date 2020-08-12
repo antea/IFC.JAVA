@@ -19,6 +19,28 @@
 
 package buildingsmart.ifc;
 
-public enum IfcBooleanOperator {
-    UNION, INTERSECTION, DIFFERENCE,
+import buildingsmart.io.DefinedType;
+
+/**
+ * This type defines the three Boolean operators used in the definition of CSG
+ * solids. </P>
+ * <UL>
+ * <LI><B>Union</B>: The operation of constructing the regularized set
+ * theoretic union of the volumes defined by two solids. </LI>
+ * <LI><B>Intersection</B>: The set theoretic difference between volumes
+ * defined by two solids. </LI>
+ * <LI><B>Difference</B>: The operation of constructing the regularized
+ * set theoretic intersection of the volumes defined by two solids. </LI>
+ * </UL>
+ */
+public enum IfcBooleanOperator implements DefinedType {
+    UNION, INTERSECTION, DIFFERENCE;
+
+    /**
+     * @return The representation of the Defined Type in an IFC STEP file.
+     */
+    @Override
+    public String serialize() {
+        return "." + name() + ".";
+    }
 }

@@ -20,6 +20,7 @@
 package buildingsmart.ifc;
 
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.ToString;
 
 /**
@@ -30,7 +31,9 @@ import lombok.ToString;
  */
 @EqualsAndHashCode(callSuper = false)
 @ToString(callSuper = true)
-public abstract class IfcSolidModel extends IfcGeometricRepresentationItem {
-    private final IfcDimensionCount dim = new IfcDimensionCount((byte) 3);
+public abstract class IfcSolidModel extends IfcGeometricRepresentationItem
+        implements IfcBooleanOperand {
+    @Getter
+    private final IfcDimensionCount dim = new IfcDimensionCount(3);
     // derived attribute
 }

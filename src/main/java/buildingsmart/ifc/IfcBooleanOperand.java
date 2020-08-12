@@ -19,5 +19,10 @@
 
 package buildingsmart.ifc;
 
+/**
+ * This select type identifies all those types of entities which may participate
+ * in a Boolean operation to form a CSG solid.
+ */
 public interface IfcBooleanOperand {
+    IfcDimensionCount getDim();
 }
