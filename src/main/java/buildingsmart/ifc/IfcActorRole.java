@@ -19,9 +19,9 @@
 
 package buildingsmart.ifc;
 
+import buildingsmart.io.Attribute;
 import buildingsmart.io.Entity;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
 import lombok.NonNull;
 import lombok.ToString;
 
@@ -32,9 +32,11 @@ import lombok.ToString;
 @EqualsAndHashCode(callSuper = false)
 @ToString
 public class IfcActorRole extends Entity {
+    @Attribute(0)
     private final IfcRoleEnum role;
+    @Attribute(1)
     private final IfcLabel userDefinedRole;
-    @Getter
+    @Attribute(2)
     private final IfcText description;
 
     /**
