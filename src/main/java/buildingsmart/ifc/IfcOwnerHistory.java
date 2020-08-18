@@ -21,10 +21,7 @@ package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
 import buildingsmart.io.Entity;
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.NonNull;
-import lombok.ToString;
+import lombok.*;
 
 /**
  * IfcOwnerHistory defines all history and identification related information .
@@ -33,6 +30,7 @@ import lombok.ToString;
  */
 @EqualsAndHashCode(callSuper = false)
 @ToString
+@Getter
 public class IfcOwnerHistory extends Entity {
     @Attribute(0)
     private final IfcPersonAndOrganization owningUser;

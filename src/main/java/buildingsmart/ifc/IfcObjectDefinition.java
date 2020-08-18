@@ -140,7 +140,7 @@ public abstract class IfcObjectDefinition extends IfcRoot {
      *
      * @see #addToIsDecomposedBy(IfcRelDecomposes)
      */
-    protected Set<IfcRelDecomposes> getIsDecomposedBy() {
+    public Set<IfcRelDecomposes> getIsDecomposedBy() {
         return isDecomposedBy == null ? new HashSet<>(0) :
                 new HashSet<>(isDecomposedBy);
     }
