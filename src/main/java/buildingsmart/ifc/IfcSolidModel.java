@@ -30,7 +30,7 @@ import lombok.ToString;
  * several different types of solid model representations.
  */
 @EqualsAndHashCode(callSuper = false)
-@ToString(callSuper = true)
+@ToString
 public abstract class IfcSolidModel extends IfcGeometricRepresentationItem
         implements IfcBooleanOperand {
     @Getter

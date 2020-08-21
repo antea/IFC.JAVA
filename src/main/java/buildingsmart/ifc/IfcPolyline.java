@@ -19,6 +19,8 @@
 
 package buildingsmart.ifc;
 
+import java.util.List;
+
 public abstract class IfcPolyline extends IfcBoundedCurve {
-    private IfcCartesianPoint[] Points;
+    private List<IfcCartesianPoint> points;
 }

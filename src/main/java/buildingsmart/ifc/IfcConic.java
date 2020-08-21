@@ -19,6 +19,31 @@
 
 package buildingsmart.ifc;
 
+import buildingsmart.io.Attribute;
+import lombok.*;
+
+/**
+ * A conic (IfcConic) is a planar curve which could be produced by intersecting
+ * a plane with a cone. A conic is defined in terms of its intrinsic geometric
+ * properties rather than being described in terms of other geometry. A conic
+ * class always has a placement coordinate system defined by a two or three
+ * dimensional placement. The parametric representation is defined in terms of
+ * this placement coordinate system.
+ */
+@EqualsAndHashCode(callSuper = false)
+@ToString
 public abstract class IfcConic extends IfcCurve {
-    private IfcAxis2Placement Position;
+    @Getter(AccessLevel.PROTECTED)
+    @Attribute(0)
+    private final IfcAxis2Placement position;
+
+    /**
+     * @param position The location and orientation of the conic. Further
+     *                 details of the interpretation of this attribute are given
+     *                 for the individual subtypes.
+     * @throws NullPointerException If position is null.
+     */
+    public IfcConic(@NonNull IfcAxis2Placement position) {
+        this.position = position;
+    }
 }

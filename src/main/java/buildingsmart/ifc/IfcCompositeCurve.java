@@ -19,9 +19,83 @@
 
 package buildingsmart.ifc;
 
-public abstract class IfcCompositeCurve extends IfcBoundedCurve {
-    private IfcCompositeCurveSegment[] Segments;
-    private boolean SelfIntersect;
-    private int NSegments;
-    private boolean ClosedCurve;
+import buildingsmart.io.Attribute;
+import lombok.EqualsAndHashCode;
+import lombok.NonNull;
+import lombok.ToString;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Stream;
+
+/**
+ * A composite curve (IfcCompositeCurve) is a collection of curves joined
+ * end-to-end. The individual segments of the curve are themselves defined as
+ * composite curve segments. The parameterization of the composite curve is an
+ * accumulation of the parametric ranges of the referenced bounded curves.
+ * <P><U>Informal Propositions</U>:</P>
+ * <OL>
+ * <LI>The SameSense attribute of each segment correctly specifies the
+ * senses of the component curves. When traversed in the direction indicated by
+ * SameSense, the segments shall join end-to-end.</LI>
+ * </OL>
+ */
+@EqualsAndHashCode(callSuper = false)
+@ToString
+public class IfcCompositeCurve extends IfcBoundedCurve {
+    @Attribute(0)
+    private final List<IfcCompositeCurveSegment> segments;
+    @Attribute(1)
+    private final IfcLogical selfIntersect;
+
+    /**
+     * @param segments      The component bounded curves, their transitions and
+     *                      senses. The transition attribute for the last
+     *                      segment defines the transition between the end of
+     *                      the last segment and the start of the first; this
+     *                      transition attribute may take the value
+     *                      discontinuous, which indicates an open curve.
+     * @param selfIntersect Indication of whether the curve intersects itself or
+     *                      not; this is for information only.
+     * @throws NullPointerException     If any of the arguments are null.
+     * @throws IllegalArgumentException If the size of segments is 0, if any
+     *                                  element of segments (except the last
+     *                                  one) has {@code transition ==
+     *                                  DISCONTINUOUS}, if the segments have
+     *                                  different dimensionality.
+     */
+    public IfcCompositeCurve(@NonNull List<IfcCompositeCurveSegment> segments,
+                             @NonNull IfcLogical selfIntersect) {
+        if (segments.size() < 1) {
+            throw new IllegalArgumentException(
+                    "size of segments must be at least 1");
+        }
+        IfcCompositeCurveSegment lastSegment =
+                segments.remove(segments.size() - 1);
+        Stream<IfcCompositeCurveSegment> segmentStream = segments.stream();
+        if (segmentStream.anyMatch(segment -> segment.getTransition() ==
+                IfcTransitionCode.DISCONTINUOUS)) {
+            segments.add(lastSegment);
+            throw new IllegalArgumentException(
+                    "only the last segment can have transition == " +
+                            "DISCONTINUOUS");
+        }
+        if (segmentStream.anyMatch(segment -> segment.getDim() !=
+                lastSegment.getDim())) {
+            segments.add(lastSegment);
+            throw new IllegalArgumentException(
+                    "dimension of all segments must be the same");
+        }
+        segments.add(lastSegment);
+        this.segments = Collections.unmodifiableList(segments);
+        this.selfIntersect = selfIntersect;
+    }
+
+    /**
+     * @return The space dimensionality of this IfcCurve.
+     */
+    @Override
+    public IfcDimensionCount getDim() {
+        return segments.get(0).getDim();
+    }
 }

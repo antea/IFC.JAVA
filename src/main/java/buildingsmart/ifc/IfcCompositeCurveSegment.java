@@ -19,11 +19,68 @@
 
 package buildingsmart.ifc;
 
-public abstract class IfcCompositeCurveSegment
-        extends IfcGeometricRepresentationItem {
-    private IfcTransitionCode Transition;
-    private boolean SameSense;
-    private IfcCurve ParentCurve;
-    private int Dim;
-    private IfcCompositeCurve[] UsingCurves;
+import buildingsmart.io.Attribute;
+import lombok.*;
+
+/**
+ * A composite curve segment (IfcCompositeCurveSegment) is a bounded curve
+ * together with transition information which is used to construct a composite
+ * curve ({@link IfcCompositeCurve}).
+ */
+@EqualsAndHashCode(callSuper = false)
+@ToString
+public class IfcCompositeCurveSegment extends IfcGeometricRepresentationItem {
+    @Getter(AccessLevel.PROTECTED)
+    @Attribute(0)
+    private final IfcTransitionCode transition;
+    @Attribute(1)
+    private final IfcBoolean sameSense;
+    @Attribute(2)
+    private final IfcBoundedCurve parentCurve;
+
+    // derived attributes
+    @Getter(AccessLevel.PROTECTED)
+    @EqualsAndHashCode.Exclude
+    private final IfcDimensionCount dim;
+
+    /**
+     * @param transition  The state of transition (i.e., geometric continuity
+     *                    from the last point of this segment to the first point
+     *                    of the next segment) in a composite curve.
+     * @param sameSense   An indicator of whether or not the sense of the
+     *                    segment agrees with, or opposes, that of the parent
+     *                    curve. If SameSense is false, the point with highest
+     *                    parameter value is taken as the first point of the
+     *                    segment.
+     * @param parentCurve The bounded curve which defines the geometry of the
+     *                    segment.
+     * @throws NullPointerException If any of the arguments are null.
+     */
+    public IfcCompositeCurveSegment(@NonNull IfcTransitionCode transition,
+                                    @NonNull IfcBoolean sameSense,
+                                    @NonNull IfcBoundedCurve parentCurve) {
+        this.transition = transition;
+        this.sameSense = sameSense;
+        this.parentCurve = parentCurve;
+        this.dim = parentCurve.getDim();
+    }
+
+    /**
+     * @param transition  The state of transition (i.e., geometric continuity
+     *                    from the last point of this segment to the first point
+     *                    of the next segment) in a composite curve.
+     * @param sameSense   An indicator of whether or not the sense of the
+     *                    segment agrees with, or opposes, that of the parent
+     *                    curve. If SameSense is false, the point with highest
+     *                    parameter value is taken as the first point of the
+     *                    segment.
+     * @param parentCurve The bounded curve which defines the geometry of the
+     *                    segment.
+     * @throws NullPointerException If any of the arguments are null.
+     */
+    public IfcCompositeCurveSegment(@NonNull IfcTransitionCode transition,
+                                    @NonNull boolean sameSense,
+                                    @NonNull IfcBoundedCurve parentCurve) {
+        this(transition, new IfcBoolean(sameSense), parentCurve);
+    }
 }

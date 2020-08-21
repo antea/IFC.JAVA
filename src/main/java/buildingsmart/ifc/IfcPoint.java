@@ -25,6 +25,6 @@ import lombok.ToString;
  * An point is a location in some real Cartesian coordinate space R<sup>m</sup>,
  * for m = 1, 2 or 3.
  */
-@ToString(callSuper = true)
+@ToString
 public abstract class IfcPoint extends IfcGeometricRepresentationItem
         implements IfcGeometricSetSelect {}

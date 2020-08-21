@@ -19,6 +19,28 @@
 
 package buildingsmart.ifc;
 
-public enum IfcTrimmingPreference {
-    CARTESIAN, PARAMETER, UNSPECIFIED,
+import buildingsmart.io.DefinedType;
+
+/**
+ * This type is used to describe the preferred way of trimming a parametric
+ * curve where the trimming is multiply defined.
+ * <UL>
+ * <LI><B>Cartesian</B> Indicates that trimming by Cartesian point is
+ * preferred.</LI>
+ * <LI><B>Parameter</B> Indicates the preference for the parameter
+ * value.</LI>
+ * <LI><B>Unspecified</B> Indicates that no preference is communicated
+ * .</LI>
+ * </UL>
+ */
+public enum IfcTrimmingPreference implements DefinedType {
+    CARTESIAN, PARAMETER, UNSPECIFIED;
+
+    /**
+     * @return The representation of the Defined Type in an IFC STEP file.
+     */
+    @Override
+    public String serialize() {
+        return "." + name() + ".";
+    }
 }

@@ -19,11 +19,21 @@
 
 package buildingsmart.ifc;
 
+/**
+ * A curve can be envisioned as the path of a point moving in its coordinate
+ * space.
+ * <P><U>Informal proposition:</U></P>
+ * <OL>
+ * <LI>A curve shall be arcwise connected</LI>
+ * <LI>A curve shall have an arc length greater than zero.</LI>
+ * </OL>
+ */
 public abstract class IfcCurve extends IfcGeometricRepresentationItem
         implements IfcGeometricSetSelect {
-    private IfcDimensionCount dim;
-
-    public IfcDimensionCount getDim() {
-        return dim;
-    }
+    /**
+     * @return The space dimensionality of this IfcCurve, defined differently in
+     * IfcCurveDim for all subtypes, i.e. for IfcLine, IfcConic and
+     * IfcBoundedCurve.
+     */
+    public abstract IfcDimensionCount getDim();
 }

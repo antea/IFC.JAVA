@@ -19,5 +19,13 @@
 
 package buildingsmart.ifc;
 
-public abstract class IfcBoundedCurve extends IfcCurve {
-}
+/**
+ * A bounded curve is a curve of finite arc length with identifiable end
+ * points.
+ * <P> <U>Informal propositions</U>:</P>
+ * <OL>
+ * <LI>A bounded curve has finite arc length.</LI>
+ * <LI>A bounded curve has a start point and an end point. </LI>
+ * </OL>
+ */
+public abstract class IfcBoundedCurve extends IfcCurve {}

@@ -46,7 +46,7 @@ import lombok.ToString;
  * </UL>
  */
 @EqualsAndHashCode(callSuper = false)
-@ToString(callSuper = true)
+@ToString
 public class IfcBooleanResult extends IfcGeometricRepresentationItem
         implements IfcCsgSelect, IfcBooleanOperand {
     @Attribute(0)

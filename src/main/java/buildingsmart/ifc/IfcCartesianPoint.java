@@ -36,7 +36,7 @@ import java.util.List;
  */
 @EqualsAndHashCode(callSuper = false)
 @ToString(callSuper = true)
-public class IfcCartesianPoint extends IfcPoint {
+public class IfcCartesianPoint extends IfcPoint implements IfcTrimmingSelect {
     @Getter
     @Attribute(0)
     private final List<IfcLengthMeasure> coordinates;

@@ -19,5 +19,29 @@
 
 package buildingsmart.ifc;
 
+import lombok.NonNull;
+
+import java.util.List;
+
 public abstract class Ifc2DCompositeCurve extends IfcCompositeCurve {
+    /**
+     * @param segments      The component bounded curves, their transitions and
+     *                      senses. The transition attribute for the last
+     *                      segment defines the transition between the end of
+     *                      the last segment and the start of the first; this
+     *                      transition attribute may take the value
+     *                      discontinuous, which indicates an open curve.
+     * @param selfIntersect Indication of whether the curve intersects itself or
+     *                      not; this is for information only.
+     * @throws NullPointerException     If any of the arguments are null.
+     * @throws IllegalArgumentException If the size of segments is 0, if any
+     *                                  element of segments (except the last
+     *                                  one) has {@code transition ==
+     *                                  DISCONTINUOUS}, if the segments have
+     *                                  different dimensionality.
+     */
+    public Ifc2DCompositeCurve(@NonNull List<IfcCompositeCurveSegment> segments,
+                               @NonNull IfcLogical selfIntersect) {
+        super(segments, selfIntersect);
+    }
 }

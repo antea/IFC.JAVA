@@ -19,5 +19,9 @@
 
 package buildingsmart.ifc;
 
-public interface IfcTrimmingSelect {
-}
+/**
+ * This select type identifies the two possible ways of trimming a parametric
+ * curve; by a Cartesian point on the curve, or by a REAL number defining a
+ * parameter value within the parametric range of the curve.
+ */
+public interface IfcTrimmingSelect {}

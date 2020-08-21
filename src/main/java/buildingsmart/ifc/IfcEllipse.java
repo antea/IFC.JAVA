@@ -19,7 +19,19 @@
 
 package buildingsmart.ifc;
 
+import lombok.NonNull;
+
 public abstract class IfcEllipse extends IfcConic {
     private IfcLengthMeasure SemiAxis1;
     private IfcLengthMeasure SemiAxis2;
+
+    /**
+     * @param position The location and orientation of the conic. Further
+     *                 details of the interpretation of this attribute are given
+     *                 for the individual subtypes.
+     * @throws NullPointerException If position is null.
+     */
+    public IfcEllipse(@NonNull IfcAxis2Placement position) {
+        super(position);
+    }
 }

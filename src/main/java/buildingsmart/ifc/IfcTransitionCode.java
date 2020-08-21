@@ -19,6 +19,38 @@
 
 package buildingsmart.ifc;
 
-public enum IfcTransitionCode {
-    DISCONTINUOUS, CONTINUOUS, CONTSAMEGRADIENT, CONTSAMEGRADIENTSAMECURVATURE,
+import buildingsmart.io.DefinedType;
+
+/**
+ * This type conveys the continuity properties of a composite curve or surface.
+ * The continuity referred to is geometric, not parametric continuity. For
+ * example, in ContSameGradient the tangent vectors of successive segments will
+ * have the same direction, but may have different magnitude.
+ * <UL>
+ * <LI><B>Discontinuous</B>: The segments do not join. This is permitted
+ * only at the boundary of the curve or surface to indicate that it is not
+ * closed.
+ * </LI>
+ * <LI><B>Continuous</B>: The segments join but no condition on their
+ * tangents is implied. </LI>
+ * <LI><B>ContSameGradient</B>: The segments join and their tangent
+ * vectors or tangent planes are parallel and have the same direction at the
+ * joint: equality of derivatives is not required. </LI>
+ * <LI><B>ContSameGradientSameCurvature</B>: For a curve, the segments
+ * join, their tangent vectors are parallel and in the same direction and their
+ * curvatures are equal at the joint: equality of derivatives is not required.
+ * For a surface this implies that the principle curvatures are the same and the
+ * principle directions are coincident along the common boundary. </LI>
+ * </UL>
+ */
+public enum IfcTransitionCode implements DefinedType {
+    DISCONTINUOUS, CONTINUOUS, CONTSAMEGRADIENT, CONTSAMEGRADIENTSAMECURVATURE;
+
+    /**
+     * @return The representation of the Defined Type in an IFC STEP file.
+     */
+    @Override
+    public String serialize() {
+        return "." + name() + ".";
+    }
 }

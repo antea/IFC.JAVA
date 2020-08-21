@@ -31,7 +31,7 @@ import lombok.ToString;
  * placement subtypes, gives its orientation.
  */
 @EqualsAndHashCode(callSuper = false)
-@ToString(callSuper = true)
+@ToString
 public abstract class IfcPlacement extends IfcGeometricRepresentationItem {
     @Getter
     @Attribute(0)

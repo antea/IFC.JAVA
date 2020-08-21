@@ -19,6 +19,33 @@
 
 package buildingsmart.ifc;
 
-public class IfcParameterValue implements IfcMeasureValue {
+import buildingsmart.io.DefinedType;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
+/**
+ * A parameter value is the value which specifies the amount of a parameter in
+ * some parameter space.
+ */
+@EqualsAndHashCode
+@ToString
+public class IfcParameterValue
+        implements DefinedType, IfcMeasureValue, IfcTrimmingSelect {
+    private final double value;
+
+    public IfcParameterValue(double value) {
+        if (value == -0d) {
+            this.value = 0d;
+        } else {
+            this.value = value;
+        }
+    }
+
+    /**
+     * @return The representation of the Defined Type in an IFC STEP file.
+     */
+    @Override
+    public String serialize() {
+        return Double.toString(value);
+    }
 }

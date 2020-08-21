@@ -36,7 +36,7 @@ import java.util.List;
  * direction being defined, only the ratios X:Y:Z or X:Y are significant.
  */
 @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
-@ToString(callSuper = true)
+@ToString
 public class IfcDirection extends IfcGeometricRepresentationItem
         implements IfcVectorOrDirection {
     @Getter

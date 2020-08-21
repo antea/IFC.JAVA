@@ -21,10 +21,7 @@ package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
 import buildingsmart.io.Entity;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.ToString;
+import lombok.*;
 
 /**
  * The <i>IfcProfileDef</i> is the supertype of all definitions of standard and
@@ -95,7 +92,7 @@ import lombok.ToString;
 @EqualsAndHashCode(callSuper = false)
 @ToString
 public abstract class IfcProfileDef extends Entity {
-    @Getter
+    @Getter(AccessLevel.PROTECTED)
     @Attribute(0)
     private final IfcProfileTypeEnum profileType;
     @Attribute(1)

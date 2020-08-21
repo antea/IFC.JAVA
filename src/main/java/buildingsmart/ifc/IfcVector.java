@@ -19,8 +19,10 @@
 
 package buildingsmart.ifc;
 
+import buildingsmart.io.Attribute;
 import lombok.Getter;
 import lombok.NonNull;
+import lombok.ToString;
 
 import java.util.List;
 import java.util.Objects;
@@ -29,11 +31,14 @@ import java.util.Objects;
  * The vector is defined in terms of the direction and magnitude of the vector.
  * The value of the magnitude attribute defines the magnitude of the vector.
  */
+@ToString
 public class IfcVector extends IfcGeometricRepresentationItem
         implements IfcVectorOrDirection {
     @Getter
+    @Attribute(0)
     private final IfcDirection orientation;
     @Getter
+    @Attribute(1)
     private final IfcLengthMeasure magnitude;
     //private int dim;
 

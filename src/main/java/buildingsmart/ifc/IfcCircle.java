@@ -19,6 +19,42 @@
 
 package buildingsmart.ifc;
 
-public abstract class IfcCircle extends IfcConic {
-    private IfcLengthMeasure Radius;
+import buildingsmart.io.Attribute;
+import lombok.EqualsAndHashCode;
+import lombok.NonNull;
+import lombok.ToString;
+
+/**
+ * An IfcCircle is defined by a radius and the location and orientation of the
+ * circle. Its center is located in {@code position.location}, and the circle is
+ * placed on the plane defined by {@code position.p[0]} and {@code
+ * position.p[1]}.
+ */
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
+public class IfcCircle extends IfcConic {
+    @Attribute(1)
+    private final IfcPositiveLengthMeasure radius;
+
+    /**
+     * @param position The location and orientation of the conic. Further
+     *                 details of the interpretation of this attribute are given
+     *                 for the individual subtypes.
+     * @param radius   The radius of the circle, which shall be greater than
+     *                 zero.
+     * @throws NullPointerException If any of the arguments are null.
+     */
+    public IfcCircle(@NonNull IfcAxis2Placement position,
+                     @NonNull IfcPositiveLengthMeasure radius) {
+        super(position);
+        this.radius = radius;
+    }
+
+    /**
+     * @return The space dimensionality of this IfcCurve.
+     */
+    @Override
+    public IfcDimensionCount getDim() {
+        return getPosition().getDim();
+    }
 }
