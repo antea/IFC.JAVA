@@ -26,7 +26,6 @@ import lombok.ToString;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Stream;
 
 /**
  * A composite curve (IfcCompositeCurve) is a collection of curves joined
@@ -70,23 +69,20 @@ public class IfcCompositeCurve extends IfcBoundedCurve {
             throw new IllegalArgumentException(
                     "size of segments must be at least 1");
         }
-        IfcCompositeCurveSegment lastSegment =
-                segments.remove(segments.size() - 1);
-        Stream<IfcCompositeCurveSegment> segmentStream = segments.stream();
-        if (segmentStream.anyMatch(segment -> segment.getTransition() ==
-                IfcTransitionCode.DISCONTINUOUS)) {
-            segments.add(lastSegment);
-            throw new IllegalArgumentException(
-                    "only the last segment can have transition == " +
-                            "DISCONTINUOUS");
+        IfcDimensionCount firstSegmentDim = segments.get(0).getDim();
+        for (int i = 0; i < segments.size(); i++) {
+            IfcCompositeCurveSegment current = segments.get(i);
+            if (current.getTransition() == IfcTransitionCode.DISCONTINUOUS &&
+                    i != segments.size() - 1) {
+                throw new IllegalArgumentException(
+                        "only the last segment can have transition == " +
+                                "DISCONTINUOUS");
+            }
+            if (!current.getDim().equals(firstSegmentDim)) {
+                throw new IllegalArgumentException(
+                        "dimension of all segments must be the same");
+            }
         }
-        if (segmentStream.anyMatch(segment -> segment.getDim() !=
-                lastSegment.getDim())) {
-            segments.add(lastSegment);
-            throw new IllegalArgumentException(
-                    "dimension of all segments must be the same");
-        }
-        segments.add(lastSegment);
         this.segments = Collections.unmodifiableList(segments);
         this.selfIntersect = selfIntersect;
     }

@@ -25,7 +25,7 @@
     <groupId>com.anteash</groupId>
     <artifactId>IFC.JAVA</artifactId>
     <packaging>jar</packaging>
-    <version>0.1-SNAPSHOT</version>
+    <version>0.0.1-SNAPSHOT</version>
     <licenses>
         <license>
             <name>Apache License, Version 2.0</name>
