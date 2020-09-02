@@ -20,7 +20,6 @@ package buildingsmart.io;
 
 import buildingsmart.ifc.*;
 import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.FileNotFoundException;
@@ -28,45 +27,20 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 public class SerializerTest {
     private static final String FILE_PATH = "./ifc-out/freecad-cylinder.ifc";
-    private static IfcProject validIfcProject;
+    private static final IfcProject validIfcProject;
 
-    /**
-     * @param filePath The path to the IFC file of which to retrieve the DATA
-     *                 section.
-     * @return The DATA section of the IFC file.
-     *
-     * @throws IOException       If an I/O error occurs reading from the file or
-     *                           a malformed or unmappable byte sequence is
-     *                           read.
-     * @throws SecurityException In the case of the default provider, and a
-     *                           security manager is installed, the {@link
-     *                           SecurityManager#checkRead(String) checkRead}
-     *                           method is invoked to check read access to the
-     *                           file.
-     */
-    private static String getDataSection(String filePath) throws IOException {
-        List<String> lines = Files.readAllLines(Paths.get(filePath),
-                                                StandardCharsets.US_ASCII);
-        StringBuilder dataSection = new StringBuilder();
-        for (int i = 6; i < lines.size() - 1; i++) {
-            // DATA section starts at line 6 (if the first one is line 0) and
-            // ends at the penultimate line
-            dataSection.append(lines.get(i)).append("\n");
-        }
-        return dataSection.toString();
-    }
-
-    /**
+    /*
      * Initializes field validIfcProject to an {@link IfcProject} object
      * containing the representation of a cylinder, ready to be serialized in an
      * IFC STEP file.
      */
-    @BeforeClass
-    public static void setUp() {
+    static {
         IfcPerson person =
                 IfcPerson.builder().givenName(new IfcLabel("")).build();
         IfcOrganization organization =
@@ -186,6 +160,41 @@ public class SerializerTest {
                 .description(new IfcText("")).objectPlacement(wallPlacement)
                 .representation(productDefinitionShape).build();
 
+        //creating a trimmed curve to test serialization of Sets with an
+        // interface as type parameter (trim1 and trim2)
+        IfcAxis2Placement3D circumferencePlacement =
+                new IfcAxis2Placement3D(new IfcCartesianPoint(0, 0, 0),
+                                        new IfcDirection(1, 0, 0),
+                                        new IfcDirection(0, 1, 0));
+        IfcCircle circumference = new IfcCircle(circumferencePlacement,
+                                                new IfcPositiveLengthMeasure(0.5));
+        Set<IfcTrimmingSelect> trim1 =
+                Collections.singleton(new IfcParameterValue(0));
+        Set<IfcTrimmingSelect> trim2 =
+                Collections.singleton(new IfcParameterValue(Math.PI / 2));
+        IfcTrimmedCurve trimmedCurve = new IfcTrimmedCurve(circumference,
+                                                           trim1,
+                                                           trim2,
+                                                           new IfcBoolean(true),
+                                                           IfcTrimmingPreference.PARAMETER);
+        IfcLocalPlacement curvePlacement =
+                new IfcLocalPlacement(null, axis2Placement3D);
+        IfcShapeRepresentation curveShapeRepresentation =
+                new IfcShapeRepresentation(geometricRepresentationContext,
+                                           new IfcLabel("Body"),
+                                           new IfcLabel("GeometricCurveSet"),
+                                           trimmedCurve);
+        IfcProductDefinitionShape curveProductDefinitionShape =
+                new IfcProductDefinitionShape(null,
+                                              null,
+                                              curveShapeRepresentation);
+        IfcProxy curveProxy = IfcProxy.builder()
+                .globalId(new IfcGloballyUniqueId("2KcxKeVfqHwhb6N5zd1234"))
+                .ownerHistory(ownerHistory).name(new IfcLabel("TrimmedCurve"))
+                .description(new IfcText("")).objectPlacement(curvePlacement)
+                .representation(curveProductDefinitionShape)
+                .proxyType(IfcObjectTypeEnum.PRODUCT).build();
+
         IfcSite site = IfcSite.builder()
                 .globalId(new IfcGloballyUniqueId("2KdG88VfqHwfDCN5zdz5Bw"))
                 .ownerHistory(ownerHistory).name(new IfcLabel("Default Site"))
@@ -225,8 +234,34 @@ public class SerializerTest {
                         .name(new IfcLabel("UnassignedObjectsLink"))
                         .description(new IfcText(""))
                         .relatingStructure(buildingStorey).relatedElement(wall)
-                        .build();
+                        .relatedElement(curveProxy).build();
         validIfcProject = ifcProject;
+    }
+
+    /**
+     * @param filePath The path to the IFC file of which to retrieve the DATA
+     *                 section.
+     * @return The DATA section of the IFC file.
+     *
+     * @throws IOException       If an I/O error occurs reading from the file or
+     *                           a malformed or unmappable byte sequence is
+     *                           read.
+     * @throws SecurityException In the case of the default provider, and a
+     *                           security manager is installed, the {@link
+     *                           SecurityManager#checkRead(String) checkRead}
+     *                           method is invoked to check read access to the
+     *                           file.
+     */
+    private static String getDataSection(String filePath) throws IOException {
+        List<String> lines = Files.readAllLines(Paths.get(filePath),
+                                                StandardCharsets.US_ASCII);
+        StringBuilder dataSection = new StringBuilder();
+        for (int i = 6; i < lines.size() - 1; i++) {
+            // DATA section starts at line 6 (if the first one is line 0) and
+            // ends at the penultimate line
+            dataSection.append(lines.get(i)).append("\n");
+        }
+        return dataSection.toString();
     }
 
     @Test
@@ -239,7 +274,7 @@ public class SerializerTest {
                         "#4=IFCAPPLICATION(#2,'0.18 build 4 (GitTag)'," +
                         "'FreeCAD'," + "'118df2cf_ed21_438e_a41');\n" +
                         "#5=IFCOWNERHISTORY(#3,#4,$,.ADDED.,$,#3,#4," +
-                        "1586902585);" + "\n" +
+                        "1586902585);\n" +
                         "#6=IFCCARTESIANPOINT((0.0,0.0,0.0));\n" +
                         "#7=IFCDIRECTION((0.0,0.0,1.0));\n" +
                         "#8=IFCDIRECTION((1.0,0.0,0.0));\n" +
@@ -258,9 +293,9 @@ public class SerializerTest {
                         "'DEGREE'," + "#17);\n" +
                         "#19=IFCUNITASSIGNMENT((#12,#13,#14,#18));\n" +
                         "#20=IFCPROJECT('51f413ef_7964_4d38_b19',#5," +
-                        "'Unnamed',$," + "$,$," + "$,(#11),#19);\n" +
+                        "'Unnamed',$,$,$," + "$,(#11),#19);\n" +
                         "#21=IFCSITE('2KdG88VfqHwfDCN5zdz5Bw',#5,'Default " +
-                        "Site'," + "'',$," + "$,$,$,.ELEMENT.,$,$,$,$,$);\n" +
+                        "Site','',$," + "$,$,$,.ELEMENT.,$,$,$,$,$);\n" +
                         "#22=IFCBUILDING('2KdHMSVfqHwfiJN5zdz5Bw',#5,'Default" +
                         " " + "Building','',$,$,$,$,.ELEMENT.,$,$,$);\n" +
                         "#23=IFCBUILDINGSTOREY('2KdHMUVfqHwg4XN5zdz5Bw',#5," +
@@ -276,23 +311,32 @@ public class SerializerTest {
                         "#31=IFCEXTRUDEDAREASOLID(#28,#30,#7,0.1);\n" +
                         "#32=IFCCOLOURRGB($,1.0,1.0,1.0);\n" +
                         "#33=IFCSURFACESTYLERENDERING(#32,$,$,$,$,$,$,$,.FLAT" +
-                        ".);" + "\n" +
-                        "#34=IFCSURFACESTYLE($,.BOTH.,(#33));\n" +
+                        ".);\n" + "#34=IFCSURFACESTYLE($,.BOTH.,(#33));\n" +
                         "#35=IFCPRESENTATIONSTYLEASSIGNMENT((#34));\n" +
                         "#36=IFCSTYLEDITEM(#31,(#35),$);\n" +
                         "#37=IFCSHAPEREPRESENTATION(#11,'Body','SweptSolid'," +
-                        "(#31)" + ");\n" +
+                        "(#31));\n" +
                         "#38=IFCPRODUCTDEFINITIONSHAPE($,$,(#37));\n" +
                         "#39=IFCWALL('2KcxKeVfqHwhb6N5zdz5Bw',#5,'Wall','',$," +
-                        "#24," + "#38," + "$);\n" +
-                        "#40=IFCRELCONTAINEDINSPATIALSTRUCTURE" +
+                        "#24,#38," + "$);\n" +
+                        "#40=IFCAXIS2PLACEMENT3D(#6,#8,#10);\n" +
+                        "#41=IFCCIRCLE(#40,0.5);\n" +
+                        "#42=IFCTRIMMEDCURVE(#41,(IFCPARAMETERVALUE(0.0))," +
+                        "(IFCPARAMETERVALUE(1.5707963267948966)),.T.," +
+                        ".PARAMETER.);\n" +
+                        "#43=IFCSHAPEREPRESENTATION(#11,'Body'," +
+                        "'GeometricCurveSet'," + "(#42));\n" +
+                        "#44=IFCPRODUCTDEFINITIONSHAPE($,$,(#43));\n" +
+                        "#45=IFCPROXY('2KcxKeVfqHwhb6N5zd1234',#5," +
+                        "'TrimmedCurve','',$,#24,#44,.PRODUCT.,$);\n" +
+                        "#46=IFCRELCONTAINEDINSPATIALSTRUCTURE" +
                         "('2KdIamVfqHwf$aN5zdz5Bw',#5," +
-                        "'UnassignedObjectsLink',''," + "(#39),#23);\n" +
-                        "#41=IFCRELAGGREGATES('2KdHMVVfqHwhFMN5zdz5Bw',#5," +
+                        "'UnassignedObjectsLink',''," + "(#39,#45),#23);\n" +
+                        "#47=IFCRELAGGREGATES('2KdHMVVfqHwhFMN5zdz5Bw',#5," +
                         "'DefaultStoreyLink','',#22,(#23));\n" +
-                        "#42=IFCRELAGGREGATES('2KdHMTVfqHwePlN5zdz5Bw',#5," +
+                        "#48=IFCRELAGGREGATES('2KdHMTVfqHwePlN5zdz5Bw',#5," +
                         "'SiteLink'," + "'',#21,(#22));\n" +
-                        "#43=IFCRELAGGREGATES('2KdG89VfqHweGDN5zdz5Bw',#5," +
+                        "#49=IFCRELAGGREGATES('2KdG89VfqHweGDN5zdz5Bw',#5," +
                         "'ProjectLink','',#20,(#21));\n" + "ENDSEC;\n";
         Serializer serializer = new Serializer();
 

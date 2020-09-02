@@ -26,6 +26,7 @@ import lombok.ToString;
 
 import java.io.*;
 import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -128,6 +129,43 @@ public class Serializer {
     }
 
     /**
+     * Creates a File in the given filePath. If some of the directories in the
+     * filePath do not exist, this method creates them.
+     *
+     * @param filePath The path to the file to create, or to an already existing
+     *                 file.
+     * @throws NullPointerException     If {@code filePath} is null.
+     * @throws IllegalArgumentException If {@code filePath} is empty.
+     * @throws SecurityException        If a security manager exists and its
+     *                                  <code>{@link java.lang.SecurityManager#checkRead(java.lang.String)}</code>
+     *                                  method does not permit verification of
+     *                                  the existence of the named directory and
+     *                                  all necessary parent directories; or if
+     *                                  the
+     *                                  <code>{@link java.lang.SecurityManager#checkWrite(java.lang.String)}</code>
+     *                                  method does not permit the named
+     *                                  directory and all necessary parent
+     *                                  directories to be created
+     */
+    public static File createFile(@NonNull String filePath) {
+        String directoryPath = null;
+        if (filePath.length() > 0) {
+            int endIndex = filePath.lastIndexOf(File.separatorChar);
+            if (endIndex != -1) {
+                directoryPath = filePath.substring(0, endIndex);
+            }
+        } else {
+            throw new IllegalArgumentException("filePath is empty");
+        }
+        if (directoryPath != null) {
+            //noinspection ResultOfMethodCallIgnored
+            new File(directoryPath).mkdirs();
+        }
+
+        return new File(filePath);
+    }
+
+    /**
      * @param entity An Entity object.
      * @return The serialization of the entity in an IFC STEP file. This method
      * will also call {@link Serializer#serialize(Object)} for each attribute of
@@ -182,63 +220,52 @@ public class Serializer {
                         return "*";
                     }
                     field.setAccessible(true);
+                    Object attribute = null;
                     try {
-                        Object attribute = field.get(entity);
-                        if (field.getType().isInterface() &&
-                                (attribute instanceof DefinedType ||
-                                        attribute instanceof Enum)) {
-                            return attribute.getClass().getSimpleName()
-                                    .toUpperCase() + "(" +
-                                    serialize(attribute) + ")";
-                        }
-                        return serialize(attribute);
+                        attribute = field.get(entity);
                     } catch (IllegalAccessException e) {
-                        // this should never happen, since field was set as
-                        // accessible
+                        // this cannot happen as field was set accessible
                         e.printStackTrace();
                     }
-                    return "";
+                    if (field.getType().isInterface() &&
+                            (attribute instanceof DefinedType ||
+                                    attribute instanceof Enum)) {
+                        return attribute.getClass().getSimpleName()
+                                .toUpperCase() + "(" + serialize(attribute) +
+                                ")";
+                    }
+                    if (field.getGenericType() instanceof ParameterizedType &&
+                            attribute instanceof Collection) {
+                        ParameterizedType collType =
+                                (ParameterizedType) field.getGenericType();
+                        Class<?> typeParameter =
+                                (Class<?>) collType.getActualTypeArguments()[0];
+                        if (typeParameter.isInterface()) {
+                            @SuppressWarnings({"unchecked", "rawtypes"})
+                            Stream<String> elements =
+                                    ((Collection) attribute).stream()
+                                            .map(element -> {
+                                                if (element instanceof DefinedType ||
+                                                        element instanceof Enum) {
+                                                    return element.getClass()
+                                                            .getSimpleName()
+                                                            .toUpperCase() +
+                                                            "(" +
+                                                            serialize(element) +
+                                                            ")";
+                                                }
+                                                return serialize(element);
+                                            });
+                            return elements
+                                    .collect(Collectors.joining(",", "(", ")"));
+                        }
+
+                    }
+                    return serialize(attribute);
                 }).collect(Collectors.joining(",",
                                               entity.getClass().getSimpleName()
                                                       .toUpperCase() + "(",
                                               ");\n"));
-    }
-
-    /**
-     * Creates a File in the given filePath. If some of the directories in the
-     * filePath do not exist, this method creates them.
-     *
-     * @param filePath The path to the file to create, or to an already existing
-     *                 file.
-     * @throws NullPointerException     If {@code filePath} is null.
-     * @throws IllegalArgumentException If {@code filePath} is empty.
-     * @throws SecurityException        If a security manager exists and its
-     *                                  <code>{@link java.lang.SecurityManager#checkRead(java.lang.String)}</code>
-     *                                  method does not permit verification of
-     *                                  the existence of the named directory and
-     *                                  all necessary parent directories; or if
-     *                                  the
-     *                                  <code>{@link java.lang.SecurityManager#checkWrite(java.lang.String)}</code>
-     *                                  method does not permit the named
-     *                                  directory and all necessary parent
-     *                                  directories to be created
-     */
-    public static File createFile(@NonNull String filePath) {
-        String directoryPath = null;
-        if (filePath.length() > 0) {
-            int endIndex = filePath.lastIndexOf(File.separatorChar);
-            if (endIndex != -1) {
-                directoryPath = filePath.substring(0, endIndex);
-            }
-        } else {
-            throw new IllegalArgumentException("filePath is empty");
-        }
-        if (directoryPath != null) {
-            //noinspection ResultOfMethodCallIgnored
-            new File(directoryPath).mkdirs();
-        }
-
-        return new File(filePath);
     }
 
     /**
