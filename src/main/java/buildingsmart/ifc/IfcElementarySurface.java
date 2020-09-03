@@ -19,7 +19,28 @@
 
 package buildingsmart.ifc;
 
+import buildingsmart.io.Attribute;
+import lombok.EqualsAndHashCode;
+import lombok.NonNull;
+import lombok.ToString;
+
+/**
+ * An elementary surface (IfcElementarySurface) is a simple analytic surface
+ * with defined parametric representation.
+ */
+@EqualsAndHashCode(callSuper = false)
+@ToString
 public abstract class IfcElementarySurface extends IfcSurface {
-    private IfcAxis2Placement3D Position;
-    private int Dim;
+    @Attribute(0)
+    protected final IfcAxis2Placement3D position;
+
+    /**
+     * @param position The position and orientation of the surface. This
+     *                 attribute is used in the definition of the
+     *                 parameterization of the surface.
+     * @throws NullPointerException If position is null.
+     */
+    public IfcElementarySurface(@NonNull IfcAxis2Placement3D position) {
+        this.position = position;
+    }
 }

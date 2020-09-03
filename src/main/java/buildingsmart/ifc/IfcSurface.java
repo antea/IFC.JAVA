@@ -19,6 +19,14 @@
 
 package buildingsmart.ifc;
 
+/**
+ * A surface can be envisioned as a set of connected points in 3-dimensional
+ * space which is always locally 2-dimensional, but need not be a manifold.
+ * <P><U>Informal proposition</U>:</P>
+ * <OL>
+ * <LI>A surface has non zero area.</LI>
+ * <LI>A surface is arcwise connected.</LI>
+ * </OL>
+ */
 public abstract class IfcSurface extends IfcGeometricRepresentationItem
-        implements IfcGeometricSetSelect {
-}
+        implements IfcGeometricSetSelect {}

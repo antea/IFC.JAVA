@@ -19,12 +19,77 @@
 
 package buildingsmart.ifc;
 
-import lombok.Getter;
+import buildingsmart.io.Attribute;
+import lombok.EqualsAndHashCode;
+import lombok.NonNull;
+import lombok.ToString;
 
-public abstract class IfcHalfSpaceSolid extends IfcGeometricRepresentationItem
+/**
+ * A half space solid is defined by the half space which is the regular subset
+ * of the domain which lies on one side of an unbounded surface. The side of the
+ * surface which is in the half space is determined by the surface normal and
+ * the agreement flag. If the agreement flag is TRUE, then the subset is the one
+ * the normal points away from. If the agreement flag is FALSE, then the subset
+ * is the one the normal points into. For a valid half space solid the surface
+ * shall divide the domain into exactly two subsets. Also, within the domain the
+ * surface shall be manifold and all surface normals shall point into the same
+ * subset. </P>
+ * <BLOCKQUOTE>
+ * <P><FONT SIZE="-1">NOTE A half space is not a subtype of solid model
+ * (<I>IfcSolidModel</I>), half space solids are only useful as operands in
+ * Boolean expressions.</FONT></P></BLOCKQUOTE>
+ * <P><U>Informal propositions:</U></P>
+ * <OL>
+ * <LI>The base surface shall divide the domain into exactly two subsets
+ * . If the half space solid is of subtype boxed half space
+ * (<I>IfcBoxedHalfSpace</I>), the domain in question is that of the attribute
+ * enclosure. In all other cases the domain is all of space and the base surface
+ * shall be unbounded .</LI>
+ * <LI>The base surface shall be an unbounded surface (subtype of
+ * <I>IfcElementarySurface</I>).</LI>
+ * </OL>
+ */
+@EqualsAndHashCode(callSuper = false)
+@ToString
+public class IfcHalfSpaceSolid extends IfcGeometricRepresentationItem
         implements IfcBooleanOperand {
-    private IfcSurface baseSurface;
-    private boolean agreementFlag;
-    @Getter
-    private IfcDimensionCount dim;
+    // derived attribute
+    private static final IfcDimensionCount DIM = new IfcDimensionCount(3);
+    @Attribute(0)
+    private final IfcSurface baseSurface;
+    @Attribute(1)
+    private final IfcBoolean agreementFlag;
+
+    /**
+     * @param baseSurface   Surface defining side of half space.
+     * @param agreementFlag The agreement flag is TRUE if the normal to the
+     *                      BaseSurface points away from the material of the
+     *                      IfcHalfSpaceSolid. Otherwise it is FALSE.
+     * @throws NullPointerException If any of the arguments are null.
+     */
+    public IfcHalfSpaceSolid(@NonNull IfcSurface baseSurface,
+                             @NonNull IfcBoolean agreementFlag) {
+        this.baseSurface = baseSurface;
+        this.agreementFlag = agreementFlag;
+    }
+
+    /**
+     * @param baseSurface   Surface defining side of half space.
+     * @param agreementFlag The agreement flag is TRUE if the normal to the
+     *                      BaseSurface points away from the material of the
+     *                      IfcHalfSpaceSolid. Otherwise it is FALSE.
+     * @throws NullPointerException If any of the arguments are null.
+     */
+    public IfcHalfSpaceSolid(@NonNull IfcSurface baseSurface,
+                             @NonNull boolean agreementFlag) {
+        this(baseSurface, new IfcBoolean(agreementFlag));
+    }
+
+    /**
+     * @return The space dimensionality of this class, it is always 3.
+     */
+    @Override
+    public IfcDimensionCount getDim() {
+        return DIM;
+    }
 }

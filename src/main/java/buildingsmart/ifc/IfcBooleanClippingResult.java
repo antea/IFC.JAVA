@@ -19,9 +19,21 @@
 
 package buildingsmart.ifc;
 
+import lombok.EqualsAndHashCode;
 import lombok.NonNull;
+import lombok.ToString;
 
-public abstract class IfcBooleanClippingResult extends IfcBooleanResult {
+/**
+ * A clipping result is defined as a special subtype of the general Boolean
+ * result (<I>IfcBooleanResult</I>). It constrains the operands and the operator
+ * of the Boolean result.</P>
+ * <P>A clipping result is the Boolean difference between a solid (restricted
+ * to swept area solid) and a half space solid, whereas more than one difference
+ * operation can be applied to the Boolean result.</P>
+ */
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
+public class IfcBooleanClippingResult extends IfcBooleanResult {
     /**
      * @param operator      The Boolean operator used in the operation to create
      *                      the result.
@@ -31,11 +43,34 @@ public abstract class IfcBooleanClippingResult extends IfcBooleanResult {
      * @throws NullPointerException     If any of the arguments is null.
      * @throws IllegalArgumentException If the dimensionality of {@code
      *                                  firstOperand} is not the same as {@code
-     *                                  secondOperand}.
+     *                                  secondOperand}; if {@code firstOperand}
+     *                                  is not an instance of IfcSweptAreaSolid
+     *                                  or IfcBooleanResult; if the {@code
+     *                                  secondOperand} is not an instance of
+     *                                  IfcHalfSpaceSolid; if {@code operator}
+     *                                  is not DIFFERENCE.
      */
     public IfcBooleanClippingResult(@NonNull IfcBooleanOperator operator,
                                     @NonNull IfcBooleanOperand firstOperand,
                                     @NonNull IfcBooleanOperand secondOperand) {
         super(operator, firstOperand, secondOperand);
+        if (!(firstOperand instanceof IfcSweptAreaSolid ||
+                firstOperand instanceof IfcBooleanResult)) {
+            throw new IllegalArgumentException(
+                    "The first operand of the Boolean clipping operation " +
+                            "shall be either an IfcSweptAreaSolid or (in case" +
+                            " of more than one clipping) an IfcBooleanResult.");
+        }
+        if (!(secondOperand instanceof IfcHalfSpaceSolid)) {
+            throw new IllegalArgumentException(
+                    "The second operand of the Boolean clipping operation " +
+                            "shall be an IfcHalfSpaceSolid.");
+        }
+        if (operator != IfcBooleanOperator.DIFFERENCE) {
+            throw new IllegalArgumentException(
+                    "The Boolean operator for clipping is always " +
+                            "\"Difference\".");
+        }
+
     }
 }

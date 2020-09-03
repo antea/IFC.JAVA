@@ -19,5 +19,44 @@
 
 package buildingsmart.ifc;
 
-public abstract class IfcPlane extends IfcElementarySurface {
+import lombok.EqualsAndHashCode;
+import lombok.NonNull;
+import lombok.ToString;
+
+/**
+ * A plane is an unbounded surface with a constant normal. A plane is defined by
+ * a point on the plane and the normal direction to the plane. The data is to be
+ * interpreted as follows:
+ * </P>
+ * <BLOCKQUOTE>
+ * <BLOCKQUOTE>
+ * <PRE>
+ * C = SELF\IfcElementarySurface.Position.Location
+ * x = SELF\IfcElementarySurface.Position.P[1]
+ * y = SELF\IfcElementarySurface.Position.P[2]
+ * z = SELF\IfcElementarySurface.Position.P[3] =&gt; normal to plane
+ * </PRE></BLOCKQUOTE></BLOCKQUOTE>
+ */
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
+public class IfcPlane extends IfcElementarySurface {
+
+    /**
+     * @param position The position and orientation of the surface. This
+     *                 attribute is used in the definition of the
+     *                 parameterization of the surface.
+     * @throws NullPointerException If position is null.
+     */
+    public IfcPlane(@NonNull IfcAxis2Placement3D position) {
+        super(position);
+    }
+
+    /**
+     * @return The space dimensionality of this class, derived from the
+     * dimensionality of the position.
+     */
+    @Override
+    public IfcDimensionCount getDim() {
+        return position.getDim();
+    }
 }

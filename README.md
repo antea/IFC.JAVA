@@ -70,4 +70,7 @@ recursion when calling them;
 + if a class has any derived attributes that are also present in its superclass
 and weren't derived attributes in the superclass, annotate the class with
 `@DerivedAttributes` and specify the names of attributes from the superclass
-that became derived in the class.
+that became derived in the class;
++ if an entity has attributes that are EXPRESS simple data types, use the
+appropriate DefinedType instead of Java primitives, otherwise they won't be
+serialized.

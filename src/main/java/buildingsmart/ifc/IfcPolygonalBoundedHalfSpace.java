@@ -19,7 +19,21 @@
 
 package buildingsmart.ifc;
 
+import lombok.NonNull;
+
 public abstract class IfcPolygonalBoundedHalfSpace extends IfcHalfSpaceSolid {
     private IfcAxis2Placement3D Position;
     private IfcBoundedCurve PolygonalBoundary;
+
+    /**
+     * @param baseSurface   Surface defining side of half space.
+     * @param agreementFlag The agreement flag is TRUE if the normal to the
+     *                      BaseSurface points away from the material of the
+     *                      IfcHalfSpaceSolid. Otherwise it is FALSE.
+     * @throws NullPointerException If any of the arguments are null.
+     */
+    public IfcPolygonalBoundedHalfSpace(@NonNull IfcSurface baseSurface,
+                                        @NonNull IfcBoolean agreementFlag) {
+        super(baseSurface, agreementFlag);
+    }
 }

@@ -20,7 +20,6 @@
 package buildingsmart.ifc;
 
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
 import lombok.ToString;
 
 /**
@@ -33,7 +32,14 @@ import lombok.ToString;
 @ToString
 public abstract class IfcSolidModel extends IfcGeometricRepresentationItem
         implements IfcBooleanOperand {
-    @Getter
-    private final IfcDimensionCount dim = new IfcDimensionCount(3);
     // derived attribute
+    private static final IfcDimensionCount DIM = new IfcDimensionCount(3);
+
+    /**
+     * @return The space dimensionality of this class, it is always 3.
+     */
+    @Override
+    public IfcDimensionCount getDim() {
+        return DIM;
+    }
 }

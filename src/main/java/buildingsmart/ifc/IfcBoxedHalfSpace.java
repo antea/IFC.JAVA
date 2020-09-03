@@ -19,6 +19,20 @@
 
 package buildingsmart.ifc;
 
+import lombok.NonNull;
+
 public abstract class IfcBoxedHalfSpace extends IfcHalfSpaceSolid {
     private IfcBoundingBox Enclosure;
+
+    /**
+     * @param baseSurface   Surface defining side of half space.
+     * @param agreementFlag The agreement flag is TRUE if the normal to the
+     *                      BaseSurface points away from the material of the
+     *                      IfcHalfSpaceSolid. Otherwise it is FALSE.
+     * @throws NullPointerException If any of the arguments are null.
+     */
+    public IfcBoxedHalfSpace(@NonNull IfcSurface baseSurface,
+                             @NonNull IfcBoolean agreementFlag) {
+        super(baseSurface, agreementFlag);
+    }
 }
