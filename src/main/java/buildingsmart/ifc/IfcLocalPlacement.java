@@ -43,6 +43,7 @@ import lombok.ToString;
 @EqualsAndHashCode(callSuper = false)
 @ToString
 public class IfcLocalPlacement extends IfcObjectPlacement {
+    @Getter
     @Attribute(0)
     private final IfcObjectPlacement placementRelTo;
     @Getter
@@ -78,4 +79,5 @@ public class IfcLocalPlacement extends IfcObjectPlacement {
         this.placementRelTo = placementRelTo;
         this.relativePlacement = relativePlacement;
     }
+
 }
