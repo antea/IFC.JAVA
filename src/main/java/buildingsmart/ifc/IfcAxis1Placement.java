@@ -62,4 +62,33 @@ public class IfcAxis1Placement extends IfcPlacement {
         this.z = axis == null ? new IfcDirection(0, 0, 1) :
                 Functions.ifcNormalise(axis);
     }
+
+    /**
+     * Creates an IfcAxis1Placement with the local Z axis defaulting to (0, 0,
+     * 1), the actual value of axis will be null.
+     *
+     * @param location The geometric position of a reference point, such as the
+     *                 center of a circle, of the item to be located. Cannot be
+     *                 null
+     * @throws NullPointerException     If location is null.
+     * @throws IllegalArgumentException If location is not three-dimensional.
+     */
+    public IfcAxis1Placement(@NonNull IfcCartesianPoint location) {
+        this(location, null);
+    }
+
+    /**
+     * Creates an IfcAxis1Placement with the local Z axis defaulting to (0, 0,
+     * 1), the actual value of axis will be null.
+     *
+     * @param locationCoordinates The coordinates of the geometric position of a
+     *                            reference point, such as the center of a
+     *                            circle, of the item to be located. Cannot be
+     *                            null
+     * @throws NullPointerException     If location is null.
+     * @throws IllegalArgumentException If location is not three-dimensional.
+     */
+    public IfcAxis1Placement(@NonNull double... locationCoordinates) {
+        this(new IfcCartesianPoint(locationCoordinates), null);
+    }
 }

@@ -124,4 +124,32 @@ public class IfcAxis2Placement3D extends IfcPlacement
         p = Collections
                 .unmodifiableList(Functions.ifcBuildAxes(axis, refDirection));
     }
+
+    /**
+     * Creates an IfcAxis2Placement3D at the given location, Axis and
+     * RefDirection will be taken from the geometric coordinate system.
+     *
+     * @param location The location of the three mutually perpendicular axes.
+     *                 Cannot be null.
+     * @throws NullPointerException     If location is null.
+     * @throws IllegalArgumentException If the dimensionality of location is not
+     *                                  3.
+     */
+    public IfcAxis2Placement3D(@NonNull IfcCartesianPoint location) {
+        this(location, null, null);
+    }
+
+    /**
+     * Creates an IfcAxis2Placement3D at the given location, Axis and
+     * RefDirection will be taken from the geometric coordinate system.
+     *
+     * @param locationCoordinates The coordinates of the location of the three
+     *                            mutually perpendicular axes. Cannot be null.
+     * @throws NullPointerException     If location is null.
+     * @throws IllegalArgumentException If the dimensionality of location is not
+     *                                  3.
+     */
+    public IfcAxis2Placement3D(@NonNull double... locationCoordinates) {
+        this(new IfcCartesianPoint(locationCoordinates), null, null);
+    }
 }

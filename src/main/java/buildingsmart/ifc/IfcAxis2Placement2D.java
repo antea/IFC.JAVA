@@ -77,4 +77,33 @@ public class IfcAxis2Placement2D extends IfcPlacement
         this.refDirection = refDirection;
         p = Functions.ifcBuild2Axes(refDirection);
     }
+
+    /**
+     * Creates an IfcAxis2Placement2D with RefDirection defaulting to (1, 0)
+     * (field refDirection will actually be null).
+     *
+     * @param location The geometric position of a reference point, such as the
+     *                 center of a circle, of the item to be located. Cannot be
+     *                 null
+     * @throws NullPointerException     If location is null.
+     * @throws IllegalArgumentException If location is not bidimensional.
+     */
+    public IfcAxis2Placement2D(@NonNull IfcCartesianPoint location) {
+        this(location, null);
+    }
+
+    /**
+     * Creates an IfcAxis2Placement2D with RefDirection defaulting to (1, 0)
+     * (field refDirection will actually be null).
+     *
+     * @param locationCoordinates The coordinates of the geometric position of a
+     *                            reference point, such as the center of a
+     *                            circle, of the item to be located. Cannot be
+     *                            null
+     * @throws NullPointerException     If location is null.
+     * @throws IllegalArgumentException If location is not bidimensional.
+     */
+    public IfcAxis2Placement2D(@NonNull double... locationCoordinates) {
+        this(new IfcCartesianPoint(locationCoordinates), null);
+    }
 }
