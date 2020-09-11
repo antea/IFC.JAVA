@@ -68,13 +68,15 @@ public class IfcArbitraryClosedProfileDef extends IfcProfileDef {
      *                    profile should be referenced by a swept area solid.
      * @param profileName Name of the profile type according to some standard
      *                    profile table.
+     * @param outerCurve  Bounded curve, defining the outer boundaries of the
+     *                    arbitrary profile.
      * @throws NullPointerException     If {@code profileType} or {@code
      *                                  outerCurve} are null.
      * @throws IllegalArgumentException If the dimensionality of {@code
      *                                  outerCurve} is not 2, if {@code
-     *                                  outerCurve} is not of type IfcLine, if
-     *                                  {@code outerCurve} is not of type
-     *                                  IfcCurve.
+     *                                  outerCurve} is of type IfcLine, if
+     *                                  {@code outerCurve} is of type
+     *                                  IfcOffsetCurve2D.
      */
     public IfcArbitraryClosedProfileDef(@NonNull IfcProfileTypeEnum profileType,
                                         IfcLabel profileName,
