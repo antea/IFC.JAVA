@@ -19,14 +19,18 @@
 
 package buildingsmart.ifc;
 
+import lombok.NonNull;
+
 public class IfcRoundedRectangleProfileDef extends IfcRectangleProfileDef {
     private final IfcLengthMeasure RoundingRadius;
 
-    public IfcRoundedRectangleProfileDef(IfcProfileTypeEnum profileType,
+    public IfcRoundedRectangleProfileDef(@NonNull IfcProfileTypeEnum profileType,
                                          IfcLabel profileName,
-                                         IfcAxis2Placement2D position,
-                                         IfcLengthMeasure XDim, IfcLengthMeasure roundingRadius) {
-        super(profileType, profileName, position, XDim);
+                                         @NonNull IfcAxis2Placement2D position,
+                                         @NonNull IfcPositiveLengthMeasure xDim,
+                                         @NonNull IfcPositiveLengthMeasure yDim,
+                                         IfcLengthMeasure roundingRadius) {
+        super(profileType, profileName, position, xDim, yDim);
         RoundingRadius = roundingRadius;
     }
 }

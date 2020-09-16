@@ -19,18 +19,37 @@
 
 package buildingsmart.ifc;
 
+import lombok.NonNull;
+
 public class IfcAsymmetricIShapeProfileDef extends IfcIShapeProfileDef {
     private final IfcLengthMeasure TopFlangeWidth;
-    private IfcLengthMeasure TopFlangeThickness;
-    private IfcLengthMeasure TopFlangeFilletRadius;
-    private IfcLengthMeasure CentreOfGravityInY;
+    private final IfcLengthMeasure TopFlangeThickness;
+    private final IfcLengthMeasure TopFlangeFilletRadius;
+    private final IfcLengthMeasure CentreOfGravityInY;
 
-    public IfcAsymmetricIShapeProfileDef(IfcProfileTypeEnum profileType,
+    public IfcAsymmetricIShapeProfileDef(@NonNull IfcProfileTypeEnum profileType,
                                          IfcLabel profileName,
-                                         IfcAxis2Placement2D position,
-                                         IfcLengthMeasure overallWidth,
-                                         IfcLengthMeasure topFlangeWidth) {
-        super(profileType, profileName, position, overallWidth);
+                                         @NonNull IfcAxis2Placement2D position,
+                                         @NonNull IfcPositiveLengthMeasure overallWidth,
+                                         @NonNull IfcPositiveLengthMeasure overallDepth,
+                                         @NonNull IfcPositiveLengthMeasure webThickness,
+                                         @NonNull IfcPositiveLengthMeasure flangeThickness,
+                                         IfcPositiveLengthMeasure filletRadius,
+                                         IfcLengthMeasure topFlangeWidth,
+                                         IfcLengthMeasure topFlangeThickness,
+                                         IfcLengthMeasure topFlangeFilletRadius,
+                                         IfcLengthMeasure centreOfGravityInY) {
+        super(profileType,
+              profileName,
+              position,
+              overallWidth,
+              overallDepth,
+              webThickness,
+              flangeThickness,
+              filletRadius);
         TopFlangeWidth = topFlangeWidth;
+        TopFlangeThickness = topFlangeThickness;
+        TopFlangeFilletRadius = topFlangeFilletRadius;
+        CentreOfGravityInY = centreOfGravityInY;
     }
 }
