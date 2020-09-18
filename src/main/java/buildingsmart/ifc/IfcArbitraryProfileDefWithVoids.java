@@ -27,7 +27,6 @@ import lombok.ToString;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Stream;
 
 /**
  * <p>The <i>IfcArbitraryProfileDefWithVoids</i> defines an arbitrary closed
@@ -116,13 +115,12 @@ public class IfcArbitraryProfileDefWithVoids
         if (profileType != IfcProfileTypeEnum.AREA) {
             throw new IllegalArgumentException("profileType must be AREA");
         }
-        Stream<IfcCurve> innerCurvesStream = innerCurves.stream();
-        if (innerCurvesStream
+        if (innerCurves.stream()
                 .anyMatch(curve -> curve.getDim().getValue() != 2)) {
             throw new IllegalArgumentException(
                     "dimensionality of curves in innerCurves must be 2");
         }
-        if (innerCurvesStream.anyMatch(curve -> curve instanceof IfcLine)) {
+        if (innerCurves.stream().anyMatch(curve -> curve instanceof IfcLine)) {
             throw new IllegalArgumentException(
                     "none of the innerCurves can be of type IfcLine");
         }
