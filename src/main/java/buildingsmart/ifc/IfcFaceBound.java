@@ -19,7 +19,34 @@
 
 package buildingsmart.ifc;
 
-public abstract class IfcFaceBound extends IfcTopologicalRepresentationItem {
-    private IfcLoop Bound;
-    private boolean Orientation;
+import buildingsmart.io.Attribute;
+import lombok.EqualsAndHashCode;
+import lombok.NonNull;
+import lombok.ToString;
+
+/**
+ * A face bound is a loop which is intended to be used for bounding a face.
+ */
+@EqualsAndHashCode(callSuper = false)
+@ToString
+public class IfcFaceBound extends IfcTopologicalRepresentationItem {
+    @Attribute(0)
+    private final IfcLoop bound;
+    @Attribute(1)
+    private final IfcBoolean orientation;
+
+    /**
+     * @param bound       The loop which will be used as a face boundary.
+     * @param orientation This indicated whether (TRUE) or not (FALSE) the loop
+     *                    has the same sense when used to bound the face as when
+     *                    first defined. If sense is FALSE the senses of all its
+     *                    component oriented edges are implicitly reversed when
+     *                    used in the face.
+     * @throws NullPointerException If any of the arguments are {@code null}.
+     */
+    public IfcFaceBound(@NonNull IfcLoop bound,
+                        @NonNull IfcBoolean orientation) {
+        this.bound = bound;
+        this.orientation = orientation;
+    }
 }

@@ -33,8 +33,8 @@ import lombok.ToString;
  * resulting solid has a through hole, or, an internal void when the directrix
  * forms a close curve.
  */
-@EqualsAndHashCode(callSuper = true)
-@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = false)
+@ToString
 public class IfcSweptDiskSolid extends IfcSolidModel {
     @Attribute(0)
     private final IfcCurve directrix;

@@ -20,6 +20,7 @@
 package buildingsmart.ifc;
 
 import buildingsmart.io.Entity;
+import lombok.EqualsAndHashCode;
 
 /**
  * Abstract supertype for the special types defining the object coordinate
@@ -46,6 +47,7 @@ import buildingsmart.io.Entity;
  * shall share the same instance of <i>IfcObjectPlacement</i>.&nbsp;</li>
  * </ol>
  */
+@EqualsAndHashCode(callSuper = false)
 public abstract class IfcObjectPlacement extends Entity {
     //private IfcProduct[] PlacesObject;
     //private IfcLocalPlacement[] ReferencedByPlacements;

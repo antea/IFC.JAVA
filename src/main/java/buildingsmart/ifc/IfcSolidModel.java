@@ -19,17 +19,12 @@
 
 package buildingsmart.ifc;
 
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-
 /**
  * A solid model is a complete representation of the nominal shape of a product
  * such that all points in the interior are connected. Any point can be
  * classified as being inside, outside, or on the boundary of a solid. There are
  * several different types of solid model representations.
  */
-@EqualsAndHashCode(callSuper = false)
-@ToString
 public abstract class IfcSolidModel extends IfcGeometricRepresentationItem
         implements IfcBooleanOperand {
     // derived attribute

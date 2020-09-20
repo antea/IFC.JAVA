@@ -19,6 +19,19 @@
 
 package buildingsmart.ifc;
 
+import lombok.NonNull;
+
 public abstract class IfcFacetedBrepWithVoids extends IfcManifoldSolidBrep {
     private IfcClosedShell[] Voids;
+
+    /**
+     * @param outer A closed shell defining the exterior boundary of the
+     *              solid. The
+     *              shell normal shall point away from the interior of the
+     *              solid.
+     * @throws NullPointerException If {@code outer} is {@code null}.
+     */
+    public IfcFacetedBrepWithVoids(@NonNull IfcClosedShell outer) {
+        super(outer);
+    }
 }

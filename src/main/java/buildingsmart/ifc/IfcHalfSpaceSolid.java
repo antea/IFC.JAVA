@@ -74,18 +74,6 @@ public class IfcHalfSpaceSolid extends IfcGeometricRepresentationItem
     }
 
     /**
-     * @param baseSurface   Surface defining side of half space.
-     * @param agreementFlag The agreement flag is TRUE if the normal to the
-     *                      BaseSurface points away from the material of the
-     *                      IfcHalfSpaceSolid. Otherwise it is FALSE.
-     * @throws NullPointerException If any of the arguments are null.
-     */
-    public IfcHalfSpaceSolid(@NonNull IfcSurface baseSurface,
-                             @NonNull boolean agreementFlag) {
-        this(baseSurface, new IfcBoolean(agreementFlag));
-    }
-
-    /**
      * @return The space dimensionality of this class, it is always 3.
      */
     @Override

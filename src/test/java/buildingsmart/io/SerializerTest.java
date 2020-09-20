@@ -175,7 +175,7 @@ public class SerializerTest {
         IfcTrimmedCurve trimmedCurve = new IfcTrimmedCurve(circumference,
                                                            trim1,
                                                            trim2,
-                                                           new IfcBoolean(true),
+                                                           IfcBoolean.T,
                                                            IfcTrimmingPreference.PARAMETER);
         IfcLocalPlacement curvePlacement =
                 new IfcLocalPlacement(null, axis2Placement3D);

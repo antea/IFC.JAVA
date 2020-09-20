@@ -108,15 +108,14 @@ public class IfcDimensionalExponents extends Entity {
      *                                         substance base quantity.
      * @param luminousIntensityExponent        The power of the luminous
      *                                         intensity base quantity.
-     * @throws NullPointerException If any of the parameters are null.
      */
-    public IfcDimensionalExponents(@NonNull long lengthExponent,
-                                   @NonNull long massExponent,
-                                   @NonNull long timeExponent,
-                                   @NonNull long electricCurrentExponent,
-                                   @NonNull long thermodynamicTemperatureExponent,
-                                   @NonNull long amountOfSubstanceExponent,
-                                   @NonNull long luminousIntensityExponent) {
+    public IfcDimensionalExponents(long lengthExponent,
+                                   long massExponent,
+                                   long timeExponent,
+                                   long electricCurrentExponent,
+                                   long thermodynamicTemperatureExponent,
+                                   long amountOfSubstanceExponent,
+                                   long luminousIntensityExponent) {
         this(new IfcInteger(lengthExponent),
              new IfcInteger(massExponent),
              new IfcInteger(timeExponent),

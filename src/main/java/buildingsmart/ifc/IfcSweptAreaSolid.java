@@ -32,8 +32,8 @@ import lombok.ToString;
  * for the case of a revolved area solid with angle equal to 2 p (or 360
  * degrees).
  */
-@EqualsAndHashCode(callSuper = true)
-@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = false)
+@ToString
 public abstract class IfcSweptAreaSolid extends IfcSolidModel {
     @Attribute(0)
     private final IfcProfileDef sweptArea;

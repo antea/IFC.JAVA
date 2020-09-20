@@ -45,8 +45,8 @@ import lombok.ToString;
  * intermediate results during the construction process. </LI>
  * </UL>
  */
-@EqualsAndHashCode(callSuper = true)
-@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = false)
+@ToString
 public class IfcCsgSolid extends IfcSolidModel {
     private IfcCsgSelect treeRootExpression;
 }

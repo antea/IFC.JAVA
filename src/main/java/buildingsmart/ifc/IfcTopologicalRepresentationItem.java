@@ -19,6 +19,9 @@
 
 package buildingsmart.ifc;
 
+/**
+ * The topological representation item is the supertype for all the topological
+ * representation items in the geometry resource.
+ */
 public abstract class IfcTopologicalRepresentationItem
-        extends IfcRepresentationItem {
-}
+        extends IfcRepresentationItem {}

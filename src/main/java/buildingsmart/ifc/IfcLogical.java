@@ -20,26 +20,15 @@
 package buildingsmart.ifc;
 
 import buildingsmart.io.DefinedType;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
 
-@AllArgsConstructor
-@EqualsAndHashCode
-@ToString
-public class IfcLogical implements DefinedType, IfcSimpleValue {
-    private final Boolean value;
+public enum IfcLogical implements DefinedType, IfcSimpleValue {
+    T, F, U;
 
     /**
      * @return The representation of the Defined Type in an IFC STEP file.
      */
     @Override
     public String serialize() {
-        if (value == null) {
-            return ".U.";
-        } else if (value) {
-            return ".T.";
-        }
-        return ".F.";
+        return "." + name() + ".";
     }
 }
