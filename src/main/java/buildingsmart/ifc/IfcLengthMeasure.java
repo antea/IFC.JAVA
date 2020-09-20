@@ -22,7 +22,6 @@ package buildingsmart.ifc;
 import buildingsmart.io.DefinedType;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.ToString;
 
 /**
  * A length measure is the value of a distance.
@@ -30,7 +29,6 @@ import lombok.ToString;
  * Usually measured in millimeters (mm).
  */
 @EqualsAndHashCode
-@ToString
 public class IfcLengthMeasure implements DefinedType, IfcMeasureValue {
     @Getter
     private final double value;
@@ -51,6 +49,11 @@ public class IfcLengthMeasure implements DefinedType, IfcMeasureValue {
      */
     @Override
     public String serialize() {
+        return Double.toString(value);
+    }
+
+    @Override
+    public String toString() {
         return Double.toString(value);
     }
 }

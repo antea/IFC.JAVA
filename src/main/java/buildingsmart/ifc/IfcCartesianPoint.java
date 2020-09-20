@@ -23,7 +23,6 @@ import buildingsmart.io.Attribute;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NonNull;
-import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -35,13 +34,11 @@ import java.util.List;
  * entity is defined in a two or three dimensional space.
  */
 @EqualsAndHashCode(callSuper = false)
-@ToString(callSuper = true)
 public class IfcCartesianPoint extends IfcPoint implements IfcTrimmingSelect {
     @Getter
     @Attribute(0)
     private final List<IfcLengthMeasure> coordinates;
     @EqualsAndHashCode.Exclude
-    @ToString.Exclude
     private final IfcDimensionCount dim; // derived attribute
 
     /**
@@ -95,5 +92,10 @@ public class IfcCartesianPoint extends IfcPoint implements IfcTrimmingSelect {
      */
     public IfcDimensionCount getDim() {
         return dim;
+    }
+
+    @Override
+    public String toString() {
+        return "IfcCartesianPoint(" + coordinates + ')';
     }
 }
