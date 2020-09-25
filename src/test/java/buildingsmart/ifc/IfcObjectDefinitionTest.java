@@ -86,7 +86,7 @@ public class IfcObjectDefinitionTest {
                         relatedObject1, relatedObject2);
 
         relatingObject.addToIsDecomposedBy(rel);
-        Set<IfcRelDecomposes> expectedIsDecomposedBy = new HashSet<>();
+        Set<IfcRelDecomposes> expectedIsDecomposedBy = new HashSet<>(2, 1);
         expectedIsDecomposedBy.add(rel);
 
         Assert.assertEquals(expectedIsDecomposedBy,
@@ -175,7 +175,7 @@ public class IfcObjectDefinitionTest {
                         relatedObject2, relatedObject3);
 
         relatingObject1.addToHasAssociations(rel);
-        Set<IfcRelAssociates> expectedHasAssociations = new HashSet<>();
+        Set<IfcRelAssociates> expectedHasAssociations = new HashSet<>(2, 1);
         expectedHasAssociations.add(rel);
 
         Assert.assertEquals(expectedHasAssociations,

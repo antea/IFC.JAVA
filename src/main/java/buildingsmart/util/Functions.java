@@ -20,9 +20,9 @@ package buildingsmart.util;
 
 import buildingsmart.ifc.*;
 import lombok.NonNull;
-import sun.nio.cs.UTF_32;
 
 import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
 import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -409,7 +409,8 @@ public class Functions {
      */
     public static String formatForStepFile(@NonNull String unformatted) {
         String escaped = unformatted.replace("\\", "\\\\").replace("'", "\\'");
-        ByteBuffer utf32Bytes = ByteBuffer.wrap(escaped.getBytes(new UTF_32()));
+        ByteBuffer utf32Bytes =
+                ByteBuffer.wrap(escaped.getBytes(Charset.forName("UTF-32")));
         return IntStream.range(0, utf32Bytes.capacity() / Integer.BYTES)
                 .map(i -> utf32Bytes.getInt(i * Integer.BYTES))
                 .mapToObj(codePoint -> {

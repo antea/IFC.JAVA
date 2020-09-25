@@ -90,7 +90,7 @@ public class IfcSpatialStructureElementTest {
 
         spatialStructureElement.addToContainsElements(rel);
         Set<IfcRelContainedInSpatialStructure> expectedContainsElements =
-                new HashSet<>();
+                new HashSet<>(2, 1);
         expectedContainsElements.add(rel);
 
         Assert.assertEquals(expectedContainsElements,
