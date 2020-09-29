@@ -24,7 +24,6 @@ import buildingsmart.util.Functions;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NonNull;
-import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -36,7 +35,6 @@ import java.util.List;
  * direction being defined, only the ratios X:Y:Z or X:Y are significant.
  */
 @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
-@ToString
 public class IfcDirection extends IfcGeometricRepresentationItem
         implements IfcVectorOrDirection {
     @Getter
@@ -103,5 +101,12 @@ public class IfcDirection extends IfcGeometricRepresentationItem
         IfcDirection normalised = (Functions.ifcNormalise(this));
         this.normalisedDirectionRatios = normalised == null ? null :
                 Collections.unmodifiableList(normalised.directionRatios);
+    }
+
+    @Override
+    public String toString() {
+        return "IfcDirection(directionRatios=" + directionRatios +
+                ", normalisedDirectionRatios=" + normalisedDirectionRatios +
+                ")";
     }
 }

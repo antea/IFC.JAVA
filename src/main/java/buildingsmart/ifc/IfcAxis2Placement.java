@@ -32,4 +32,10 @@ public interface IfcAxis2Placement {
      * dimensionality of the location.
      */
     IfcDimensionCount getDim();
+
+    /**
+     * @return The geometric position of a reference point, such as the center
+     * of a circle, of the item to be located.
+     */
+    IfcCartesianPoint getLocation();
 }
