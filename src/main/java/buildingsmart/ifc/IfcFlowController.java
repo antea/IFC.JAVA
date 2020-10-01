@@ -19,15 +19,120 @@
 
 package buildingsmart.ifc;
 
+import lombok.Builder;
+import lombok.NonNull;
+import lombok.ToString;
+
+/**
+ * <p>
+ * The distribution flow element <i>IfcFlowController</i> defines the occurrence
+ * of elements of a distribution system that are used to regulate flow through a
+ * distribution system (e.g., damper, valve, switch, relay, etc.). Its type is
+ * defined by
+ * <i>IfcFlowControllerType</i> or its subtypes.</p>
+ * p><u><b>Property Set Use Definition</b></u>:</p> p>The property sets relating
+ * to this entity are defined by the i>IfcPropertySet</i> and attached by the
+ * i>IfcRelDefinesByProperties</i> elationship. It is accessible by the inverse
+ * <i>IsDefinedBy</i> elationship. he following property set definitions
+ * specific to this entity are part f this IFC release: /p>
+ *    <ul>
+ * <li><a href="../../psd/IfcSharedBldgServiceElements/Pset_DistributionFlowElementCommon.xml"
+ *     target=SOURCE>Pset_DistributionFlowElementCommon</a>: common property
+ *     set for
+ *     distribution flow element occurrences </li>
+ *       <li><a href="../../psd/IfcSharedBldgServiceElements/Pset_FlowControllerDamper.xml"
+ *         target="SOURCE">Pset_FlowControllerDamper</a>: property set for
+ *         damper
+ *         flow controller occurrences
+ *       </li>
+ *       <li><a href="../../psd/IfcSharedBldgServiceElements/Pset_FlowControllerFlowMeter.xml"
+ *         target="SOURCE">Pset_FlowControllerFlowMeter</a>: property set
+ *         for flowmeter
+ *         flow controller occurrences
+ *       </li>
+ *    </ul>
+ * <p><u>Geometry Use Definitions</u></p>
+ * <p>The geometric representation of <i>IfcFlowController</i> is given
+ *    by the <i>IfcProductDefinitionShape</i>, allowing multiple geometric
+ *    representations. Included are:</p>
+ * <p><b>Local Placement</b></p>
+ * <p>The use of local placement is defined at the supertype
+ *    <i>IfcDistributionFlowElement</i>.</p>
+ * <p><b>Standard Geometric Representation</b></p>
+ * <p>The use of Standard Geometric Representations is defined at the
+ * supertype
+ *    <i>IfcDistributionFlowElement</i>.</p>
+ */
+@ToString(callSuper = true)
 public class IfcFlowController extends IfcDistributionFlowElement {
-    public IfcFlowController(IfcGloballyUniqueId globalId,
-                             IfcOwnerHistory ownerHistory, IfcLabel name,
-                             IfcText description, IfcLabel objectType,
+    /**
+     * Creates a new IfcFlowController, using the provided globalId.
+     *
+     * @param globalId        Assignment of a globally unique identifier within
+     *                        the entire software world.
+     * @param ownerHistory    Assignment of the information about the current
+     *                        ownership of that object, including owning actor,
+     *                        application, local identification and information
+     *                        captured about the recent changes of the object,
+     *                        NOTE: only the last modification in stored.
+     * @param name            Optional name for use by the participating
+     *                        software systems or users. For some subtypes of
+     *                        IfcRoot the insertion of the Name attribute may be
+     *                        required . This would be enforced by a where
+     *                        rule.
+     * @param description     Optional description, provided for exchanging
+     *                        informative comments.
+     * @param objectType      The type denotes a particular type that indicates
+     *                        the object further. The use has to be established
+     *                        at the level of instantiable subtypes. In
+     *                        particular it holds the user defined type, if the
+     *                        enumeration of the attribute PredefinedType is set
+     *                        to USERDEFINED.
+     * @param objectPlacement Placement of the product in space, the placement
+     *                        can either be absolute (relative to the world
+     *                        coordinate system), relative (relative to the
+     *                        object placement of another product), or
+     *                        constraint (e.g. relative to grid axes). It is
+     *                        determined by the various subtypes of
+     *                        IfcObjectPlacement, which includes the axis
+     *                        placement information to determine the
+     *                        transformation for the object coordinate system.
+     * @param representation  Reference to the representations of the product,
+     *                        being either a representation
+     *                        (IfcProductRepresentation)
+     *                        or as a special case a shape representations
+     *                        (IfcProductDefinitionShape). The product
+     *                        definition shape provides for multiple geometric
+     *                        representations of the shape property of the
+     *                        object within the same object coordinate system,
+     *                        defined by the object placement.
+     * @param tag             The tag (or label) identifier at the particular
+     *                        instance of a product, e.g. the serial number, or
+     *                        the position number. It is the identifier at the
+     *                        occurrence level.
+     * @throws NullPointerException     If globalId or ownerHistory are null.
+     * @throws IllegalArgumentException If globalId was used in another instance
+     *                                  of this class; if representation is not
+     *                                  null and objectPlacement is, while
+     *                                  representation is an instance of
+     *                                  IfcProductDefinitionShape.
+     */
+    @Builder(builderMethodName = "flowControllerBuilder")
+    public IfcFlowController(@NonNull IfcGloballyUniqueId globalId,
+                             @NonNull IfcOwnerHistory ownerHistory,
+                             IfcLabel name,
+                             IfcText description,
+                             IfcLabel objectType,
                              IfcObjectPlacement objectPlacement,
                              IfcProductRepresentation representation,
-                             IfcIdentifier tag,
-                             IfcRelFlowControlElements[] hasControlElements) {
-        super(globalId, ownerHistory, name, description, objectType,
-                objectPlacement, representation, tag, hasControlElements);
+                             IfcIdentifier tag) {
+        super(globalId,
+              ownerHistory,
+              name,
+              description,
+              objectType,
+              objectPlacement,
+              representation,
+              tag);
     }
 }
