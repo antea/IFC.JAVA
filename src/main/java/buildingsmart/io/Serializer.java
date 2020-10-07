@@ -36,9 +36,9 @@ import java.util.stream.Stream;
 @ToString
 public class Serializer {
 
-    private final Map<Entity, Long> serializedEntitiesToIds;
+    private final Map<Entity, Integer> serializedEntitiesToIds;
     private Writer fileWriter;
-    private long idCounter;
+    private int idCounter;
 
     public Serializer() {
         serializedEntitiesToIds = new HashMap<>();
@@ -230,6 +230,7 @@ public class Serializer {
                     if (field.getType().isInterface() &&
                             (attribute instanceof DefinedType ||
                                     attribute instanceof Enum)) {
+                        // serialization of attributes that are Select Types
                         return attribute.getClass().getSimpleName()
                                 .toUpperCase() + "(" + serialize(attribute) +
                                 ")";
@@ -247,6 +248,9 @@ public class Serializer {
                                             .map(element -> {
                                                 if (element instanceof DefinedType ||
                                                         element instanceof Enum) {
+                                                    // serialization of
+                                                    // elements of Sets and
+                                                    // Lists of Select Types
                                                     return element.getClass()
                                                             .getSimpleName()
                                                             .toUpperCase() +
@@ -498,7 +502,7 @@ public class Serializer {
         Entity entity = (Entity) obj;
         // if obj is neither an DefinedType nor a Collection (List or
         // Set), then it must be an Entity
-        Long entityId = serializedEntitiesToIds.get(entity);
+        Integer entityId = serializedEntitiesToIds.get(entity);
         if (entityId != null) {
             return "#" + entityId;
         }
