@@ -26,34 +26,35 @@ entities referenced by that inverse relationship must be serialized after
 
 ##Contributing
 
-To fix broken Entities and Defined Types:
+To fix broken Entities, Defined Types and Enums:
 + extend `Entity` or implement `DefinedType`, depending on what the class
 represents;
 + if you're fixing an Entity make sure that the type of the attributes is the
 one defined in the IFC specification and annotate them with `@Attribute`; keep
-in mind that derived attributes are not supposed to be serialized and so
-generally there's no need to have them in the Java class, however sometimes they
-might be useful in `equals()` and `hashCode()` (for example, in
-`IfcAxis2Placement3D` derived attribute `P` is used in `equals()` and
-`hashCode()` to correctly compare instances of the class that have different
-`Axis` and `RefDirection` but actually represent the same three axes);
+in mind that derived attributes are not supposed to be serialized and generally
+there's no need to have them in the Java class, however sometimes they might be
+useful in `equals()` and `hashCode()` (for example, in `IfcAxis2Placement3D`
+derived attribute `P` is used in `equals()` and `hashCode()` to correctly
+compare instances of the class that have different `Axis` and `RefDirection` but
+actually represent the same three axes);
 + if any of the attributes are Select Types, make sure that the corresponding
 interface in `buildingsmart.ifc` is implemented by all the types or entities
 listed in the Select Type's specification;
-+ if you're fixing an Entity which has any inverse relationships, check if the
-referenced Entity would always be serialized even if the current class did not
-contain a reference to it (for example, let's say we have only one `IfcPerson`
-and only one `IfcPersonAndOrganization` referenced in our entire `IfcProject`.
-Entity `IfcPerson` has an inverse relationship that references each
-`IfcPersonAndOrganization` the person is in. However, there's no need to have
-that inverse relationship in the `IfcPerson` Java class, since `IfcProject`
-contains reference `owningUser` to the `IfcPersonAndOrganization`). If that's
-the case, you can avoid annotating the related field with
-`@InverseRelationship`. Otherwise, you should add the annotation, and make sure
-that the value of the field is updated when the referenced Entity gets a
-reference to the current Entity (for example, when an `IfcRelDecomposes` is
-created, the inverse relationships of `relatingObject` and `relatedObjects` are
-updated);
++ if you're fixing an Entity which has any inverse relationships, you might want
+to check if the referenced Entity would always be serialized even if the current
+class did not contain a reference to it (for example, let's say that in most use
+cases we have only one `IfcPerson` and only one `IfcPersonAndOrganization`
+referenced in our entire `IfcProject`. Entity `IfcPerson` has an inverse
+relationship that references each `IfcPersonAndOrganization` the person is in.
+However, there's no need to have that inverse relationship in the `IfcPerson`
+Java class, since `IfcProject` contains reference `owningUser` to the
+`IfcPersonAndOrganization`). If that's the case, you can avoid creating and
+annotating the related field with `@InverseRelationship`, but doing it wouldn't
+cause issues.
+Otherwise, you should add the annotation, and make sure that the value of the
+field is updated when the referenced Entity gets a reference to the current
+Entity (for example, when an `IfcRelDecomposes` is created, the inverse
+relationships of `relatingObject` and `relatedObjects` are updated);
 + add a constructor that checks for null values when attributes are not
 optional, you should use Lombok's `@NonNull`;
 + in the constructor, add checks for all the constraints in the EXPRESS
@@ -63,10 +64,10 @@ inverse relationships are needed to check those constraints, add them and
 annotate them;
 + if some function is called in the EXPRESS specification, check if it's already
 implemented in `buildingsmart.util.Functions`, otherwise add it in that class;
-+ implement `equals()`, `hashCode()` and `toString()` (you should use Lombok
-annotations), calling the superclass' methods if they exist. Do not check
-inverse relationships in any of these methods, or you'll probably get infinite
-recursion when calling them;
++ implement `equals()`, `hashCode()` and `toString()` (in most cases Lombok
+annotations are fine), calling the superclass' methods if they exist. Do not
+check inverse relationships in any of these methods, or you'll probably get
+infinite recursion when calling them;
 + if a class has any derived attributes that are also present in its superclass
 and weren't derived attributes in the superclass, annotate the class with
 `@DerivedAttributes` and specify the names of attributes from the superclass
