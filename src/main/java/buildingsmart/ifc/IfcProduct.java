@@ -1,6 +1,7 @@
 /*
  * Copyright (C) 2019 Pieter Pauwels, Ghent University
  * Modifications Copyright (C) 2020 Giovanni Velludo
+ * Modifications Copyright (C) 2020 Antea S.r.l.
  *
  * This file is part of IFC.JAVA.
  *
@@ -20,6 +21,8 @@
 package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
+import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NonNull;
 import lombok.ToString;
 
@@ -66,6 +69,7 @@ import lombok.ToString;
 public abstract class IfcProduct extends IfcObject {
     @Attribute(5)
     private final IfcObjectPlacement objectPlacement;
+    @Getter(AccessLevel.PROTECTED)
     @Attribute(6)
     private final IfcProductRepresentation representation;
 

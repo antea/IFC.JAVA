@@ -1,6 +1,7 @@
 /*
  * Copyright (C) 2019 Pieter Pauwels, Ghent University
  * Modifications Copyright (C) 2020 Giovanni Velludo
+ * Modifications Copyright (C) 2020 Antea S.r.l.
  *
  * This file is part of IFC.JAVA.
  *
@@ -25,6 +26,7 @@ import lombok.NonNull;
 import lombok.ToString;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -220,6 +222,7 @@ public class IfcShapeRepresentation extends IfcShapeModel {
         this(contextOfItems,
              representationIdentifier,
              representationType,
-             new HashSet<>(Arrays.asList(items)));
+             items.length == 1 ? Collections.singleton(items[0]) :
+                     new HashSet<>(Arrays.asList(items)));
     }
 }
