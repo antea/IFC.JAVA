@@ -19,7 +19,7 @@
 
 package buildingsmart.ifc;
 
-public class IfcCurveStyleFontAndScaling {
+public class IfcCurveStyleFontAndScaling implements IfcCurveFontOrScaledCurveFontSelect {
     private String Name;
     private IfcCurveStyleFontSelect CurveFont;
     private IfcRatioMeasure CurveFontScaling;

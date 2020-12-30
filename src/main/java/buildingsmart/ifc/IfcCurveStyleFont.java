@@ -19,7 +19,7 @@
 
 package buildingsmart.ifc;
 
-public class IfcCurveStyleFont {
+public class IfcCurveStyleFont implements IfcCurveStyleFontSelect{
     private String Name;
     private IfcCurveStyleFontPattern[] PatternList;
 }

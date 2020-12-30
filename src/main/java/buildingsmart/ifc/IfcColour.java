@@ -19,5 +19,7 @@
 
 package buildingsmart.ifc;
 
-public interface IfcColour {
-}
+/**
+ * The colour entity defines a basic appearance of elements which shall be visualized in a picture.
+ */
+public interface IfcColour {}

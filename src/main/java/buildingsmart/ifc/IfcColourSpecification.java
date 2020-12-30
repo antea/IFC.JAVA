@@ -30,7 +30,7 @@ import lombok.ToString;
  */
 @EqualsAndHashCode(callSuper = false)
 @ToString
-public abstract class IfcColourSpecification extends Entity {
+public abstract class IfcColourSpecification extends Entity implements IfcColour {
     @Attribute(0)
     private final IfcLabel name;
 

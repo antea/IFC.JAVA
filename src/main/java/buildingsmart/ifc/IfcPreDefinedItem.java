@@ -19,6 +19,35 @@
 
 package buildingsmart.ifc;
 
-public class IfcPreDefinedItem {
-    private String Name;
+import buildingsmart.io.Attribute;
+import buildingsmart.io.Entity;
+import lombok.EqualsAndHashCode;
+import lombok.NonNull;
+import lombok.ToString;
+
+/**
+ * <p>: A pre defined item is
+ * a qualified name given to a style, font, etc., which is determined within the data exchange specification by
+ * convention on using the <i>Name</i> attribute value (in contrary to externally defined items, which are agreed by an
+ * external source).</p>
+ * <blockquote>
+ * <small>NOTE&nbsp; The
+ * convention on using the <i>Name</i> value is defined at the subtypes of <i>IfcPreDefinedItem</i> and is part of the
+ * specification. </small></blockquote>
+ */
+@EqualsAndHashCode(callSuper = false)
+@ToString
+public class IfcPreDefinedItem extends Entity {
+
+    @Attribute(0)
+    private final IfcLabel name;
+
+    /**
+     * @param name The string by which the pre defined item is identified. Allowable values for the string are declared
+     *             at the level of subtypes.
+     * @throws NullPointerException If {@code name} is {@code null}.
+     */
+    public IfcPreDefinedItem(@NonNull IfcLabel name) {
+        this.name = name;
+    }
 }

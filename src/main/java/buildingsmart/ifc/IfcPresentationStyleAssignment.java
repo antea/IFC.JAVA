@@ -26,12 +26,13 @@ import lombok.NonNull;
 import lombok.ToString;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
 /**
- * The presentation style assignment is a set of styles which are assigned to
- * styled items for the purpose of presenting these styled items.
+ * The presentation style assignment is a set of styles which are assigned to styled items for the purpose of presenting
+ * these styled items.
  */
 @EqualsAndHashCode(callSuper = false)
 @ToString
@@ -40,30 +41,30 @@ public class IfcPresentationStyleAssignment extends Entity {
     private final Set<IfcPresentationStyleSelect> styles;
 
     /**
-     * @param styles A set of presentation styles that are assigned to styled
-     *               items.
+     * @param styles A set of presentation styles that are assigned to styled items.
      * @throws NullPointerException     If styles is null.
      * @throws IllegalArgumentException If styles' size is lower than 1.
      */
     public IfcPresentationStyleAssignment(@NonNull Set<IfcPresentationStyleSelect> styles) {
         if (styles.size() < 1) {
-            throw new IllegalArgumentException(
-                    "size of syles must be at least 1");
+            throw new IllegalArgumentException("size of syles must be at least 1");
         }
         this.styles = styles;
     }
 
     /**
-     * @param styles A set of presentation styles that are assigned to styled
-     *               items.
+     * @param styles A set of presentation styles that are assigned to styled items.
      * @throws NullPointerException     If styles is null.
      * @throws IllegalArgumentException If the size of styles is lower than 1.
      */
     public IfcPresentationStyleAssignment(@NonNull IfcPresentationStyleSelect... styles) {
         if (styles.length < 1) {
-            throw new IllegalArgumentException(
-                    "size of syles must be at least 1");
+            throw new IllegalArgumentException("size of syles must be at least 1");
         }
         this.styles = new HashSet<>(Arrays.asList(styles));
+    }
+
+    public Set<IfcPresentationStyleSelect> getStyles() {
+        return Collections.unmodifiableSet(styles);
     }
 }

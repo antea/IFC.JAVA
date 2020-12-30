@@ -19,5 +19,8 @@
 
 package buildingsmart.ifc;
 
-public interface IfcCurveFontOrScaledCurveFontSelect {
-}
+/**
+ * The curve font or scaled curve font select is a selection of either a curve font style select (being either a
+ * predefined curve font or an explicitly defined curve font) or a curve style font and scaling.
+ */
+public interface IfcCurveFontOrScaledCurveFontSelect {}

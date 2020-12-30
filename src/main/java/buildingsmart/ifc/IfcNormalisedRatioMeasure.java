@@ -28,7 +28,7 @@ import lombok.ToString;
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 public class IfcNormalisedRatioMeasure extends IfcRatioMeasure
-        implements IfcColourOrFactor {
+        implements IfcColourOrFactor, IfcSizeSelect {
 
     /**
      * @param value A non-negative value less than or equal to 1.0.

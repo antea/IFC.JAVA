@@ -19,5 +19,13 @@
 
 package buildingsmart.ifc;
 
-public interface IfcSizeSelect {
-}
+/**
+ * <p>The size (or width) measure value is given in the global drawing length units. <br>
+ * </p>
+ * <blockquote><small>
+ * NOTE&nbsp; global units are defined at the single <i>IfcProject</i> instance, given by
+ * <i>UnitsInContext:IfcUnitAssignment</i>, the same units are used for the geometric representation items and for the
+ * style definitions.</small>
+ * </blockquote>
+ */
+public interface IfcSizeSelect {}

@@ -27,7 +27,7 @@ import lombok.ToString;
  */
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class IfcPositiveLengthMeasure extends IfcLengthMeasure {
+public class IfcPositiveLengthMeasure extends IfcLengthMeasure implements IfcSizeSelect {
 
     /**
      * @param value The value of the distance.

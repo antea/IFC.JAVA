@@ -19,6 +19,32 @@
 
 package buildingsmart.ifc;
 
-public class IfcDescriptiveMeasure implements IfcMeasureValue {
+import buildingsmart.io.DefinedType;
+import buildingsmart.util.Functions;
+import lombok.*;
 
+/**
+ * A descriptive measure is a human interpretable definition of a quantifiable value.
+ */
+@EqualsAndHashCode
+@ToString
+public class IfcDescriptiveMeasure implements DefinedType, IfcMeasureValue, IfcSizeSelect {
+    @Getter(AccessLevel.PACKAGE)
+    private final String value;
+
+    /**
+     * @param value Cannot be null.
+     * @throws NullPointerException If value is null.
+     */
+    public IfcDescriptiveMeasure(@NonNull String value) {
+        this.value = Functions.formatForStepFile(value);
+    }
+
+    /**
+     * @return The representation of the Defined Type in an IFC STEP file.
+     */
+    @Override
+    public String serialize() {
+        return "'" + value + "'";
+    }
 }

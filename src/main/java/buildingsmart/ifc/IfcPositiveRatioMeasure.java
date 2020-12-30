@@ -19,6 +19,6 @@
 
 package buildingsmart.ifc;
 
-public class IfcPositiveRatioMeasure implements IfcMeasureValue {
+public class IfcPositiveRatioMeasure implements IfcMeasureValue, IfcSizeSelect {
 
 }

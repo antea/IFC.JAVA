@@ -37,7 +37,7 @@ import lombok.ToString;
  */
 @EqualsAndHashCode
 @ToString
-public class IfcRatioMeasure implements DefinedType, IfcMeasureValue {
+public class IfcRatioMeasure implements DefinedType, IfcMeasureValue, IfcSizeSelect {
     @Getter(value = AccessLevel.PROTECTED)
     private final double value;
 

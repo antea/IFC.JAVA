@@ -29,7 +29,7 @@ import lombok.Getter;
  * Usually measured in millimeters (mm).
  */
 @EqualsAndHashCode
-public class IfcLengthMeasure implements DefinedType, IfcMeasureValue {
+public class IfcLengthMeasure implements DefinedType, IfcMeasureValue, IfcSizeSelect {
     @Getter
     private final double value;
 

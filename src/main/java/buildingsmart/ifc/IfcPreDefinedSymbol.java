@@ -19,5 +19,16 @@
 
 package buildingsmart.ifc;
 
+import lombok.NonNull;
+
 public class IfcPreDefinedSymbol extends IfcPreDefinedItem {
+    /**
+     * @param name The string by which the pre defined item is identified. Allowable values for the string are
+     *             declared at
+     *             the level of subtypes.
+     * @throws NullPointerException If {@code name} is {@code null}.
+     */
+    public IfcPreDefinedSymbol(@NonNull IfcLabel name) {
+        super(name);
+    }
 }

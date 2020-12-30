@@ -19,5 +19,4 @@
 
 package buildingsmart.ifc;
 
-public interface IfcCurveStyleFontSelect {
-}
+public interface IfcCurveStyleFontSelect extends IfcCurveFontOrScaledCurveFontSelect {}
