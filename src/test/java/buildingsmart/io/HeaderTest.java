@@ -51,8 +51,8 @@ public class HeaderTest {
         // the only String of variable length serialized before the timestamp
         // is IMPLEMENTATION_LEVEL
         Assert.assertTrue(timeStampSubstring.matches(
-                "^[0-9]{4}-[0-1]{1}[0-9]{1}-[0-3]{1}[0-9]{1}T[0-2]{1}[0-9]{1" +
-                        "}:[0-5]{1}[0-9]{1}:[0-5]{1}[0-9]{1}$"));
+                "^[0-9]{4}-[0-1][0-9]-[0-3][0-9]T[0-2][0-9]" +
+                        ":[0-5][0-9]:[0-5][0-9]$"));
         // checks that the String representation of the timestamp is actually
         // a date with time
     }

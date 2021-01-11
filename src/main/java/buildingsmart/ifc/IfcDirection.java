@@ -99,8 +99,7 @@ public class IfcDirection extends IfcGeometricRepresentationItem
                 Collections.unmodifiableList(directionRatiosList);
         this.dim = new IfcDimensionCount(directionRatiosList.size());
         IfcDirection normalised = (Functions.ifcNormalise(this));
-        this.normalisedDirectionRatios = normalised == null ? null :
-                Collections.unmodifiableList(normalised.directionRatios);
+        this.normalisedDirectionRatios = normalised == null ? null : normalised.directionRatios;
     }
 
     @Override
