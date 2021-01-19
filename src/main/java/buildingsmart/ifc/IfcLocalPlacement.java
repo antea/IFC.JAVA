@@ -25,21 +25,24 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.ToString;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
 import java.util.Objects;
 
 /**
- * The <i>IfcLocalPlacement</i> defines the relative placement of a product in
- * relation to the placement of another product or the absolute placement of a
- * product within the geometric representation context of the project. </p>
+ * The <i>IfcLocalPlacement</i> defines the relative placement of a product in relation to the placement of another
+ * product or the absolute placement of a product within the geometric representation context of the project. </p>
  * <p>The <i>IfcLocalPlacement</i> allows that an <i>IfcProduct</i>
- * can be placed by this <i>IfcLocalPlacement</i> (through the
- * attribute<i>ObjectPlacement</i>) within the local coordinate system of the
- * object placement of another <i>IfcProduct</i>, which is referenced by the
+ * can be placed by this <i>IfcLocalPlacement</i> (through the attribute<i>ObjectPlacement</i>) within the local
+ * coordinate system of the object placement of another <i>IfcProduct</i>, which is referenced by the
  * <i>PlacementRelTo</i>. Rules to prevent cyclic relative placements have to
  * be introduced on the application level.</p>
  * <p>If the <i>PlacementRelTo</i> is not given, then
- * the <i>IfcProduct</i> is placed absolutely within the world coordinate
- * system.</p>
+ * the <i>IfcProduct</i> is placed absolutely within the world coordinate system.</p>
  */
 @ToString
 public class IfcLocalPlacement extends IfcObjectPlacement {
@@ -49,37 +52,69 @@ public class IfcLocalPlacement extends IfcObjectPlacement {
     @Getter
     @Attribute(1)
     private final IfcAxis2Placement relativePlacement;
+    /**
+     * This field is needed to avoid recursion in {@link #hashCode()}.
+     */
     private final int hashCode;
+    /**
+     * This field is needed to avoid recursion in {@link #equals(Object)}, as comparing hashCodes of {@code
+     * placementRelTo} could lead to wrong results because of collisions.
+     */
+    private final byte[] md5;
 
     /**
-     * @param placementRelTo    Reference to Object that provides the relative
-     *                          placement by its local coordinate system. If it
-     *                          is omitted, then the local placement is given to
-     *                          the WCS, established by the project's geometric
-     *                          representation context.
-     * @param relativePlacement Geometric placement that defines the
-     *                          transformation from the related coordinate
-     *                          system into the relating. The placement can be
-     *                          either 2D or 3D, depending on the dimension
+     * @param placementRelTo    Reference to Object that provides the relative placement by its local coordinate system.
+     *                          If it is omitted, then the local placement is given to the WCS, established by the
+     *                          project's geometric representation context.
+     * @param relativePlacement Geometric placement that defines the transformation from the related coordinate system
+     *                          into the relating. The placement can be either 2D or 3D, depending on the dimension
      *                          count of the coordinate system.
      * @throws NullPointerException     If relativePlacement is null.
-     * @throws IllegalArgumentException If relativePlacement is 3D and
-     *                                  placementRelTo is not and is not null;
-     *                                  if placementRelTo is of type
-     *                                  IfcGridPlacement.
+     * @throws IllegalArgumentException If relativePlacement is 3D and placementRelTo is not and is not null; if
+     *                                  placementRelTo is of type IfcGridPlacement.
      */
-    public IfcLocalPlacement(IfcObjectPlacement placementRelTo,
-                             @NonNull IfcAxis2Placement relativePlacement) {
-        if (!Boolean.TRUE.equals(Functions.ifcCorrectLocalPlacement(
-                relativePlacement,
-                placementRelTo))) {
-            throw new IllegalArgumentException(
-                    "if relativePlacement is 3D, so must be placementRelTo; " +
-                            "placementRelTo cannot be an IfcGridPlacement");
+    public IfcLocalPlacement(IfcObjectPlacement placementRelTo, @NonNull IfcAxis2Placement relativePlacement) {
+        if (!Boolean.TRUE.equals(Functions.ifcCorrectLocalPlacement(relativePlacement, placementRelTo))) {
+            throw new IllegalArgumentException("if relativePlacement is 3D, so must be placementRelTo; " +
+                                                       "placementRelTo cannot be an IfcGridPlacement");
         }
         this.placementRelTo = placementRelTo;
         this.relativePlacement = relativePlacement;
-        this.hashCode = Objects.hash(super.hashCode(), placementRelTo, relativePlacement);
+        this.hashCode = Objects.hash(placementRelTo, relativePlacement);
+
+
+        byte[] md5;
+
+        try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                ObjectOutputStream oos = new ObjectOutputStream(baos)) {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+
+            // adds placementRelTo
+            if (placementRelTo != null) {
+                md.update(placementRelTo.getMd5());
+            }
+
+            // adds relativePlacement
+            oos.writeObject(relativePlacement);
+            md.update(baos.toByteArray());
+
+            md5 = md.digest();
+        } catch (NoSuchAlgorithmException | IOException e) {
+            // MD5 must be implemented by the Java Security API so the NoSuchAlgorithmException should not be possible,
+            // see https://docs.oracle.com/javase/1.5.0/docs/guide/security/CryptoSpec.html#AppA
+            e.printStackTrace();
+
+            // using hashCode instead of md5, not ideal but at least the program won't crash because of an
+            // IOException. This could lead to wrong comparisons in equals() when comparing two identical instances
+            // of this class if in one of them md5 was initialized in the try block. The only inconvenience resulting
+            // from it should be that the same object will be serialized multiple times, but the generated IFC files
+            // should be correct.
+            md5 = new byte[]{(byte) (hashCode >>> 24),
+                             (byte) (hashCode >>> 16),
+                             (byte) (hashCode >>> 8),
+                             (byte) hashCode};
+        }
+        this.md5 = md5;
     }
 
     @Override
@@ -90,15 +125,20 @@ public class IfcLocalPlacement extends IfcObjectPlacement {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        if (!super.equals(o)) {
-            return false;
-        }
         IfcLocalPlacement that = (IfcLocalPlacement) o;
-        return Objects.equals(hashCode, that.hashCode);
+        return Arrays.equals(md5, that.md5);
     }
 
     @Override
     public int hashCode() {
         return hashCode;
+    }
+
+    /**
+     * @return The MD5 digest of the serialization of this class.
+     */
+    @Override
+    protected byte[] getMd5() {
+        return md5;
     }
 }

@@ -25,6 +25,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NonNull;
 import lombok.ToString;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -41,7 +42,7 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
 @ToString(callSuper = true)
 public class IfcAxis2Placement2D extends IfcPlacement
-        implements IfcAxis2Placement {
+        implements IfcAxis2Placement, Serializable {
     @Attribute(1)
     private final IfcDirection refDirection;
     /**

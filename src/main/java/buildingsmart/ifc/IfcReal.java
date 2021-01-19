@@ -23,12 +23,14 @@ import buildingsmart.io.DefinedType;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
+import java.io.Serializable;
+
 /**
  * A defined type of simple data type REAL. In principle, the domain of IfcReal
  * (being a Real) is all rational, irrational and scientific real numbers.
  */
 @EqualsAndHashCode
-public class IfcReal implements DefinedType, IfcSimpleValue {
+public class IfcReal implements DefinedType, IfcSimpleValue, Serializable {
     @Getter
     private final double value;
 

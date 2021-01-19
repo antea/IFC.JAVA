@@ -20,7 +20,8 @@
 package buildingsmart.ifc;
 
 import buildingsmart.io.Entity;
-import lombok.EqualsAndHashCode;
+
+import java.io.Serializable;
 
 /**
  * Abstract supertype for the special types defining the object coordinate
@@ -47,8 +48,12 @@ import lombok.EqualsAndHashCode;
  * shall share the same instance of <i>IfcObjectPlacement</i>.&nbsp;</li>
  * </ol>
  */
-@EqualsAndHashCode(callSuper = false)
-public abstract class IfcObjectPlacement extends Entity {
+public abstract class IfcObjectPlacement extends Entity implements Serializable {
     //private IfcProduct[] PlacesObject;
     //private IfcLocalPlacement[] ReferencedByPlacements;
+
+    /**
+     * @return The MD5 digest of the serialization of this class.
+     */
+    protected abstract byte[] getMd5();
 }

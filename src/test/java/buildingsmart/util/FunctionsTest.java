@@ -376,6 +376,14 @@ public class FunctionsTest {
                                         null);
         assertNull(Functions.ifcCorrectLocalPlacement(valid3DRelativePlacement,
                                                       new IfcGridPlacement() {
+                                                          /**
+                                                           * @return The MD5 digest of the serialization of this class.
+                                                           */
+                                                          @Override
+                                                          protected byte[] getMd5() {
+                                                              return new byte[0];
+                                                          }
+
                                                           @Override
                                                           public boolean equals(
                                                                   Object o) {

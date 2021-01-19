@@ -24,13 +24,15 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
+import java.io.Serializable;
+
 /**
  * A dimension count is a positive integer used to define the coordinate space
  * dimensionality.
  */
 @EqualsAndHashCode
 @ToString
-public class IfcDimensionCount implements DefinedType {
+public class IfcDimensionCount implements DefinedType, Serializable {
     @Getter
     private final byte value;
 

@@ -25,6 +25,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NonNull;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -36,7 +37,7 @@ import java.util.List;
  */
 @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
 public class IfcDirection extends IfcGeometricRepresentationItem
-        implements IfcVectorOrDirection {
+        implements IfcVectorOrDirection, Serializable {
     @Getter
     @Attribute(0)
     private final List<IfcReal> directionRatios;
