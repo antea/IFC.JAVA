@@ -21,10 +21,11 @@ package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
 import buildingsmart.util.Functions;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.ToString;
+
+import java.util.Objects;
 
 /**
  * The <i>IfcLocalPlacement</i> defines the relative placement of a product in
@@ -40,7 +41,6 @@ import lombok.ToString;
  * the <i>IfcProduct</i> is placed absolutely within the world coordinate
  * system.</p>
  */
-@EqualsAndHashCode(callSuper = false)
 @ToString
 public class IfcLocalPlacement extends IfcObjectPlacement {
     @Getter
@@ -49,6 +49,7 @@ public class IfcLocalPlacement extends IfcObjectPlacement {
     @Getter
     @Attribute(1)
     private final IfcAxis2Placement relativePlacement;
+    private final int hashCode;
 
     /**
      * @param placementRelTo    Reference to Object that provides the relative
@@ -78,6 +79,26 @@ public class IfcLocalPlacement extends IfcObjectPlacement {
         }
         this.placementRelTo = placementRelTo;
         this.relativePlacement = relativePlacement;
+        this.hashCode = Objects.hash(super.hashCode(), placementRelTo, relativePlacement);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
+        IfcLocalPlacement that = (IfcLocalPlacement) o;
+        return Objects.equals(hashCode, that.hashCode);
+    }
+
+    @Override
+    public int hashCode() {
+        return hashCode;
+    }
 }
