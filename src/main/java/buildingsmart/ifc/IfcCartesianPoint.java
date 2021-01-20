@@ -24,6 +24,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NonNull;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -34,7 +35,7 @@ import java.util.List;
  * entity is defined in a two or three dimensional space.
  */
 @EqualsAndHashCode(callSuper = false)
-public class IfcCartesianPoint extends IfcPoint implements IfcTrimmingSelect {
+public class IfcCartesianPoint extends IfcPoint implements IfcTrimmingSelect, Serializable {
     @Getter
     @Attribute(0)
     private final List<IfcLengthMeasure> coordinates;

@@ -25,6 +25,8 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.ToString;
 
+import java.io.Serializable;
+
 /**
  * A placement entity defines the local environment for the definition of a
  * geometry item. It locates the item to be defined and, in the case of the axis
@@ -32,7 +34,7 @@ import lombok.ToString;
  */
 @EqualsAndHashCode(callSuper = false)
 @ToString
-public abstract class IfcPlacement extends IfcGeometricRepresentationItem {
+public abstract class IfcPlacement extends IfcGeometricRepresentationItem implements Serializable {
     @Getter
     @Attribute(0)
     private final IfcCartesianPoint location;

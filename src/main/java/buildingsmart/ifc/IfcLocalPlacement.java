@@ -126,7 +126,7 @@ public class IfcLocalPlacement extends IfcObjectPlacement {
             return false;
         }
         IfcLocalPlacement that = (IfcLocalPlacement) o;
-        return Arrays.equals(md5, that.md5);
+        return Arrays.equals(md5, that.md5) && relativePlacement.equals(that.relativePlacement);
     }
 
     @Override

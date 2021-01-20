@@ -23,13 +23,15 @@ import buildingsmart.io.DefinedType;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
+import java.io.Serializable;
+
 /**
  * A length measure is the value of a distance.
  * <p>
  * Usually measured in millimeters (mm).
  */
 @EqualsAndHashCode
-public class IfcLengthMeasure implements DefinedType, IfcMeasureValue, IfcSizeSelect {
+public class IfcLengthMeasure implements DefinedType, IfcMeasureValue, IfcSizeSelect, Serializable {
     @Getter
     private final double value;
 
