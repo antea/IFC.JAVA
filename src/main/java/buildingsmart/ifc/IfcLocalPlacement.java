@@ -81,10 +81,10 @@ public class IfcLocalPlacement extends IfcObjectPlacement {
         this.placementRelTo = placementRelTo;
         this.relativePlacement = relativePlacement;
         this.hashCode = Objects.hash(placementRelTo, relativePlacement);
+        this.md5 = computeMD5(placementRelTo, relativePlacement);
+    }
 
-
-        byte[] md5;
-
+    private byte[] computeMD5(IfcObjectPlacement placementRelTo, IfcAxis2Placement relativePlacement) {
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 ObjectOutputStream oos = new ObjectOutputStream(baos)) {
             MessageDigest md = MessageDigest.getInstance("MD5");
@@ -98,7 +98,7 @@ public class IfcLocalPlacement extends IfcObjectPlacement {
             oos.writeObject(relativePlacement);
             md.update(baos.toByteArray());
 
-            md5 = md.digest();
+            return md.digest();
         } catch (NoSuchAlgorithmException | IOException e) {
             // MD5 must be implemented by the Java Security API so the NoSuchAlgorithmException should not be possible,
             // see https://docs.oracle.com/javase/1.5.0/docs/guide/security/CryptoSpec.html#AppA
@@ -109,12 +109,11 @@ public class IfcLocalPlacement extends IfcObjectPlacement {
             // of this class if in one of them md5 was initialized in the try block. The only inconvenience resulting
             // from it should be that the same object will be serialized multiple times, but the generated IFC files
             // should be correct.
-            md5 = new byte[]{(byte) (hashCode >>> 24),
+            return new byte[]{(byte) (hashCode >>> 24),
                              (byte) (hashCode >>> 16),
                              (byte) (hashCode >>> 8),
                              (byte) hashCode};
         }
-        this.md5 = md5;
     }
 
     @Override
