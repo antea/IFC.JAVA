@@ -24,7 +24,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>tech.antea</groupId>
-    <artifactId>IFC.JAVA</artifactId>
+    <artifactId>ifc-java</artifactId>
     <packaging>jar</packaging>
     <version>0.2.2</version>
     <licenses>
@@ -45,6 +45,14 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
+
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>GitHub antea Apache Maven Packages</name>
+            <url>https://maven.pkg.github.com/antea/packages</url>
+        </repository>
+    </distributionManagement>
 
     <dependencies>
         <dependency>
