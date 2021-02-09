@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2020 Giovanni Velludo
  *
- * This file is part of IFC.JAVA.
+ * This file is part of ifc-java.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,7 +38,7 @@ public class Header {
     protected static final String IMPLEMENTATION_LEVEL =
             checkMaxLengthAndFormat("2;1");
     protected static final String PREPROCESSOR_VERSION =
-            checkMaxLengthAndFormat("IFC.JAVA 0.2.1-SNAPSHOT");
+            checkMaxLengthAndFormat("ifc-java 0.2.3-SNAPSHOT");
     protected static final String FILE_SCHEMA =
             Functions.formatForStepFile("IFC2X3");
     private List<String> description;

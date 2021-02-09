@@ -2,7 +2,7 @@
  * Copyright (C) 2019 Pieter Pauwels, Ghent University
  * Modifications Copyright (C) 2020 Giovanni Velludo
  *
- * This file is part of IFC.JAVA.
+ * This file is part of ifc-java.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ public class IfcContextDependentUnit extends IfcNamedUnit {
      * @throws IllegalArgumentException If any of the parameters are {@code
      *                                  null}, or if dimensions is wrong for the
      *                                  given unitType.
-     * @see Functions#ifcCorrectDimensions(IfcUnitEnum, IfcDimensionalExponents)
+     * @see buildingsmart.util.Functions#ifcCorrectDimensions(IfcUnitEnum, IfcDimensionalExponents)
      */
     public IfcContextDependentUnit(IfcDimensionalExponents dimensions,
                                    IfcUnitEnum unitType) {

@@ -3,7 +3,7 @@
   ~ Copyright (C) 2020 Giovanni Velludo
   ~ Modifications Copyright (C) 2020 Antea S.r.l.
   ~
-  ~ This file is part of IFC.JAVA.
+  ~ This file is part of ifc-java.
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@
     <groupId>tech.antea</groupId>
     <artifactId>ifc-java</artifactId>
     <packaging>jar</packaging>
-    <version>0.2.2</version>
+    <version>0.2.3-SNAPSHOT</version>
     <licenses>
         <license>
             <name>Apache License, Version 2.0</name>
@@ -37,7 +37,7 @@
         <maven>3.3.3</maven>
     </prerequisites>
 
-    <name>IFC.JAVA</name>
+    <name>ifc-java</name>
     <url>https://github.com/Antea/IFC.JAVA</url>
 
     <properties>
@@ -59,6 +59,7 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.16</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>

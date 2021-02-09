@@ -1,4 +1,4 @@
-# IFC.JAVA
+# ifc-java
 Library for IFC2x3_TC1 serialization into STEP files.  
 The library is not complete, classes were generated automatically and are mostly
 broken, I fixed only the ones I needed to use. A quick way to spot a broken
