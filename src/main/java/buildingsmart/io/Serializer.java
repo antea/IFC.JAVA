@@ -29,8 +29,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @EqualsAndHashCode
 @ToString
@@ -47,13 +45,12 @@ public class Serializer {
 
     /**
      * @param entity The entity for which to return its inverse relationships.
-     * @return A Stream containing the values of the fields of {@code entity}
-     * representing an inverse relationship. If there are no inverse
-     * relationships, the returned Stream will be empty.
+     * @return A Stream containing the values of the fields of {@code entity} representing an inverse relationship. If
+     * there are no inverse relationships, the returned Stream will be empty.
      *
      * @throws NullPointerException If {@code entity} is null.
-     * @throws SecurityException    If a security manager, <i>s</i>, is present
-     *                              and any of the following conditions is met:
+     * @throws SecurityException    If a security manager, <i>s</i>, is present and any of the following conditions is
+     *                              met:
      *                              <ul>
      *                                <li>
      *                                  invocation of
@@ -81,29 +78,29 @@ public class Serializer {
      *                                </li>
      *                              </ul>
      */
-    private static Stream<Object> getInvRels(@NonNull Entity entity) {
-        return getAllFields(entity.getClass()).stream().filter(field -> field
-                .isAnnotationPresent(InverseRelationship.class)).map(field -> {
-            field.setAccessible(true);
-            Object invRel = null;
-            try {
-                invRel = field.get(entity);
-            } catch (IllegalAccessException e) {
-                // this should never happen, since field was set as accessible
-                e.printStackTrace();
-            }
-            return invRel;
-        });
+    private static Object[] getInvRels(@NonNull Entity entity) {
+        return getAllFields(entity.getClass()).stream()
+                .filter(field -> field.isAnnotationPresent(InverseRelationship.class)).map(field -> {
+                    field.setAccessible(true);
+                    Object invRel = null;
+                    try {
+                        invRel = field.get(entity);
+                    } catch (IllegalAccessException e) {
+                        // this should never happen, since field was set as accessible
+                        e.printStackTrace();
+                    }
+                    return invRel;
+                }).toArray();
     }
 
     /**
      * @param type The type for which to get all fields.
-     * @return The unsorted fields of the given type and all its superclasses.
-     * If there are none, the returned List will be empty.
+     * @return The unsorted fields of the given type and all its superclasses. If there are none, the returned List will
+     * be empty.
      *
      * @throws NullPointerException If type is null.
-     * @throws SecurityException    If a security manager, <i>s</i>, is present
-     *                              and any of the following conditions is met:
+     * @throws SecurityException    If a security manager, <i>s</i>, is present and any of the following conditions is
+     *                              met:
      *                              <ul>
      *                              <li> invocation of
      *                              {@link SecurityManager#checkPermission
@@ -129,23 +126,19 @@ public class Serializer {
     }
 
     /**
-     * Creates a File in the given filePath. If some of the directories in the
-     * filePath do not exist, this method creates them.
+     * Creates a File in the given filePath. If some of the directories in the filePath do not exist, this method
+     * creates them.
      *
-     * @param filePath The path to the file to create, or to an already existing
-     *                 file.
+     * @param filePath The path to the file to create, or to an already existing file.
      * @throws NullPointerException     If {@code filePath} is null.
      * @throws IllegalArgumentException If {@code filePath} is empty.
      * @throws SecurityException        If a security manager exists and its
      *                                  <code>{@link java.lang.SecurityManager#checkRead(java.lang.String)}</code>
-     *                                  method does not permit verification of
-     *                                  the existence of the named directory and
-     *                                  all necessary parent directories; or if
-     *                                  the
+     *                                  method does not permit verification of the existence of the named directory and
+     *                                  all necessary parent directories; or if the
      *                                  <code>{@link java.lang.SecurityManager#checkWrite(java.lang.String)}</code>
-     *                                  method does not permit the named
-     *                                  directory and all necessary parent
-     *                                  directories to be created
+     *                                  method does not permit the named directory and all necessary parent directories
+     *                                  to be created
      */
     public static File createFile(@NonNull String filePath) {
         String directoryPath = null;
@@ -167,14 +160,13 @@ public class Serializer {
 
     /**
      * @param entity An Entity object.
-     * @return The serialization of the entity in an IFC STEP file. This method
-     * will also call {@link Serializer#serialize(Object)} for each attribute of
-     * {@code entity}.
+     * @return The serialization of the entity in an IFC STEP file. This method will also call {@link
+     * Serializer#serialize(Object)} for each attribute of {@code entity}.
      *
      * @throws NullPointerException If {@code entity} is null.
      * @throws IOException          If an I/O error occurs.
-     * @throws SecurityException    If a security manager, <i>s</i>, is present
-     *                              and any of the following conditions is met:
+     * @throws SecurityException    If a security manager, <i>s</i>, is present and any of the following conditions is
+     *                              met:
      *                              <ul>
      *                                <li>
      *                                  invocation of
@@ -204,118 +196,99 @@ public class Serializer {
      */
     @SuppressWarnings("JavaDoc")
     private String serializeEntity(@NonNull Entity entity) {
-        DerivedAttributes derivedAttributes =
-                entity.getClass().getAnnotation(DerivedAttributes.class);
-        Set<String> derivedAttributesNames =
-                derivedAttributes == null ? new HashSet<>(0) :
-                        new HashSet<>(Arrays.asList(derivedAttributes.value()));
-        return getAllFields(entity.getClass()).stream()
-                .filter(field -> field.isAnnotationPresent(Attribute.class))
-                .sorted((field1, field2) -> {
-                    int order1 = field1.getAnnotation(Attribute.class).value();
-                    int order2 = field2.getAnnotation(Attribute.class).value();
-                    return order1 - order2;
-                }).map(field -> {
-                    if (derivedAttributesNames.contains(field.getName())) {
-                        return "*";
-                    }
-                    field.setAccessible(true);
-                    Object attribute = null;
-                    try {
-                        attribute = field.get(entity);
-                    } catch (IllegalAccessException e) {
-                        // this cannot happen as field was set accessible
-                        e.printStackTrace();
-                    }
-                    if (field.getType().isInterface() &&
-                            (attribute instanceof DefinedType ||
-                                    attribute instanceof Enum)) {
-                        // serialization of attributes that are Select Types
-                        return attribute.getClass().getSimpleName()
-                                .toUpperCase() + "(" + serialize(attribute) +
-                                ")";
-                    }
-                    if (field.getGenericType() instanceof ParameterizedType &&
-                            attribute instanceof Collection) {
-                        ParameterizedType collType =
-                                (ParameterizedType) field.getGenericType();
-                        Class<?> typeParameter =
-                                (Class<?>) collType.getActualTypeArguments()[0];
-                        if (typeParameter.isInterface()) {
-                            @SuppressWarnings({"unchecked", "rawtypes"})
-                            Stream<String> elements =
-                                    ((Collection) attribute).stream()
-                                            .map(element -> {
-                                                if (element instanceof DefinedType ||
-                                                        element instanceof Enum) {
-                                                    // serialization of
-                                                    // elements of Sets and
-                                                    // Lists of Select Types
-                                                    return element.getClass()
-                                                            .getSimpleName()
-                                                            .toUpperCase() +
-                                                            "(" +
-                                                            serialize(element) +
-                                                            ")";
-                                                }
-                                                return serialize(element);
-                                            });
-                            return elements
-                                    .collect(Collectors.joining(",", "(", ")"));
-                        }
+        DerivedAttributes derivedAttributes = entity.getClass().getAnnotation(DerivedAttributes.class);
+        Set<String> derivedAttributesNames = derivedAttributes == null ? Collections.emptySet() :
+                new HashSet<>(Arrays.asList(derivedAttributes.value()));
 
+        Field[] fields =
+                getAllFields(entity.getClass()).stream().filter(field -> field.isAnnotationPresent(Attribute.class))
+                        .sorted((field1, field2) -> {
+                            int order1 = field1.getAnnotation(Attribute.class).value();
+                            int order2 = field2.getAnnotation(Attribute.class).value();
+                            return order1 - order2;
+                        }).toArray(Field[]::new);
+
+        StringBuilder sB = new StringBuilder(entity.getClass().getSimpleName().toUpperCase()).append("(");
+
+        for (Field field : fields) {
+            if (derivedAttributesNames.contains(field.getName())) {
+                sB.append("*,");
+                continue;
+            }
+
+            field.setAccessible(true);
+            Object attribute = null;
+            try {
+                attribute = field.get(entity);
+            } catch (IllegalAccessException e) {
+                // this cannot happen as field was set accessible
+                e.printStackTrace();
+            }
+
+            if (field.getType().isInterface() && (attribute instanceof DefinedType || attribute instanceof Enum)) {
+                // serialization of attributes that are Select Types
+                sB.append(attribute.getClass().getSimpleName().toUpperCase()).append("(").append(serialize(attribute))
+                        .append("),");
+                continue;
+            }
+
+            if (field.getGenericType() instanceof ParameterizedType && attribute instanceof Collection) {
+                ParameterizedType collType = (ParameterizedType) field.getGenericType();
+                Class<?> typeParameter = (Class<?>) collType.getActualTypeArguments()[0];
+                if (typeParameter.isInterface()) {
+                    Collection attrColl = (Collection) attribute;
+                    sB.append("(");
+                    for (Object element : attrColl) {
+                        if (element instanceof DefinedType || element instanceof Enum) {
+                            // serialization of elements of Sets and Lists of Select Types
+                            sB.append(element.getClass().getSimpleName().toUpperCase()).append("(")
+                                    .append(serialize(element)).append(")");
+                        } else {
+                            sB.append(serialize(element));
+                        }
+                        sB.append(",");
                     }
-                    return serialize(attribute);
-                }).collect(Collectors.joining(",",
-                                              entity.getClass().getSimpleName()
-                                                      .toUpperCase() + "(",
-                                              ");\n"));
+                    sB.deleteCharAt(sB.length() - 1);
+                    sB.append("),");
+                    continue;
+                }
+            }
+
+            sB.append(serialize(attribute)).append(",");
+        }
+
+        sB.deleteCharAt(sB.length() - 1);
+        sB.append(");\n");
+        return sB.toString();
     }
 
     /**
-     * Creates an IFC STEP file in the given filePath. If some of the
-     * directories in the filePath do not exist, this method creates them. Note
-     * that if this operation fails it may have succeeded in creating the file
-     * and some of the necessary parent directories, and in writing some of the
-     * content of the file.
+     * Creates an IFC STEP file in the given filePath. If some of the directories in the filePath do not exist, this
+     * method creates them. Note that if this operation fails it may have succeeded in creating the file and some of the
+     * necessary parent directories, and in writing some of the content of the file.
      *
-     * @param header   The {@link Header} of the IFC file to create. Even if it
-     *                 has already been set, its fileName will be set to the
-     *                 canonical path of the file referenced in filePath.
+     * @param header   The {@link Header} of the IFC file to create. Even if it has already been set, its fileName will
+     *                 be set to the canonical path of the file referenced in filePath.
      * @param project  The {@link IfcProject} to serialize.
-     * @param filePath The path to the file to create, or to an already existing
-     *                 file.
-     * @throws NullPointerException     If {@code header} is null; if {@code
-     *                                  filePath} is null.
+     * @param filePath The path to the file to create, or to an already existing file.
+     * @throws NullPointerException     If {@code header} is null; if {@code filePath} is null.
      * @throws IllegalArgumentException If {@code filePath} is empty.
-     * @throws IOException              If the file exists but is a directory
-     *                                  rather than a regular file, does not
-     *                                  exist but cannot be created, or cannot
-     *                                  be opened for any other reason; if an
-     *                                  I/O error occurs during serialization of
-     *                                  {@code project}.
+     * @throws IOException              If the file exists but is a directory rather than a regular file, does not exist
+     *                                  but cannot be created, or cannot be opened for any other reason; if an I/O error
+     *                                  occurs during serialization of {@code project}.
      * @throws SecurityException        If a security manager exists and its
      *                                  <code>{@link java.lang.SecurityManager#checkRead(java.lang.String)}</code>
-     *                                  method does not permit verification of
-     *                                  the existence of the file and
-     *                                  directories named in filePath, and all
-     *                                  necessary parent directories; or if the
+     *                                  method does not permit verification of the existence of the file and directories
+     *                                  named in filePath, and all necessary parent directories; or if the
      *                                  <code>{@link java.lang.SecurityManager#checkWrite(java.lang.String)}</code>
-     *                                  method does not permit the named file,
-     *                                  directories and all necessary parent
-     *                                  directories to be created or written
-     *                                  to.
-     * @throws SecurityException        If a required system property value
-     *                                  cannot be accessed while resolving the
-     *                                  canonical path of the file created in
-     *                                  filePath.
-     * @throws SecurityException        Let {@code obj} be any node of the tree
-     *                                  having {@code project} as its root,
-     *                                  where parent nodes are Entity types and
-     *                                  children are the {@link Attribute}s and
-     *                                  {@link InverseRelationship}s of the
-     *                                  parent node. This exception is thrown if
-     *                                  a security manager,
+     *                                  method does not permit the named file, directories and all necessary parent
+     *                                  directories to be created or written to.
+     * @throws SecurityException        If a required system property value cannot be accessed while resolving the
+     *                                  canonical path of the file created in filePath.
+     * @throws SecurityException        Let {@code obj} be any node of the tree having {@code project} as its root,
+     *                                  where parent nodes are Entity types and children are the {@link Attribute}s and
+     *                                  {@link InverseRelationship}s of the parent node. This exception is thrown if a
+     *                                  security manager,
      *                                  <i>s</i>, is present and any of the
      *                                  following conditions is met:
      *                                  <ul>
@@ -346,38 +319,27 @@ public class Serializer {
      *                                    </li>
      *                                  </ul>
      */
-    public void serialize(@NonNull Header header,
-                          IfcProject project,
-                          @NonNull String filePath) throws IOException {
+    public void serialize(@NonNull Header header, IfcProject project, @NonNull String filePath) throws IOException {
         serialize(header, project, createFile(filePath));
     }
 
     /**
-     * Creates an IFC STEP file in the given output {@link File}. Note that if
-     * this operation fails it may have succeeded in writing some of the content
-     * of the file.
+     * Creates an IFC STEP file in the given output {@link File}. Note that if this operation fails it may have
+     * succeeded in writing some of the content of the file.
      *
-     * @param header  The {@link Header} of the IFC file to create. Even if it
-     *                has already been set, its fileName will be set to the
-     *                canonical path of {@code output}.
+     * @param header  The {@link Header} of the IFC file to create. Even if it has already been set, its fileName will
+     *                be set to the canonical path of {@code output}.
      * @param project The {@link IfcProject} to serialize.
      * @param output  The file in which to serialize the project.
-     * @throws NullPointerException If {@code header} is null; if {@code output}
-     *                              is null.
-     * @throws IOException          If the file exists but is a directory rather
-     *                              than a regular file, does not exist but
-     *                              cannot be created, or cannot be opened for
-     *                              any other reason; if an I/O error occurs
+     * @throws NullPointerException If {@code header} is null; if {@code output} is null.
+     * @throws IOException          If the file exists but is a directory rather than a regular file, does not exist but
+     *                              cannot be created, or cannot be opened for any other reason; if an I/O error occurs
      *                              during serialization of {@code project}.
-     * @throws SecurityException    If a required system property value cannot
-     *                              be accessed while resolving the canonical
+     * @throws SecurityException    If a required system property value cannot be accessed while resolving the canonical
      *                              path of {@code output}.
-     * @throws SecurityException    Let {@code obj} be any node of the tree
-     *                              having {@code project} as its root, where
-     *                              parent nodes are Entity types and children
-     *                              are the {@link Attribute}s and {@link
-     *                              InverseRelationship}s of the parent node.
-     *                              This exception is thrown if a security
+     * @throws SecurityException    Let {@code obj} be any node of the tree having {@code project} as its root, where
+     *                              parent nodes are Entity types and children are the {@link Attribute}s and {@link
+     *                              InverseRelationship}s of the parent node. This exception is thrown if a security
      *                              manager,
      *                              <i>s</i>, is present and any of the
      *                              following conditions is met:
@@ -409,13 +371,10 @@ public class Serializer {
      *                                </li>
      *                              </ul>
      */
-    public void serialize(@NonNull Header header,
-                          IfcProject project,
-                          @NonNull File output) throws IOException {
+    public void serialize(@NonNull Header header, IfcProject project, @NonNull File output) throws IOException {
         header.setFileName(output.getCanonicalPath());
         fileWriter =
-                new BufferedWriter(new OutputStreamWriter(new FileOutputStream(
-                        output), StandardCharsets.US_ASCII));
+                new BufferedWriter(new OutputStreamWriter(new FileOutputStream(output), StandardCharsets.US_ASCII));
         fileWriter.write("ISO-10303-21;\n" + header.serialize() + "DATA;\n");
         serialize(project);
         fileWriter.write("ENDSEC;\n" + "END-ISO-10303-21;\n");
@@ -425,31 +384,22 @@ public class Serializer {
     }
 
     /**
-     * Creates an IFC STEP file in the given output {@link Writer}. Note that if
-     * this operation fails it may have succeeded in writing some of the content
-     * of the file.
+     * Creates an IFC STEP file in the given output {@link Writer}. Note that if this operation fails it may have
+     * succeeded in writing some of the content of the file.
      *
-     * @param header  The {@link Header} of the IFC file to create. Even if it
-     *                has already been set, its fileName will be set to the
-     *                canonical path of {@code output}.
+     * @param header  The {@link Header} of the IFC file to create. Even if it has already been set, its fileName will
+     *                be set to the canonical path of {@code output}.
      * @param project The {@link IfcProject} to serialize.
      * @param output  The {@link Writer} in which to serialize the project.
-     * @throws NullPointerException If {@code header} is null; if {@code output}
-     *                              is null.
-     * @throws IOException          If the file exists but is a directory rather
-     *                              than a regular file, does not exist but
-     *                              cannot be created, or cannot be opened for
-     *                              any other reason; if an I/O error occurs
+     * @throws NullPointerException If {@code header} is null; if {@code output} is null.
+     * @throws IOException          If the file exists but is a directory rather than a regular file, does not exist but
+     *                              cannot be created, or cannot be opened for any other reason; if an I/O error occurs
      *                              during serialization of {@code project}.
-     * @throws SecurityException    If a required system property value cannot
-     *                              be accessed while resolving the canonical
+     * @throws SecurityException    If a required system property value cannot be accessed while resolving the canonical
      *                              path of {@code output}.
-     * @throws SecurityException    Let {@code obj} be any node of the tree
-     *                              having {@code project} as its root, where
-     *                              parent nodes are Entity types and children
-     *                              are the {@link Attribute}s and {@link
-     *                              InverseRelationship}s of the parent node.
-     *                              This exception is thrown if a security
+     * @throws SecurityException    Let {@code obj} be any node of the tree having {@code project} as its root, where
+     *                              parent nodes are Entity types and children are the {@link Attribute}s and {@link
+     *                              InverseRelationship}s of the parent node. This exception is thrown if a security
      *                              manager,
      *                              <i>s</i>, is present and any of the
      *                              following conditions is met:
@@ -481,10 +431,8 @@ public class Serializer {
      *                                </li>
      *                              </ul>
      */
-    public void serialize(@NonNull Header header,
-                          IfcProject project,
-                          @NonNull Writer output,
-                          String canonicalPath) throws IOException {
+    public void serialize(@NonNull Header header, IfcProject project, @NonNull Writer output, String canonicalPath)
+            throws IOException {
         header.setFileName(canonicalPath);
         fileWriter = new BufferedWriter(output);
         fileWriter.write("ISO-10303-21;\n" + header.serialize() + "DATA;\n");
@@ -525,8 +473,7 @@ public class Serializer {
      * </ul>
      *
      * @throws IOException       If an I/O error occurs.
-     * @throws SecurityException If obj is an instance of a class that extends
-     *                           Entity, a security manager,
+     * @throws SecurityException If obj is an instance of a class that extends Entity, a security manager,
      *                           <i>s</i>, is present and any of the
      *                           following conditions is met:
      *                           <ul>
@@ -565,10 +512,15 @@ public class Serializer {
             return ((DefinedType) obj).serialize();
         }
         if (obj instanceof Collection) {
-            @SuppressWarnings({"unchecked", "rawtypes"})
-            Stream<String> elements =
-                    ((Collection) obj).stream().map(this::serialize);
-            return elements.collect(Collectors.joining(",", "(", ")"));
+            Collection coll = (Collection) obj;
+            StringBuilder serializedColl = new StringBuilder("(");
+            for (Object element : coll) {
+                serializedColl.append(serialize(element)).append(",");
+            }
+            // removing the last comma
+            serializedColl.deleteCharAt(serializedColl.length() - 1);
+            serializedColl.append(")");
+            return serializedColl.toString();
         }
         Entity entity = (Entity) obj;
         // if obj is neither an DefinedType nor a Collection (List or
@@ -586,12 +538,14 @@ public class Serializer {
             // our attributes, because one of our attributes contained
             // a reference to entity in its inverse relationships
         }
-        String serializedEntityString =
-                "#" + ++idCounter + "=" + serializedEntity;
+        String serializedEntityString = "#" + ++idCounter + "=" + serializedEntity;
         fileWriter.write(serializedEntityString);
         serializedEntitiesToIds.put(entity, idCounter);
 
-        getInvRels(entity).forEach(this::serialize);
+        Object[] invRels = getInvRels(entity);
+        for (Object invRel : invRels) {
+            serialize(invRel);
+        }
 
         return "#" + serializedEntitiesToIds.get(entity);
     }
