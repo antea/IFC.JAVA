@@ -267,77 +267,43 @@ public class SerializerTest {
     @Test
     public void serialize_correctHeader_correctProject_correctPath()
             throws IOException {
-        final String expectedDataSection =
-                "DATA;\n" + "#1=IFCPERSON($,$,'',$,$,$,$,$);\n" +
-                        "#2=IFCORGANIZATION($,'',$,$,$);\n" +
-                        "#3=IFCPERSONANDORGANIZATION(#1,#2,$);\n" +
-                        "#4=IFCAPPLICATION(#2,'0.18 build 4 (GitTag)'," +
-                        "'FreeCAD'," + "'118df2cf_ed21_438e_a41');\n" +
-                        "#5=IFCOWNERHISTORY(#3,#4,$,.ADDED.,$,#3,#4," +
-                        "1586902585);\n" +
-                        "#6=IFCCARTESIANPOINT((0.0,0.0,0.0));\n" +
-                        "#7=IFCDIRECTION((0.0,0.0,1.0));\n" +
-                        "#8=IFCDIRECTION((1.0,0.0,0.0));\n" +
-                        "#9=IFCAXIS2PLACEMENT3D(#6,#7,#8);\n" +
-                        "#10=IFCDIRECTION((0.0,1.0,0.0));\n" +
-                        "#11=IFCGEOMETRICREPRESENTATIONCONTEXT('Plan'," +
-                        "'Model',3,1" + ".0E-5,#9,#10);\n" +
-                        "#12=IFCSIUNIT(*,.LENGTHUNIT.,$,.METRE.);\n" +
-                        "#13=IFCSIUNIT(*,.AREAUNIT.,$,.SQUARE_METRE.);\n" +
-                        "#14=IFCSIUNIT(*,.VOLUMEUNIT.,$,.CUBIC_METRE.);\n" +
-                        "#15=IFCDIMENSIONALEXPONENTS(0,0,0,0,0,0,0);\n" +
-                        "#16=IFCSIUNIT(*,.PLANEANGLEUNIT.,$,.RADIAN.);\n" +
-                        "#17=IFCMEASUREWITHUNIT(IFCPLANEANGLEMEASURE(0" +
-                        ".017453292519943295),#16);\n" +
-                        "#18=IFCCONVERSIONBASEDUNIT(#15,.PLANEANGLEUNIT.," +
-                        "'DEGREE'," + "#17);\n" +
-                        "#19=IFCUNITASSIGNMENT((#12,#13,#14,#18));\n" +
-                        "#20=IFCPROJECT('51f413ef_7964_4d38_b19',#5," +
-                        "'Unnamed',$,$,$," + "$,(#11),#19);\n" +
-                        "#21=IFCSITE('2KdG88VfqHwfDCN5zdz5Bw',#5,'Default " +
-                        "Site','',$," + "$,$,$,.ELEMENT.,$,$,$,$,$);\n" +
-                        "#22=IFCBUILDING('2KdHMSVfqHwfiJN5zdz5Bw',#5,'Default" +
-                        " " + "Building','',$,$,$,$,.ELEMENT.,$,$,$);\n" +
-                        "#23=IFCBUILDINGSTOREY('2KdHMUVfqHwg4XN5zdz5Bw',#5," +
-                        "'Default " + "Storey','',$,$,$,$,.ELEMENT.,$);\n" +
-                        "#24=IFCLOCALPLACEMENT($,#9);\n" +
-                        "#25=IFCCARTESIANPOINT((0.0,0.0));\n" +
-                        "#26=IFCDIRECTION((1.0,0.0));\n" +
-                        "#27=IFCAXIS2PLACEMENT2D(#25,#26);\n" +
-                        "#28=IFCCIRCLEPROFILEDEF(.AREA.,$,#27,0.1);\n" +
-                        "#29=IFCCARTESIANPOINT((-1.4210854715202E-17,-2" +
-                        ".73641172593403E-18,0.0));\n" +
-                        "#30=IFCAXIS2PLACEMENT3D(#29,#7,#8);\n" +
-                        "#31=IFCEXTRUDEDAREASOLID(#28,#30,#7,0.1);\n" +
-                        "#32=IFCCOLOURRGB($,1.0,1.0,1.0);\n" +
-                        "#33=IFCSURFACESTYLERENDERING(#32,$,$,$,$,$,$,$,.FLAT" +
-                        ".);\n" + "#34=IFCSURFACESTYLE($,.BOTH.,(#33));\n" +
-                        "#35=IFCPRESENTATIONSTYLEASSIGNMENT((#34));\n" +
-                        "#36=IFCSTYLEDITEM(#31,(#35),$);\n" +
-                        "#37=IFCSHAPEREPRESENTATION(#11,'Body','SweptSolid'," +
-                        "(#31));\n" +
-                        "#38=IFCPRODUCTDEFINITIONSHAPE($,$,(#37));\n" +
-                        "#39=IFCWALL('2KcxKeVfqHwhb6N5zdz5Bw',#5,'Wall','',$," +
-                        "#24,#38," + "$);\n" +
-                        "#40=IFCAXIS2PLACEMENT3D(#6,#8,#10);\n" +
-                        "#41=IFCCIRCLE(#40,0.5);\n" +
-                        "#42=IFCTRIMMEDCURVE(#41,(IFCPARAMETERVALUE(0.0))," +
-                        "(IFCPARAMETERVALUE(1.5707963267948966)),.T.," +
-                        ".PARAMETER.);\n" +
-                        "#43=IFCSHAPEREPRESENTATION(#11,'Body'," +
-                        "'GeometricCurveSet'," + "(#42));\n" +
-                        "#44=IFCPRODUCTDEFINITIONSHAPE($,$,(#43));\n" +
-                        "#45=IFCPROXY('2KcxKeVfqHwhb6N5zd1234',#5," +
-                        "'TrimmedCurve','',$,#24,#44,.PRODUCT.,$);\n" +
-                        "#46=IFCRELCONTAINEDINSPATIALSTRUCTURE" +
-                        "('2KdIamVfqHwf$aN5zdz5Bw',#5," +
-                        "'UnassignedObjectsLink',''," + "(#39,#45),#23);\n" +
-                        "#47=IFCRELAGGREGATES('2KdHMVVfqHwhFMN5zdz5Bw',#5," +
-                        "'DefaultStoreyLink','',#22,(#23));\n" +
-                        "#48=IFCRELAGGREGATES('2KdHMTVfqHwePlN5zdz5Bw',#5," +
-                        "'SiteLink'," + "'',#21,(#22));\n" +
-                        "#49=IFCRELAGGREGATES('2KdG89VfqHweGDN5zdz5Bw',#5," +
-                        "'ProjectLink','',#20,(#21));\n" + "ENDSEC;\n";
+        final String expectedDataSection = "DATA;\n" + "#1=IFCPERSON($,$,'',$,$,$,$,$);\n" +
+                "#2=IFCORGANIZATION($,'',$,$,$);\n" + "#3=IFCPERSONANDORGANIZATION(#1,#2,$);\n" +
+                "#4=IFCAPPLICATION(#2,'0.18 build 4 (GitTag)','FreeCAD','118df2cf_ed21_438e_a41');\n" +
+                "#5=IFCOWNERHISTORY(#3,#4,$,.ADDED.,$,#3,#4,1586902585);\n" + "#6=IFCCARTESIANPOINT((0.0,0.0,0.0));\n" +
+                "#7=IFCDIRECTION((0.0,0.0,1.0));\n" + "#8=IFCDIRECTION((1.0,0.0,0.0));\n" +
+                "#9=IFCAXIS2PLACEMENT3D(#6,#7,#8);\n" + "#10=IFCDIRECTION((0.0,1.0,0.0));\n" +
+                "#11=IFCGEOMETRICREPRESENTATIONCONTEXT('Plan','Model',3,1.0E-5,#9,#10);\n" +
+                "#12=IFCSIUNIT(*,.LENGTHUNIT.,$,.METRE.);\n" + "#13=IFCSIUNIT(*,.AREAUNIT.,$,.SQUARE_METRE.);\n" +
+                "#14=IFCSIUNIT(*,.VOLUMEUNIT.,$,.CUBIC_METRE.);\n" + "#15=IFCDIMENSIONALEXPONENTS(0,0,0,0,0,0,0);\n" +
+                "#16=IFCSIUNIT(*,.PLANEANGLEUNIT.,$,.RADIAN.);\n" +
+                "#17=IFCMEASUREWITHUNIT(IFCPLANEANGLEMEASURE(0.017453292519943295),#16);\n" +
+                "#18=IFCCONVERSIONBASEDUNIT(#15,.PLANEANGLEUNIT.,'DEGREE',#17);\n" +
+                "#19=IFCUNITASSIGNMENT((#12,#13,#14,#18));\n" +
+                "#20=IFCPROJECT('51f413ef_7964_4d38_b19',#5,'Unnamed',$,$,$,$,(#11),#19);\n" +
+                "#21=IFCSITE('2KdG88VfqHwfDCN5zdz5Bw',#5,'Default Site','',$,$,$,$,.ELEMENT.,$,$,$,$,$);\n" +
+                "#22=IFCRELAGGREGATES('2KdG89VfqHweGDN5zdz5Bw',#5,'ProjectLink','',#20,(#21));\n" +
+                "#23=IFCBUILDING('2KdHMSVfqHwfiJN5zdz5Bw',#5,'Default Building','',$,$,$,$,.ELEMENT.,$,$,$);\n" +
+                "#24=IFCRELAGGREGATES('2KdHMTVfqHwePlN5zdz5Bw',#5,'SiteLink','',#21,(#23));\n" +
+                "#25=IFCBUILDINGSTOREY('2KdHMUVfqHwg4XN5zdz5Bw',#5,'Default Storey','',$,$,$,$,.ELEMENT.,$);\n" +
+                "#26=IFCRELAGGREGATES('2KdHMVVfqHwhFMN5zdz5Bw',#5,'DefaultStoreyLink','',#23,(#25));\n" +
+                "#27=IFCLOCALPLACEMENT($,#9);\n" + "#28=IFCCARTESIANPOINT((0.0,0.0));\n" +
+                "#29=IFCDIRECTION((1.0,0.0));\n" + "#30=IFCAXIS2PLACEMENT2D(#28,#29);\n" +
+                "#31=IFCCIRCLEPROFILEDEF(.AREA.,$,#30,0.1);\n" +
+                "#32=IFCCARTESIANPOINT((-1.4210854715202E-17,-2.73641172593403E-18,0.0));\n" +
+                "#33=IFCAXIS2PLACEMENT3D(#32,#7,#8);\n" + "#34=IFCEXTRUDEDAREASOLID(#31,#33,#7,0.1);\n" +
+                "#35=IFCSHAPEREPRESENTATION(#11,'Body','SweptSolid',(#34));\n" +
+                "#36=IFCPRODUCTDEFINITIONSHAPE($,$,(#35));\n" +
+                "#37=IFCWALL('2KcxKeVfqHwhb6N5zdz5Bw',#5,'Wall','',$,#27,#36,$);\n" +
+                "#38=IFCAXIS2PLACEMENT3D(#6,#8,#10);\n" + "#39=IFCCIRCLE(#38,0.5);\n" +
+                "#40=IFCTRIMMEDCURVE(#39,(IFCPARAMETERVALUE(0.0)),(IFCPARAMETERVALUE(1.5707963267948966)),.T.,.PARAMETER.);\n" +
+                "#41=IFCSHAPEREPRESENTATION(#11,'Body','GeometricCurveSet',(#40));\n" +
+                "#42=IFCPRODUCTDEFINITIONSHAPE($,$,(#41));\n" +
+                "#43=IFCPROXY('2KcxKeVfqHwhb6N5zd1234',#5,'TrimmedCurve','',$,#27,#42,.PRODUCT.,$);\n" +
+                "#44=IFCRELCONTAINEDINSPATIALSTRUCTURE('2KdIamVfqHwf$aN5zdz5Bw',#5,'UnassignedObjectsLink','',(#37,#43),#25);\n" +
+                "#45=IFCCOLOURRGB($,1.0,1.0,1.0);\n" + "#46=IFCSURFACESTYLERENDERING(#45,$,$,$,$,$,$,$,.FLAT.);\n" +
+                "#47=IFCSURFACESTYLE($,.BOTH.,(#46));\n" + "#48=IFCPRESENTATIONSTYLEASSIGNMENT((#47));\n" +
+                "#49=IFCSTYLEDITEM(#34,(#48),$);\n" + "ENDSEC;\n";
         Serializer serializer = new Serializer();
 
         serializer.serialize(new Header().setDescription(

@@ -37,12 +37,14 @@ import java.util.stream.Stream;
 public class Serializer {
 
     private final Map<Entity, Integer> serializedEntitiesToIds;
+    private final Queue<Object> remainingInvRels;
     private Writer fileWriter;
     private int idCounter;
 
     public Serializer() {
         serializedEntitiesToIds = new HashMap<>();
         idCounter = 0;
+        remainingInvRels = new LinkedList<>();
     }
 
     /**
@@ -417,7 +419,10 @@ public class Serializer {
                 new BufferedWriter(new OutputStreamWriter(new FileOutputStream(
                         output), StandardCharsets.US_ASCII));
         fileWriter.write("ISO-10303-21;\n" + header.serialize() + "DATA;\n");
+
         serialize(project);
+        serializeRemainingInvRels();
+
         fileWriter.write("ENDSEC;\n" + "END-ISO-10303-21;\n");
         fileWriter.close();
         serializedEntitiesToIds.clear();
@@ -488,11 +493,30 @@ public class Serializer {
         header.setFileName(canonicalPath);
         fileWriter = new BufferedWriter(output);
         fileWriter.write("ISO-10303-21;\n" + header.serialize() + "DATA;\n");
+
         serialize(project);
+        serializeRemainingInvRels();
+
         fileWriter.write("ENDSEC;\n" + "END-ISO-10303-21;\n");
         fileWriter.close();
         serializedEntitiesToIds.clear();
         idCounter = 0;
+    }
+
+    /**
+     * Serializes all remaining {@link InverseRelationship}s in {@link #remainingInvRels}.
+     */
+    private void serializeRemainingInvRels() {
+        while (!remainingInvRels.isEmpty()) {
+            Object invRel = remainingInvRels.remove();
+            // invRel is either a Collection or an Entity
+            if (invRel instanceof Collection) {
+                // this avoids stack overflows when passing big Collections of entities to serialize(Object)
+                remainingInvRels.addAll((Collection<?>) invRel);
+            } else {
+                serialize(invRel);
+            }
+        }
     }
 
     /**
@@ -591,7 +615,7 @@ public class Serializer {
         fileWriter.write(serializedEntityString);
         serializedEntitiesToIds.put(entity, idCounter);
 
-        getInvRels(entity).forEach(this::serialize);
+        getInvRels(entity).forEach(remainingInvRels::add);
 
         return "#" + serializedEntitiesToIds.get(entity);
     }
