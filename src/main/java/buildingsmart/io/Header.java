@@ -38,7 +38,7 @@ public class Header {
     protected static final String IMPLEMENTATION_LEVEL =
             checkMaxLengthAndFormat("2;1");
     protected static final String PREPROCESSOR_VERSION =
-            checkMaxLengthAndFormat("ifc-java 0.2.4-SNAPSHOT");
+            checkMaxLengthAndFormat("ifc-java 0.2.4");
     protected static final String FILE_SCHEMA =
             Functions.formatForStepFile("IFC2X3");
     private List<String> description;
