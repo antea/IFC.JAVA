@@ -19,7 +19,19 @@
 
 package buildingsmart.ifc;
 
+import lombok.Builder;
+
 public class IfcPropertyEnumeratedValue extends IfcSimpleProperty {
     private IfcValue[] EnumerationValues;
     private IfcPropertyEnumeration EnumerationReference;
+
+    @Builder
+    public IfcPropertyEnumeratedValue(String Name, String Description,
+            IfcPropertyDependencyRelationship[] PropertyForDependance,
+            IfcPropertyDependencyRelationship[] PropertyDependsOn, IfcComplexProperty[] PartOfComplex,
+            IfcValue[] enumerationValues, IfcPropertyEnumeration enumerationReference) {
+        super(Name, Description, PropertyForDependance, PropertyDependsOn, PartOfComplex);
+        EnumerationValues = enumerationValues;
+        EnumerationReference = enumerationReference;
+    }
 }

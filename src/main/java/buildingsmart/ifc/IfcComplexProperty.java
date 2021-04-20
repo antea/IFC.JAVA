@@ -19,7 +19,19 @@
 
 package buildingsmart.ifc;
 
+import lombok.Builder;
+
 public class IfcComplexProperty extends IfcProperty {
     private String UsageName;
     private IfcProperty[] HasProperties;
+
+    @Builder
+    public IfcComplexProperty(String Name, String Description,
+            IfcPropertyDependencyRelationship[] PropertyForDependance,
+            IfcPropertyDependencyRelationship[] PropertyDependsOn, IfcComplexProperty[] PartOfComplex,
+            String usageName, IfcProperty[] hasProperties) {
+        super(Name, Description, PropertyForDependance, PropertyDependsOn, PartOfComplex);
+        UsageName = usageName;
+        HasProperties = hasProperties;
+    }
 }

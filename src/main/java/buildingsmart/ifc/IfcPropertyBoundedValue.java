@@ -19,8 +19,22 @@
 
 package buildingsmart.ifc;
 
+import lombok.Builder;
+
 public class IfcPropertyBoundedValue extends IfcSimpleProperty {
     private IfcValue UpperBoundValue;
     private IfcValue LowerBoundValue;
     private IfcUnit Unit;
+
+    @Builder
+    public IfcPropertyBoundedValue(String Name, String Description,
+            IfcPropertyDependencyRelationship[] PropertyForDependance,
+            IfcPropertyDependencyRelationship[] PropertyDependsOn,
+            IfcComplexProperty[] PartOfComplex, IfcValue upperBoundValue, IfcValue lowerBoundValue,
+            IfcUnit unit) {
+        super(Name, Description, PropertyForDependance, PropertyDependsOn, PartOfComplex);
+        UpperBoundValue = upperBoundValue;
+        LowerBoundValue = lowerBoundValue;
+        Unit = unit;
+    }
 }

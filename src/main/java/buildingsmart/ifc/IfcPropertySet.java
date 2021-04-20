@@ -19,15 +19,18 @@
 
 package buildingsmart.ifc;
 
+import lombok.Builder;
+
 public class IfcPropertySet extends IfcPropertySetDefinition {
     private final IfcProperty[] HasProperties;
 
+    @Builder
     public IfcPropertySet(IfcGloballyUniqueId globalId,
-                          IfcOwnerHistory ownerHistory, IfcLabel name,
-                          IfcText description,
-                          IfcRelAssociates[] hasAssociations,
-                          IfcRelDefinesByProperties[] propertyDefinitionOf,
-                          IfcProperty[] hasProperties) {
+            IfcOwnerHistory ownerHistory, IfcLabel name,
+            IfcText description,
+            IfcRelAssociates[] hasAssociations,
+            IfcRelDefinesByProperties[] propertyDefinitionOf,
+            IfcProperty[] hasProperties) {
 
         super(globalId, ownerHistory, name, description, hasAssociations,
                 propertyDefinitionOf);

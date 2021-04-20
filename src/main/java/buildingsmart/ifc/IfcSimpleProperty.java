@@ -20,4 +20,9 @@
 package buildingsmart.ifc;
 
 public class IfcSimpleProperty extends IfcProperty {
+    public IfcSimpleProperty(String Name, String Description,
+            IfcPropertyDependencyRelationship[] PropertyForDependance,
+            IfcPropertyDependencyRelationship[] PropertyDependsOn, IfcComplexProperty[] PartOfComplex) {
+        super(Name, Description, PropertyForDependance, PropertyDependsOn, PartOfComplex);
+    }
 }

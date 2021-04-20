@@ -19,7 +19,19 @@
 
 package buildingsmart.ifc;
 
+import lombok.Builder;
+
 public class IfcPropertyListValue extends IfcSimpleProperty {
     private IfcValue[] ListValues;
     private IfcUnit Unit;
+
+    @Builder
+    public IfcPropertyListValue(String Name, String Description,
+            IfcPropertyDependencyRelationship[] PropertyForDependance,
+            IfcPropertyDependencyRelationship[] PropertyDependsOn, IfcComplexProperty[] PartOfComplex,
+            IfcValue[] listValues, IfcUnit unit) {
+        super(Name, Description, PropertyForDependance, PropertyDependsOn, PartOfComplex);
+        ListValues = listValues;
+        Unit = unit;
+    }
 }

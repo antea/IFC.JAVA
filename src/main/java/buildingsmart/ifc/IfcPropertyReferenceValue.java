@@ -19,7 +19,19 @@
 
 package buildingsmart.ifc;
 
+import lombok.Builder;
+
 public class IfcPropertyReferenceValue extends IfcSimpleProperty {
     private String UsageName;
     private IfcObjectReferenceSelect PropertyReference;
+
+    @Builder
+    public IfcPropertyReferenceValue(String Name, String Description,
+            IfcPropertyDependencyRelationship[] PropertyForDependance,
+            IfcPropertyDependencyRelationship[] PropertyDependsOn, IfcComplexProperty[] PartOfComplex,
+            String usageName, IfcObjectReferenceSelect propertyReference) {
+        super(Name, Description, PropertyForDependance, PropertyDependsOn, PartOfComplex);
+        UsageName = usageName;
+        PropertyReference = propertyReference;
+    }
 }

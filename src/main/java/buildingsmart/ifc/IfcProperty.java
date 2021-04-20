@@ -19,6 +19,9 @@
 
 package buildingsmart.ifc;
 
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
 public class IfcProperty {
     private String Name;
     private String Description;
