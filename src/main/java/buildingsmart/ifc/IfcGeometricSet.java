@@ -47,9 +47,6 @@ public class IfcGeometricSet extends IfcGeometricRepresentationItem {
      *                                  with different dimensions.
      */
     public IfcGeometricSet(@NonNull Set<IfcGeometricSetSelect> elements) {
-        if (elements == null) {
-            throw new IllegalArgumentException("elements cannot be null");
-        }
         if (elements.size() < 1) {
             throw new IllegalArgumentException(
                     "size of elements must be at least 1");

@@ -1,6 +1,7 @@
 /*
  * Copyright (C) 2019 Pieter Pauwels, Ghent University
  * Modifications Copyright (C) 2020 Giovanni Velludo
+ * Modifications Copyright (C) 2021 Antea S.r.l.
  *
  * This file is part of ifc-java.
  *
@@ -64,7 +65,7 @@ public abstract class IfcObjectDefinition extends IfcRoot {
      * object.. Examples are the association to library, documentation or classification.
      */
     @InverseRelationship
-    protected Set<IfcRelAssociates> hasAssociations;
+    private Set<IfcRelAssociates> hasAssociations;
     /**
      * Reference to the decomposition relationship, that allows this object to be the composition of other objects. An
      * object can be decomposed by several other objects.

@@ -1,6 +1,7 @@
 /*
  * Copyright (C) 2019 Pieter Pauwels, Ghent University
  * Modifications Copyright (C) 2020 Giovanni Velludo
+ * Modifications Copyright (C) 2021 Antea S.r.l.
  *
  * This file is part of ifc-java.
  *
@@ -19,10 +20,25 @@
 
 package buildingsmart.ifc;
 
-public class IfcSimpleProperty extends IfcProperty {
-    public IfcSimpleProperty(String Name, String Description,
-            IfcPropertyDependencyRelationship[] PropertyForDependance,
-            IfcPropertyDependencyRelationship[] PropertyDependsOn, IfcComplexProperty[] PartOfComplex) {
-        super(Name, Description, PropertyForDependance, PropertyDependsOn, PartOfComplex);
+import lombok.EqualsAndHashCode;
+import lombok.NonNull;
+import lombok.ToString;
+
+/**
+ * A generalization of a single property object. The various subtypes of IfcSimpleProperty establish different ways in
+ * which a property value can be set.
+ */
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
+public abstract class IfcSimpleProperty extends IfcProperty {
+
+    /**
+     * @param name        Name for this property. This label is the significant name string that defines the semantic
+     *                    meaning for the property.
+     * @param description Informative text to explain the property.
+     * @throws NullPointerException If {@code name} is {@code null}.
+     */
+    public IfcSimpleProperty(@NonNull IfcIdentifier name, IfcText description) {
+        super(name, description);
     }
 }

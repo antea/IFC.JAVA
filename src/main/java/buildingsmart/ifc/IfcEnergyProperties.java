@@ -1,6 +1,7 @@
 /*
  * Copyright (C) 2019 Pieter Pauwels, Ghent University
  * Modifications Copyright (C) 2020 Giovanni Velludo
+ * Modifications Copyright (C) 2021 Antea S.r.l.
  *
  * This file is part of ifc-java.
  *
@@ -19,18 +20,28 @@
 
 package buildingsmart.ifc;
 
+import lombok.NonNull;
+
 public class IfcEnergyProperties extends IfcPropertySetDefinition {
-    private final IfcEnergySequenceEnum EnergySequence;
+    private IfcEnergySequenceEnum EnergySequence;
     private String UserDefinedEnergySequence;
 
-    public IfcEnergyProperties(IfcGloballyUniqueId globalId,
-                               IfcOwnerHistory ownerHistory, IfcLabel name,
-                               IfcText description, IfcRelAssociates[] hasAssociations,
-                               IfcRelDefinesByProperties[] propertyDefinitionOf,
-                               IfcEnergySequenceEnum energySequence) {
-
-        super(globalId, ownerHistory, name, description, hasAssociations,
-                propertyDefinitionOf);
-        EnergySequence = energySequence;
+    /**
+     * @param globalId     Assignment of a globally unique identifier within the entire software world.
+     * @param ownerHistory Assignment of the information about the current ownership of that object, including owning
+     *                     actor, application, local identification and information captured about the recent changes of
+     *                     the object, NOTE: only the last modification in stored.
+     * @param name         Optional name for use by the participating software systems or users. For some subtypes of
+     *                     IfcRoot the insertion of the Name attribute may be required. This would be enforced by a
+     *                     where rule.
+     * @param description  Optional description, provided for exchanging informative comments.
+     * @throws NullPointerException     If {@code globalId} or {@code ownerHistory} is null.
+     * @throws IllegalArgumentException If {@code globalId} was used in another instance of this class.
+     */
+    public IfcEnergyProperties(@NonNull IfcGloballyUniqueId globalId,
+                               @NonNull IfcOwnerHistory ownerHistory,
+                               IfcLabel name,
+                               IfcText description) {
+        super(globalId, ownerHistory, name, description);
     }
 }

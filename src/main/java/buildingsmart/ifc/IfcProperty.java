@@ -1,6 +1,7 @@
 /*
  * Copyright (C) 2019 Pieter Pauwels, Ghent University
  * Modifications Copyright (C) 2020 Giovanni Velludo
+ * Modifications Copyright (C) 2021 Antea S.r.l.
  *
  * This file is part of ifc-java.
  *
@@ -19,13 +20,30 @@
 
 package buildingsmart.ifc;
 
-import lombok.AllArgsConstructor;
+import buildingsmart.io.Attribute;
+import buildingsmart.io.Entity;
+import lombok.*;
 
+/**
+ * An abstract generalization for all types of properties that can be associated with IFC objects through the property
+ * set mechanism.
+ */
 @AllArgsConstructor
-public class IfcProperty {
-    private String Name;
-    private String Description;
-    private IfcPropertyDependencyRelationship[] PropertyForDependance;
-    private IfcPropertyDependencyRelationship[] PropertyDependsOn;
-    private IfcComplexProperty[] PartOfComplex;
+@EqualsAndHashCode(callSuper = false)
+@ToString
+public abstract class IfcProperty extends Entity {
+
+    /**
+     * Name for this property. This label is the significant name string that defines the semantic meaning for the
+     * property.
+     */
+    @NonNull
+    @Getter(AccessLevel.PROTECTED)
+    @Attribute(0)
+    private final IfcIdentifier name;
+    /**
+     * Informative text to explain the property.
+     */
+    @Attribute(1)
+    private final IfcText description;
 }

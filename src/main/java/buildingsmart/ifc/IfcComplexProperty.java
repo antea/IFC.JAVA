@@ -1,6 +1,7 @@
 /*
  * Copyright (C) 2019 Pieter Pauwels, Ghent University
  * Modifications Copyright (C) 2020 Giovanni Velludo
+ * Modifications Copyright (C) 2021 Antea S.r.l.
  *
  * This file is part of ifc-java.
  *
@@ -19,19 +20,13 @@
 
 package buildingsmart.ifc;
 
-import lombok.Builder;
+import lombok.NonNull;
 
 public class IfcComplexProperty extends IfcProperty {
     private String UsageName;
     private IfcProperty[] HasProperties;
 
-    @Builder
-    public IfcComplexProperty(String Name, String Description,
-            IfcPropertyDependencyRelationship[] PropertyForDependance,
-            IfcPropertyDependencyRelationship[] PropertyDependsOn, IfcComplexProperty[] PartOfComplex,
-            String usageName, IfcProperty[] hasProperties) {
-        super(Name, Description, PropertyForDependance, PropertyDependsOn, PartOfComplex);
-        UsageName = usageName;
-        HasProperties = hasProperties;
+    public IfcComplexProperty(@NonNull IfcIdentifier name, IfcText description) {
+        super(name, description);
     }
 }
