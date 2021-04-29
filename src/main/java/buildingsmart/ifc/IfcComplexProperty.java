@@ -20,6 +20,7 @@
 package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
+import lombok.NonNull;
 import lombok.Builder;
 
 public class IfcComplexProperty extends IfcProperty {

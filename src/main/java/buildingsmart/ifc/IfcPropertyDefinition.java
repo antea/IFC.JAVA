@@ -1,6 +1,7 @@
 /*
  * Copyright (C) 2019 Pieter Pauwels, Ghent University
  * Modifications Copyright (C) 2020 Giovanni Velludo
+ * Modifications Copyright (C) 2021 Antea S.r.l.
  *
  * This file is part of ifc-java.
  *
@@ -20,8 +21,20 @@
 package buildingsmart.ifc;
 
 import buildingsmart.io.InverseRelationship;
+import lombok.NonNull;
+import lombok.ToString;
 
-public class IfcPropertyDefinition extends IfcRoot {
+/**
+ * <p>The <i>IfcPropertyDefinition</i>
+ * defines the generalization of all characteristics (i.e. a grouping of individual properties), that may be assigned to
+ * objects. Currently, subtypes of <i>IfcPropertyDefinition</i> include property set definitions, and property sets..
+ * </p>
+ * <p>Property definitions define information that is shared among
+ * multiple instances of objects. The assignment of the shared information to objects is handled by the
+ * <i>IfcRelDefines</i> relationship.</p>
+ */
+@ToString(callSuper = true)
+public abstract class IfcPropertyDefinition extends IfcRoot {
     @InverseRelationship
     private final IfcRelAssociates[] HasAssociations;
 
@@ -45,7 +58,8 @@ public class IfcPropertyDefinition extends IfcRoot {
      *                                  if globalId was used in another instance
      *                                  of this class.
      */
-    public IfcPropertyDefinition(IfcGloballyUniqueId globalId, IfcOwnerHistory ownerHistory, IfcLabel name,
+    public IfcPropertyDefinition(@NonNull IfcGloballyUniqueId globalId, @NonNull IfcOwnerHistory ownerHistory,
+                                 IfcLabel name,
                                  IfcText description, IfcRelAssociates[] hasAssociations) {
         super(globalId, ownerHistory, name, description);
         HasAssociations = hasAssociations;

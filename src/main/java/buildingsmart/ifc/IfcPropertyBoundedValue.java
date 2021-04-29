@@ -1,6 +1,7 @@
 /*
  * Copyright (C) 2019 Pieter Pauwels, Ghent University
  * Modifications Copyright (C) 2020 Giovanni Velludo
+ * Modifications Copyright (C) 2021 Antea S.r.l.
  *
  * This file is part of ifc-java.
  *
@@ -19,22 +20,20 @@
 
 package buildingsmart.ifc;
 
-import lombok.Builder;
+import lombok.NonNull;
 
 public class IfcPropertyBoundedValue extends IfcSimpleProperty {
     private IfcValue UpperBoundValue;
     private IfcValue LowerBoundValue;
     private IfcUnit Unit;
 
-    @Builder
-    public IfcPropertyBoundedValue(String Name, String Description,
-            IfcPropertyDependencyRelationship[] PropertyForDependance,
-            IfcPropertyDependencyRelationship[] PropertyDependsOn,
-            IfcComplexProperty[] PartOfComplex, IfcValue upperBoundValue, IfcValue lowerBoundValue,
-            IfcUnit unit) {
-        super(Name, Description, PropertyForDependance, PropertyDependsOn, PartOfComplex);
-        UpperBoundValue = upperBoundValue;
-        LowerBoundValue = lowerBoundValue;
-        Unit = unit;
+    /**
+     * @param name        Name for this property. This label is the significant name string that defines the semantic
+     *                    meaning for the property.
+     * @param description Informative text to explain the property.
+     * @throws NullPointerException If {@code name} is {@code null}.
+     */
+    public IfcPropertyBoundedValue(@NonNull IfcIdentifier name, IfcText description) {
+        super(name, description);
     }
 }

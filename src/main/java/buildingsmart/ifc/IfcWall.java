@@ -1,6 +1,7 @@
 /*
  * Copyright (C) 2019 Pieter Pauwels, Ghent University
  * Modifications Copyright (C) 2020 Giovanni Velludo
+ * Modifications Copyright (C) 2021 Antea S.r.l.
  *
  * This file is part of ifc-java.
  *
@@ -433,7 +434,7 @@ public class IfcWall extends IfcBuildingElement {
     @Override
     protected void addToHasAssociations(@NonNull IfcRelAssociates relationship) {
         if (relationship instanceof IfcRelAssociatesMaterial) {
-            for (IfcRelAssociates rel : this.hasAssociations) {
+            for (IfcRelAssociates rel : this.getHasAssociations()) {
                 if (rel instanceof IfcRelAssociatesMaterial) {
                     throw new IllegalArgumentException(
                             "hasAssociations must contain a maximum of 1 " +

@@ -1,6 +1,7 @@
 /*
  * Copyright (C) 2019 Pieter Pauwels, Ghent University
  * Modifications Copyright (C) 2020 Giovanni Velludo
+ * Modifications Copyright (C) 2021 Antea S.r.l.
  *
  * This file is part of ifc-java.
  *
@@ -19,19 +20,19 @@
 
 package buildingsmart.ifc;
 
-import lombok.Builder;
+import lombok.NonNull;
 
 public class IfcPropertyEnumeratedValue extends IfcSimpleProperty {
     private IfcValue[] EnumerationValues;
     private IfcPropertyEnumeration EnumerationReference;
 
-    @Builder
-    public IfcPropertyEnumeratedValue(String Name, String Description,
-            IfcPropertyDependencyRelationship[] PropertyForDependance,
-            IfcPropertyDependencyRelationship[] PropertyDependsOn, IfcComplexProperty[] PartOfComplex,
-            IfcValue[] enumerationValues, IfcPropertyEnumeration enumerationReference) {
-        super(Name, Description, PropertyForDependance, PropertyDependsOn, PartOfComplex);
-        EnumerationValues = enumerationValues;
-        EnumerationReference = enumerationReference;
+    /**
+     * @param name        Name for this property. This label is the significant name string that defines the semantic
+     *                    meaning for the property.
+     * @param description Informative text to explain the property.
+     * @throws NullPointerException If {@code name} is {@code null}.
+     */
+    public IfcPropertyEnumeratedValue(@NonNull IfcIdentifier name, IfcText description) {
+        super(name, description);
     }
 }

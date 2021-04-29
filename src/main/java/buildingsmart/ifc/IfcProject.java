@@ -237,17 +237,14 @@ public class IfcProject extends IfcObject {
     }
 
     /**
-     * @param decomposes References to the decomposition relationship, that
-     *                   allows this object to be a part of the decomposition.
-     *                   An object can only be part of a single decomposition
-     *                   (to allow hierarchical strutures only).
-     * @throws IllegalStateException If this method is called, because
-     *                               IfcProject cannot decompose other
-     *                               IfcObjectDefinition.
+     * @throws NullPointerException          If decomposes is null.
+     * @throws UnsupportedOperationException If this method is called, because
+     *                                       IfcProject cannot decompose other
+     *                                       IfcObjectDefinition.
      */
     @Override
-    protected void setDecomposes(IfcRelDecomposes decomposes) {
-        throw new IllegalStateException(
+    protected void setDecomposes(@NonNull IfcRelDecomposes decomposes) {
+        throw new UnsupportedOperationException(
                 "IfcProject cannot decompose any other " +
                         "IfcObjectDefinition");
     }
