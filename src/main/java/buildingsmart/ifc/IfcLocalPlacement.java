@@ -47,6 +47,10 @@ import java.util.Objects;
  */
 @ToString
 public class IfcLocalPlacement extends IfcObjectPlacement {
+
+    private static final IfcAxis2Placement3D DEFAULT_A2P3D = new IfcAxis2Placement3D(0, 0, 0);
+    private static final IfcAxis2Placement2D DEFAULT_A2P2D = new IfcAxis2Placement2D(0, 0);
+
     @Getter
     @Attribute(0)
     private final IfcObjectPlacement placementRelTo;
@@ -77,10 +81,15 @@ public class IfcLocalPlacement extends IfcObjectPlacement {
         }
         this.placementRelTo = placementRelTo;
         this.relativePlacement = relativePlacement;
-        this.md5 = computeMD5(placementRelTo, relativePlacement);
+        if (placementRelTo != null &&
+                (relativePlacement.equals(DEFAULT_A2P3D) || relativePlacement.equals(DEFAULT_A2P2D))) {
+            this.md5 = placementRelTo.getMd5();
+        } else {
+            this.md5 = computeMD5(placementRelTo, relativePlacement);
+        }
     }
 
-    private byte[] computeMD5(IfcObjectPlacement placementRelTo, IfcAxis2Placement relativePlacement) {
+    private static byte[] computeMD5(IfcObjectPlacement placementRelTo, IfcAxis2Placement relativePlacement) {
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 ObjectOutputStream oos = new ObjectOutputStream(baos)) {
             MessageDigest md = MessageDigest.getInstance("MD5");
@@ -91,7 +100,8 @@ public class IfcLocalPlacement extends IfcObjectPlacement {
             }
 
             // adds relativePlacement
-            oos.writeObject(relativePlacement);
+            oos.writeObject(relativePlacement.getLocation());
+            oos.writeObject(relativePlacement.getP());
             md.update(baos.toByteArray());
 
             return md.digest();
@@ -122,7 +132,12 @@ public class IfcLocalPlacement extends IfcObjectPlacement {
             return false;
         }
         IfcLocalPlacement that = (IfcLocalPlacement) o;
-        return Arrays.equals(md5, that.md5) && relativePlacement.equals(that.relativePlacement);
+
+        return Arrays.equals(md5, that.md5) && relativePlacement.equals(that.relativePlacement) ||
+                that.placementRelTo != null && Arrays.equals(md5, that.placementRelTo.getMd5()) &&
+                        (that.relativePlacement.equals(DEFAULT_A2P3D) || that.relativePlacement.equals(DEFAULT_A2P2D)) ||
+                placementRelTo != null && Arrays.equals(placementRelTo.getMd5(), that.md5) &&
+                        (relativePlacement.equals(DEFAULT_A2P3D) || relativePlacement.equals(DEFAULT_A2P2D));
     }
 
     /**

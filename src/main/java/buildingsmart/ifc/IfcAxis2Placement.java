@@ -19,6 +19,8 @@
 
 package buildingsmart.ifc;
 
+import java.util.List;
+
 /**
  * This select type collects together both versions of the placement as used in
  * two dimensional or in three dimensional Cartesian space. This enables
@@ -38,4 +40,9 @@ public interface IfcAxis2Placement {
      * of a circle, of the item to be located.
      */
     IfcCartesianPoint getLocation();
+
+    /**
+     * @return The normalized directions of the axes.
+     */
+    List<IfcDirection> getP();
 }
