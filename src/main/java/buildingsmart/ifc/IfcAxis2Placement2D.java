@@ -22,6 +22,7 @@ package buildingsmart.ifc;
 import buildingsmart.io.Attribute;
 import buildingsmart.util.Functions;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NonNull;
 import lombok.ToString;
 
@@ -50,6 +51,7 @@ public class IfcAxis2Placement2D extends IfcPlacement
      * if RefDirection is omitted. p[1]: The normalized direction of the
      * placement Y Axis. This is a derived attribute and is orthogonal to p[0].
      */
+    @Getter
     @EqualsAndHashCode.Include
     private final List<IfcDirection> p;
 
