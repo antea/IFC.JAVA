@@ -34,10 +34,10 @@ import static java.lang.Math.sqrt;
 public class Functions {
 
     /**
-     * Max allowed difference for doubles to be considered equal in
-     * comparisons.
+     * Max allowed difference for doubles to be considered equal in comparisons. Used in this class,
+     * {@link IfcDirection} and {@link IfcCartesianPoint}.
      */
-    protected static final double DELTA = 0.0000000000001;
+    public static double delta = 0.00000001;
 
     private static final Map<IfcUnitEnum, Predicate<IfcDimensionalExponents>>
             ifcCorrectDimensions = Collections
@@ -567,7 +567,7 @@ public class Functions {
             double component = dirRatio.getValue();
             squaresSum += component * component;
         }
-        return Math.abs(squaresSum - 1) < DELTA;
+        return Math.abs(squaresSum - 1) <= delta;
     }
 
     /**
@@ -946,5 +946,20 @@ public class Functions {
         }
         return new IfcDirection(-vec.getDirectionRatios().get(1).getValue(),
                                 vec.getDirectionRatios().get(0).getValue());
+    }
+
+    /**
+     * @param value The value that might get rounded.
+     * @return The closest integer to {@code value} (as described in the documentation of {@link Math#round(double)}) if
+     * the difference between {@code value} and {@code Math.round(value)} is lower or equal to {@link #delta},
+     * {@code value} otherwise.
+     */
+    public static double round(double value) {
+        double roundedValue = Math.round(value);
+        if (Math.abs(value - roundedValue) > delta) {
+            return value;
+        } else {
+            return roundedValue;
+        }
     }
 }
