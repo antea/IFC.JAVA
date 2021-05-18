@@ -118,9 +118,7 @@ public class SerializerTest {
                                         axis2Placement2D,
                                         new IfcPositiveLengthMeasure(0.1));
         IfcAxis2Placement3D cylinderPlacement =
-                new IfcAxis2Placement3D(new IfcCartesianPoint(-1.4210854715202E-17,
-                                                              -2.73641172593403E-18,
-                                                              0),
+                new IfcAxis2Placement3D(new IfcCartesianPoint(0, 0, 0),
                                         new IfcDirection(0, 0, 1),
                                         new IfcDirection(1, 0, 0));
         IfcExtrudedAreaSolid cylinder = new IfcExtrudedAreaSolid(circle,
@@ -290,20 +288,19 @@ public class SerializerTest {
                 "#27=IFCLOCALPLACEMENT($,#9);\n" + "#28=IFCCARTESIANPOINT((0.0,0.0));\n" +
                 "#29=IFCDIRECTION((1.0,0.0));\n" + "#30=IFCAXIS2PLACEMENT2D(#28,#29);\n" +
                 "#31=IFCCIRCLEPROFILEDEF(.AREA.,$,#30,0.1);\n" +
-                "#32=IFCCARTESIANPOINT((-1.4210854715202E-17,-2.73641172593403E-18,0.0));\n" +
-                "#33=IFCAXIS2PLACEMENT3D(#32,#7,#8);\n" + "#34=IFCEXTRUDEDAREASOLID(#31,#33,#7,0.1);\n" +
-                "#35=IFCSHAPEREPRESENTATION(#11,'Body','SweptSolid',(#34));\n" +
-                "#36=IFCPRODUCTDEFINITIONSHAPE($,$,(#35));\n" +
-                "#37=IFCWALL('2KcxKeVfqHwhb6N5zdz5Bw',#5,'Wall','',$,#27,#36,$);\n" +
-                "#38=IFCAXIS2PLACEMENT3D(#6,#8,#10);\n" + "#39=IFCCIRCLE(#38,0.5);\n" +
-                "#40=IFCTRIMMEDCURVE(#39,(IFCPARAMETERVALUE(0.0)),(IFCPARAMETERVALUE(1.5707963267948966)),.T.,.PARAMETER.);\n" +
-                "#41=IFCSHAPEREPRESENTATION(#11,'Body','GeometricCurveSet',(#40));\n" +
-                "#42=IFCPRODUCTDEFINITIONSHAPE($,$,(#41));\n" +
-                "#43=IFCPROXY('2KcxKeVfqHwhb6N5zd1234',#5,'TrimmedCurve','',$,#27,#42,.PRODUCT.,$);\n" +
-                "#44=IFCRELCONTAINEDINSPATIALSTRUCTURE('2KdIamVfqHwf$aN5zdz5Bw',#5,'UnassignedObjectsLink','',(#37,#43),#25);\n" +
-                "#45=IFCCOLOURRGB($,1.0,1.0,1.0);\n" + "#46=IFCSURFACESTYLERENDERING(#45,$,$,$,$,$,$,$,.FLAT.);\n" +
-                "#47=IFCSURFACESTYLE($,.BOTH.,(#46));\n" + "#48=IFCPRESENTATIONSTYLEASSIGNMENT((#47));\n" +
-                "#49=IFCSTYLEDITEM(#34,(#48),$);\n" + "ENDSEC;\n";
+                "#32=IFCEXTRUDEDAREASOLID(#31,#9,#7,0.1);\n" +
+                "#33=IFCSHAPEREPRESENTATION(#11,'Body','SweptSolid',(#32));\n" +
+                "#34=IFCPRODUCTDEFINITIONSHAPE($,$,(#33));\n" +
+                "#35=IFCWALL('2KcxKeVfqHwhb6N5zdz5Bw',#5,'Wall','',$,#27,#34,$);\n" +
+                "#36=IFCAXIS2PLACEMENT3D(#6,#8,#10);\n" + "#37=IFCCIRCLE(#36,0.5);\n" +
+                "#38=IFCTRIMMEDCURVE(#37,(IFCPARAMETERVALUE(0.0)),(IFCPARAMETERVALUE(1.5707963267948966)),.T.,.PARAMETER.);\n" +
+                "#39=IFCSHAPEREPRESENTATION(#11,'Body','GeometricCurveSet',(#38));\n" +
+                "#40=IFCPRODUCTDEFINITIONSHAPE($,$,(#39));\n" +
+                "#41=IFCPROXY('2KcxKeVfqHwhb6N5zd1234',#5,'TrimmedCurve','',$,#27,#40,.PRODUCT.,$);\n" +
+                "#42=IFCRELCONTAINEDINSPATIALSTRUCTURE('2KdIamVfqHwf$aN5zdz5Bw',#5,'UnassignedObjectsLink','',(#35,#41),#25);\n" +
+                "#43=IFCCOLOURRGB($,1.0,1.0,1.0);\n" + "#44=IFCSURFACESTYLERENDERING(#43,$,$,$,$,$,$,$,.FLAT.);\n" +
+                "#45=IFCSURFACESTYLE($,.BOTH.,(#44));\n" + "#46=IFCPRESENTATIONSTYLEASSIGNMENT((#45));\n" +
+                "#47=IFCSTYLEDITEM(#32,(#46),$);\n" + "ENDSEC;\n";
         Serializer serializer = new Serializer();
 
         serializer.serialize(new Header().setDescription(

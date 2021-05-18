@@ -23,7 +23,7 @@ import org.junit.Test;
 
 import java.util.*;
 
-import static buildingsmart.util.Functions.DELTA;
+import static buildingsmart.util.Functions.delta;
 import static buildingsmart.util.Functions.ifcDotProduct;
 import static java.lang.Math.abs;
 import static java.lang.Math.sqrt;
@@ -47,7 +47,7 @@ public class FunctionsTest {
         for (List<IfcDirection> pair : combinations) {
             double dotProduct =
                     ifcDotProduct(pair.get(0), pair.get(1)).getValue();
-            if (Math.abs(dotProduct) > DELTA) {
+            if (Math.abs(dotProduct) > delta) {
                 return false;
             }
         }
@@ -101,14 +101,14 @@ public class FunctionsTest {
     public void ifcCrossProduct_componentsAreZero_returnsZeroMagnitudeVector() {
         IfcVector vector = Functions.ifcCrossProduct(new IfcDirection(0, 0, 0),
                                                      new IfcDirection(1, 2, 3));
-        assertEquals(0, vector.getMagnitude().getValue(), DELTA);
+        assertEquals(0, vector.getMagnitude().getValue(), delta);
     }
 
     @Test
     public void ifcCrossProduct_parallelDirections_returnsZeroMagnitudeVector() {
         IfcVector vector = Functions.ifcCrossProduct(new IfcDirection(2, 4, 8),
                                                      new IfcDirection(1, 2, 4));
-        assertEquals(0, vector.getMagnitude().getValue(), DELTA);
+        assertEquals(0, vector.getMagnitude().getValue(), delta);
     }
 
     @Test
@@ -116,7 +116,7 @@ public class FunctionsTest {
         IfcVector vector = Functions
                 .ifcCrossProduct(new IfcDirection(-1, -2, -4),
                                  new IfcDirection(1, 2, 4));
-        assertEquals(0, vector.getMagnitude().getValue(), DELTA);
+        assertEquals(0, vector.getMagnitude().getValue(), delta);
     }
 
     @Test
@@ -134,14 +134,12 @@ public class FunctionsTest {
 
         // since the two input directions are on the same plane, we expect
         // the result to be on the axis perpendicular to that plane
-        assertEquals(0, vector.getDirectionRatios().get(0).getValue(), DELTA);
-        assertEquals(0, vector.getDirectionRatios().get(1).getValue(), DELTA);
+        assertEquals(0, vector.getDirectionRatios().get(0).getValue(), delta);
+        assertEquals(0, vector.getDirectionRatios().get(1).getValue(), delta);
         assertEquals(expectedComp,
-                     vector.getDirectionRatios().get(2).getValue(),
-                     DELTA);
+                     vector.getDirectionRatios().get(2).getValue(), delta);
         assertEquals(vector.getMagnitude().getValue(),
-                     abs(vector.getDirectionRatios().get(2).getValue()),
-                     DELTA);
+                     abs(vector.getDirectionRatios().get(2).getValue()), delta);
     }
 
     @Test
@@ -164,7 +162,7 @@ public class FunctionsTest {
         IfcDirection normalisedDirection = Functions.ifcNormalise(direction);
 
         for (IfcReal comp : normalisedDirection.getDirectionRatios()) {
-            assertEquals(expectedComponents, comp.getValue(), DELTA);
+            assertEquals(expectedComponents, comp.getValue(), delta);
         }
     }
 
@@ -198,11 +196,10 @@ public class FunctionsTest {
         IfcVector normalisedVector = Functions.ifcNormalise(vector);
 
         for (IfcReal comp : normalisedVector.getDirectionRatios()) {
-            assertEquals(expectedComponents, comp.getValue(), DELTA);
+            assertEquals(expectedComponents, comp.getValue(), delta);
         }
         assertEquals(expectedMagnitude,
-                     normalisedVector.getMagnitude().getValue(),
-                     DELTA);
+                     normalisedVector.getMagnitude().getValue(), delta);
     }
 
     @Test
@@ -353,7 +350,7 @@ public class FunctionsTest {
         double result = Functions.ifcDotProduct(new IfcDirection(3.5, 1),
                                                 new IfcDirection(8.234, 123))
                 .getValue();
-        assertEquals(expectedResult, result, DELTA);
+        assertEquals(expectedResult, result, delta);
     }
 
     @Test
@@ -603,8 +600,7 @@ public class FunctionsTest {
         List<IfcDirection> result =
                 Functions.ifcBuild2Axes(new IfcDirection(1, 2));
         assertEquals(0,
-                     ifcDotProduct(result.get(0), result.get(1)).getValue(),
-                     DELTA);
+                     ifcDotProduct(result.get(0), result.get(1)).getValue(), delta);
     }
 
     @Test(expected = NullPointerException.class)
