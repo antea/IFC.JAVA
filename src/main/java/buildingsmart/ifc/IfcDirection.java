@@ -22,6 +22,7 @@ package buildingsmart.ifc;
 import buildingsmart.io.Attribute;
 import buildingsmart.util.Functions;
 import com.google.common.collect.Lists;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NonNull;
 
@@ -29,14 +30,12 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
-
-import static buildingsmart.util.Functions.delta;
 
 /**
  * This entity defines a general direction vector in two or three dimensional space. The actual magnitudes of the
  * components have no effect upon the direction being defined, only the ratios X:Y:Z or X:Y are significant.
  */
+@EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
 public class IfcDirection extends IfcGeometricRepresentationItem implements IfcVectorOrDirection, Serializable {
     @Getter
     @Attribute(0)
@@ -47,6 +46,7 @@ public class IfcDirection extends IfcGeometricRepresentationItem implements IfcV
      * the same direction.
      */
     @Getter
+    @EqualsAndHashCode.Include
     private final List<IfcReal> normalisedDirectionRatios;
     @Getter
     private final IfcDimensionCount dim; // derived attribute
@@ -98,26 +98,5 @@ public class IfcDirection extends IfcGeometricRepresentationItem implements IfcV
     public String toString() {
         return "IfcDirection(directionRatios=" + directionRatios + ", normalisedDirectionRatios=" +
                 normalisedDirectionRatios + ")";
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        IfcDirection that = (IfcDirection) o;
-
-        for (byte i = 0; i < normalisedDirectionRatios.size(); i++) {
-            if (Math.abs(
-                    normalisedDirectionRatios.get(i).getValue() - that.normalisedDirectionRatios.get(i).getValue()) >
-                    delta) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(normalisedDirectionRatios);
     }
 }
