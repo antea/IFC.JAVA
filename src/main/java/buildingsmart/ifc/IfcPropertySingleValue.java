@@ -19,10 +19,13 @@
 
 package buildingsmart.ifc;
 
+import buildingsmart.io.Attribute;
 import lombok.Builder;
 
 public class IfcPropertySingleValue extends IfcSimpleProperty {
+    @Attribute(2)
     private IfcValue NominalValue;
+    @Attribute(3)
     private IfcUnit Unit;
 
     @Builder

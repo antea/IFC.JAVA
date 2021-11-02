@@ -19,7 +19,10 @@
 
 package buildingsmart.ifc;
 
+import buildingsmart.io.InverseRelationship;
+
 public class IfcPropertyDefinition extends IfcRoot {
+    @InverseRelationship
     private final IfcRelAssociates[] HasAssociations;
 
     /**

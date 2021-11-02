@@ -19,10 +19,13 @@
 
 package buildingsmart.ifc;
 
+import buildingsmart.io.Attribute;
 import lombok.Builder;
 
 public class IfcComplexProperty extends IfcProperty {
+    @Attribute(2)
     private String UsageName;
+    @Attribute(3)
     private IfcProperty[] HasProperties;
 
     @Builder

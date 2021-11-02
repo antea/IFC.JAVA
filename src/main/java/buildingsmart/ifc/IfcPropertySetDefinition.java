@@ -19,8 +19,12 @@
 
 package buildingsmart.ifc;
 
+import buildingsmart.io.InverseRelationship;
+
 public class IfcPropertySetDefinition extends IfcPropertyDefinition {
+    @InverseRelationship
     private final IfcRelDefinesByProperties[] PropertyDefinitionOf;
+    @InverseRelationship
     private IfcTypeObject[] DefinesType;
 
     public IfcPropertySetDefinition(IfcGloballyUniqueId globalId,

@@ -35,12 +35,9 @@ import java.util.stream.Collectors;
 @EqualsAndHashCode
 @ToString
 public class Header {
-    protected static final String IMPLEMENTATION_LEVEL =
-            checkMaxLengthAndFormat("2;1");
-    protected static final String PREPROCESSOR_VERSION =
-            checkMaxLengthAndFormat("ifc-java 0.2.5-SNAPSHOT");
-    protected static final String FILE_SCHEMA =
-            Functions.formatForStepFile("IFC2X3");
+    protected static final String IMPLEMENTATION_LEVEL = checkMaxLengthAndFormat("2;1");
+    protected static final String PREPROCESSOR_VERSION = checkMaxLengthAndFormat("ifc-java 0.2.5");
+    protected static final String FILE_SCHEMA = Functions.formatForStepFile("IFC2X3");
     private List<String> description;
     private String fileName;
     private String timeStamp;

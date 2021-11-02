@@ -19,7 +19,10 @@
 
 package buildingsmart.ifc;
 
+import buildingsmart.io.Attribute;
+
 public class IfcRelDefinesByType extends IfcRelDefines {
+    @Attribute(5)
     private final IfcTypeObject RelatingType;
 
     public IfcRelDefinesByType(IfcGloballyUniqueId globalId,

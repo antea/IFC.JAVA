@@ -19,13 +19,20 @@
 
 package buildingsmart.ifc;
 
+import buildingsmart.io.Attribute;
+import buildingsmart.io.InverseRelationship;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public class IfcProperty {
+    @Attribute(0)
     private String Name;
+    @Attribute(1)
     private String Description;
+    @InverseRelationship
     private IfcPropertyDependencyRelationship[] PropertyForDependance;
+    @InverseRelationship
     private IfcPropertyDependencyRelationship[] PropertyDependsOn;
+    @InverseRelationship
     private IfcComplexProperty[] PartOfComplex;
 }

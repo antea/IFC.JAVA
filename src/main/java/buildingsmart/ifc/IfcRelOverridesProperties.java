@@ -19,7 +19,10 @@
 
 package buildingsmart.ifc;
 
+import buildingsmart.io.Attribute;
+
 public class IfcRelOverridesProperties extends IfcRelDefinesByProperties {
+    @Attribute(5)
     private final IfcProperty[] OverridingProperties;
 
     public IfcRelOverridesProperties(IfcGloballyUniqueId globalId,

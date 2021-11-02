@@ -19,7 +19,10 @@
 
 package buildingsmart.ifc;
 
+import buildingsmart.io.Attribute;
+
 public class IfcRelDefines extends IfcRelationship {
+    @Attribute(4)
     private final IfcObject[] RelatedObjects;
 
     /**

@@ -19,9 +19,14 @@
 
 package buildingsmart.ifc;
 
+import buildingsmart.io.Attribute;
+
 public class IfcTypeObject extends IfcObjectDefinition {
+    @Attribute(4)
     private final String ApplicableOccurrence;
+    @Attribute(5)
     private final IfcPropertySetDefinition[] HasPropertySets;
+    @Attribute(6)
     private final IfcRelDefinesByType[] ObjectTypeOf;
 
     /**

@@ -19,10 +19,17 @@
 
 package buildingsmart.ifc;
 
+import buildingsmart.io.Attribute;
+
 public class IfcPropertyDependencyRelationship {
+    @Attribute(0)
     private IfcProperty DependingProperty;
+    @Attribute(1)
     private IfcProperty DependantProperty;
+    @Attribute(2)
     private String Name;
+    @Attribute(3)
     private String Description;
+    @Attribute(4)
     private String Expression;
 }
