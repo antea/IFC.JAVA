@@ -25,6 +25,7 @@ import lombok.NonNull;
 import lombok.Singular;
 import lombok.ToString;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -87,7 +88,7 @@ import java.util.Set;
  * </blockquote>
  */
 @ToString(callSuper = true)
-public class IfcRelContainedInSpatialStructure extends IfcRelConnects {
+public class IfcRelContainedInSpatialStructure extends IfcRelConnects implements Serializable {
     @Attribute(4)
     private final Set<IfcProduct> relatedElements;
     @Attribute(5)

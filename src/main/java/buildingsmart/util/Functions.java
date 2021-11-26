@@ -457,12 +457,14 @@ public class Functions {
         IfcVector result = new IfcVector(arg1, new IfcLengthMeasure(0));
         List<IfcReal> v1Real;
         List<IfcReal> v2Real;
-        try {
-            v1Real = ifcNormalise(arg1).getDirectionRatios();
-            v2Real = ifcNormalise(arg2).getDirectionRatios();
-        } catch (NullPointerException e) {
+        IfcDirection ifcDirection1 = ifcNormalise(arg1);
+        IfcDirection ifcDirection2 = ifcNormalise(arg2);
+        if (null == ifcDirection1 || null == ifcDirection2) {
             return result;
         }
+        v1Real = ifcDirection1.getDirectionRatios();
+        v2Real = ifcDirection2.getDirectionRatios();
+
         double[] v1 = new double[v1Real.size()];
         double[] v2 = new double[v2Real.size()];
         for (byte i = 0; i < v1.length; i++) {

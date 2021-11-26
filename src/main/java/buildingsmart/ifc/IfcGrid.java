@@ -19,7 +19,9 @@
 
 package buildingsmart.ifc;
 
-public class IfcGrid extends IfcProduct {
+import java.io.Serializable;
+
+public class IfcGrid extends IfcProduct implements Serializable {
     private final IfcGridAxis[] UAxes;
     private IfcGridAxis[] VAxes;
     private IfcGridAxis[] WAxes;

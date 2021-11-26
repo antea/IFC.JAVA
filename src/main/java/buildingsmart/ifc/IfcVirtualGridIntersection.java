@@ -19,7 +19,9 @@
 
 package buildingsmart.ifc;
 
-public class IfcVirtualGridIntersection {
+import java.io.Serializable;
+
+public class IfcVirtualGridIntersection implements Serializable {
     private IfcGridAxis[] IntersectingAxes;
     private double[] OffsetDistances;
 }

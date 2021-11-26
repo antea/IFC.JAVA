@@ -19,11 +19,13 @@
 
 package buildingsmart.ifc;
 
+import java.io.Serializable;
+
 /**
  * This select type identifies the types of entities which can occur in a
  * geometric set.
  */
-public interface IfcGeometricSetSelect {
+public interface IfcGeometricSetSelect extends Serializable {
     /**
      * @return The space dimensionality of this class.
      */
