@@ -19,7 +19,9 @@
 
 package buildingsmart.ifc;
 
-public class IfcGridAxis {
+import java.io.Serializable;
+
+public class IfcGridAxis implements Serializable {
     private String AxisTag;
     private IfcCurve AxisCurve;
     private boolean SameSense;

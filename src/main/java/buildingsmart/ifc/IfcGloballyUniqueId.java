@@ -220,14 +220,14 @@ public class IfcGloballyUniqueId implements DefinedType {
         num[1] = guid.data1 % 16777216;
         // 15-13. bytes (guid.data1 % 16777216) is the same as (guid.data1 &
         // 0xFFFFFF)
-        num[2] = guid.data2 * 256 + guid.data3 / 256;
+        num[2] = guid.data2 * 256L + guid.data3 / 256;
         // 12-10. bytes
         num[3] = (guid.data3 % 256) * 65536 + guid.data4[0] * 256 +
                 guid.data4[1];
         // 09-07. bytes
-        num[4] = guid.data4[2] * 65536 + guid.data4[3] * 256 + guid.data4[4];
+        num[4] = guid.data4[2] * 65536L + guid.data4[3] * 256 + guid.data4[4];
         // 06-04. bytes
-        num[5] = guid.data4[5] * 65536 + guid.data4[6] * 256 + guid.data4[7];
+        num[5] = guid.data4[5] * 65536L + guid.data4[6] * 256 + guid.data4[7];
         // 03-01. bytes
 
         // Conversion of the numbers into a system using a base of 64
@@ -252,7 +252,6 @@ public class IfcGloballyUniqueId implements DefinedType {
      *
      * @param number The integer to convert.
      * @param code   The char array where to put the converted integer.
-     * @param len
      * @return true if no error occurred
      */
     private static boolean convertToBase64(long number, char[] code, int len) {
