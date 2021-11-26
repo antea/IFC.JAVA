@@ -23,6 +23,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NonNull;
 import lombok.SneakyThrows;
 import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.*;
 import java.lang.reflect.Field;
@@ -32,6 +33,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@Slf4j
 @EqualsAndHashCode
 @ToString
 public class Serializer {
@@ -92,7 +94,7 @@ public class Serializer {
                 invRel = field.get(entity);
             } catch (IllegalAccessException e) {
                 // this should never happen, since field was set as accessible
-                e.printStackTrace();
+                log.error("", e);
             }
             return invRel;
         });
@@ -227,7 +229,7 @@ public class Serializer {
                         attribute = field.get(entity);
                     } catch (IllegalAccessException e) {
                         // this cannot happen as field was set accessible
-                        e.printStackTrace();
+                        log.error("", e);
                     }
                     if (field.getType().isInterface() &&
                             (attribute instanceof DefinedType ||
