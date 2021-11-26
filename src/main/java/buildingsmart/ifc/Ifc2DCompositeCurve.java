@@ -40,7 +40,7 @@ public abstract class Ifc2DCompositeCurve extends IfcCompositeCurve {
      *                                  DISCONTINUOUS}, if the segments have
      *                                  different dimensionality.
      */
-    public Ifc2DCompositeCurve(@NonNull List<IfcCompositeCurveSegment> segments,
+    protected Ifc2DCompositeCurve(@NonNull List<IfcCompositeCurveSegment> segments,
                                @NonNull IfcLogical selfIntersect) {
         super(segments, selfIntersect);
     }

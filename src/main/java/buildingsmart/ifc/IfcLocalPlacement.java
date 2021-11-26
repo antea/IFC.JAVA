@@ -25,6 +25,7 @@ import buildingsmart.util.Functions;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -45,6 +46,7 @@ import java.util.Objects;
  * <p>If the <i>PlacementRelTo</i> is not given, then
  * the <i>IfcProduct</i> is placed absolutely within the world coordinate system.</p>
  */
+@Slf4j
 @ToString
 public class IfcLocalPlacement extends IfcObjectPlacement {
 
@@ -108,7 +110,7 @@ public class IfcLocalPlacement extends IfcObjectPlacement {
         } catch (NoSuchAlgorithmException | IOException e) {
             // MD5 must be implemented by the Java Security API so the NoSuchAlgorithmException should not be possible,
             // see https://docs.oracle.com/javase/1.5.0/docs/guide/security/CryptoSpec.html#AppA
-            e.printStackTrace();
+            log.error("", e);
 
             // using hashCode instead of md5, not ideal but at least the program won't crash because of an
             // IOException. This could lead to wrong comparisons in equals() when comparing two identical instances
