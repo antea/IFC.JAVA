@@ -53,8 +53,8 @@ public class IfcFluidFlowProperties extends IfcPropertySetDefinition {
      */
     public IfcFluidFlowProperties(@NonNull IfcGloballyUniqueId globalId,
                                   @NonNull IfcOwnerHistory ownerHistory,
-                                  IfcLabel name,
-                                  IfcText description) {
-        super(globalId, ownerHistory, name, description);
+            IfcLabel name, IfcText description, IfcRelAssociates[] hasAssociations,
+            IfcRelDefinesByProperties[] propertyDefinitionOf) {
+        super(globalId, ownerHistory, name, description, hasAssociations, propertyDefinitionOf);
     }
 }

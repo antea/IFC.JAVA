@@ -41,7 +41,8 @@ public class IfcElementQuantity extends IfcPropertySetDefinition {
     public IfcElementQuantity(@NonNull IfcGloballyUniqueId globalId,
                               @NonNull IfcOwnerHistory ownerHistory,
                               IfcLabel name,
-                              IfcText description) {
-        super(globalId, ownerHistory, name, description);
+            IfcText description, IfcRelAssociates[] hasAssociations,
+            IfcRelDefinesByProperties[] propertyDefinitionOf) {
+        super(globalId, ownerHistory, name, description, hasAssociations, propertyDefinitionOf);
     }
 }

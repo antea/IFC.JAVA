@@ -38,7 +38,10 @@ public abstract class IfcSimpleProperty extends IfcProperty {
      * @param description Informative text to explain the property.
      * @throws NullPointerException If {@code name} is {@code null}.
      */
-    public IfcSimpleProperty(@NonNull IfcIdentifier name, IfcText description) {
-        super(name, description);
+    public IfcSimpleProperty(@NonNull IfcIdentifier name, IfcText description,
+            IfcPropertyDependencyRelationship[] PropertyForDependance,
+            IfcPropertyDependencyRelationship[] PropertyDependsOn,
+            IfcComplexProperty[] PartOfComplex) {
+        super(name, description, PropertyForDependance, PropertyDependsOn, PartOfComplex);
     }
 }

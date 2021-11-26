@@ -42,7 +42,8 @@ public class IfcSoundValue extends IfcPropertySetDefinition {
     public IfcSoundValue(@NonNull IfcGloballyUniqueId globalId,
                          @NonNull IfcOwnerHistory ownerHistory,
                          IfcLabel name,
-                         IfcText description) {
-        super(globalId, ownerHistory, name, description);
+            IfcText description, IfcRelAssociates[] hasAssociations,
+            IfcRelDefinesByProperties[] propertyDefinitionOf) {
+        super(globalId, ownerHistory, name, description, hasAssociations, propertyDefinitionOf);
     }
 }

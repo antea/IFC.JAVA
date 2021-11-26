@@ -33,7 +33,10 @@ public class IfcPropertyBoundedValue extends IfcSimpleProperty {
      * @param description Informative text to explain the property.
      * @throws NullPointerException If {@code name} is {@code null}.
      */
-    public IfcPropertyBoundedValue(@NonNull IfcIdentifier name, IfcText description) {
-        super(name, description);
+    public IfcPropertyBoundedValue(@NonNull IfcIdentifier name, IfcText description,
+            IfcPropertyDependencyRelationship[] PropertyForDependance,
+            IfcPropertyDependencyRelationship[] PropertyDependsOn,
+            IfcComplexProperty[] PartOfComplex) {
+        super(name, description, PropertyForDependance, PropertyDependsOn, PartOfComplex);
     }
 }

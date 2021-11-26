@@ -75,8 +75,9 @@ public class IfcPropertySet extends IfcPropertySetDefinition {
                           @NonNull IfcOwnerHistory ownerHistory,
                           @NonNull IfcLabel name,
             IfcText description,
-                          @NonNull Set<IfcProperty> hasProperties) {
-        super(globalId, ownerHistory, name, description);
+            @NonNull Set<IfcProperty> hasProperties, IfcRelAssociates[] hasAssociations,
+            IfcRelDefinesByProperties[] propertyDefinitionOf) {
+        super(globalId, ownerHistory, name, description, hasAssociations, propertyDefinitionOf);
 
         if (hasProperties.isEmpty()) {
             throw new IllegalArgumentException("hasProperties must contain at least 1 element");

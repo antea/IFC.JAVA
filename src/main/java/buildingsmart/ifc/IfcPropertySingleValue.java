@@ -92,9 +92,12 @@ public class IfcPropertySingleValue extends IfcSimpleProperty {
      */
     public IfcPropertySingleValue(@NonNull IfcIdentifier name,
                                   IfcText description,
-                                  IfcValue nominalValue,
-                                  IfcUnit unit) {
-        super(name, description);
+            IfcPropertyDependencyRelationship[] PropertyForDependance,
+            IfcPropertyDependencyRelationship[] PropertyDependsOn,
+            IfcComplexProperty[] PartOfComplex,
+            IfcValue nominalValue,
+            IfcUnit unit) {
+        super(name, description, PropertyForDependance, PropertyDependsOn, PartOfComplex);
         this.nominalValue = nominalValue;
         this.unit = unit;
     }

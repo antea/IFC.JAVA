@@ -32,7 +32,10 @@ public class IfcPropertyListValue extends IfcSimpleProperty {
      * @param description Informative text to explain the property.
      * @throws NullPointerException If {@code name} is {@code null}.
      */
-    public IfcPropertyListValue(@NonNull IfcIdentifier name, IfcText description) {
-        super(name, description);
+    public IfcPropertyListValue(@NonNull IfcIdentifier name, IfcText description,
+            IfcPropertyDependencyRelationship[] PropertyForDependance,
+            IfcPropertyDependencyRelationship[] PropertyDependsOn,
+            IfcComplexProperty[] PartOfComplex) {
+        super(name, description, PropertyForDependance, PropertyDependsOn, PartOfComplex);
     }
 }
