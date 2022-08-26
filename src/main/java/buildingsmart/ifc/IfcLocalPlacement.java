@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2019 Pieter Pauwels, Ghent University
  * Modifications Copyright (C) 2020 Giovanni Velludo
- * Modifications Copyright (C) 2021 Antea S.r.l.
+ * Modifications Copyright (C) 2022 Antea S.r.l.
  *
  * This file is part of ifc-java.
  *
@@ -101,10 +101,13 @@ public class IfcLocalPlacement extends IfcObjectPlacement {
                 md.update(placementRelTo.getMd5());
             }
 
-            // adds relativePlacement
-            oos.writeObject(relativePlacement.getLocation());
-            oos.writeObject(relativePlacement.getP());
-            md.update(baos.toByteArray());
+            // skips adding relativePlacement if it's the default, as in that case the placement wouldn't be different
+            // from that of placementRelTo
+            if (!relativePlacement.equals(DEFAULT_A2P3D) && !relativePlacement.equals(DEFAULT_A2P2D)) {
+                oos.writeObject(relativePlacement.getLocation());
+                oos.writeObject(relativePlacement.getP());
+                md.update(baos.toByteArray());
+            }
 
             return md.digest();
         } catch (NoSuchAlgorithmException | IOException e) {
@@ -136,6 +139,7 @@ public class IfcLocalPlacement extends IfcObjectPlacement {
         IfcLocalPlacement that = (IfcLocalPlacement) o;
 
         return Arrays.equals(md5, that.md5) && relativePlacement.equals(that.relativePlacement) ||
+                // if a "child" placement is in the same place as its parent, they're considered equal
                 that.placementRelTo != null && Arrays.equals(md5, that.placementRelTo.getMd5()) &&
                         (that.relativePlacement.equals(DEFAULT_A2P3D) || that.relativePlacement.equals(DEFAULT_A2P2D)) ||
                 placementRelTo != null && Arrays.equals(placementRelTo.getMd5(), that.md5) &&
