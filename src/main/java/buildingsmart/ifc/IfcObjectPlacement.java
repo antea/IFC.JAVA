@@ -55,7 +55,9 @@ import java.io.Serializable;
 @EqualsAndHashCode(callSuper = false)
 public abstract class IfcObjectPlacement extends Entity implements Serializable {
 
-    @Setter(value = AccessLevel.PROTECTED)
+    // This is an @InverseRelationship, but since the IfcProduct will be serialized anyway, there's no need to use it
+    // and make serialization slower
+    @Setter(AccessLevel.PROTECTED)
     private IfcProduct placesObject;
 
     //private IfcLocalPlacement[] ReferencedByPlacements;
