@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2020 Giovanni Velludo
+ * Modifications Copyright (C) 2022 Antea S.r.l.
  *
  * This file is part of ifc-java.
  *
@@ -287,20 +288,21 @@ public class SerializerTest {
                 "#26=IFCRELAGGREGATES('2KdHMVVfqHwhFMN5zdz5Bw',#5,'DefaultStoreyLink','',#23,(#25));\n" +
                 "#27=IFCLOCALPLACEMENT($,#9);\n" + "#28=IFCCARTESIANPOINT((0.0,0.0));\n" +
                 "#29=IFCDIRECTION((1.0,0.0));\n" + "#30=IFCAXIS2PLACEMENT2D(#28,#29);\n" +
-                "#31=IFCCIRCLEPROFILEDEF(.AREA.,$,#30,0.1);\n" +
-                "#32=IFCEXTRUDEDAREASOLID(#31,#9,#7,0.1);\n" +
+                "#31=IFCCIRCLEPROFILEDEF(.AREA.,$,#30,0.1);\n" + "#32=IFCEXTRUDEDAREASOLID(#31,#9,#7,0.1);\n" +
                 "#33=IFCSHAPEREPRESENTATION(#11,'Body','SweptSolid',(#32));\n" +
                 "#34=IFCPRODUCTDEFINITIONSHAPE($,$,(#33));\n" +
-                "#35=IFCWALL('2KcxKeVfqHwhb6N5zdz5Bw',#5,'Wall','',$,#27,#34,$);\n" +
-                "#36=IFCAXIS2PLACEMENT3D(#6,#8,#10);\n" + "#37=IFCCIRCLE(#36,0.5);\n" +
-                "#38=IFCTRIMMEDCURVE(#37,(IFCPARAMETERVALUE(0.0)),(IFCPARAMETERVALUE(1.5707963267948966)),.T.,.PARAMETER.);\n" +
-                "#39=IFCSHAPEREPRESENTATION(#11,'Body','GeometricCurveSet',(#38));\n" +
-                "#40=IFCPRODUCTDEFINITIONSHAPE($,$,(#39));\n" +
-                "#41=IFCPROXY('2KcxKeVfqHwhb6N5zd1234',#5,'TrimmedCurve','',$,#27,#40,.PRODUCT.,$);\n" +
-                "#42=IFCRELCONTAINEDINSPATIALSTRUCTURE('2KdIamVfqHwf$aN5zdz5Bw',#5,'UnassignedObjectsLink','',(#35,#41),#25);\n" +
-                "#43=IFCCOLOURRGB($,1.0,1.0,1.0);\n" + "#44=IFCSURFACESTYLERENDERING(#43,$,$,$,$,$,$,$,.FLAT.);\n" +
-                "#45=IFCSURFACESTYLE($,.BOTH.,(#44));\n" + "#46=IFCPRESENTATIONSTYLEASSIGNMENT((#45));\n" +
-                "#47=IFCSTYLEDITEM(#32,(#46),$);\n" + "ENDSEC;\n";
+                "#35=IFCWALL('2KcxKeVfqHwhb6N5zdz5Bw',#5,'Wall','',$,#27,#34,$);\n" + "#36=IFCLOCALPLACEMENT($,#9);\n" +
+                "#37=IFCAXIS2PLACEMENT3D(#6,#8,#10);\n" + "#38=IFCCIRCLE(#37,0.5);\n" +
+                "#39=IFCTRIMMEDCURVE(#38,(IFCPARAMETERVALUE(0.0)),(IFCPARAMETERVALUE(1.5707963267948966)),.T.," +
+                ".PARAMETER.);\n" +
+                "#40=IFCSHAPEREPRESENTATION(#11,'Body','GeometricCurveSet',(#39));\n" +
+                "#41=IFCPRODUCTDEFINITIONSHAPE($,$,(#40));\n" +
+                "#42=IFCPROXY('2KcxKeVfqHwhb6N5zd1234',#5,'TrimmedCurve','',$,#36,#41,.PRODUCT.,$);\n" +
+                "#43=IFCRELCONTAINEDINSPATIALSTRUCTURE('2KdIamVfqHwf$aN5zdz5Bw',#5,'UnassignedObjectsLink','',(#35," +
+                "#42),#25);\n" +
+                "#44=IFCCOLOURRGB($,1.0,1.0,1.0);\n" + "#45=IFCSURFACESTYLERENDERING(#44,$,$,$,$,$,$,$,.FLAT.);\n" +
+                "#46=IFCSURFACESTYLE($,.BOTH.,(#45));\n" + "#47=IFCPRESENTATIONSTYLEASSIGNMENT((#46));\n" +
+                "#48=IFCSTYLEDITEM(#32,(#47),$);\n" + "ENDSEC;\n";
         Serializer serializer = new Serializer();
 
         serializer.serialize(new Header().setDescription(

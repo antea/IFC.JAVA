@@ -136,6 +136,7 @@ public class IfcLocalPlacement extends IfcObjectPlacement {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
+        if (!super.equals(o)) return false;
         IfcLocalPlacement that = (IfcLocalPlacement) o;
 
         return Arrays.equals(md5, that.md5) && relativePlacement.equals(that.relativePlacement) ||
@@ -156,7 +157,8 @@ public class IfcLocalPlacement extends IfcObjectPlacement {
         byte b2 = md5[md5.length - 2];
         byte b3 = md5[md5.length - 1];
 
-        return ((b0 & 0xFF) << 24) | ((b1 & 0xFF) << 16) | ((b2 & 0xFF) << 8) | (b3 & 0xFF);
+        int result = ((b0 & 0xFF) << 24) | ((b1 & 0xFF) << 16) | ((b2 & 0xFF) << 8) | (b3 & 0xFF);
+        return result + 31 * super.hashCode();
     }
 
     /**

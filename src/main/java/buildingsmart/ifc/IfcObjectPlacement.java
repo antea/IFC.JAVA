@@ -1,6 +1,7 @@
 /*
  * Copyright (C) 2019 Pieter Pauwels, Ghent University
  * Modifications Copyright (C) 2020 Giovanni Velludo
+ * Modifications Copyright (C) 2022 Antea S.r.l.
  *
  * This file is part of ifc-java.
  *
@@ -20,6 +21,9 @@
 package buildingsmart.ifc;
 
 import buildingsmart.io.Entity;
+import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
+import lombok.Setter;
 
 import java.io.Serializable;
 
@@ -48,8 +52,12 @@ import java.io.Serializable;
  * shall share the same instance of <i>IfcObjectPlacement</i>.&nbsp;</li>
  * </ol>
  */
+@EqualsAndHashCode(callSuper = false)
 public abstract class IfcObjectPlacement extends Entity implements Serializable {
-    //private IfcProduct[] PlacesObject;
+
+    @Setter(value = AccessLevel.PROTECTED)
+    private IfcProduct placesObject;
+
     //private IfcLocalPlacement[] ReferencedByPlacements;
 
     /**
