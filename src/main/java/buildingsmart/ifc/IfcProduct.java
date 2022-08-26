@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2019 Pieter Pauwels, Ghent University
  * Modifications Copyright (C) 2020 Giovanni Velludo
- * Modifications Copyright (C) 2020 Antea S.r.l.
+ * Modifications Copyright (C) 2022 Antea S.r.l.
  *
  * This file is part of ifc-java.
  *
@@ -138,6 +138,9 @@ public abstract class IfcProduct extends IfcObject {
                             "not of type IfcProductDefinitionShape");
         }
         this.objectPlacement = objectPlacement;
+        if (objectPlacement != null) {
+            objectPlacement.setPlacesObject(this);
+        }
         this.representation = representation;
     }
 
