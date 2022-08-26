@@ -24,7 +24,7 @@ in `IfcProject` contains the entities which compose the `IfcProject`, so all the
 entities referenced by that inverse relationship must be serialized after
 `IfcProject`.
 
-##Contributing
+## Contributing
 
 To fix broken Entities, Defined Types and Enums:
 + extend `Entity` or implement `DefinedType`, depending on what the class
