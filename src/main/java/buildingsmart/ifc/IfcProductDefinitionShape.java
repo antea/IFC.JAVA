@@ -1,6 +1,7 @@
 /*
  * Copyright (C) 2019 Pieter Pauwels, Ghent University
  * Modifications Copyright (C) 2020 Giovanni Velludo
+ * Modifications Copyright (C) 2022 Antea S.r.l.
  *
  * This file is part of ifc-java.
  *
@@ -19,9 +20,7 @@
 
 package buildingsmart.ifc;
 
-import lombok.EqualsAndHashCode;
-import lombok.NonNull;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.Arrays;
 import java.util.List;
@@ -34,6 +33,9 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 public class IfcProductDefinitionShape extends IfcProductRepresentation {
+
+    @Setter(AccessLevel.PROTECTED)
+    private IfcProduct shapeOfProduct;
 
     /**
      * @param name            The word or group of words by which the product

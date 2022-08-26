@@ -142,6 +142,9 @@ public abstract class IfcProduct extends IfcObject {
             objectPlacement.setPlacesObject(this);
         }
         this.representation = representation;
+        if (representation instanceof IfcProductDefinitionShape) {
+            ((IfcProductDefinitionShape) representation).setShapeOfProduct(this);
+        }
     }
 
     /**
