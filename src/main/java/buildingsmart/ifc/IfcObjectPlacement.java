@@ -57,8 +57,9 @@ public abstract class IfcObjectPlacement extends Entity implements Serializable 
 
     // This is an @InverseRelationship, but since the IfcProduct will be serialized anyway, there's no need to use it
     // and make serialization slower
+    @EqualsAndHashCode.Include
     @Setter(AccessLevel.PROTECTED)
-    private IfcProduct placesObject;
+    private transient IfcProduct placesObject;
 
     //private IfcLocalPlacement[] ReferencedByPlacements;
 
