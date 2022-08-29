@@ -128,7 +128,7 @@ public class SerializerTest {
                                                                          0,
                                                                          0,
                                                                          1),
-                                                                 new IfcLengthMeasure(
+                                                                 new IfcPositiveLengthMeasure(
                                                                          0.1));
 
         IfcColourRgb colour = new IfcColourRgb(null, 1, 1, 1);

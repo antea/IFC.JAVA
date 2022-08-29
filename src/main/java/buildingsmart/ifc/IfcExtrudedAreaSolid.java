@@ -1,6 +1,7 @@
 /*
  * Copyright (C) 2019 Pieter Pauwels, Ghent University
  * Modifications Copyright (C) 2020 Giovanni Velludo
+ * Modifications Copyright (C) 2022 Giovanni Velludo
  *
  * This file is part of ifc-java.
  *
@@ -52,7 +53,7 @@ public class IfcExtrudedAreaSolid extends IfcSweptAreaSolid {
     @Attribute(2)
     private final IfcDirection extrudedDirection;
     @Attribute(3)
-    private final IfcLengthMeasure depth;
+    private final IfcPositiveLengthMeasure depth;
 
     /**
      * @param sweptArea         The surface defining the area to be swept. It is
@@ -75,7 +76,7 @@ public class IfcExtrudedAreaSolid extends IfcSweptAreaSolid {
     public IfcExtrudedAreaSolid(@NonNull IfcProfileDef sweptArea,
                                 @NonNull IfcAxis2Placement3D position,
                                 @NonNull IfcDirection extrudedDirection,
-                                @NonNull IfcLengthMeasure depth) {
+                                @NonNull IfcPositiveLengthMeasure depth) {
         super(sweptArea, position);
         if (extrudedDirection.getDim().getValue() != 3) {
             throw new IllegalArgumentException(
