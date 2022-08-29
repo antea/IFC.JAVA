@@ -408,7 +408,7 @@ public class Functions {
      * @throws NullPointerException If unformatted is null.
      */
     public static String formatForStepFile(@NonNull String unformatted) {
-        String escaped = unformatted.replace("\\", "\\\\").replace("'", "\\'");
+        String escaped = unformatted.replace("\\", "\\\\").replace("'", "''");
         ByteBuffer utf32Bytes =
                 ByteBuffer.wrap(escaped.getBytes(Charset.forName("UTF-32")));
         return IntStream.range(0, utf32Bytes.capacity() / Integer.BYTES)
