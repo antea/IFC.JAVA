@@ -620,8 +620,8 @@ public class FunctionsTest {
                                 "\u24B7\u24C7\u24B6\u24C5",
                                 "🌙"};
         String[] expected = {"a\\X\\E8a\\\\",
-                             "\\'\\'\\'",
-                             "a\\\\\\'b",
+                             "''''''",
+                             "a\\\\''b",
                              "\\X2\\017C\\X0\\",
                              "\\X\\0Aasdf\\X\\0A",
                              "",
