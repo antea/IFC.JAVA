@@ -1,6 +1,7 @@
 /*
  * Copyright (C) 2019 Pieter Pauwels, Ghent University
  * Modifications Copyright (C) 2020 Giovanni Velludo
+ * Modifications Copyright (C) 2022 Antea S.r.l.
  *
  * This file is part of ifc-java.
  *
@@ -94,11 +95,13 @@ public class IfcProductRepresentation extends Entity {
                                     IfcText description,
                                     @NonNull IfcRepresentation... representations) {
         if (representations.length < 1) {
-            throw new IllegalArgumentException(
-                    "size of representations must be at least 1");
+            throw new IllegalArgumentException("size of representations must be at least 1");
         }
         this.name = name;
         this.description = description;
         this.representations = Arrays.asList(representations);
+        for (IfcRepresentation repr : representations) {
+            repr.setOfProductRepresentation(this);
+        }
     }
 }

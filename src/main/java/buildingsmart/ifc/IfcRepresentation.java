@@ -1,6 +1,7 @@
 /*
  * Copyright (C) 2019 Pieter Pauwels, Ghent University
  * Modifications Copyright (C) 2020 Giovanni Velludo
+ * Modifications Copyright (C) 2022 Antea S.r.l.
  *
  * This file is part of ifc-java.
  *
@@ -22,9 +23,7 @@ package buildingsmart.ifc;
 import buildingsmart.io.Attribute;
 import buildingsmart.io.Entity;
 import buildingsmart.io.InverseRelationship;
-import lombok.EqualsAndHashCode;
-import lombok.NonNull;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -34,7 +33,7 @@ import java.util.Set;
  * A representation is one or more representation items that are related in a
  * specified representation context as the representation of some concept.
  */
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
 @ToString
 public class IfcRepresentation extends Entity {
     @Attribute(0)
@@ -46,13 +45,18 @@ public class IfcRepresentation extends Entity {
     @Attribute(3)
     private final Set<IfcRepresentationItem> items;
 
-    @EqualsAndHashCode.Exclude
+    // The following 2 fields are needed to allow serialization of duplicate IfcRepresentations, otherwise output IFC
+    // files might not be compliant with the specification.
+    private static int idCounter = 0;
+    @EqualsAndHashCode.Include
+    private final int id = idCounter++;
     @ToString.Exclude
     @InverseRelationship
+    @Setter(AccessLevel.PROTECTED)
     protected IfcRepresentationMap representationMap;
-    @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @InverseRelationship
+    @Setter(AccessLevel.PROTECTED)
     protected IfcProductRepresentation ofProductRepresentation;
 
     /**
@@ -121,26 +125,5 @@ public class IfcRepresentation extends Entity {
              representationIdentifier,
              representationType,
              new HashSet<>(Arrays.asList(items)));
-    }
-
-    /**
-     * @param representationMap Use of the representation within an
-     *                          IfcRepresentationMap. If used, this
-     *                          IfcRepresentation may be assigned to many
-     *                          representations as one of its Items using an
-     *                          IfcMappedItem. Using IfcRepresentationMap is the
-     *                          way to share one representation (often of type
-     *                          IfcShapeRepresentation) by many products.
-     */
-    protected void setRepresentationMap(IfcRepresentationMap representationMap) {
-        this.representationMap = representationMap;
-    }
-
-    /**
-     * @param ofProductRepresentation Reference to the product shape, for which
-     *                                it is the shape representation.
-     */
-    protected void setOfProductRepresentation(IfcProductRepresentation ofProductRepresentation) {
-        this.ofProductRepresentation = ofProductRepresentation;
     }
 }

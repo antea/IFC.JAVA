@@ -26,14 +26,15 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * The <i>IfcProductDefinitionShape</i> defines all shape relevant information
- * about an <i>IfcProduct</i>. It allows for multiple geometric shape
- * representations of the same product.
+ * The <i>IfcProductDefinitionShape</i> defines all shape relevant information about an <i>IfcProduct</i>. It allows for
+ * multiple geometric shape representations of the same product.
  */
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 public class IfcProductDefinitionShape extends IfcProductRepresentation {
 
+    // This is an @InverseRelationship, but since the IfcProduct will be serialized anyway, there's no need to use it
+    // and make serialization slower
     @Setter(AccessLevel.PROTECTED)
     private IfcProduct shapeOfProduct;
 
