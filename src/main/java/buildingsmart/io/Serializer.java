@@ -416,19 +416,9 @@ public class Serializer {
     public void serialize(@NonNull Header header,
                           IfcProject project,
                           @NonNull File output) throws IOException {
-        header.setFileName(output.getCanonicalPath());
         fileWriter =
-                new BufferedWriter(new OutputStreamWriter(new FileOutputStream(
-                        output), StandardCharsets.US_ASCII));
-        fileWriter.write("ISO-10303-21;\n" + header.serialize() + "DATA;\n");
-
-        serialize(project);
-        serializeRemainingInvRels();
-
-        fileWriter.write("ENDSEC;\n" + "END-ISO-10303-21;\n");
-        fileWriter.close();
-        serializedEntitiesToIds.clear();
-        idCounter = 0;
+                new BufferedWriter(new OutputStreamWriter(new FileOutputStream(output), StandardCharsets.US_ASCII));
+        serialize(header, project, fileWriter, output.getCanonicalPath());
     }
 
     /**
@@ -440,7 +430,8 @@ public class Serializer {
      *                has already been set, its fileName will be set to the
      *                canonical path of {@code output}.
      * @param project The {@link IfcProject} to serialize.
-     * @param output  The {@link Writer} in which to serialize the project.
+     * @param output  The {@link Writer} in which to serialize the project. It will be wrapped in a
+     * {@link BufferedWriter} so there's no need to use one on your end.
      * @throws NullPointerException If {@code header} is null; if {@code output}
      *                              is null.
      * @throws IOException          If the file exists but is a directory rather
