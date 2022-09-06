@@ -21,15 +21,14 @@ package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
 import buildingsmart.util.Functions;
-import com.google.common.collect.Lists;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NonNull;
 
 import java.io.Serializable;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * This entity defines a general direction vector in two or three dimensional space. The actual magnitudes of the
@@ -59,18 +58,25 @@ public class IfcDirection extends IfcGeometricRepresentationItem implements IfcV
      * @throws IllegalArgumentException If the size of directionRatios is not 2 or 3.
      */
     public IfcDirection(@NonNull List<IfcReal> directionRatios) {
+
         if (directionRatios.size() < 2 || directionRatios.size() > 3) {
             throw new IllegalArgumentException("size of directionRatios must be 2 or 3");
         }
-        int directionRatiosSize = directionRatios.size();
-        directionRatios = directionRatios.stream().mapToDouble(dirRatio -> Functions.round(dirRatio.getValue()))
-                .collect(() -> Lists.newArrayListWithCapacity(directionRatiosSize),
-                         (list, value) -> list.add(new IfcReal(value)),
-                         List::addAll);
+        this.directionRatios =
+                directionRatios.stream().map(dirRatio -> new IfcReal(Functions.round(dirRatio.getValue())))
+                        .collect(Collectors.toUnmodifiableList());
+        this.dim = new IfcDimensionCount(this.directionRatios.size());
 
-        this.directionRatios = Collections.unmodifiableList(directionRatios);
-        this.dim = new IfcDimensionCount(directionRatios.size());
-        this.normalisedDirectionRatios = Collections.unmodifiableList(Functions.ifcNormalise(this).directionRatios);
+        double[] dirRatios = this.directionRatios.stream().mapToDouble(IfcReal::getValue).toArray();
+
+        if (Functions.alreadyNormalised(dirRatios)) {
+            this.normalisedDirectionRatios = this.directionRatios;
+
+        } else {
+            double[] normalisedDirRatios = Functions.ifcNormalise(dirRatios);
+            this.normalisedDirectionRatios = normalisedDirRatios == null ? null :
+                    Arrays.stream(normalisedDirRatios).mapToObj(IfcReal::new).collect(Collectors.toUnmodifiableList());
+        }
     }
 
     /**
@@ -80,18 +86,25 @@ public class IfcDirection extends IfcGeometricRepresentationItem implements IfcV
      * @throws NullPointerException     If directionRatios is null.
      * @throws IllegalArgumentException If the size of directionRatios is not 2 or 3.
      */
-    public IfcDirection(@NonNull double... directionRatios) {
+    public IfcDirection(double @NonNull ... directionRatios) {
+
         if (directionRatios.length < 2 || directionRatios.length > 3) {
             throw new IllegalArgumentException("size of directionRatios must be 2 or 3");
         }
-        List<IfcReal> directionRatiosList = Arrays.stream(directionRatios).map(Functions::round)
-                .collect(() -> Lists.newArrayListWithCapacity(directionRatios.length),
-                         (list, value) -> list.add(new IfcReal(value)),
-                         List::addAll);
-        this.directionRatios = Collections.unmodifiableList(directionRatiosList);
-        this.dim = new IfcDimensionCount(directionRatiosList.size());
-        IfcDirection normalised = (Functions.ifcNormalise(this));
-        this.normalisedDirectionRatios = normalised == null ? null : normalised.directionRatios;
+        this.directionRatios = Arrays.stream(directionRatios).mapToObj(d -> new IfcReal(Functions.round(d)))
+                .collect(Collectors.toUnmodifiableList());
+        this.dim = new IfcDimensionCount(this.directionRatios.size());
+
+        double[] dirRatios = this.directionRatios.stream().mapToDouble(IfcReal::getValue).toArray();
+
+        if (Functions.alreadyNormalised(dirRatios)) {
+            this.normalisedDirectionRatios = this.directionRatios;
+
+        } else {
+            double[] normalisedDirRatios = Functions.ifcNormalise(dirRatios);
+            this.normalisedDirectionRatios = normalisedDirRatios == null ? null :
+                    Arrays.stream(normalisedDirRatios).mapToObj(IfcReal::new).collect(Collectors.toUnmodifiableList());
+        }
     }
 
     @Override
