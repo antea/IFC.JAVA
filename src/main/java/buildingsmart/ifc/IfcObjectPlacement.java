@@ -23,6 +23,7 @@ package buildingsmart.ifc;
 import buildingsmart.io.Entity;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
@@ -58,6 +59,7 @@ public abstract class IfcObjectPlacement extends Entity implements Serializable 
     // This is an @InverseRelationship, but since the IfcProduct will be serialized anyway, there's no need to use it
     // and make serialization slower
     @EqualsAndHashCode.Include
+    @Getter
     @Setter(AccessLevel.PROTECTED)
     private transient IfcProduct placesObject;
 
