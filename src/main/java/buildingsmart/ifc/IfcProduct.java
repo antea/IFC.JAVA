@@ -69,6 +69,7 @@ import lombok.ToString;
 public abstract class IfcProduct extends IfcObject {
     @Attribute(5)
     private final IfcObjectPlacement objectPlacement;
+    @ToString.Exclude
     @Getter(AccessLevel.PROTECTED)
     @Attribute(6)
     private final IfcProductRepresentation representation;
