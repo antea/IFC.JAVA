@@ -24,8 +24,8 @@ import buildingsmart.util.Functions;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NonNull;
-import lombok.ToString;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -41,7 +41,6 @@ import java.util.List;
  * approximation to the placement X axis direction.
  */
 @EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
-@ToString(callSuper = true)
 public class IfcAxis2Placement3D extends IfcPlacement
         implements IfcAxis2Placement {
     @Getter
@@ -149,7 +148,15 @@ public class IfcAxis2Placement3D extends IfcPlacement
      * @throws IllegalArgumentException If the dimensionality of location is not
      *                                  3.
      */
-    public IfcAxis2Placement3D(@NonNull double... locationCoordinates) {
+    public IfcAxis2Placement3D(double @NonNull ... locationCoordinates) {
         this(new IfcCartesianPoint(locationCoordinates), null, null);
+    }
+
+    @Override
+    public String toString() {
+        double[] location = getLocation().getCoordinates().stream().mapToDouble(IfcLengthMeasure::getValue).toArray();
+        double[] axis = this.p.get(2).getNormalisedDirectionRatios().stream().mapToDouble(IfcReal::getValue).toArray();
+        double[] refDirection = this.p.get(0).getNormalisedDirectionRatios().stream().mapToDouble(IfcReal::getValue).toArray();
+        return "{" + Arrays.toString(location) + "\n " + Arrays.toString(axis) + "\n " + Arrays.toString(refDirection) + "}";
     }
 }
