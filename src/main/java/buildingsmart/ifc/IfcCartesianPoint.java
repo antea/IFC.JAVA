@@ -70,7 +70,7 @@ public class IfcCartesianPoint extends IfcPoint implements IfcTrimmingSelect, Se
      * @throws NullPointerException     If coordinates is null.
      * @throws IllegalArgumentException If the size of coordinates is lower than 2 or bigger than 3.
      */
-    public IfcCartesianPoint(@NonNull double... coordinates) {
+    public IfcCartesianPoint(double @NonNull ... coordinates) {
         if (coordinates.length < 2 || coordinates.length > 3) {
             throw new IllegalArgumentException("size of coordinates must be 2 or 3");
         }

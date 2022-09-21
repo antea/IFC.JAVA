@@ -314,6 +314,7 @@ public class SerializerTest {
         Assert.assertEquals(expectedDataSection, writtenDataSection);
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Test(expected = NullPointerException.class)
     public void serialize_nullHeader() throws IOException {
         Serializer serializer = new Serializer();
@@ -328,6 +329,7 @@ public class SerializerTest {
         Assert.assertEquals("DATA;\nENDSEC;\n", writtenDataSection);
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Test(expected = NullPointerException.class)
     public void serialize_nullPath() throws IOException {
         Serializer serializer = new Serializer();

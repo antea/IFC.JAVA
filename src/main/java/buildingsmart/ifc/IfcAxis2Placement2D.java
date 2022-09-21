@@ -106,7 +106,7 @@ public class IfcAxis2Placement2D extends IfcPlacement
      * @throws NullPointerException     If location is null.
      * @throws IllegalArgumentException If location is not bidimensional.
      */
-    public IfcAxis2Placement2D(@NonNull double... locationCoordinates) {
+    public IfcAxis2Placement2D(double @NonNull ... locationCoordinates) {
         this(new IfcCartesianPoint(locationCoordinates), null);
     }
 }

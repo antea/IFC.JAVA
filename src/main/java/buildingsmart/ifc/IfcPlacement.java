@@ -61,7 +61,7 @@ public abstract class IfcPlacement extends IfcGeometricRepresentationItem implem
      * @throws IllegalArgumentException If the size of coordinates is lower than
      *                                  2 or bigger than 3.
      */
-    public IfcPlacement(@NonNull double... coordinates) {
+    public IfcPlacement(double @NonNull ... coordinates) {
         this.location = new IfcCartesianPoint(coordinates);
     }
 

@@ -36,7 +36,7 @@ import java.util.stream.Collectors;
 @ToString
 public class Header {
     protected static final String IMPLEMENTATION_LEVEL = checkMaxLengthAndFormat("2;1");
-    protected static final String PREPROCESSOR_VERSION = checkMaxLengthAndFormat("ifc-java 0.3.1-SNAPSHOT");
+    protected static final String PREPROCESSOR_VERSION = checkMaxLengthAndFormat("ifc-java 0.3.1");
     protected static final String FILE_SCHEMA = Functions.formatForStepFile("IFC2X3");
     private List<String> description;
     private String fileName;
@@ -78,9 +78,7 @@ public class Header {
      * @see Functions#formatForStepFile(String)
      */
     private static void checkMaxLengthAndFormat(List<String> strings) {
-        for (int i = 0; i < strings.size(); i++) {
-            strings.set(i, checkMaxLengthAndFormat(strings.get(i)));
-        }
+        strings.replaceAll(Header::checkMaxLengthAndFormat);
     }
 
     /**

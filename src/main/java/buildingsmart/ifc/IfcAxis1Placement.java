@@ -88,7 +88,7 @@ public class IfcAxis1Placement extends IfcPlacement {
      * @throws NullPointerException     If location is null.
      * @throws IllegalArgumentException If location is not three-dimensional.
      */
-    public IfcAxis1Placement(@NonNull double... locationCoordinates) {
+    public IfcAxis1Placement(double @NonNull ... locationCoordinates) {
         this(new IfcCartesianPoint(locationCoordinates), null);
     }
 }

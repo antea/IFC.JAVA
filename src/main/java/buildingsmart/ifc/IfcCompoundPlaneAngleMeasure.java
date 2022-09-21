@@ -100,7 +100,7 @@ public class IfcCompoundPlaneAngleMeasure
      *                                  bounds described above, if the elements
      *                                  of value do not have the same sign.
      */
-    public IfcCompoundPlaneAngleMeasure(@NonNull int... value) {
+    public IfcCompoundPlaneAngleMeasure(int @NonNull ... value) {
         if (value.length != 3 && value.length != 4) {
             throw new IllegalArgumentException(
                     "length of value must be 3 or " + "4");

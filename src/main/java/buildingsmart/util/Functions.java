@@ -39,118 +39,131 @@ public class Functions {
      */
     public static double delta = 0.00000001;
 
-    private static final Map<IfcUnitEnum, Predicate<IfcDimensionalExponents>>
-            ifcCorrectDimensions = Collections
-            .unmodifiableMap(new HashMap<>() {{
-                put(IfcUnitEnum.LENGTHUNIT, dim -> dim.equals(new IfcDimensionalExponents(1, 0, 0, 0, 0, 0, 0)));
-                put(IfcUnitEnum.MASSUNIT, dim -> dim.equals(new IfcDimensionalExponents(0, 1, 0, 0, 0, 0, 0)));
-                put(IfcUnitEnum.TIMEUNIT, dim -> dim.equals(new IfcDimensionalExponents(0, 0, 1, 0, 0, 0, 0)));
-                put(IfcUnitEnum.ELECTRICCURRENTUNIT,
-                    dim -> dim.equals(new IfcDimensionalExponents(0, 0, 0, 1, 0, 0, 0)));
-                put(IfcUnitEnum.THERMODYNAMICTEMPERATUREUNIT,
-                    dim -> dim.equals(new IfcDimensionalExponents(0, 0, 0, 0, 1, 0, 0)));
-                put(IfcUnitEnum.AMOUNTOFSUBSTANCEUNIT,
-                    dim -> dim.equals(new IfcDimensionalExponents(0, 0, 0, 0, 0, 1, 0)));
-                put(IfcUnitEnum.LUMINOUSINTENSITYUNIT,
-                    dim -> dim.equals(new IfcDimensionalExponents(0, 0, 0, 0, 0, 0, 1)));
-                put(IfcUnitEnum.PLANEANGLEUNIT, dim -> dim.equals(new IfcDimensionalExponents(0, 0, 0, 0, 0, 0, 0)));
-                put(IfcUnitEnum.SOLIDANGLEUNIT, dim -> dim.equals(new IfcDimensionalExponents(0, 0, 0, 0, 0, 0, 0)));
-                put(IfcUnitEnum.AREAUNIT, dim -> dim.equals(new IfcDimensionalExponents(2, 0, 0, 0, 0, 0, 0)));
-                put(IfcUnitEnum.VOLUMEUNIT, dim -> dim.equals(new IfcDimensionalExponents(3, 0, 0, 0, 0, 0, 0)));
-                put(IfcUnitEnum.ABSORBEDDOSEUNIT, dim -> dim.equals(new IfcDimensionalExponents(2, 0, -2, 0, 0, 0, 0)));
-                put(IfcUnitEnum.RADIOACTIVITYUNIT,
-                    dim -> dim.equals(new IfcDimensionalExponents(0, 0, -1, 0, 0, 0, 0)));
-                put(IfcUnitEnum.ELECTRICCAPACITANCEUNIT,
-                    dim -> dim.equals(new IfcDimensionalExponents(-2, 1, 4, 1, 0, 0, 0)));
-                put(IfcUnitEnum.DOSEEQUIVALENTUNIT,
-                    dim -> dim.equals(new IfcDimensionalExponents(2, 0, -2, 0, 0, 0, 0)));
-                put(IfcUnitEnum.ELECTRICCHARGEUNIT,
-                    dim -> dim.equals(new IfcDimensionalExponents(0, 0, 1, 1, 0, 0, 0)));
-                put(IfcUnitEnum.ELECTRICCONDUCTANCEUNIT,
-                    dim -> dim.equals(new IfcDimensionalExponents(-2, -1, 3, 2, 0, 0, 0)));
-                put(IfcUnitEnum.ELECTRICVOLTAGEUNIT,
-                    dim -> dim.equals(new IfcDimensionalExponents(2, 1, -3, -1, 0, 0, 0)));
-                put(IfcUnitEnum.ELECTRICRESISTANCEUNIT,
-                    dim -> dim.equals(new IfcDimensionalExponents(2, 1, -3, -2, 0, 0, 0)));
-                put(IfcUnitEnum.ENERGYUNIT, dim -> dim.equals(new IfcDimensionalExponents(2, 1, -2, 0, 0, 0, 0)));
-                put(IfcUnitEnum.FORCEUNIT, dim -> dim.equals(new IfcDimensionalExponents(1, 1, -2, 0, 0, 0, 0)));
-                put(IfcUnitEnum.FREQUENCYUNIT, dim -> dim.equals(new IfcDimensionalExponents(0, 0, -1, 0, 0, 0, 0)));
-                put(IfcUnitEnum.INDUCTANCEUNIT, dim -> dim.equals(new IfcDimensionalExponents(2, 1, -2, -2, 0, 0, 0)));
-                put(IfcUnitEnum.ILLUMINANCEUNIT, dim -> dim.equals(new IfcDimensionalExponents(-2, 0, 0, 0, 0, 0, 1)));
-                put(IfcUnitEnum.LUMINOUSFLUXUNIT, dim -> dim.equals(new IfcDimensionalExponents(0, 0, 0, 0, 0, 0, 1)));
-                put(IfcUnitEnum.MAGNETICFLUXUNIT,
-                    dim -> dim.equals(new IfcDimensionalExponents(2, 1, -2, -1, 0, 0, 0)));
-                put(IfcUnitEnum.MAGNETICFLUXDENSITYUNIT,
-                    dim -> dim.equals(new IfcDimensionalExponents(0, 1, -2, -1, 0, 0, 0)));
-                put(IfcUnitEnum.POWERUNIT, dim -> dim.equals(new IfcDimensionalExponents(2, 1, -3, 0, 0, 0, 0)));
-                put(IfcUnitEnum.PRESSUREUNIT, dim -> dim.equals(new IfcDimensionalExponents(-1, 1, -2, 0, 0, 0, 0)));
-            }});
-    private static final Map<IfcSIUnitName, IfcDimensionalExponents>
-            ifcDimensionsForSiUnit = Collections
-            .unmodifiableMap(new HashMap<>() {{
-                put(IfcSIUnitName.METRE, new IfcDimensionalExponents(1, 0, 0, 0, 0, 0, 0));
-                put(IfcSIUnitName.SQUARE_METRE, new IfcDimensionalExponents(2, 0, 0, 0, 0, 0, 0));
-                put(IfcSIUnitName.CUBIC_METRE, new IfcDimensionalExponents(3, 0, 0, 0, 0, 0, 0));
-                put(IfcSIUnitName.GRAM, new IfcDimensionalExponents(0, 1, 0, 0, 0, 0, 0));
-                put(IfcSIUnitName.SECOND, new IfcDimensionalExponents(0, 0, 1, 0, 0, 0, 0));
-                put(IfcSIUnitName.AMPERE, new IfcDimensionalExponents(0, 0, 0, 1, 0, 0, 0));
-                put(IfcSIUnitName.KELVIN, new IfcDimensionalExponents(0, 0, 0, 0, 1, 0, 0));
-                put(IfcSIUnitName.MOLE, new IfcDimensionalExponents(0, 0, 0, 0, 0, 1, 0));
-                put(IfcSIUnitName.CANDELA, new IfcDimensionalExponents(0, 0, 0, 0, 0, 0, 1));
-                put(IfcSIUnitName.RADIAN, new IfcDimensionalExponents(0, 0, 0, 0, 0, 0, 0));
-                put(IfcSIUnitName.STERADIAN, new IfcDimensionalExponents(0, 0, 0, 0, 0, 0, 0));
-                put(IfcSIUnitName.HERTZ, new IfcDimensionalExponents(0, 0, -1, 0, 0, 0, 0));
-                put(IfcSIUnitName.NEWTON, new IfcDimensionalExponents(1, 1, -2, 0, 0, 0, 0));
-                put(IfcSIUnitName.PASCAL, new IfcDimensionalExponents(-1, 1, -2, 0, 0, 0, 0));
-                put(IfcSIUnitName.JOULE, new IfcDimensionalExponents(2, 1, -2, 0, 0, 0, 0));
-                put(IfcSIUnitName.WATT, new IfcDimensionalExponents(2, 1, -3, 0, 0, 0, 0));
-                put(IfcSIUnitName.COULOMB, new IfcDimensionalExponents(0, 0, 1, 1, 0, 0, 0));
-                put(IfcSIUnitName.VOLT, new IfcDimensionalExponents(2, 1, -3, -1, 0, 0, 0));
-                put(IfcSIUnitName.FARAD, new IfcDimensionalExponents(-2, -1, 4, 1, 0, 0, 0));
-                put(IfcSIUnitName.OHM, new IfcDimensionalExponents(2, 1, -3, -2, 0, 0, 0));
-                put(IfcSIUnitName.SIEMENS, new IfcDimensionalExponents(-2, -1, 3, 2, 0, 0, 0));
-                put(IfcSIUnitName.WEBER, new IfcDimensionalExponents(2, 1, -2, -1, 0, 0, 0));
-                put(IfcSIUnitName.TESLA, new IfcDimensionalExponents(0, 1, -2, -1, 0, 0, 0));
-                put(IfcSIUnitName.HENRY, new IfcDimensionalExponents(2, 1, -2, -2, 0, 0, 0));
-                put(IfcSIUnitName.DEGREE_CELSIUS, new IfcDimensionalExponents(0, 0, 0, 0, 1, 0, 0));
-                put(IfcSIUnitName.LUMEN, new IfcDimensionalExponents(0, 0, 0, 0, 0, 0, 1));
-                put(IfcSIUnitName.LUX, new IfcDimensionalExponents(-2, 0, 0, 0, 0, 0, 1));
-                put(IfcSIUnitName.BECQUEREL, new IfcDimensionalExponents(0, 0, -1, 0, 0, 0, 0));
-                put(IfcSIUnitName.GRAY, new IfcDimensionalExponents(2, 0, -2, 0, 0, 0, 0));
-                put(IfcSIUnitName.SIEVERT, new IfcDimensionalExponents(2, 0, -2, 0, 0, 0, 0));
-            }});
-    private static final Map<String, Predicate<IfcRepresentationItem>>
-            ifcShapeRepresentationTypes = Collections
-            .unmodifiableMap(new HashMap<>() {{
-                put("Curve2D", item -> item instanceof IfcCurve && ((IfcCurve) item).getDim().getValue() == 2);
-                put("Annotation2D",
-                    item -> item instanceof IfcPoint || item instanceof IfcCurve ||
-                            item instanceof IfcGeometricCurveSet || item instanceof IfcAnnotationFillArea ||
-                            item instanceof IfcDefinedSymbol || item instanceof IfcTextLiteral ||
-                            item instanceof IfcDraughtingCallout);
-                put("GeometricSet",
-                    item -> item instanceof IfcGeometricSet || item instanceof IfcPoint || item instanceof IfcCurve ||
-                            item instanceof IfcSurface);
-                put("GeometricCurveSet", item -> {
-                    if (item instanceof IfcGeometricSet && ((IfcGeometricSet) item).getElements().stream().anyMatch(element -> (element instanceof IfcSurface))) {
-                        return false;
-                    }
-                    return item instanceof IfcGeometricSet || item instanceof IfcPoint || item instanceof IfcCurve;
-                });
-                put("SurfaceModel",
-                    item -> item instanceof IfcShellBasedSurfaceModel || item instanceof IfcFaceBasedSurfaceModel ||
-                            item instanceof IfcFacetedBrep || item instanceof IfcFacetedBrepWithVoids);
-                put("SolidModel", item -> item instanceof IfcSolidModel);
-                put("SweptSolid", item -> item instanceof IfcSweptAreaSolid);
-                put("CSG", item -> item instanceof IfcBooleanResult);
-                put("Clipping", item -> item instanceof IfcBooleanClippingResult);
-                put("AdvancedSweptSolid",
-                    item -> item instanceof IfcSurfaceCurveSweptAreaSolid || item instanceof IfcSweptDiskSolid);
-                put("Brep", item -> item instanceof IfcFacetedBrep || item instanceof IfcFacetedBrepWithVoids);
-                put("BoundingBox", item -> item instanceof IfcBoundingBox);
-                put("SectionedSpine", item -> item instanceof IfcSectionedSpine);
-                put("MappedRepresentation", item -> item instanceof IfcMappedItem);
-            }});
+    private static final Map<IfcUnitEnum, Predicate<IfcDimensionalExponents>> ifcCorrectDimensions =
+            Map.ofEntries(Map.entry(IfcUnitEnum.LENGTHUNIT,
+                                    dim -> dim.equals(new IfcDimensionalExponents(1, 0, 0, 0, 0, 0, 0))),
+                          Map.entry(IfcUnitEnum.MASSUNIT,
+                                    dim -> dim.equals(new IfcDimensionalExponents(0, 1, 0, 0, 0, 0, 0))),
+                          Map.entry(IfcUnitEnum.TIMEUNIT,
+                                    dim -> dim.equals(new IfcDimensionalExponents(0, 0, 1, 0, 0, 0, 0))),
+                          Map.entry(IfcUnitEnum.ELECTRICCURRENTUNIT,
+                                    dim -> dim.equals(new IfcDimensionalExponents(0, 0, 0, 1, 0, 0, 0))),
+                          Map.entry(IfcUnitEnum.THERMODYNAMICTEMPERATUREUNIT,
+                                    dim -> dim.equals(new IfcDimensionalExponents(0, 0, 0, 0, 1, 0, 0))),
+                          Map.entry(IfcUnitEnum.AMOUNTOFSUBSTANCEUNIT,
+                                    dim -> dim.equals(new IfcDimensionalExponents(0, 0, 0, 0, 0, 1, 0))),
+                          Map.entry(IfcUnitEnum.LUMINOUSINTENSITYUNIT,
+                                    dim -> dim.equals(new IfcDimensionalExponents(0, 0, 0, 0, 0, 0, 1))),
+                          Map.entry(IfcUnitEnum.PLANEANGLEUNIT,
+                                    dim -> dim.equals(new IfcDimensionalExponents(0, 0, 0, 0, 0, 0, 0))),
+                          Map.entry(IfcUnitEnum.SOLIDANGLEUNIT,
+                                    dim -> dim.equals(new IfcDimensionalExponents(0, 0, 0, 0, 0, 0, 0))),
+                          Map.entry(IfcUnitEnum.AREAUNIT,
+                                    dim -> dim.equals(new IfcDimensionalExponents(2, 0, 0, 0, 0, 0, 0))),
+                          Map.entry(IfcUnitEnum.VOLUMEUNIT,
+                                    dim -> dim.equals(new IfcDimensionalExponents(3, 0, 0, 0, 0, 0, 0))),
+                          Map.entry(IfcUnitEnum.ABSORBEDDOSEUNIT,
+                                    dim -> dim.equals(new IfcDimensionalExponents(2, 0, -2, 0, 0, 0, 0))),
+                          Map.entry(IfcUnitEnum.RADIOACTIVITYUNIT,
+                                    dim -> dim.equals(new IfcDimensionalExponents(0, 0, -1, 0, 0, 0, 0))),
+                          Map.entry(IfcUnitEnum.ELECTRICCAPACITANCEUNIT,
+                                    dim -> dim.equals(new IfcDimensionalExponents(-2, 1, 4, 1, 0, 0, 0))),
+                          Map.entry(IfcUnitEnum.DOSEEQUIVALENTUNIT,
+                                    dim -> dim.equals(new IfcDimensionalExponents(2, 0, -2, 0, 0, 0, 0))),
+                          Map.entry(IfcUnitEnum.ELECTRICCHARGEUNIT,
+                                    dim -> dim.equals(new IfcDimensionalExponents(0, 0, 1, 1, 0, 0, 0))),
+                          Map.entry(IfcUnitEnum.ELECTRICCONDUCTANCEUNIT,
+                                    dim -> dim.equals(new IfcDimensionalExponents(-2, -1, 3, 2, 0, 0, 0))),
+                          Map.entry(IfcUnitEnum.ELECTRICVOLTAGEUNIT,
+                                    dim -> dim.equals(new IfcDimensionalExponents(2, 1, -3, -1, 0, 0, 0))),
+                          Map.entry(IfcUnitEnum.ELECTRICRESISTANCEUNIT,
+                                    dim -> dim.equals(new IfcDimensionalExponents(2, 1, -3, -2, 0, 0, 0))),
+                          Map.entry(IfcUnitEnum.ENERGYUNIT,
+                                    dim -> dim.equals(new IfcDimensionalExponents(2, 1, -2, 0, 0, 0, 0))),
+                          Map.entry(IfcUnitEnum.FORCEUNIT,
+                                    dim -> dim.equals(new IfcDimensionalExponents(1, 1, -2, 0, 0, 0, 0))),
+                          Map.entry(IfcUnitEnum.FREQUENCYUNIT,
+                                    dim -> dim.equals(new IfcDimensionalExponents(0, 0, -1, 0, 0, 0, 0))),
+                          Map.entry(IfcUnitEnum.INDUCTANCEUNIT,
+                                    dim -> dim.equals(new IfcDimensionalExponents(2, 1, -2, -2, 0, 0, 0))),
+                          Map.entry(IfcUnitEnum.ILLUMINANCEUNIT,
+                                    dim -> dim.equals(new IfcDimensionalExponents(-2, 0, 0, 0, 0, 0, 1))),
+                          Map.entry(IfcUnitEnum.LUMINOUSFLUXUNIT,
+                                    dim -> dim.equals(new IfcDimensionalExponents(0, 0, 0, 0, 0, 0, 1))),
+                          Map.entry(IfcUnitEnum.MAGNETICFLUXUNIT,
+                                    dim -> dim.equals(new IfcDimensionalExponents(2, 1, -2, -1, 0, 0, 0))),
+                          Map.entry(IfcUnitEnum.MAGNETICFLUXDENSITYUNIT,
+                                    dim -> dim.equals(new IfcDimensionalExponents(0, 1, -2, -1, 0, 0, 0))),
+                          Map.entry(IfcUnitEnum.POWERUNIT,
+                                    dim -> dim.equals(new IfcDimensionalExponents(2, 1, -3, 0, 0, 0, 0))),
+                          Map.entry(IfcUnitEnum.PRESSUREUNIT,
+                                    dim -> dim.equals(new IfcDimensionalExponents(-1, 1, -2, 0, 0, 0, 0))));
+    private static final Map<IfcSIUnitName, IfcDimensionalExponents> ifcDimensionsForSiUnit =
+            Map.ofEntries(Map.entry(IfcSIUnitName.METRE, new IfcDimensionalExponents(1, 0, 0, 0, 0, 0, 0)),
+                          Map.entry(IfcSIUnitName.SQUARE_METRE, new IfcDimensionalExponents(2, 0, 0, 0, 0, 0, 0)),
+                          Map.entry(IfcSIUnitName.CUBIC_METRE, new IfcDimensionalExponents(3, 0, 0, 0, 0, 0, 0)),
+                          Map.entry(IfcSIUnitName.GRAM, new IfcDimensionalExponents(0, 1, 0, 0, 0, 0, 0)),
+                          Map.entry(IfcSIUnitName.SECOND, new IfcDimensionalExponents(0, 0, 1, 0, 0, 0, 0)),
+                          Map.entry(IfcSIUnitName.AMPERE, new IfcDimensionalExponents(0, 0, 0, 1, 0, 0, 0)),
+                          Map.entry(IfcSIUnitName.KELVIN, new IfcDimensionalExponents(0, 0, 0, 0, 1, 0, 0)),
+                          Map.entry(IfcSIUnitName.MOLE, new IfcDimensionalExponents(0, 0, 0, 0, 0, 1, 0)),
+                          Map.entry(IfcSIUnitName.CANDELA, new IfcDimensionalExponents(0, 0, 0, 0, 0, 0, 1)),
+                          Map.entry(IfcSIUnitName.RADIAN, new IfcDimensionalExponents(0, 0, 0, 0, 0, 0, 0)),
+                          Map.entry(IfcSIUnitName.STERADIAN, new IfcDimensionalExponents(0, 0, 0, 0, 0, 0, 0)),
+                          Map.entry(IfcSIUnitName.HERTZ, new IfcDimensionalExponents(0, 0, -1, 0, 0, 0, 0)),
+                          Map.entry(IfcSIUnitName.NEWTON, new IfcDimensionalExponents(1, 1, -2, 0, 0, 0, 0)),
+                          Map.entry(IfcSIUnitName.PASCAL, new IfcDimensionalExponents(-1, 1, -2, 0, 0, 0, 0)),
+                          Map.entry(IfcSIUnitName.JOULE, new IfcDimensionalExponents(2, 1, -2, 0, 0, 0, 0)),
+                          Map.entry(IfcSIUnitName.WATT, new IfcDimensionalExponents(2, 1, -3, 0, 0, 0, 0)),
+                          Map.entry(IfcSIUnitName.COULOMB, new IfcDimensionalExponents(0, 0, 1, 1, 0, 0, 0)),
+                          Map.entry(IfcSIUnitName.VOLT, new IfcDimensionalExponents(2, 1, -3, -1, 0, 0, 0)),
+                          Map.entry(IfcSIUnitName.FARAD, new IfcDimensionalExponents(-2, -1, 4, 1, 0, 0, 0)),
+                          Map.entry(IfcSIUnitName.OHM, new IfcDimensionalExponents(2, 1, -3, -2, 0, 0, 0)),
+                          Map.entry(IfcSIUnitName.SIEMENS, new IfcDimensionalExponents(-2, -1, 3, 2, 0, 0, 0)),
+                          Map.entry(IfcSIUnitName.WEBER, new IfcDimensionalExponents(2, 1, -2, -1, 0, 0, 0)),
+                          Map.entry(IfcSIUnitName.TESLA, new IfcDimensionalExponents(0, 1, -2, -1, 0, 0, 0)),
+                          Map.entry(IfcSIUnitName.HENRY, new IfcDimensionalExponents(2, 1, -2, -2, 0, 0, 0)),
+                          Map.entry(IfcSIUnitName.DEGREE_CELSIUS, new IfcDimensionalExponents(0, 0, 0, 0, 1, 0, 0)),
+                          Map.entry(IfcSIUnitName.LUMEN, new IfcDimensionalExponents(0, 0, 0, 0, 0, 0, 1)),
+                          Map.entry(IfcSIUnitName.LUX, new IfcDimensionalExponents(-2, 0, 0, 0, 0, 0, 1)),
+                          Map.entry(IfcSIUnitName.BECQUEREL, new IfcDimensionalExponents(0, 0, -1, 0, 0, 0, 0)),
+                          Map.entry(IfcSIUnitName.GRAY, new IfcDimensionalExponents(2, 0, -2, 0, 0, 0, 0)),
+                          Map.entry(IfcSIUnitName.SIEVERT, new IfcDimensionalExponents(2, 0, -2, 0, 0, 0, 0)));
+    private static final Map<String, Predicate<IfcRepresentationItem>> ifcShapeRepresentationTypes =
+            Map.ofEntries(Map.entry("Curve2D",
+                                    item -> item instanceof IfcCurve && ((IfcCurve) item).getDim().getValue() == 2),
+                          Map.entry("Annotation2D",
+                                    item -> item instanceof IfcPoint || item instanceof IfcCurve ||
+                                            item instanceof IfcGeometricCurveSet ||
+                                            item instanceof IfcAnnotationFillArea || item instanceof IfcDefinedSymbol ||
+                                            item instanceof IfcTextLiteral || item instanceof IfcDraughtingCallout),
+                          Map.entry("GeometricSet",
+                                    item -> item instanceof IfcGeometricSet || item instanceof IfcPoint ||
+                                            item instanceof IfcCurve || item instanceof IfcSurface),
+                          Map.entry("GeometricCurveSet", item -> {
+                              if (item instanceof IfcGeometricSet && ((IfcGeometricSet) item).getElements().stream()
+                                      .anyMatch(element -> (element instanceof IfcSurface))) {
+                                  return false;
+                              }
+                              return item instanceof IfcGeometricSet || item instanceof IfcPoint ||
+                                      item instanceof IfcCurve;
+                          }),
+                          Map.entry("SurfaceModel",
+                                    item -> item instanceof IfcShellBasedSurfaceModel ||
+                                            item instanceof IfcFaceBasedSurfaceModel ||
+                                            item instanceof IfcFacetedBrep || item instanceof IfcFacetedBrepWithVoids),
+                          Map.entry("SolidModel", item -> item instanceof IfcSolidModel),
+                          Map.entry("SweptSolid", item -> item instanceof IfcSweptAreaSolid),
+                          Map.entry("CSG", item -> item instanceof IfcBooleanResult),
+                          Map.entry("Clipping", item -> item instanceof IfcBooleanClippingResult),
+                          Map.entry("AdvancedSweptSolid",
+                                    item -> item instanceof IfcSurfaceCurveSweptAreaSolid ||
+                                            item instanceof IfcSweptDiskSolid),
+                          Map.entry("Brep",
+                                    item -> item instanceof IfcFacetedBrep || item instanceof IfcFacetedBrepWithVoids),
+                          Map.entry("BoundingBox", item -> item instanceof IfcBoundingBox),
+                          Map.entry("SectionedSpine", item -> item instanceof IfcSectionedSpine),
+                          Map.entry("MappedRepresentation", item -> item instanceof IfcMappedItem));
 
     /**
      * This method formats the given String so that it can be serialized in an
@@ -515,6 +528,9 @@ public class Functions {
      */
     public static Boolean ifcCorrectDimensions(IfcUnitEnum unit,
                                                IfcDimensionalExponents dim) {
+        if (null == unit) {
+            return null;
+        }
         if (!ifcCorrectDimensions.containsKey(unit)) {
             return null;
         }
