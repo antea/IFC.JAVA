@@ -36,7 +36,7 @@ import java.util.stream.Collectors;
 @ToString
 public class Header {
     protected static final String IMPLEMENTATION_LEVEL = checkMaxLengthAndFormat("2;1");
-    protected static final String PREPROCESSOR_VERSION = checkMaxLengthAndFormat("ifc-java 0.3.2-SNAPSHOT");
+    protected static final String PREPROCESSOR_VERSION = checkMaxLengthAndFormat("ifc-java 0.3.2");
     protected static final String FILE_SCHEMA = Functions.formatForStepFile("IFC2X3");
     private List<String> description;
     private String fileName;
