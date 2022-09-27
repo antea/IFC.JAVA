@@ -68,23 +68,18 @@ public class IfcPolyLoop extends IfcLoop {
     private final List<IfcCartesianPoint> polygon;
 
     /**
-     * @param polygon List of points defining the loop. There are no repeated
-     *                points in the list.
+     * @param polygon List of points defining the loop. There are no repeated points in the list.
      * @throws NullPointerException     If {@code polygon} is {@code null}.
-     * @throws IllegalArgumentException If the size of {@code polygon} is
-     *                                  smaller than 3, if {@code polygon}
-     *                                  contains duplicate points, if points in
-     *                                  {@code polygon} don't have the same
-     *                                  dimensionality.
+     * @throws IllegalArgumentException If the size of {@code polygon} is smaller than 3, if the first point of
+     *                                  {@code polygon} is the same as the last, if points in {@code polygon} don't have
+     *                                  the same dimensionality.
      */
     public IfcPolyLoop(@NonNull List<IfcCartesianPoint> polygon) {
         if (polygon.size() < 3) {
-            throw new IllegalArgumentException(
-                    "size of polygon must be at least 3");
+            throw new IllegalArgumentException("size of polygon must be at least 3");
         }
-        if (polygon.stream().distinct().count() != polygon.size()) {
-            throw new IllegalArgumentException(
-                    "polygon cannot contain duplicate points");
+        if (polygon.get(0).equals(polygon.get(polygon.size() - 1))) {
+            throw new IllegalArgumentException("the first and last point of polygon must be different");
         }
         IfcDimensionCount firstPointDim = polygon.get(0).getDim();
         if (polygon.stream()
