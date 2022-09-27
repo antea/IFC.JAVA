@@ -75,8 +75,8 @@ public class IfcPolyLoop extends IfcLoop {
      *                                  the same dimensionality.
      */
     public IfcPolyLoop(@NonNull List<IfcCartesianPoint> polygon) {
-        if (polygon.size() < 3) {
-            throw new IllegalArgumentException("size of polygon must be at least 3");
+        if (polygon.stream().distinct().count() < 3) {
+            throw new IllegalArgumentException("polygon must contain at least 3 different points");
         }
         if (polygon.get(0).equals(polygon.get(polygon.size() - 1))) {
             throw new IllegalArgumentException("the first and last point of polygon must be different");
