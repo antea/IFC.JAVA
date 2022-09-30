@@ -25,6 +25,8 @@ import lombok.Getter;
 
 import java.io.Serializable;
 
+import static buildingsmart.util.Functions.format;
+
 /**
  * A defined type of simple data type REAL. In principle, the domain of IfcReal
  * (being a Real) is all rational, irrational and scientific real numbers.
@@ -47,7 +49,7 @@ public class IfcReal implements DefinedType, IfcSimpleValue, Serializable {
      */
     @Override
     public String serialize() {
-        return Double.toString(value);
+        return format(value);
     }
 
     @Override

@@ -25,6 +25,8 @@ import lombok.Getter;
 
 import java.io.Serializable;
 
+import static buildingsmart.util.Functions.format;
+
 /**
  * A length measure is the value of a distance.
  * <p>
@@ -51,7 +53,7 @@ public class IfcLengthMeasure implements DefinedType, IfcMeasureValue, IfcSizeSe
      */
     @Override
     public String serialize() {
-        return Double.toString(value);
+        return format(value);
     }
 
     @Override

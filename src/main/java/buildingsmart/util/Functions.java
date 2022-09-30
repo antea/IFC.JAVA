@@ -21,8 +21,11 @@ package buildingsmart.util;
 import buildingsmart.ifc.*;
 import lombok.NonNull;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
+import java.text.DecimalFormat;
 import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -34,10 +37,42 @@ import static java.lang.Math.sqrt;
 public class Functions {
 
     /**
-     * Max allowed difference for doubles to be considered equal in comparisons. Used in this class,
-     * {@link IfcDirection} and {@link IfcCartesianPoint}.
+     * Precision of double values used in this library.
      */
-    public static double delta = 0.00000001;
+    private static double delta;
+    private static DecimalFormat decimalFormat;
+
+    static {
+        setDelta(0.00000001);
+    }
+
+    /**
+     * @return The precision used for double values in this library.
+     */
+    public static double getDelta() {
+        return delta;
+    }
+
+    /**
+     * @param d The precision to use for double values in this library. It will be used when serializing doubles, and
+     *          internally when checking if a vector is normalised.
+     */
+    public static void setDelta(double d) {
+        delta = d;
+        int decimals = BigDecimal.valueOf(delta).stripTrailingZeros().scale();
+        var pattern = "0.0" + (decimals > 1 ? "#".repeat(decimals - 1) : "");
+        decimalFormat = new DecimalFormat(pattern);
+        decimalFormat.setRoundingMode(RoundingMode.HALF_EVEN);
+    }
+
+    /**
+     * @param d The value to format for serialization.
+     * @return The String representation of the given value, rounded to according to the precision set with
+     * {@link #setDelta(double)}.
+     */
+    public static String format(double d) {
+        return decimalFormat.format(d);
+    }
 
     private static final Map<IfcUnitEnum, Predicate<IfcDimensionalExponents>> ifcCorrectDimensions =
             Map.ofEntries(Map.entry(IfcUnitEnum.LENGTHUNIT,

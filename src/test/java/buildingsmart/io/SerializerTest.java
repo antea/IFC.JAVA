@@ -20,6 +20,7 @@
 package buildingsmart.io;
 
 import buildingsmart.ifc.*;
+import buildingsmart.util.Functions;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -73,7 +74,7 @@ public class SerializerTest {
                 new IfcGeometricRepresentationContext(new IfcLabel("Plan"),
                                                       new IfcLabel("Model"),
                                                       new IfcDimensionCount(3),
-                                                      new IfcReal(1.E-05),
+                                                      new IfcReal(Functions.getDelta()),
                                                       axis2Placement3D,
                                                       new IfcDirection(0,
                                                                        1,
@@ -272,7 +273,7 @@ public class SerializerTest {
                 "#5=IFCOWNERHISTORY(#3,#4,$,.ADDED.,$,#3,#4,1586902585);\n" + "#6=IFCCARTESIANPOINT((0.0,0.0,0.0));\n" +
                 "#7=IFCDIRECTION((0.0,0.0,1.0));\n" + "#8=IFCDIRECTION((1.0,0.0,0.0));\n" +
                 "#9=IFCAXIS2PLACEMENT3D(#6,#7,#8);\n" + "#10=IFCDIRECTION((0.0,1.0,0.0));\n" +
-                "#11=IFCGEOMETRICREPRESENTATIONCONTEXT('Plan','Model',3,1.0E-5,#9,#10);\n" +
+                "#11=IFCGEOMETRICREPRESENTATIONCONTEXT('Plan','Model',3,0.00000001,#9,#10);\n" +
                 "#12=IFCSIUNIT(*,.LENGTHUNIT.,$,.METRE.);\n" + "#13=IFCSIUNIT(*,.AREAUNIT.,$,.SQUARE_METRE.);\n" +
                 "#14=IFCSIUNIT(*,.VOLUMEUNIT.,$,.CUBIC_METRE.);\n" + "#15=IFCDIMENSIONALEXPONENTS(0,0,0,0,0,0,0);\n" +
                 "#16=IFCSIUNIT(*,.PLANEANGLEUNIT.,$,.RADIAN.);\n" +
