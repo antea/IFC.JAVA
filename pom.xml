@@ -27,7 +27,7 @@
     <artifactId>ifc-java</artifactId>
     <packaging>jar</packaging>
     <!--When updating this, please update in Header:39 too.-->
-    <version>0.3.3</version>
+    <version>0.3.4</version>
     <licenses>
         <license>
             <name>Apache License, Version 2.0</name>

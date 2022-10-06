@@ -60,8 +60,12 @@ public class Functions {
     public static void setDelta(double d) {
         delta = d;
         int decimals = BigDecimal.valueOf(delta).stripTrailingZeros().scale();
-        var pattern = "0.0" + (decimals > 1 ? "#".repeat(decimals - 1) : "");
+        var pattern = "0.0" + (decimals >= 1 ? "#".repeat(decimals - 1) : "");
+
         decimalFormat = new DecimalFormat(pattern);
+        var decimalFormatSymbols = decimalFormat.getDecimalFormatSymbols();
+        decimalFormatSymbols.setDecimalSeparator('.');
+        decimalFormat.setDecimalFormatSymbols(decimalFormatSymbols);
         decimalFormat.setRoundingMode(RoundingMode.HALF_EVEN);
     }
 
