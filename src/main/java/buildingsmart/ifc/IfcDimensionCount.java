@@ -30,10 +30,10 @@ import java.io.Serializable;
  * A dimension count is a positive integer used to define the coordinate space
  * dimensionality.
  */
+@Getter
 @EqualsAndHashCode
 @ToString
 public class IfcDimensionCount implements DefinedType, Serializable {
-    @Getter
     private final byte value;
 
     /**

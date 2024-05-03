@@ -20,6 +20,7 @@
 package buildingsmart.ifc;
 
 import buildingsmart.io.Attribute;
+import lombok.Getter;
 import lombok.NonNull;
 
 import java.util.Arrays;
@@ -33,6 +34,7 @@ import java.util.Set;
  * topological structure (such as connected face sets or shells) and are not
  * solid models (such as swept solids, CSG or Brep).
  */
+@Getter
 public class IfcGeometricSet extends IfcGeometricRepresentationItem {
     @Attribute(0)
     private final Set<IfcGeometricSetSelect> elements;
@@ -47,7 +49,7 @@ public class IfcGeometricSet extends IfcGeometricRepresentationItem {
      *                                  with different dimensions.
      */
     public IfcGeometricSet(@NonNull Set<IfcGeometricSetSelect> elements) {
-        if (elements.size() < 1) {
+        if (elements.isEmpty()) {
             throw new IllegalArgumentException(
                     "size of elements must be at least 1");
         }
@@ -72,10 +74,6 @@ public class IfcGeometricSet extends IfcGeometricRepresentationItem {
      */
     public IfcGeometricSet(@NonNull IfcGeometricSetSelect... elements) {
         this(new HashSet<>(Arrays.asList(elements)));
-    }
-
-    public Set<IfcGeometricSetSelect> getElements() {
-        return elements;
     }
 
     @Override

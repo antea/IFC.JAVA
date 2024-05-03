@@ -116,7 +116,7 @@ public class IfcProject extends IfcObject {
                               Set<IfcRepresentationContext> representationContexts,
                       @NonNull IfcUnitAssignment unitsInContext) {
         super(globalId, ownerHistory, name, description, objectType);
-        if (representationContexts.size() < 1) {
+        if (representationContexts.isEmpty()) {
             throw new IllegalArgumentException(
                     "size of representationContexts must be at least 1");
         }

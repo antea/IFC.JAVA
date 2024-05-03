@@ -32,9 +32,9 @@ import static buildingsmart.util.Functions.format;
  * <p>
  * Usually measured in millimeters (mm).
  */
+@Getter
 @EqualsAndHashCode
 public class IfcLengthMeasure implements DefinedType, IfcMeasureValue, IfcSizeSelect, Serializable {
-    @Getter
     private final double value;
 
     /**

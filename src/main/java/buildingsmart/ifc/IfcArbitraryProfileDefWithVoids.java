@@ -108,7 +108,7 @@ public class IfcArbitraryProfileDefWithVoids
                                            @NonNull IfcCurve outerCurve,
                                            @NonNull Set<IfcCurve> innerCurves) {
         super(profileType, profileName, outerCurve);
-        if (innerCurves.size() < 1) {
+        if (innerCurves.isEmpty()) {
             throw new IllegalArgumentException(
                     "size of innerCurves must be at least 1");
         }

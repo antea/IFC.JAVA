@@ -298,6 +298,6 @@ public class IfcGloballyUniqueId implements DefinedType {
         long data1;
         int data2;
         int data3;
-        char[] data4 = new char[8];
+        final char[] data4 = new char[8];
     }
 }

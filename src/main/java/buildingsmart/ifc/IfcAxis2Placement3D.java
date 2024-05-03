@@ -40,13 +40,12 @@ import java.util.List;
  * The axis is the placement Z axis direction and the ref_direction is an
  * approximation to the placement X axis direction.
  */
+@Getter
 @EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
 public class IfcAxis2Placement3D extends IfcPlacement
         implements IfcAxis2Placement {
-    @Getter
     @Attribute(1)
     private final IfcDirection axis;
-    @Getter
     @Attribute(2)
     private final IfcDirection refDirection;
     /**
@@ -54,7 +53,6 @@ public class IfcAxis2Placement3D extends IfcPlacement
      * placement Y Axis (P[1]) and the placement Z Axis (P[2]). The list is
      * unmodifiable.
      */
-    @Getter
     @EqualsAndHashCode.Include
     private final List<IfcDirection> p; // derived attribute
 

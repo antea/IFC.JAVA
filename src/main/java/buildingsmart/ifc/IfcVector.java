@@ -24,6 +24,7 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.ToString;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
@@ -31,13 +32,12 @@ import java.util.Objects;
  * The vector is defined in terms of the direction and magnitude of the vector.
  * The value of the magnitude attribute defines the magnitude of the vector.
  */
+@Getter
 @ToString
 public class IfcVector extends IfcGeometricRepresentationItem
-        implements IfcVectorOrDirection {
-    @Getter
+        implements IfcVectorOrDirection, Serializable {
     @Attribute(0)
     private final IfcDirection orientation;
-    @Getter
     @Attribute(1)
     private final IfcLengthMeasure magnitude;
     //private int dim;

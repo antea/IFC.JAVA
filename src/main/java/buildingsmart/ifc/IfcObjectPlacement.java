@@ -53,13 +53,13 @@ import java.io.Serializable;
  * shall share the same instance of <i>IfcObjectPlacement</i>.&nbsp;</li>
  * </ol>
  */
+@Getter
 @EqualsAndHashCode(callSuper = false)
 public abstract class IfcObjectPlacement extends Entity implements Serializable {
 
     // This is an @InverseRelationship, but since the IfcProduct will be serialized anyway, there's no need to use it
     // and make serialization slower
     @EqualsAndHashCode.Include
-    @Getter
     @Setter(AccessLevel.PROTECTED)
     private transient IfcProduct placesObject;
 

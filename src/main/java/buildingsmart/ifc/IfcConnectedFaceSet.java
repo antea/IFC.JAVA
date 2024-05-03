@@ -51,7 +51,7 @@ public class IfcConnectedFaceSet extends IfcTopologicalRepresentationItem {
      *                                  than 1.
      */
     public IfcConnectedFaceSet(@NonNull Set<IfcFace> cfsFaces) {
-        if (cfsFaces.size() < 1) {
+        if (cfsFaces.isEmpty()) {
             throw new IllegalArgumentException(
                     "size of cfsFaces must be at least 1");
         }

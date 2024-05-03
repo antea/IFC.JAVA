@@ -153,7 +153,7 @@ public class Serializer {
      */
     public static File createFile(@NonNull String filePath) {
         String directoryPath = null;
-        if (filePath.length() > 0) {
+        if (!filePath.isEmpty()) {
             int endIndex = filePath.lastIndexOf(File.separatorChar);
             if (endIndex != -1) {
                 directoryPath = filePath.substring(0, endIndex);

@@ -62,11 +62,11 @@ public class IfcOrganization extends Entity {
                            IfcText description,
                            List<IfcActorRole> roles,
                            List<IfcAddress> addresses) {
-        if (roles != null && roles.size() < 1) {
+        if (roles != null && roles.isEmpty()) {
             throw new IllegalArgumentException(
                     "roles must be null or its size must be at least one");
         }
-        if (addresses != null && addresses.size() < 1) {
+        if (addresses != null && addresses.isEmpty()) {
             throw new IllegalArgumentException(
                     "addresses must be null or its size must be at least one");
         }

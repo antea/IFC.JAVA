@@ -137,7 +137,7 @@ public class IfcRelContainedInSpatialStructure extends IfcRelConnects implements
                                                      Set<IfcProduct> relatedElements,
                                              @NonNull IfcSpatialStructureElement relatingStructure) {
         super(globalId, ownerHistory, name, description);
-        if (relatedElements.size() < 1) {
+        if (relatedElements.isEmpty()) {
             throw new IllegalArgumentException(
                     "size of relatedElements must be at least 1");
         }

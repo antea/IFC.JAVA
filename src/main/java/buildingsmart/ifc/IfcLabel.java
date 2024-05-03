@@ -22,6 +22,7 @@ package buildingsmart.ifc;
 import buildingsmart.io.DefinedType;
 import buildingsmart.util.Functions;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NonNull;
 import lombok.ToString;
 
@@ -30,6 +31,7 @@ import lombok.ToString;
  * which represents the human-interpretable name of something and shall have a
  * natural-language meaning.
  */
+@Getter
 @EqualsAndHashCode
 @ToString
 public class IfcLabel implements DefinedType, IfcSimpleValue {
@@ -49,10 +51,6 @@ public class IfcLabel implements DefinedType, IfcSimpleValue {
                     "ifcLabel cannot be longer than 255 characters");
         }
         this.value = value;
-    }
-
-    public String getValue() {
-        return value;
     }
 
     @Override

@@ -98,7 +98,7 @@ public class IfcPostalAddress extends IfcAddress {
                     "at least one of internalLocation, addressLines, town, " +
                             "region and country must not be null");
         }
-        if (addressLines != null && addressLines.size() < 1) {
+        if (addressLines != null && addressLines.isEmpty()) {
             throw new IllegalArgumentException(
                     "size of addressLines must be at least 1");
         }
