@@ -396,15 +396,23 @@ public class Functions {
      * onto the plane normal to List[2], List[1] is the cross product of List[2]
      * and List[0]. Default values are supplied if both arguments are null.
      */
-    public static List<IfcDirection> ifcBuildAxes(IfcDirection axis,
-                                                  IfcDirection refDirection) {
+    public static @NotNull List<IfcDirection> ifcBuildAxes(@Nullable IfcDirection axis,
+                                                  @Nullable IfcDirection refDirection) {
+        if ((axis == null && refDirection != null) || (axis != null && refDirection == null)) {
+            throw new IllegalArgumentException("either both axis and refDirection are null, or none can be null");
+        }
         IfcDirection normalisedAxis = ifcNormalise(axis);
         IfcDirection d1 = normalisedAxis == null ? new IfcDirection(0, 0, 1) :
                 normalisedAxis;
         IfcDirection d2 = ifcFirstProjAxis(d1, refDirection);
         List<IfcDirection> result = new ArrayList<>(3);
         result.add(d2);
-        result.add(ifcNormalise(ifcCrossProduct(d1, d2)).getOrientation());
+        IfcVector normalisedCrossProduct = ifcNormalise(ifcCrossProduct(d1, d2));
+        if (null == normalisedCrossProduct) {
+            throw new IllegalArgumentException("Unable to compute the three axes from the given axis and refDirection: "
+            + axis + ", " + refDirection);
+        }
+        result.add(normalisedCrossProduct.getOrientation());
         result.add(d1);
         return result;
     }
