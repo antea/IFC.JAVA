@@ -34,9 +34,9 @@ import java.util.stream.Collectors;
  * This entity defines a general direction vector in two or three dimensional space. The actual magnitudes of the
  * components have no effect upon the direction being defined, only the ratios X:Y:Z or X:Y are significant.
  */
+@Getter
 @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
 public class IfcDirection extends IfcGeometricRepresentationItem implements IfcVectorOrDirection, Serializable {
-    @Getter
     @Attribute(0)
     private final List<IfcReal> directionRatios;
     /**
@@ -44,10 +44,8 @@ public class IfcDirection extends IfcGeometricRepresentationItem implements IfcV
      * avoid writing multiple IfcDirection in the output IFC file when different IfcDirection objects actually represent
      * the same direction.
      */
-    @Getter
     @EqualsAndHashCode.Include
     private final List<IfcReal> normalisedDirectionRatios;
-    @Getter
     private final IfcDimensionCount dim; // derived attribute
 
     /**

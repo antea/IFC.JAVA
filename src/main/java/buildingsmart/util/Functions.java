@@ -19,7 +19,10 @@
 package buildingsmart.util;
 
 import buildingsmart.ifc.*;
+import lombok.Getter;
 import lombok.NonNull;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -37,20 +40,14 @@ import static java.lang.Math.sqrt;
 public class Functions {
 
     /**
-     * Precision of double values used in this library.
+     * The precision used for double values in this library.
      */
+    @Getter
     private static double delta;
     private static DecimalFormat decimalFormat;
 
     static {
         setDelta(0.00000001);
-    }
-
-    /**
-     * @return The precision used for double values in this library.
-     */
-    public static double getDelta() {
-        return delta;
     }
 
     /**
@@ -170,7 +167,8 @@ public class Functions {
                           Map.entry(IfcSIUnitName.SIEVERT, new IfcDimensionalExponents(2, 0, -2, 0, 0, 0, 0)));
     private static final Map<String, Predicate<IfcRepresentationItem>> ifcShapeRepresentationTypes =
             Map.ofEntries(Map.entry("Curve2D",
-                                    item -> item instanceof IfcCurve && ((IfcCurve) item).getDim().getValue() == 2),
+                                    item -> item instanceof IfcCurve &&
+                                            ((IfcGeometricSetSelect) item).getDim().getValue() == 2),
                           Map.entry("Annotation2D",
                                     item -> item instanceof IfcPoint || item instanceof IfcCurve ||
                                             item instanceof IfcGeometricCurveSet ||
@@ -398,15 +396,23 @@ public class Functions {
      * onto the plane normal to List[2], List[1] is the cross product of List[2]
      * and List[0]. Default values are supplied if both arguments are null.
      */
-    public static List<IfcDirection> ifcBuildAxes(IfcDirection axis,
-                                                  IfcDirection refDirection) {
+    public static @NotNull List<IfcDirection> ifcBuildAxes(@Nullable IfcDirection axis,
+                                                  @Nullable IfcDirection refDirection) {
+        if ((axis == null && refDirection != null) || (axis != null && refDirection == null)) {
+            throw new IllegalArgumentException("either both axis and refDirection are null, or none can be null");
+        }
         IfcDirection normalisedAxis = ifcNormalise(axis);
         IfcDirection d1 = normalisedAxis == null ? new IfcDirection(0, 0, 1) :
                 normalisedAxis;
         IfcDirection d2 = ifcFirstProjAxis(d1, refDirection);
         List<IfcDirection> result = new ArrayList<>(3);
         result.add(d2);
-        result.add(ifcNormalise(ifcCrossProduct(d1, d2)).getOrientation());
+        IfcVector normalisedCrossProduct = ifcNormalise(ifcCrossProduct(d1, d2));
+        if (null == normalisedCrossProduct) {
+            throw new IllegalArgumentException("Unable to compute the three axes from the given axis and refDirection: "
+            + axis + ", " + refDirection);
+        }
+        result.add(normalisedCrossProduct.getOrientation());
         result.add(d1);
         return result;
     }
@@ -457,13 +463,14 @@ public class Functions {
      * output is an IfcVector of the same units as the input vector. If any of
      * the input arguments is null, returns null.
      */
-    private static IfcVector ifcScalarTimesVector(IfcReal scalar,
-                                                  IfcVector vec) {
+    private static @Nullable IfcVector ifcScalarTimesVector(@Nullable IfcReal scalar, @Nullable IfcVector vec) {
         if (scalar == null || vec == null) {
             return null;
         }
-        IfcDirection v = vec.getOrientation();
-        double mag = scalar.getValue() * vec.getMagnitude().getValue();
+        return scalarTimesVector(scalar.getValue() * vec.getMagnitude().getValue(), vec.getOrientation());
+    }
+
+    private static IfcVector scalarTimesVector(double mag, @NotNull IfcDirection v) {
         if (mag < 0) {
             List<IfcReal> directionRatios = v.getDirectionRatios();
             double[] negativeDirectionRatios =
@@ -488,19 +495,7 @@ public class Functions {
         if (scalar == null || dir == null) {
             return null;
         }
-        IfcDirection v = dir;
-        double mag = scalar.getValue();
-        if (mag < 0) {
-            List<IfcReal> directionRatios = v.getDirectionRatios();
-            double[] negativeDirectionRatios =
-                    new double[directionRatios.size()];
-            for (int i = 0; i < directionRatios.size(); i++) {
-                negativeDirectionRatios[i] = -directionRatios.get(i).getValue();
-            }
-            v = new IfcDirection(negativeDirectionRatios);
-            mag = -mag;
-        }
-        return new IfcVector(ifcNormalise(v), new IfcLengthMeasure(mag));
+        return scalarTimesVector(scalar.getValue(), dir);
     }
 
     /**
@@ -607,7 +602,7 @@ public class Functions {
         if (units == null) {
             return true;
         }
-        if (units.size() < 1) {
+        if (units.isEmpty()) {
             throw new IllegalArgumentException(
                     "size of units must be at least 1");
         }

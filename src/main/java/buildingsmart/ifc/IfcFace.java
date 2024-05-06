@@ -79,7 +79,7 @@ public class IfcFace extends IfcTopologicalRepresentationItem {
      *                                  than one instance of IfcFaceOuterBound.
      */
     public IfcFace(@NonNull Set<IfcFaceBound> bounds) {
-        if (bounds.size() < 1) {
+        if (bounds.isEmpty()) {
             throw new IllegalArgumentException(
                     "size of bounds must be at least 1");
         }

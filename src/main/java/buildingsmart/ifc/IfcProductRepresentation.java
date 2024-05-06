@@ -64,7 +64,7 @@ public class IfcProductRepresentation extends Entity {
     public IfcProductRepresentation(IfcLabel name,
                                     IfcText description,
                                     @NonNull List<IfcRepresentation> representations) {
-        if (representations.size() < 1) {
+        if (representations.isEmpty()) {
             throw new IllegalArgumentException(
                     "size of representations must be at least 1");
         }

@@ -46,7 +46,7 @@ public class IfcPresentationStyleAssignment extends Entity {
      * @throws IllegalArgumentException If styles' size is lower than 1.
      */
     public IfcPresentationStyleAssignment(@NonNull Set<IfcPresentationStyleSelect> styles) {
-        if (styles.size() < 1) {
+        if (styles.isEmpty()) {
             throw new IllegalArgumentException("size of syles must be at least 1");
         }
         this.styles = styles;

@@ -65,7 +65,7 @@ public class IfcSurfaceStyle extends IfcPresentationStyle
                            @NonNull IfcSurfaceSide side,
                            @NonNull Set<IfcSurfaceStyleElementSelect> styles) {
         super(name);
-        if (styles.size() < 1 || styles.size() > 5) {
+        if (styles.isEmpty() || styles.size() > 5) {
             throw new IllegalArgumentException(
                     "size of styles cannot be lower than 1 nor bigger than 5");
         }

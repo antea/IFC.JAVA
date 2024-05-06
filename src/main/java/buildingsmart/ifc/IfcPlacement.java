@@ -32,10 +32,10 @@ import java.io.Serializable;
  * geometry item. It locates the item to be defined and, in the case of the axis
  * placement subtypes, gives its orientation.
  */
+@Getter
 @EqualsAndHashCode(callSuper = false)
 @ToString
 public abstract class IfcPlacement extends IfcGeometricRepresentationItem implements Serializable {
-    @Getter
     @Attribute(0)
     private final IfcCartesianPoint location;
 

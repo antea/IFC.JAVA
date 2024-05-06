@@ -58,7 +58,7 @@ public class IfcUnitAssignment extends Entity {
      *                                  one IfcMonetaryUnit.
      */
     public IfcUnitAssignment(@NonNull Set<IfcUnit> units) {
-        if (units.size() < 1) {
+        if (units.isEmpty()) {
             throw new IllegalArgumentException(
                     "size of units must be at least 1");
         }

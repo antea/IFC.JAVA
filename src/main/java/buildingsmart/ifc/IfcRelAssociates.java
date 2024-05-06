@@ -96,7 +96,7 @@ public class IfcRelAssociates extends IfcRelationship {
                             IfcText description,
                             @NonNull Set<IfcRoot> relatedObjects) {
         super(globalId, ownerHistory, name, description);
-        if (relatedObjects.size() < 1) {
+        if (relatedObjects.isEmpty()) {
             throw new IllegalArgumentException(
                     "size of relatedObjects must be at least 1");
         }

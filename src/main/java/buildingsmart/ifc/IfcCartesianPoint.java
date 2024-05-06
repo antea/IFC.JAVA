@@ -35,11 +35,14 @@ import java.util.List;
  * A point defined by its coordinates in a two or three dimensional rectangular Cartesian coordinate system, or in a two
  * dimensional parameter space. The entity is defined in a two or three dimensional space.
  */
+@Getter
 @EqualsAndHashCode(callSuper = false)
 public class IfcCartesianPoint extends IfcPoint implements IfcTrimmingSelect, Serializable {
-    @Getter
     @Attribute(0)
     private final List<IfcLengthMeasure> coordinates;
+    /**
+     * The space dimensionality of this class, determined by the number of coordinates in the List of Coordinates.
+     */
     @EqualsAndHashCode.Exclude
     private final IfcDimensionCount dim; // derived attribute
 
@@ -80,14 +83,6 @@ public class IfcCartesianPoint extends IfcPoint implements IfcTrimmingSelect, Se
                          List::addAll);
         this.coordinates = Collections.unmodifiableList(coordinatesList);
         this.dim = new IfcDimensionCount((byte) coordinatesList.size());
-    }
-
-    /**
-     * @return The space dimensionality of this class, determined by the number of coordinates in the List of
-     * Coordinates.
-     */
-    public IfcDimensionCount getDim() {
-        return dim;
     }
 
     @Override

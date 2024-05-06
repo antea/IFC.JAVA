@@ -80,7 +80,7 @@ public class IfcRelDecomposes extends IfcRelationship {
                             @NonNull IfcObjectDefinition relatingObject,
                             @NonNull Set<IfcObjectDefinition> relatedObjects) {
         super(globalId, ownerHistory, name, description);
-        if (relatedObjects.size() < 1) {
+        if (relatedObjects.isEmpty()) {
             throw new IllegalArgumentException("size of relatedObjects must be at least one");
         }
         if (relatedObjects.contains(relatingObject)) {

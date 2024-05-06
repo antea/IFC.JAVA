@@ -85,26 +85,26 @@ public class IfcPerson extends Entity {
                     "familyName and givenName can't be both null, at least " +
                             "one of them should have a value");
         }
-        if (middleNames != null && middleNames.size() < 1) {
+        if (middleNames != null && middleNames.isEmpty()) {
             throw new IllegalArgumentException(
                     "middleNames must be null or its size must be at least " +
                             "one");
         }
-        if (prefixTitles != null && prefixTitles.size() < 1) {
+        if (prefixTitles != null && prefixTitles.isEmpty()) {
             throw new IllegalArgumentException(
                     "prefixTitles must be null or its size must be at least " +
                             "one");
         }
-        if (suffixTitles != null && suffixTitles.size() < 1) {
+        if (suffixTitles != null && suffixTitles.isEmpty()) {
             throw new IllegalArgumentException(
                     "suffixTitles must be null or its size must be at least " +
                             "one");
         }
-        if (roles != null && roles.size() < 1) {
+        if (roles != null && roles.isEmpty()) {
             throw new IllegalArgumentException(
                     "roles must be null or its size must be at least one");
         }
-        if (addresses != null && addresses.size() < 1) {
+        if (addresses != null && addresses.isEmpty()) {
             throw new IllegalArgumentException(
                     "addresses must be null or its size must be at least one");
         }

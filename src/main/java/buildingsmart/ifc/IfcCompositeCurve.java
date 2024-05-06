@@ -65,7 +65,7 @@ public class IfcCompositeCurve extends IfcBoundedCurve {
      */
     public IfcCompositeCurve(@NonNull List<IfcCompositeCurveSegment> segments,
                              @NonNull IfcLogical selfIntersect) {
-        if (segments.size() < 1) {
+        if (segments.isEmpty()) {
             throw new IllegalArgumentException(
                     "size of segments must be at least 1");
         }

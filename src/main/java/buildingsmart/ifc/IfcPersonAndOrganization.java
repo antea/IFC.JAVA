@@ -53,7 +53,7 @@ public class IfcPersonAndOrganization extends Entity {
     public IfcPersonAndOrganization(@NonNull IfcPerson thePerson,
                                     @NonNull IfcOrganization theOrganization,
                                     List<IfcActorRole> roles) {
-        if (roles != null && roles.size() < 1) {
+        if (roles != null && roles.isEmpty()) {
             throw new IllegalArgumentException(
                     "role must be null or its size must be at least one");
         }

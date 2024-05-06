@@ -28,11 +28,11 @@ import lombok.ToString;
 /**
  * A defined type of simple data type Integer.
  */
+@Getter
 @AllArgsConstructor
 @EqualsAndHashCode
 @ToString
 public class IfcInteger implements DefinedType, IfcSimpleValue {
-    @Getter
     private final long value;
 
     /**

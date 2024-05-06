@@ -23,7 +23,6 @@ import org.junit.Test;
 
 import java.util.*;
 
-import static buildingsmart.util.Functions.getDelta;
 import static buildingsmart.util.Functions.ifcDotProduct;
 import static java.lang.Math.abs;
 import static java.lang.Math.sqrt;
@@ -47,7 +46,7 @@ public class FunctionsTest {
         for (List<IfcDirection> pair : combinations) {
             double dotProduct =
                     ifcDotProduct(pair.get(0), pair.get(1)).getValue();
-            if (Math.abs(dotProduct) > getDelta()) {
+            if (Math.abs(dotProduct) > Functions.getDelta()) {
                 return false;
             }
         }
@@ -101,14 +100,14 @@ public class FunctionsTest {
     public void ifcCrossProduct_componentsAreZero_returnsZeroMagnitudeVector() {
         IfcVector vector = Functions.ifcCrossProduct(new IfcDirection(0, 0, 0),
                                                      new IfcDirection(1, 2, 3));
-        assertEquals(0, vector.getMagnitude().getValue(), getDelta());
+        assertEquals(0, vector.getMagnitude().getValue(), Functions.getDelta());
     }
 
     @Test
     public void ifcCrossProduct_parallelDirections_returnsZeroMagnitudeVector() {
         IfcVector vector = Functions.ifcCrossProduct(new IfcDirection(2, 4, 8),
                                                      new IfcDirection(1, 2, 4));
-        assertEquals(0, vector.getMagnitude().getValue(), getDelta());
+        assertEquals(0, vector.getMagnitude().getValue(), Functions.getDelta());
     }
 
     @Test
@@ -116,7 +115,7 @@ public class FunctionsTest {
         IfcVector vector = Functions
                 .ifcCrossProduct(new IfcDirection(-1, -2, -4),
                                  new IfcDirection(1, 2, 4));
-        assertEquals(0, vector.getMagnitude().getValue(), getDelta());
+        assertEquals(0, vector.getMagnitude().getValue(), Functions.getDelta());
     }
 
     @Test
@@ -134,12 +133,12 @@ public class FunctionsTest {
 
         // since the two input directions are on the same plane, we expect
         // the result to be on the axis perpendicular to that plane
-        assertEquals(0, vector.getDirectionRatios().get(0).getValue(), getDelta());
-        assertEquals(0, vector.getDirectionRatios().get(1).getValue(), getDelta());
+        assertEquals(0, vector.getDirectionRatios().get(0).getValue(), Functions.getDelta());
+        assertEquals(0, vector.getDirectionRatios().get(1).getValue(), Functions.getDelta());
         assertEquals(expectedComp,
-                     vector.getDirectionRatios().get(2).getValue(), getDelta());
+                     vector.getDirectionRatios().get(2).getValue(), Functions.getDelta());
         assertEquals(vector.getMagnitude().getValue(),
-                     abs(vector.getDirectionRatios().get(2).getValue()), getDelta());
+                     abs(vector.getDirectionRatios().get(2).getValue()), Functions.getDelta());
     }
 
     @Test
@@ -162,7 +161,7 @@ public class FunctionsTest {
         IfcDirection normalisedDirection = Functions.ifcNormalise(direction);
 
         for (IfcReal comp : normalisedDirection.getDirectionRatios()) {
-            assertEquals(expectedComponents, comp.getValue(), getDelta());
+            assertEquals(expectedComponents, comp.getValue(), Functions.getDelta());
         }
     }
 
@@ -196,10 +195,10 @@ public class FunctionsTest {
         IfcVector normalisedVector = Functions.ifcNormalise(vector);
 
         for (IfcReal comp : normalisedVector.getDirectionRatios()) {
-            assertEquals(expectedComponents, comp.getValue(), getDelta());
+            assertEquals(expectedComponents, comp.getValue(), Functions.getDelta());
         }
         assertEquals(expectedMagnitude,
-                     normalisedVector.getMagnitude().getValue(), getDelta());
+                     normalisedVector.getMagnitude().getValue(), Functions.getDelta());
     }
 
     @Test
@@ -241,7 +240,6 @@ public class FunctionsTest {
                                                                               0)));
     }
 
-    @SuppressWarnings("ConstantConditions")
     @Test
     public void ifcCorrectDimensions_nullExponents() {
         assertFalse(Functions.ifcCorrectDimensions(IfcUnitEnum.LENGTHUNIT,
@@ -250,7 +248,6 @@ public class FunctionsTest {
 
     @Test
     public void ifcCorrectDimensions_wrongExponents() {
-        //noinspection ConstantConditions
         assertFalse(Functions.ifcCorrectDimensions(IfcUnitEnum.LENGTHUNIT,
                                                    new IfcDimensionalExponents(0,
                                                                                345,
@@ -263,7 +260,6 @@ public class FunctionsTest {
 
     @Test
     public void ifcCorrectDimensions_correctExponents() {
-        //noinspection ConstantConditions
         assertTrue(Functions.ifcCorrectDimensions(IfcUnitEnum.LENGTHUNIT,
                                                   new IfcDimensionalExponents(1,
                                                                               0,
@@ -350,7 +346,7 @@ public class FunctionsTest {
         double result = Functions.ifcDotProduct(new IfcDirection(3.5, 1),
                                                 new IfcDirection(8.234, 123))
                 .getValue();
-        assertEquals(expectedResult, result, getDelta());
+        assertEquals(expectedResult, result, Functions.getDelta());
     }
 
     @Test
@@ -600,7 +596,7 @@ public class FunctionsTest {
         List<IfcDirection> result =
                 Functions.ifcBuild2Axes(new IfcDirection(1, 2));
         assertEquals(0,
-                     ifcDotProduct(result.get(0), result.get(1)).getValue(), getDelta());
+                     ifcDotProduct(result.get(0), result.get(1)).getValue(), Functions.getDelta());
     }
 
     @Test(expected = NullPointerException.class)
@@ -611,6 +607,7 @@ public class FunctionsTest {
 
     @Test
     public void formatForStepFile() {
+        @SuppressWarnings("UnnecessaryUnicodeEscape")
         String[] unformatted = {"aèa\\",
                                 "'''",
                                 "a\\'b",

@@ -85,7 +85,7 @@ public class IfcRepresentation extends Entity {
                              IfcLabel representationIdentifier,
                              IfcLabel representationType,
                              @NonNull Set<IfcRepresentationItem> items) {
-        if (items.size() < 1) {
+        if (items.isEmpty()) {
             throw new IllegalArgumentException(
                     "size of items must be at least 1");
         }
