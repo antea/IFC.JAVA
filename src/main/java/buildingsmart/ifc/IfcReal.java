@@ -31,10 +31,12 @@ import static buildingsmart.util.Functions.format;
  * A defined type of simple data type REAL. In principle, the domain of IfcReal
  * (being a Real) is all rational, irrational and scientific real numbers.
  */
-@Getter
 @EqualsAndHashCode
 public class IfcReal implements DefinedType, IfcSimpleValue, Serializable {
+    @Getter
+    @EqualsAndHashCode.Exclude
     private final double value;
+    private final String serialization;
 
     public IfcReal(double value) {
         if (value == -0d) {
@@ -42,6 +44,7 @@ public class IfcReal implements DefinedType, IfcSimpleValue, Serializable {
         } else {
             this.value = value;
         }
+        serialization = format(this.value);
     }
 
     /**
@@ -49,7 +52,7 @@ public class IfcReal implements DefinedType, IfcSimpleValue, Serializable {
      */
     @Override
     public String serialize() {
-        return format(value);
+        return serialization;
     }
 
     @Override

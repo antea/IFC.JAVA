@@ -23,7 +23,8 @@ import buildingsmart.io.DefinedType;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.ToString;
+
+import static buildingsmart.util.Functions.format;
 
 /**
  * A ratio measure is the value of the relation between two physical quantities
@@ -36,10 +37,11 @@ import lombok.ToString;
  * </BLOCKQUOTE>
  */
 @EqualsAndHashCode
-@ToString
 public class IfcRatioMeasure implements DefinedType, IfcMeasureValue, IfcSizeSelect {
     @Getter(value = AccessLevel.PROTECTED)
+    @EqualsAndHashCode.Exclude
     private final double value;
+    private final String serialization;
 
     public IfcRatioMeasure(double value) {
         if (value == -0d) {
@@ -47,6 +49,7 @@ public class IfcRatioMeasure implements DefinedType, IfcMeasureValue, IfcSizeSel
         } else {
             this.value = value;
         }
+        serialization = format(this.value);
     }
 
     /**
@@ -54,6 +57,11 @@ public class IfcRatioMeasure implements DefinedType, IfcMeasureValue, IfcSizeSel
      */
     @Override
     public String serialize() {
+        return serialization;
+    }
+
+    @Override
+    public String toString() {
         return Double.toString(value);
     }
 }

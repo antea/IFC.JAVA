@@ -21,17 +21,19 @@ package buildingsmart.ifc;
 
 import buildingsmart.io.DefinedType;
 import lombok.EqualsAndHashCode;
-import lombok.ToString;
+
+import static buildingsmart.util.Functions.format;
 
 /**
  * A parameter value is the value which specifies the amount of a parameter in
  * some parameter space.
  */
 @EqualsAndHashCode
-@ToString
 public class IfcParameterValue
         implements DefinedType, IfcMeasureValue, IfcTrimmingSelect {
+    @EqualsAndHashCode.Exclude
     private final double value;
+    private final String serialization;
 
     public IfcParameterValue(double value) {
         if (value == -0d) {
@@ -39,13 +41,19 @@ public class IfcParameterValue
         } else {
             this.value = value;
         }
+        serialization = format(this.value);
     }
 
     /**
-     * @return The representation of the Defined Type in an IFC STEP file.
+     * @return The representation of the type in an IFC STEP file.
      */
     @Override
     public String serialize() {
+        return serialization;
+    }
+
+    @Override
+    public String toString() {
         return Double.toString(value);
     }
 }

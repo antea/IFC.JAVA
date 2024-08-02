@@ -27,7 +27,7 @@
     <artifactId>ifc-java</artifactId>
     <packaging>jar</packaging>
     <!--When updating the version, please update it in Header:39 too.-->
-    <version>0.3.5</version>
+    <version>0.3.6</version>
     <licenses>
         <license>
             <name>Apache License, Version 2.0</name>
@@ -63,13 +63,13 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.32</version>
+            <version>1.18.34</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>33.2.0-jre</version>
+            <version>33.2.1-jre</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
@@ -80,7 +80,7 @@
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>5.11.0</version>
+            <version>5.12.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
