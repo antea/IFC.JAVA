@@ -277,7 +277,7 @@ public class SerializerTest {
                 "#12=IFCSIUNIT(*,.LENGTHUNIT.,$,.METRE.);\n" + "#13=IFCSIUNIT(*,.AREAUNIT.,$,.SQUARE_METRE.);\n" +
                 "#14=IFCSIUNIT(*,.VOLUMEUNIT.,$,.CUBIC_METRE.);\n" + "#15=IFCDIMENSIONALEXPONENTS(0,0,0,0,0,0,0);\n" +
                 "#16=IFCSIUNIT(*,.PLANEANGLEUNIT.,$,.RADIAN.);\n" +
-                "#17=IFCMEASUREWITHUNIT(IFCPLANEANGLEMEASURE(0.017453292519943295),#16);\n" +
+                "#17=IFCMEASUREWITHUNIT(IFCPLANEANGLEMEASURE(0.01745329),#16);\n" +
                 "#18=IFCCONVERSIONBASEDUNIT(#15,.PLANEANGLEUNIT.,'DEGREE',#17);\n" +
                 "#19=IFCUNITASSIGNMENT((#12,#13,#14,#18));\n" +
                 "#20=IFCPROJECT('51f413ef_7964_4d38_b19',#5,'Unnamed',$,$,$,$,(#11),#19);\n" +
@@ -294,7 +294,7 @@ public class SerializerTest {
                 "#34=IFCPRODUCTDEFINITIONSHAPE($,$,(#33));\n" +
                 "#35=IFCWALL('2KcxKeVfqHwhb6N5zdz5Bw',#5,'Wall','',$,#27,#34,$);\n" + "#36=IFCLOCALPLACEMENT($,#9);\n" +
                 "#37=IFCAXIS2PLACEMENT3D(#6,#8,#10);\n" + "#38=IFCCIRCLE(#37,0.5);\n" +
-                "#39=IFCTRIMMEDCURVE(#38,(IFCPARAMETERVALUE(0.0)),(IFCPARAMETERVALUE(1.5707963267948966)),.T.," +
+                "#39=IFCTRIMMEDCURVE(#38,(IFCPARAMETERVALUE(0.0)),(IFCPARAMETERVALUE(1.57079633)),.T.," +
                 ".PARAMETER.);\n" +
                 "#40=IFCSHAPEREPRESENTATION(#11,'Body','GeometricCurveSet',(#39));\n" +
                 "#41=IFCPRODUCTDEFINITIONSHAPE($,$,(#40));\n" +

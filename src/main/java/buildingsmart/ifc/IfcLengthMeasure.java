@@ -32,10 +32,12 @@ import static buildingsmart.util.Functions.format;
  * <p>
  * Usually measured in millimeters (mm).
  */
-@Getter
 @EqualsAndHashCode
 public class IfcLengthMeasure implements DefinedType, IfcMeasureValue, IfcSizeSelect, Serializable {
+    @Getter
+    @EqualsAndHashCode.Exclude
     private final double value;
+    private final String serialization;
 
     /**
      * @param value The value of the distance.
@@ -46,6 +48,7 @@ public class IfcLengthMeasure implements DefinedType, IfcMeasureValue, IfcSizeSe
         } else {
             this.value = value;
         }
+        serialization = format(this.value);
     }
 
     /**
@@ -53,7 +56,7 @@ public class IfcLengthMeasure implements DefinedType, IfcMeasureValue, IfcSizeSe
      */
     @Override
     public String serialize() {
-        return format(value);
+        return serialization;
     }
 
     @Override

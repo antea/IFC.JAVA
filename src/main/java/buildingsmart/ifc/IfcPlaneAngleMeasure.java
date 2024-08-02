@@ -21,7 +21,8 @@ package buildingsmart.ifc;
 
 import buildingsmart.io.DefinedType;
 import lombok.EqualsAndHashCode;
-import lombok.ToString;
+
+import static buildingsmart.util.Functions.format;
 
 /**
  * A plane angle measure is the value of an angle in a plane.
@@ -36,9 +37,10 @@ import lombok.ToString;
  * IfcCompoundPlaneAngleMeasure is provided.</small>
  */
 @EqualsAndHashCode
-@ToString
 public class IfcPlaneAngleMeasure implements DefinedType, IfcMeasureValue {
+    @EqualsAndHashCode.Exclude
     private final double value;
+    private final String serialization;
 
     public IfcPlaneAngleMeasure(double value) {
         if (value == -0d) {
@@ -46,6 +48,7 @@ public class IfcPlaneAngleMeasure implements DefinedType, IfcMeasureValue {
         } else {
             this.value = value;
         }
+        serialization = format(this.value);
     }
 
     /**
@@ -53,6 +56,11 @@ public class IfcPlaneAngleMeasure implements DefinedType, IfcMeasureValue {
      */
     @Override
     public String serialize() {
+        return serialization;
+    }
+
+    @Override
+    public String toString() {
         return Double.toString(value);
     }
 }
